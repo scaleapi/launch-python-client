@@ -1,4 +1,4 @@
-from launch import DeployClient  # noqa
+from launch import LaunchClient  # noqa
 
 
 def test_dummy():

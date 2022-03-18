@@ -96,7 +96,7 @@ class AsyncModelEndpoint:
         """
         Parameters:
             endpoint_id: The unique name of the ModelEndpoint
-            client: A DeployClient object
+            client: A LaunchClient object
         """
         self.endpoint_id = endpoint_id
         self.client = client
@@ -159,7 +159,7 @@ class AsyncModelEndpoint:
 
         Parameters:
             url: A url that points to a file containing model input.
-                Must be accessible by Scale Deploy, hence it needs to either be public or a signedURL.
+                Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
 
         Returns:
             A signedUrl that contains a cloudpickled Python object, the result of running inference on the model input

@@ -15,7 +15,7 @@ The service efficiently utilizes compute resources and automatically scales acco
 
 # Deploying your model via Scale Launch
 
-Central to Scale Deploy are the notions of a `ModelBundle` and a `ModelEndpoint`.
+Central to Scale Launch are the notions of a `ModelBundle` and a `ModelEndpoint`.
 A `ModelBundle` consists of a trained model as well as the surrounding preprocessing and postprocessing code.
 A `ModelEndpoint` is the compute layer that takes in a `ModelBundle`, and is able to carry out inference requests
 by using the `ModelBundle` to carry out predictions. The `ModelEndpoint` also knows infrastructure-level details,

@@ -14,7 +14,7 @@ from launch.constants import (
     ASYNC_TASK_RESULT_PATH,
     ENDPOINT_PATH,
     MODEL_BUNDLE_SIGNED_URL_PATH,
-    SCALE_DEPLOY_ENDPOINT,
+    SCALE_LAUNCH_ENDPOINT,
     SYNC_TASK_PATH,
 )
 from launch.find_packages import find_packages_from_imports, get_imports
@@ -27,25 +27,25 @@ DEFAULT_NETWORK_TIMEOUT_SEC = 120
 logger = logging.getLogger(__name__)
 logging.basicConfig()
 
-DeployModel_T = TypeVar("DeployModel_T")
+LaunchModel_T = TypeVar("LaunchModel_T")
 
 
-class DeployClient:
-    """Scale Deploy Python Client extension."""
+class LaunchClient:
+    """Scale Launch Python Client extension."""
 
     def __init__(
         self,
         api_key: str,
-        endpoint: str = SCALE_DEPLOY_ENDPOINT,
+        endpoint: str = SCALE_LAUNCH_ENDPOINT,
         is_self_hosted: bool = False,
     ):
         """
-        Initializes a Scale Deploy Client.
+        Initializes a Scale Launch Client.
 
         Parameters:
             api_key: Your Scale API key
-            endpoint: The Scale Deploy Endpoint (this should not need to be changed)
-            is_self_hosted: True iff you are connecting to a self-hosted Scale Deploy
+            endpoint: The Scale Launch Endpoint (this should not need to be changed)
+            is_self_hosted: True iff you are connecting to a self-hosted Scale Launch
         """
         self.connection = Connection(api_key, endpoint)
         self.is_self_hosted = is_self_hosted
@@ -56,7 +56,7 @@ class DeployClient:
         self.bundle_location_fn: Optional[Callable[[], str]] = None
 
     def __repr__(self):
-        return f"DeployClient(connection='{self.connection}')"
+        return f"LaunchClient(connection='{self.connection}')"
 
     def __eq__(self, other):
         return self.connection == other.connection
@@ -113,7 +113,7 @@ class DeployClient:
         load_model_fn_module_path: str,
     ) -> ModelBundle:
         """
-        Packages up code from a local filesystem folder and uploads that as a bundle to Scale Deploy.
+        Packages up code from a local filesystem folder and uploads that as a bundle to Scale Launch.
         In this mode, a bundle is just local code instead of a serialized object.
 
         Parameters:
@@ -204,17 +204,17 @@ class DeployClient:
         env_params: Dict[str, str],
         *,
         load_predict_fn: Optional[
-            Callable[[DeployModel_T], Callable[[Any], Any]]
+            Callable[[LaunchModel_T], Callable[[Any], Any]]
         ] = None,
         predict_fn_or_cls: Optional[Callable[[Any], Any]] = None,
         requirements: Optional[List[str]] = None,
-        model: Optional[DeployModel_T] = None,
-        load_model_fn: Optional[Callable[[], DeployModel_T]] = None,
+        model: Optional[LaunchModel_T] = None,
+        load_model_fn: Optional[Callable[[], LaunchModel_T]] = None,
         bundle_url: Optional[str] = None,
         globals_copy: Optional[Dict[str, Any]] = None,
     ) -> ModelBundle:
         """
-        Grabs a s3 signed url and uploads a model bundle to Scale Deploy.
+        Grabs a s3 signed url and uploads a model bundle to Scale Launch.
 
         A model bundle consists of exactly {predict_fn_or_cls}, {load_predict_fn + model}, or {load_predict_fn + load_model_fn}.
         Pre/post-processing code can be included inside load_predict_fn/model or in predict_fn_or_cls call.
@@ -494,7 +494,7 @@ class DeployClient:
         Parameters:
             endpoint_id: The id of the endpoint to make the request to
             url: A url that points to a file containing model input.
-                Must be accessible by Scale Deploy, hence it needs to either be public or a signedURL.
+                Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
             args: A dictionary of arguments to the `predict` function defined in your model bundle.
                 Must be json-serializable, i.e. composed of str, int, float, etc.
                 If your `predict` function has signature `predict(foo, bar)`, then args should be a dictionary with
@@ -540,7 +540,7 @@ class DeployClient:
         Parameters:
             endpoint_id: The id of the endpoint to make the request to
             url: A url that points to a file containing model input.
-                Must be accessible by Scale Deploy, hence it needs to either be public or a signedURL.
+                Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
             args: A dictionary of arguments to the ModelBundle's predict function.
                 Must be json-serializable, i.e. composed of str, int, float, etc.
                 If your `predict` function has signature `predict(foo, bar)`, then args should be a dictionary with
@@ -599,7 +599,7 @@ class DeployClient:
         Parameters:
             endpoint_id: The id of the endpoint to make the request to
             urls: A list of urls, each pointing to a file containing model input.
-                Must be accessible by Scale Deploy, hence urls need to either be public or signedURLs.
+                Must be accessible by Scale Launch, hence urls need to either be public or signedURLs.
 
         Returns:
             An id/key that can be used to fetch inference results at a later time
