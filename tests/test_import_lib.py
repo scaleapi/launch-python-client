@@ -1,1 +1,1 @@
-from launch import DeployClient     # noqa
+from launch import DeployClient  # noqa
