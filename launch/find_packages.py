@@ -227,7 +227,7 @@ class DepSeekWork:
 
     def seek_in_import_set(self, import_set):
         for module_name in import_set:
-            if module_name == "nucleus":
+            if module_name == "launch":
                 continue
             if module_name in self.parsed_module_set:
                 continue

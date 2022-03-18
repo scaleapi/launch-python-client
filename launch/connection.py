@@ -3,7 +3,7 @@ import time
 import requests
 
 from launch.constants import DEFAULT_NETWORK_TIMEOUT_SEC
-from launch.errors import NucleusAPIError
+from launch.errors import APIError
 from launch.logger import logger
 from launch.retry_strategy import RetryStrategy
 
@@ -43,7 +43,7 @@ class Connection:
         self, payload: dict, route: str, requests_command=requests.post
     ) -> dict:
         """
-        Makes a request to Nucleus endpoint and logs a warning if not
+        Makes a request to Launch endpoint and logs a warning if not
         successful.
 
         :param payload: given payload
@@ -82,6 +82,6 @@ class Connection:
         requests_response=None,
         aiohttp_response=None,
     ):
-        raise NucleusAPIError(
+        raise APIError(
             endpoint, requests_command, requests_response, aiohttp_response
         )
