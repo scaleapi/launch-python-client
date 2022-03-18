@@ -3,11 +3,11 @@ import logging
 from typing import Dict, List, Tuple
 
 import cloudpickle
-import smart_open
-
 import nucleus
+import smart_open
 from nucleus import Dataset, DatasetItem
 from nucleus.dataset_item import DatasetItemType
+
 from launch.model_endpoint import (
     AsyncModelEndpoint,
     AsyncModelEndpointBatchResponse,
