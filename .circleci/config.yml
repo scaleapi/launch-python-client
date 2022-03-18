@@ -60,7 +60,7 @@ jobs:
           command: |
             mkdir test_results
             set -e
-            TEST_FILES=$(circleci tests glob "tests/**/test_*.py" | circleci tests split --split-by=timings)
+            TEST_FILES=$(circleci tests glob "tests/**/test_*.py")
             poetry run coverage run --include=launch/* -m pytest $TEST_FILES
             poetry run coverage report
             poetry run coverage html
