@@ -64,6 +64,12 @@ jobs:
             poetry run coverage run --include=launch/* -m pytest $TEST_FILES
             poetry run coverage report
             poetry run coverage html
+      - store_test_results:
+          path: htmlcov
+      - store_test_results:
+          path: test_results
+      - store_artifacts:
+          path: test_results
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
