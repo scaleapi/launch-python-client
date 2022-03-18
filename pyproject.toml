@@ -35,6 +35,7 @@ pytest = "^7.1.1"
 cloudpickle = "^2.0.0"
 types-setuptools = "^57.4.11"
 types-requests = "^2.27.13"
+requests = "^2.27.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
