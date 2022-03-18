@@ -166,7 +166,7 @@ class DeployClient:
                     "Need either bundle_location_fn to know where to upload bundles"
                 )
             raw_bundle_url = self.bundle_location_fn()  # type: ignore
-            self.upload_bundle_fn(data, raw_bundle_url)
+            self.upload_bundle_fn(data, raw_bundle_url)  # type: ignore
         else:
             model_bundle_url = self.connection.post(
                 {}, MODEL_BUNDLE_SIGNED_URL_PATH
