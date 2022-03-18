@@ -1,12 +1,12 @@
 """
 
 Moving an ML model from experiment to production requires significant engineering lift.
-Scale Deploy provides ML engineers a simple Python interface for turning a local code snippet into a production service.
+Scale Launch provides ML engineers a simple Python interface for turning a local code snippet into a production service.
 A ML engineer simply needs to call a few functions from Scale's SDK, which quickly spins up a production-ready service.
 The service efficiently utilizes compute resources and automatically scales according to traffic.
 
 
-Central to Scale Deploy are the notions of a `ModelBundle` and a `ModelEndpoint`.
+Central to Scale Launch are the notions of a `ModelBundle` and a `ModelEndpoint`.
 
 A `ModelBundle` consists of a trained model as well as the surrounding preprocessing and postprocessing code.
 Specifically, a `ModelBundle` consists of two Python objects, a `load_predict_fn`, and either a `model` or `load_model_fn`; such that
@@ -50,7 +50,7 @@ Asynchronous endpoints autoscale on the number of inflight requests.
 
 In addition, we will expose another abstraction called a `BatchJob`, which takes in a `ModelBundle` and a list of inputs
 to predict on. Once a batch job completes, it cannot be restarted or accept additional requests.
-Deploy maintains metadata about batch jobs for users to query, even after batch jobs are complete.
+Launch maintains metadata about batch jobs for users to query, even after batch jobs are complete.
 
 Choosing between different types of inference:
 
@@ -74,10 +74,10 @@ Choosing between different types of inference:
 
 - You want to process data in an offline fashion
 
-Steps to deploy your model via Scale Deploy:
+Steps to deploy your model via Scale Launch:
 
 1. First, you create and upload a `ModelBundle`. Pass your trained model as well as pre-/post-processing code to
-the Scale Deploy Python SDK, and we'll create a model bundle based on the code and store it in our Bundle Store.
+the Scale Launch Python SDK, and we'll create a model bundle based on the code and store it in our Bundle Store.
 
 2. Then, you create a `ModelEndpoint`. Pass a `ModelBundle` as well as infrastructure settings such as #GPUs to our SDK.
 This provisions resources on Scale's cluster dedicated to your `ModelEndpoint`.
@@ -92,5 +92,9 @@ TODO: link some example colab notebook
 """
 
 from .client import DeployClient
+from .connection import Connection
+from .constants import DEFAULT_NETWORK_TIMEOUT_SEC
+from .logger import logger
 from .model_bundle import ModelBundle
 from .model_endpoint import AsyncModelEndpoint, AsyncModelEndpointBatchResponse
+from .retry_strategy import RetryStrategy

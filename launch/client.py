@@ -7,8 +7,8 @@ from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
 
 import cloudpickle
 import requests
-from nucleus.connection import Connection
 
+from launch.connection import Connection
 from launch.constants import (
     ASYNC_TASK_PATH,
     ASYNC_TASK_RESULT_PATH,
