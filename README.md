@@ -13,7 +13,7 @@ Scale Launch provides ML engineers a simple Python interface for turning a local
 A ML engineer needs to call a few functions from Scale's SDK, which quickly spins up a production-ready service.
 The service efficiently utilizes compute resources and automatically scales according to traffic.
 
-# Deploying your model via Scale Launch
+## Deploying your model via Scale Launch
 
 Central to Scale Launch are the notions of a `ModelBundle` and a `ModelEndpoint`.
 A `ModelBundle` consists of a trained model as well as the surrounding preprocessing and postprocessing code.
@@ -31,3 +31,21 @@ Steps to deploy your model via Scale Launch:
 3. Lastly, you make requests to the `ModelEndpoint`.
 
 TODO: link some example colab notebook
+
+
+## For Developers
+
+Clone from github and install as editable
+
+```
+git clone git@github.com:scaleapi/launch-python-client.git
+cd launch-python-client
+pip3 install poetry
+poetry install
+```
+
+Please install the pre-commit hooks by running the following command:
+
+```python
+poetry run pre-commit install
+```
