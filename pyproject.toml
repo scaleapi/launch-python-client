@@ -1,12 +1,18 @@
 [tool.poetry]
-name = "scale_launch"
+name = "scale-launch"
 version = "0.1.0"
-description = "`scale-launch` is a command line interface to interact with Scale Launch"
+description = "The official Python client library for Launch, the Data Platform for AI"
 authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+homepage = "https://scale.com/"
+repository = "https://github.com/scaleapi/launch-python-client"
+packages = [{include="launch"}]
 
 [tool.poetry.dependencies]
 python = "^3.7"
 pytest = "^7.1.1"
+cloudpickle = "^2.0.0"
+scale-nucleus = "^0.8.0"
 
 [tool.poetry.dev-dependencies]
 

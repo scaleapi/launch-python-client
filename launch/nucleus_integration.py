@@ -8,7 +8,7 @@ import smart_open
 import nucleus
 from nucleus import Dataset, DatasetItem
 from nucleus.dataset_item import DatasetItemType
-from nucleus.deploy.model_endpoint import (
+from launch.model_endpoint import (
     AsyncModelEndpoint,
     AsyncModelEndpointBatchResponse,
     EndpointRequest,

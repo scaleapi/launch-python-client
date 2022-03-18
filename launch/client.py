@@ -9,7 +9,7 @@ import cloudpickle
 import requests
 
 from nucleus.connection import Connection
-from nucleus.deploy.constants import (
+from launch.constants import (
     ASYNC_TASK_PATH,
     ASYNC_TASK_RESULT_PATH,
     ENDPOINT_PATH,
@@ -17,13 +17,13 @@ from nucleus.deploy.constants import (
     SCALE_DEPLOY_ENDPOINT,
     SYNC_TASK_PATH,
 )
-from nucleus.deploy.find_packages import (
+from launch.find_packages import (
     find_packages_from_imports,
     get_imports,
 )
-from nucleus.deploy.model_bundle import ModelBundle
-from nucleus.deploy.model_endpoint import AsyncModelEndpoint, SyncModelEndpoint
-from nucleus.deploy.request_validation import validate_task_request
+from launch.model_bundle import ModelBundle
+from launch.model_endpoint import AsyncModelEndpoint, SyncModelEndpoint
+from launch.request_validation import validate_task_request
 
 DEFAULT_NETWORK_TIMEOUT_SEC = 120
 
