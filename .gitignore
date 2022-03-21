@@ -1,0 +1,6 @@
+# editor
+.vscode
+**/.idea/
+**/scratch/
+*.swp
+.vim/
