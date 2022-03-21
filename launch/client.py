@@ -402,12 +402,7 @@ class LaunchClient:
         elif gpus > 0 and gpu_type is None:
             raise ValueError("If nonzero gpus, must provide gpu_type")
         payload = self.endpoint_auth_decorator_fn(payload)
-        if overwrite_existing_endpoint:
-            resp = self.connection.put(
-                payload, f"{ENDPOINT_PATH}/{endpoint_name}"
-            )
-        else:
-            resp = self.connection.post(payload, ENDPOINT_PATH)
+        resp = self.connection.post(payload, ENDPOINT_PATH)
         endpoint_creation_task_id = resp.get(
             "endpoint_creation_task_id", None
         )  # TODO probably throw on None
@@ -422,6 +417,49 @@ class LaunchClient:
             raise ValueError(
                 "Endpoint should be one of the types 'sync' or 'async'"
             )
+
+    def edit_model_endpoint(
+        self,
+        endpoint_name: str,
+        model_bundle: Optional[ModelBundle] = None,
+        cpus: Optional[float] = None,
+        memory: Optional[str] = None,
+        gpus: Optional[int] = None,
+        min_workers: Optional[int] = None,
+        max_workers: Optional[int] = None,
+        per_worker: Optional[int] = None,
+        gpu_type: Optional[str] = None,
+    ):
+        """
+        Edit an existing model endpoint
+        """
+        if model_bundle is not None:
+            bundle_name = model_bundle.name
+        else:
+            bundle_name = None
+        payload = dict(
+            bundle_name=bundle_name,
+            cpus=cpus,
+            memory=memory,
+            gpus=gpus,
+            gpu_type=gpu_type,
+            min_workers=min_workers,
+            max_workers=max_workers,
+            per_worker=per_worker,
+        )
+        # Allows changing some authorization settings by changing endpoint_auth_decorator_fn
+        payload = self.endpoint_auth_decorator_fn(payload)
+        if gpus == 0 and gpu_type is not None:
+            logger.warning("GPU type setting %s will have no effect", gpu_type)
+        payload["gpu_type"] = None
+        for k, v in payload.copy().items():
+            if v is None:
+                del payload[k]
+        resp = self.connection.put(payload, f"{ENDPOINT_PATH}/{endpoint_name}")
+        endpoint_creation_task_id = resp.get(
+            "endpoint_creation_task_id", None
+        )  # Returned from server as "creation"
+        logger.info("Endpoint edit task id is %s", endpoint_creation_task_id)
 
     # Relatively small wrappers around http requests
 
