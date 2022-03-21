@@ -36,6 +36,7 @@ cloudpickle = "^2.0.0"
 types-setuptools = "^57.4.11"
 types-requests = "^2.27.13"
 requests = "^2.27.1"
+dataclasses-json = "^0.5.7"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
@@ -45,6 +46,9 @@ isort = "^5.10.1"
 pylint = "^2.12.2"
 pre-commit = "^2.17.0"
 coverage = "^6.3.2"
+
+[tool.poetry.scripts]
+scale-launch = 'launch.cli.bin:entry_point'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
