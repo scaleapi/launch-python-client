@@ -1,8 +1,9 @@
 import click
-from nucleus.deploy.cli.client import init_client
-from nucleus.deploy.model_endpoint import AsyncModelEndpoint, Endpoint
 from rich.console import Console
 from rich.table import Table
+
+from launch.cli.client import init_client
+from launch.model_endpoint import AsyncModelEndpoint, Endpoint
 
 
 @click.group("endpoints")

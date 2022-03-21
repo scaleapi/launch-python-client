@@ -5,7 +5,8 @@ from dataclasses import dataclass
 from typing import Dict, Optional, Sequence
 
 from dataclasses_json import Undefined, dataclass_json
-from nucleus.deploy.request_validation import validate_task_request
+
+from launch.request_validation import validate_task_request
 
 TASK_PENDING_STATE = "PENDING"
 TASK_SUCCESS_STATE = "SUCCESS"
