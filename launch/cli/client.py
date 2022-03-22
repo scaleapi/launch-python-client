@@ -1,14 +1,15 @@
 import functools
-import os
+
+import click
 
 import launch
 
 
 @functools.lru_cache()
-def init_client():
-    api_key = os.environ.get("LAUNCH_API_KEY", None)
-    if api_key:
-        client = launch.LaunchClient(api_key)
-    else:
-        raise RuntimeError("No LAUNCH_API_KEY set")
+def init_client(ctx: click.Context):
+    client = launch.LaunchClient(
+        api_key=ctx.obj.api_key,
+        endpoint=ctx.obj.launch_endpoint,
+        self_hosted=ctx.obj.self_hosted,
+    )
     return client

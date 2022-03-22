@@ -40,8 +40,8 @@ class LaunchClient:
     def __init__(
         self,
         api_key: str,
-        endpoint: str = SCALE_LAUNCH_ENDPOINT,
-        is_self_hosted: bool = False,
+        endpoint: Optional[str] = None,
+        self_hosted: bool = False,
     ):
         """
         Initializes a Scale Launch Client.
@@ -49,10 +49,11 @@ class LaunchClient:
         Parameters:
             api_key: Your Scale API key
             endpoint: The Scale Launch Endpoint (this should not need to be changed)
-            is_self_hosted: True iff you are connecting to a self-hosted Scale Launch
+            self_hosted: True iff you are connecting to a self-hosted Scale Launch
         """
+        endpoint = endpoint or SCALE_LAUNCH_ENDPOINT
         self.connection = Connection(api_key, endpoint)
-        self.is_self_hosted = is_self_hosted
+        self.self_hosted = self_hosted
         self.upload_bundle_fn: Optional[Callable[[str, str], None]] = None
         self.endpoint_auth_decorator_fn: Callable[
             [Dict[str, Any]], Dict[str, Any]
@@ -159,7 +160,7 @@ class LaunchClient:
         finally:
             shutil.rmtree(tmpdir)
 
-        if self.is_self_hosted:
+        if self.self_hosted:
             if self.upload_bundle_fn is None:
                 raise ValueError("Upload_bundle_fn should be registered")
             if self.bundle_location_fn is None:
@@ -314,7 +315,7 @@ class LaunchClient:
 
         serialized_bundle = cloudpickle.dumps(bundle)
 
-        if self.is_self_hosted:
+        if self.self_hosted:
             if self.upload_bundle_fn is None:
                 raise ValueError("Upload_bundle_fn should be registered")
             if self.bundle_location_fn is None and bundle_url is None:

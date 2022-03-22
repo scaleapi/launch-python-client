@@ -7,14 +7,16 @@ from launch.model_endpoint import AsyncModelEndpoint, Endpoint
 
 
 @click.group("endpoints")
-def endpoints():
+@click.pass_context
+def endpoints(ctx):
     """Endpoints is a wrapper around model bundles in Scale Launch"""
 
 
+@click.pass_context
 @endpoints.command("list")
-def list_endpoints():
+def list_endpoints(ctx):
     """List all of your Bundles"""
-    client = init_client()
+    client = init_client(ctx)
 
     table = Table(
         "Endpoint name",
@@ -37,9 +39,10 @@ def list_endpoints():
 
 @endpoints.command("delete")
 @click.argument("endpoint_name")
-def delete_bundle(endpoint_name):
+@click.pass_context
+def delete_endpoint(ctx, endpoint_name):
     """Delete a model bundle"""
-    client = init_client()
+    client = init_client(ctx)
 
     console = Console()
     endpoint = Endpoint(name=endpoint_name)

@@ -12,9 +12,10 @@ def bundles():
 
 
 @bundles.command("list")
-def list_bundles():
+@click.pass_context
+def list_bundles(ctx):
     """List all of your Bundles"""
-    client = init_client()
+    client = init_client(ctx)
 
     table = Table(
         Column("Bundle Id", overflow="fold", min_width=24),
@@ -38,9 +39,10 @@ def list_bundles():
 
 @bundles.command("get")
 @click.argument("bundle_name")
-def get_bundle(bundle_name):
+@click.pass_context
+def get_bundle(ctx, bundle_name):
     """Print bundle info"""
-    client = init_client()
+    client = init_client(ctx)
 
     model_bundle = client.get_model_bundle(bundle_name)
 
@@ -62,9 +64,10 @@ def get_bundle(bundle_name):
 
 @bundles.command("delete")
 @click.argument("bundle_name")
-def delete_bundle(bundle_name):
+@click.pass_context
+def delete_bundle(ctx, bundle_name):
     """Delete a model bundle"""
-    client = init_client()
+    client = init_client(ctx)
 
     console = Console()
     model_bundle = client.get_model_bundle(bundle_name)
