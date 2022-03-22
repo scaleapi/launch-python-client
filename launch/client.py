@@ -360,7 +360,7 @@ class LaunchClient:
         max_workers: int,
         per_worker: int,
         gpu_type: Optional[str] = None,
-        config: Optional[Union[Dict[str, Any], str]] = None,
+        app_config: Optional[Union[Dict[str, Any], str]] = None,
         overwrite_existing_endpoint: bool = False,
         endpoint_type: str = "async",
     ) -> Union[AsyncModelEndpoint, SyncModelEndpoint]:
@@ -380,7 +380,7 @@ class LaunchClient:
                 a lower per_worker will mean more workers are created for a given workload
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Current options are
                 "nvidia-tesla-t4" for NVIDIA T4s, or "nvidia-tesla-v100" for NVIDIA V100s.
-            config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
+            app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
             overwrite_existing_endpoint: Whether or not we should overwrite existing endpoints
             endpoint_type: Either "sync" or "async". Type of endpoint we want to instantiate.
 
@@ -400,12 +400,12 @@ class LaunchClient:
             per_worker=per_worker,
             endpoint_type=endpoint_type,
         )
-        if isinstance(config, Dict):
-            payload["config"] = json.dumps(config)
-        elif isinstance(config, str):
-            with open(config, "r") as f:
-                config_dict = yaml.safe_load(f)
-                payload["config"] = json.dumps(config_dict)
+        if isinstance(app_config, Dict):
+            payload["app_config"] = json.dumps(app_config)
+        elif isinstance(app_config, str):
+            with open(app_config, "r") as f:
+                app_config_dict = yaml.safe_load(f)
+                payload["app_config"] = json.dumps(app_config_dict)
 
         if gpus == 0:
             del payload["gpu_type"]
