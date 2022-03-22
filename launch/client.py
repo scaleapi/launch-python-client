@@ -21,6 +21,7 @@ from launch.find_packages import find_packages_from_imports, get_imports
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import AsyncModelEndpoint, SyncModelEndpoint
 from launch.request_validation import validate_task_request
+from launch.utils import trim_kwargs
 
 DEFAULT_NETWORK_TIMEOUT_SEC = 120
 
@@ -451,10 +452,8 @@ class LaunchClient:
         payload = self.endpoint_auth_decorator_fn(payload)
         if gpus == 0 and gpu_type is not None:
             logger.warning("GPU type setting %s will have no effect", gpu_type)
-        payload["gpu_type"] = None
-        for k, v in payload.copy().items():
-            if v is None:
-                del payload[k]
+            payload["gpu_type"] = None
+        payload = trim_kwargs(payload)
         resp = self.connection.put(payload, f"{ENDPOINT_PATH}/{endpoint_name}")
         endpoint_creation_task_id = resp.get(
             "endpoint_creation_task_id", None
