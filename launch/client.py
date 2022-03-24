@@ -410,7 +410,6 @@ class LaunchClient:
             per_worker=per_worker,
             endpoint_type=endpoint_type,
         )
-
         if gpus == 0:
             del payload["gpu_type"]
         elif gpus > 0 and gpu_type is None:
