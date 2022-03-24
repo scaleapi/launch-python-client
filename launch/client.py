@@ -8,6 +8,7 @@ from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
 
 import cloudpickle
 import requests
+import yaml
 
 from launch.connection import Connection
 from launch.constants import (
@@ -404,7 +405,9 @@ class LaunchClient:
         if isinstance(app_config, Dict):
             payload["app_config"] = json.dumps(app_config)
         elif isinstance(app_config, str):
-            with open(app_config, "r") as f:
+            with open(  # pylint: disable=unspecified-encoding
+                app_config, "r"
+            ) as f:
                 app_config_dict = yaml.safe_load(f)
                 payload["app_config"] = json.dumps(app_config_dict)
 
