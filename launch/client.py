@@ -214,6 +214,7 @@ class LaunchClient:
         model: Optional[LaunchModel_T] = None,
         load_model_fn: Optional[Callable[[], LaunchModel_T]] = None,
         bundle_url: Optional[str] = None,
+        app_config: Optional[Union[Dict[str, Any], str]] = None,
         globals_copy: Optional[Dict[str, Any]] = None,
     ) -> ModelBundle:
         """
@@ -236,6 +237,7 @@ class LaunchClient:
             requirements: A list of python package requirements, e.g.
                 ["tensorflow==2.3.0", "tensorflow-hub==0.11.0"]. If no list has been passed, will default to the currently
                 imported list of packages.
+            app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
             env_params: A dictionary that dictates environment information e.g.
                 the use of pytorch or tensorflow, which cuda/cudnn versions to use.
                 Specifically, the dictionary should contain the following keys:
@@ -336,6 +338,15 @@ class LaunchClient:
 
             requests.put(s3_path, data=serialized_bundle)
 
+        if isinstance(app_config, Dict):
+            app_config_serialized = json.dumps(app_config)
+        elif isinstance(app_config, str):
+            with open(  # pylint: disable=unspecified-encoding
+                app_config, "r"
+            ) as f:
+                app_config_dict = yaml.safe_load(f)
+                app_config_serialized = json.dumps(app_config_dict)
+
         self.connection.post(
             payload=dict(
                 packaging_type="cloudpickle",
@@ -344,6 +355,7 @@ class LaunchClient:
                 bundle_metadata=bundle_metadata,
                 requirements=requirements,
                 env_params=env_params,
+                app_config=app_config_serialized,
             ),
             route="model_bundle",
         )  # TODO use return value somehow
@@ -362,8 +374,6 @@ class LaunchClient:
         max_workers: int,
         per_worker: int,
         gpu_type: Optional[str] = None,
-        app_config: Optional[Union[Dict[str, Any], str]] = None,
-        overwrite_existing_endpoint: bool = False,
         endpoint_type: str = "async",
     ) -> Union[AsyncModelEndpoint, SyncModelEndpoint]:
         """
@@ -382,8 +392,6 @@ class LaunchClient:
                 a lower per_worker will mean more workers are created for a given workload
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Current options are
                 "nvidia-tesla-t4" for NVIDIA T4s, or "nvidia-tesla-v100" for NVIDIA V100s.
-            app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
-            overwrite_existing_endpoint: Whether or not we should overwrite existing endpoints
             endpoint_type: Either "sync" or "async". Type of endpoint we want to instantiate.
 
         Returns:
@@ -402,14 +410,6 @@ class LaunchClient:
             per_worker=per_worker,
             endpoint_type=endpoint_type,
         )
-        if isinstance(app_config, Dict):
-            payload["app_config"] = json.dumps(app_config)
-        elif isinstance(app_config, str):
-            with open(  # pylint: disable=unspecified-encoding
-                app_config, "r"
-            ) as f:
-                app_config_dict = yaml.safe_load(f)
-                payload["app_config"] = json.dumps(app_config_dict)
 
         if gpus == 0:
             del payload["gpu_type"]
