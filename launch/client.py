@@ -201,7 +201,7 @@ class LaunchClient:
         )
         return ModelBundle(model_bundle_name)
 
-    def create_model_bundle(
+    def create_model_bundle(  # pylint: disable=too-many-statements
         self,
         model_bundle_name: str,
         env_params: Dict[str, str],
@@ -338,25 +338,26 @@ class LaunchClient:
 
             requests.put(s3_path, data=serialized_bundle)
 
+        payload = dict(
+            packaging_type="cloudpickle",
+            bundle_name=model_bundle_name,
+            location=raw_bundle_url,
+            bundle_metadata=bundle_metadata,
+            requirements=requirements,
+            env_params=env_params,
+        )
+
         if isinstance(app_config, Dict):
-            app_config_serialized = json.dumps(app_config)
+            payload["app_config"] = json.dumps(app_config)
         elif isinstance(app_config, str):
             with open(  # pylint: disable=unspecified-encoding
                 app_config, "r"
             ) as f:
                 app_config_dict = yaml.safe_load(f)
-                app_config_serialized = json.dumps(app_config_dict)
+                payload["app_config"] = json.dumps(app_config_dict)
 
         self.connection.post(
-            payload=dict(
-                packaging_type="cloudpickle",
-                bundle_name=model_bundle_name,
-                location=raw_bundle_url,
-                bundle_metadata=bundle_metadata,
-                requirements=requirements,
-                env_params=env_params,
-                app_config=app_config_serialized,
-            ),
+            payload=payload,
             route="model_bundle",
         )  # TODO use return value somehow
         # resp["data"]["bundle_name"] should equal model_bundle_name
