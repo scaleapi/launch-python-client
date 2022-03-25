@@ -1,5 +1,4 @@
 import inspect
-import json
 import logging
 import os
 import shutil
@@ -31,6 +30,20 @@ logger = logging.getLogger(__name__)
 logging.basicConfig()
 
 LaunchModel_T = TypeVar("LaunchModel_T")
+
+
+def _add_app_config_to_bundle_create_payload(app_config, payload):
+    """
+    Edits a request payload (for creating a bundle) to include a (not serialized) app_config if it's not None
+    """
+    if isinstance(app_config, Dict):
+        payload["app_config"] = app_config
+    elif isinstance(app_config, str):
+        with open(  # pylint: disable=unspecified-encoding
+            app_config, "r"
+        ) as f:
+            app_config_dict = yaml.safe_load(f)
+            payload["app_config"] = app_config_dict
 
 
 class LaunchClient:
@@ -114,6 +127,7 @@ class LaunchClient:
         env_params: Dict[str, str],
         load_predict_fn_module_path: str,
         load_model_fn_module_path: str,
+        app_config: Optional[Union[Dict[str, Any], str]] = None,
     ) -> ModelBundle:
         """
         Packages up code from a local filesystem folder and uploads that as a bundle to Scale Launch.
@@ -135,6 +149,7 @@ class LaunchClient:
                 load_model_fn_module_path, returns a function that carries out inference.
             load_model_fn_module_path: A python module path within base_path for a function that returns a model. The output feeds into
                 the function located at load_predict_fn_module_path.
+            app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
         """
         with open(requirements_path, "r", encoding="utf-8") as req_f:
             requirements = req_f.read().splitlines()
@@ -187,16 +202,18 @@ class LaunchClient:
             "create_model_bundle_from_dir: raw_bundle_url=%s",
             raw_bundle_url,
         )
+        payload = dict(
+            packaging_type="zip",
+            bundle_name=model_bundle_name,
+            location=raw_bundle_url,
+            bundle_metadata=bundle_metadata,
+            requirements=requirements,
+            env_params=env_params,
+        )
+        _add_app_config_to_bundle_create_payload(app_config, payload)
 
         self.connection.post(
-            payload=dict(
-                packaging_type="zip",
-                bundle_name=model_bundle_name,
-                location=raw_bundle_url,
-                bundle_metadata=bundle_metadata,
-                requirements=requirements,
-                env_params=env_params,
-            ),
+            payload=payload,
             route="model_bundle",
         )
         return ModelBundle(model_bundle_name)
@@ -347,14 +364,7 @@ class LaunchClient:
             env_params=env_params,
         )
 
-        if isinstance(app_config, Dict):
-            payload["app_config"] = json.dumps(app_config)
-        elif isinstance(app_config, str):
-            with open(  # pylint: disable=unspecified-encoding
-                app_config, "r"
-            ) as f:
-                app_config_dict = yaml.safe_load(f)
-                payload["app_config"] = json.dumps(app_config_dict)
+        _add_app_config_to_bundle_create_payload(app_config, payload)
 
         self.connection.post(
             payload=payload,
