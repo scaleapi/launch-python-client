@@ -33,7 +33,7 @@ LaunchModel_T = TypeVar("LaunchModel_T")
 
 
 def _add_app_config_to_bundle_create_payload(
-    app_config: Optional[Union[Dict[str, Any], str]], payload: Dict[str, Any]
+    payload: Dict[str, Any], app_config: Optional[Union[Dict[str, Any], str]]
 ):
     """
     Edits a request payload (for creating a bundle) to include a (not serialized) app_config if it's not None
@@ -212,7 +212,7 @@ class LaunchClient:
             requirements=requirements,
             env_params=env_params,
         )
-        _add_app_config_to_bundle_create_payload(app_config, payload)
+        _add_app_config_to_bundle_create_payload(payload, app_config)
 
         self.connection.post(
             payload=payload,
@@ -366,7 +366,7 @@ class LaunchClient:
             env_params=env_params,
         )
 
-        _add_app_config_to_bundle_create_payload(app_config, payload)
+        _add_app_config_to_bundle_create_payload(payload, app_config)
 
         self.connection.post(
             payload=payload,
