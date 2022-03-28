@@ -7,6 +7,7 @@ from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
 
 import cloudpickle
 import requests
+import yaml
 
 from launch.connection import Connection
 from launch.constants import (
@@ -29,6 +30,22 @@ logger = logging.getLogger(__name__)
 logging.basicConfig()
 
 LaunchModel_T = TypeVar("LaunchModel_T")
+
+
+def _add_app_config_to_bundle_create_payload(
+    payload: Dict[str, Any], app_config: Optional[Union[Dict[str, Any], str]]
+):
+    """
+    Edits a request payload (for creating a bundle) to include a (not serialized) app_config if it's not None
+    """
+    if isinstance(app_config, Dict):
+        payload["app_config"] = app_config
+    elif isinstance(app_config, str):
+        with open(  # pylint: disable=unspecified-encoding
+            app_config, "r"
+        ) as f:
+            app_config_dict = yaml.safe_load(f)
+            payload["app_config"] = app_config_dict
 
 
 class LaunchClient:
@@ -112,6 +129,7 @@ class LaunchClient:
         env_params: Dict[str, str],
         load_predict_fn_module_path: str,
         load_model_fn_module_path: str,
+        app_config: Optional[Union[Dict[str, Any], str]] = None,
     ) -> ModelBundle:
         """
         Packages up code from a local filesystem folder and uploads that as a bundle to Scale Launch.
@@ -133,6 +151,7 @@ class LaunchClient:
                 load_model_fn_module_path, returns a function that carries out inference.
             load_model_fn_module_path: A python module path within base_path for a function that returns a model. The output feeds into
                 the function located at load_predict_fn_module_path.
+            app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
         """
         with open(requirements_path, "r", encoding="utf-8") as req_f:
             requirements = req_f.read().splitlines()
@@ -185,21 +204,23 @@ class LaunchClient:
             "create_model_bundle_from_dir: raw_bundle_url=%s",
             raw_bundle_url,
         )
+        payload = dict(
+            packaging_type="zip",
+            bundle_name=model_bundle_name,
+            location=raw_bundle_url,
+            bundle_metadata=bundle_metadata,
+            requirements=requirements,
+            env_params=env_params,
+        )
+        _add_app_config_to_bundle_create_payload(payload, app_config)
 
         self.connection.post(
-            payload=dict(
-                packaging_type="zip",
-                bundle_name=model_bundle_name,
-                location=raw_bundle_url,
-                bundle_metadata=bundle_metadata,
-                requirements=requirements,
-                env_params=env_params,
-            ),
+            payload=payload,
             route="model_bundle",
         )
         return ModelBundle(model_bundle_name)
 
-    def create_model_bundle(
+    def create_model_bundle(  # pylint: disable=too-many-statements
         self,
         model_bundle_name: str,
         env_params: Dict[str, str],
@@ -212,6 +233,7 @@ class LaunchClient:
         model: Optional[LaunchModel_T] = None,
         load_model_fn: Optional[Callable[[], LaunchModel_T]] = None,
         bundle_url: Optional[str] = None,
+        app_config: Optional[Union[Dict[str, Any], str]] = None,
         globals_copy: Optional[Dict[str, Any]] = None,
     ) -> ModelBundle:
         """
@@ -234,6 +256,7 @@ class LaunchClient:
             requirements: A list of python package requirements, e.g.
                 ["tensorflow==2.3.0", "tensorflow-hub==0.11.0"]. If no list has been passed, will default to the currently
                 imported list of packages.
+            app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
             env_params: A dictionary that dictates environment information e.g.
                 the use of pytorch or tensorflow, which cuda/cudnn versions to use.
                 Specifically, the dictionary should contain the following keys:
@@ -334,15 +357,19 @@ class LaunchClient:
 
             requests.put(s3_path, data=serialized_bundle)
 
+        payload = dict(
+            packaging_type="cloudpickle",
+            bundle_name=model_bundle_name,
+            location=raw_bundle_url,
+            bundle_metadata=bundle_metadata,
+            requirements=requirements,
+            env_params=env_params,
+        )
+
+        _add_app_config_to_bundle_create_payload(payload, app_config)
+
         self.connection.post(
-            payload=dict(
-                packaging_type="cloudpickle",
-                bundle_name=model_bundle_name,
-                location=raw_bundle_url,
-                bundle_metadata=bundle_metadata,
-                requirements=requirements,
-                env_params=env_params,
-            ),
+            payload=payload,
             route="model_bundle",
         )  # TODO use return value somehow
         # resp["data"]["bundle_name"] should equal model_bundle_name
@@ -360,7 +387,6 @@ class LaunchClient:
         max_workers: int,
         per_worker: int,
         gpu_type: Optional[str] = None,
-        overwrite_existing_endpoint: bool = False,
         endpoint_type: str = "async",
     ) -> Union[AsyncModelEndpoint, SyncModelEndpoint]:
         """
@@ -379,7 +405,6 @@ class LaunchClient:
                 a lower per_worker will mean more workers are created for a given workload
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Current options are
                 "nvidia-tesla-t4" for NVIDIA T4s, or "nvidia-tesla-v100" for NVIDIA V100s.
-            overwrite_existing_endpoint: Whether or not we should overwrite existing endpoints
             endpoint_type: Either "sync" or "async". Type of endpoint we want to instantiate.
 
         Returns:
