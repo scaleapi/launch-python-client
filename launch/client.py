@@ -32,7 +32,9 @@ logging.basicConfig()
 LaunchModel_T = TypeVar("LaunchModel_T")
 
 
-def _add_app_config_to_bundle_create_payload(app_config, payload):
+def _add_app_config_to_bundle_create_payload(
+    app_config: Optional[Union[Dict[str, Any], str]], payload: Dict[str, Any]
+):
     """
     Edits a request payload (for creating a bundle) to include a (not serialized) app_config if it's not None
     """
