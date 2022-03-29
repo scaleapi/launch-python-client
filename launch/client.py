@@ -378,6 +378,9 @@ class LaunchClient:
         return ModelBundle(model_bundle_name)
 
     def create_model_endpoint_default(self, model_bundle_name: str):
+        """
+        Creates a Model Endpoint from an existing Model Bundle with sensible defaults.
+        """
         endpoint_name = f"{model_bundle_name}_{int(time.time())}"
         return self.create_model_endpoint(
             endpoint_name=endpoint_name,
