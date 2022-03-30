@@ -21,10 +21,10 @@ from launch.constants import (
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import (
-    AsyncServableEndpoint,
+    AsyncEndpoint,
     ModelEndpoint,
     ServableEndpoint,
-    SyncServableEndpoint,
+    SyncEndpoint,
 )
 from launch.request_validation import validate_task_request
 from launch.utils import trim_kwargs
@@ -443,13 +443,9 @@ class LaunchClient:
         )
         model_endpoint = ModelEndpoint(name=endpoint_name)
         if endpoint_type == "async":
-            return AsyncServableEndpoint(
-                model_endpoint=model_endpoint, client=self
-            )
+            return AsyncEndpoint(model_endpoint=model_endpoint, client=self)
         elif endpoint_type == "sync":
-            return SyncServableEndpoint(
-                model_endpoint=model_endpoint, client=self
-            )
+            return SyncEndpoint(model_endpoint=model_endpoint, client=self)
         else:
             raise ValueError(
                 "Endpoint should be one of the types 'sync' or 'async'"
@@ -535,7 +531,7 @@ class LaunchClient:
         """
         resp = self.connection.get(ENDPOINT_PATH)
         async_endpoints: List[ServableEndpoint] = [
-            AsyncServableEndpoint(
+            AsyncEndpoint(
                 model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
                 client=self,
             )
@@ -543,7 +539,7 @@ class LaunchClient:
             if endpoint["endpoint_type"] == "async"
         ]
         sync_endpoints: List[ServableEndpoint] = [
-            SyncServableEndpoint(
+            SyncEndpoint(
                 model_endpoint=ModelEndpoint.from_dict(endpoint), client=self  # type: ignore
             )
             for endpoint in resp["endpoints"]
@@ -575,9 +571,9 @@ class LaunchClient:
         return_pickled: bool = True,
     ) -> Dict[str, Any]:
         """
-        Not recommended for use, instead use functions provided by SyncServableEndpoint
+        Not recommended for use, instead use functions provided by SyncEndpoint
         Makes a request to the Sync Model Endpoint at endpoint_id, and blocks until request completion or timeout.
-        Endpoint at endpoint_id must be a SyncServableEndpoint, otherwise this request will fail.
+        Endpoint at endpoint_id must be a SyncEndpoint, otherwise this request will fail.
 
         Parameters:
             endpoint_id: The id of the endpoint to make the request to
@@ -620,7 +616,7 @@ class LaunchClient:
         return_pickled: bool = True,
     ) -> str:
         """
-        Not recommended to use this, instead we recommend to use functions provided by AsyncServableEndpoint.
+        Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
         Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key that can be used to retrieve
         the result of inference at a later time.
         Endpoint
@@ -655,7 +651,7 @@ class LaunchClient:
 
     def get_async_response(self, async_task_id: str) -> Dict[str, Any]:
         """
-        Not recommended to use this, instead we recommend to use functions provided by AsyncServableEndpoint.
+        Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
         Gets inference results from a previously created task.
 
         Parameters:

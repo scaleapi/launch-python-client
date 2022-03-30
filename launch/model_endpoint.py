@@ -30,7 +30,7 @@ class ModelEndpoint:
 
 class EndpointRequest:
     """
-    Represents a single request to either a SyncServableEndpoint or AsyncServableEndpoint.
+    Represents a single request to either a SyncEndpoint or AsyncEndpoint.
     Parameters:
         url: A url to some file that can be read in to a ModelBundle's predict function. Can be an image, raw text, etc.
         args: A Dictionary with arguments to a ModelBundle's predict function. If the predict function has signature
@@ -49,7 +49,7 @@ class EndpointRequest:
         return_pickled: Optional[bool] = True,
         request_id: Optional[str] = None,
     ):
-        # TODO: request_id is pretty much here only to support the clientside AsyncServableEndpointBatchResponse
+        # TODO: request_id is pretty much here only to support the clientside AsyncEndpointBatchResponse
         # so it should be removed when we get proper batch endpoints working.
         validate_task_request(url=url, args=args)
         if request_id is None:
@@ -86,15 +86,13 @@ class ServableEndpoint:
         self.model_endpoint = model_endpoint
 
 
-class SyncServableEndpoint(ServableEndpoint):
+class SyncEndpoint(ServableEndpoint):
     def __init__(self, model_endpoint: ModelEndpoint, client):
         super().__init__(model_endpoint=model_endpoint)
         self.client = client
 
     def __str__(self):
-        return (
-            f"SyncServableEndpoint <endpoint_name:{self.model_endpoint.name}>"
-        )
+        return f"SyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def predict(self, request: EndpointRequest) -> EndpointResponse:
         raw_response = self.client.sync_request(
@@ -114,7 +112,7 @@ class SyncServableEndpoint(ServableEndpoint):
         raise NotImplementedError
 
 
-class AsyncServableEndpoint(ServableEndpoint):
+class AsyncEndpoint(ServableEndpoint):
     """
     A higher level abstraction for a Model Endpoint.
     """
@@ -129,21 +127,19 @@ class AsyncServableEndpoint(ServableEndpoint):
         self.client = client
 
     def __str__(self):
-        return (
-            f"AsyncServableEndpoint <endpoint_name:{self.model_endpoint.name}>"
-        )
+        return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def predict_batch(
         self, requests: Sequence[EndpointRequest]
-    ) -> "AsyncServableEndpointBatchResponse":
+    ) -> "AsyncEndpointBatchResponse":
         """
-        Runs inference on the data items specified by urls. Returns a AsyncServableEndpointResponse.
+        Runs inference on the data items specified by urls. Returns a AsyncEndpointResponse.
 
         Parameters:
             requests: List of EndpointRequests. Request_ids must all be distinct.
 
         Returns:
-            an AsyncServableEndpointResponse keeping track of the inference requests made
+            an AsyncEndpointResponse keeping track of the inference requests made
         """
         # Make inference requests to the endpoint,
         # if batches are possible make this aware you can pass batches
@@ -170,7 +166,7 @@ class AsyncServableEndpoint(ServableEndpoint):
             urls_to_requests = executor.map(single_request, requests)
             request_ids = dict(urls_to_requests)
 
-        return AsyncServableEndpointBatchResponse(
+        return AsyncEndpointBatchResponse(
             self.client,
             request_ids=request_ids,
         )
@@ -199,7 +195,7 @@ class AsyncServableEndpoint(ServableEndpoint):
         raise NotImplementedError
 
 
-class AsyncServableEndpointBatchResponse:
+class AsyncEndpointBatchResponse:
     """
 
     Currently represents a list of async inference requests to a specific endpoint. Keeps track of the requests made,

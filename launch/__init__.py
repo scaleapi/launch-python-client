@@ -35,15 +35,15 @@ A `ModelEndpoint` is the compute layer that takes in a `ModelBundle`, and is abl
 by using the `ModelBundle` to carry out predictions. The `ModelEndpoint` also knows infrastructure-level details,
 such as how many GPUs are needed, what type they are, how much memory, etc. The `ModelEndpoint` automatically handles
 infrastructure level details such as autoscaling and task queueing. There are two types of `ModelEndpoint`s:
-`SyncServableEndpoint`s and `AsyncServableEndpoint`s.
+`SyncEndpoint`s and `AsyncEndpoint`s.
 
 .. image:: /../docs/images/model_endpoint.png
     :width: 400px
 
-A `SyncServableEndpoint` takes in requests and immediately returns the response in a blocking manner.
-The `SyncServableEndpoint` always consumes resources, and autoscales on the number of inflight requests.
+A `SyncEndpoint` takes in requests and immediately returns the response in a blocking manner.
+The `SyncEndpoint` always consumes resources, and autoscales on the number of inflight requests.
 
-An `AsyncServableEndpoint` takes in requests and returns an asynchronous response token. The user can later query to monitor
+An `AsyncEndpoint` takes in requests and returns an asynchronous response token. The user can later query to monitor
 the status of the request. We may later expose a callback mechanism. Asynchronous endpoints can scale up from zero,
 which make them a cost effective choice for services that are not latency sensitive.
 Asynchronous endpoints autoscale on the number of inflight requests.
@@ -54,13 +54,13 @@ Launch maintains metadata about batch jobs for users to query, even after batch 
 
 Choosing between different types of inference:
 
-`SyncServableEndpoints` are good if:
+`SyncEndpoints` are good if:
 
 - You have strict latency requirements (e.g. on the order of seconds or less)
 
 - You are willing to have resources continually allocated
 
-`AsyncServableEndpoints` are good if:
+`AsyncEndpoints` are good if:
 
 - You want to save on compute costs
 
@@ -96,8 +96,5 @@ from .connection import Connection
 from .constants import DEFAULT_NETWORK_TIMEOUT_SEC
 from .logger import logger
 from .model_bundle import ModelBundle
-from .model_endpoint import (
-    AsyncServableEndpoint,
-    AsyncServableEndpointBatchResponse,
-)
+from .model_endpoint import AsyncEndpoint, AsyncEndpointBatchResponse
 from .retry_strategy import RetryStrategy
