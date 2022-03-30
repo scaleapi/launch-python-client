@@ -27,12 +27,11 @@ def list_endpoints(ctx: click.Context):
         title_justify="left",
     )
 
-    for endpoint_sync_async in client.list_model_endpoints():
-        endpoint = endpoint_sync_async.endpoint
+    for servable_endpoint in client.list_model_endpoints():
         table.add_row(
-            endpoint.name,
-            endpoint.metadata,
-            endpoint.endpoint_type,
+            servable_endpoint.model_endpoint.name,
+            servable_endpoint.model_endpoint.metadata,
+            servable_endpoint.model_endpoint.endpoint_type,
         )
     console = Console()
     console.print(table)
