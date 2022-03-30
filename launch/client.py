@@ -20,9 +20,10 @@ from launch.constants import (
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import (
-    AsyncModelEndpoint,
-    Endpoint,
-    SyncModelEndpoint,
+    AsyncServableEndpoint,
+    ModelEndpoint,
+    ServableEndpoint,
+    SyncServableEndpoint,
 )
 from launch.request_validation import validate_task_request
 
@@ -366,7 +367,7 @@ class LaunchClient:
         gpu_type: Optional[str] = None,
         overwrite_existing_endpoint: bool = False,
         endpoint_type: str = "async",
-    ) -> Union[AsyncModelEndpoint, SyncModelEndpoint]:
+    ) -> ServableEndpoint:
         """
         Creates a Model Endpoint that is able to serve requests.
         Corresponds to POST/PUT endpoints
@@ -387,7 +388,7 @@ class LaunchClient:
             endpoint_type: Either "sync" or "async". Type of endpoint we want to instantiate.
 
         Returns:
-             A ModelEndpoint object that can be used to make requests to the endpoint.
+             A ServableEndpoint object that can be used to make requests to the endpoint.
 
         """
         payload = dict(
@@ -419,11 +420,15 @@ class LaunchClient:
         logger.info(
             "Endpoint creation task id is %s", endpoint_creation_task_id
         )
-        endpoint = Endpoint(name=endpoint_name)
+        model_endpoint = ModelEndpoint(name=endpoint_name)
         if endpoint_type == "async":
-            return AsyncModelEndpoint(endpoint=endpoint, client=self)
+            return AsyncServableEndpoint(
+                model_endpoint=model_endpoint, client=self
+            )
         elif endpoint_type == "sync":
-            return SyncModelEndpoint(endpoint=endpoint, client=self)
+            return SyncServableEndpoint(
+                model_endpoint=model_endpoint, client=self
+            )
         else:
             raise ValueError(
                 "Endpoint should be one of the types 'sync' or 'async'"
@@ -458,7 +463,7 @@ class LaunchClient:
 
     def list_model_endpoints(
         self,
-    ) -> List[Union[AsyncModelEndpoint, SyncModelEndpoint]]:
+    ) -> List[ServableEndpoint]:
         """
         Lists all model endpoints that the user owns.
         TODO: single get_model_endpoint(self)? route doesn't exist serverside I think
@@ -467,17 +472,17 @@ class LaunchClient:
             A list of ModelEndpoint objects
         """
         resp = self.connection.get(ENDPOINT_PATH)
-        async_endpoints: List[Union[AsyncModelEndpoint, SyncModelEndpoint]] = [
-            AsyncModelEndpoint(
-                endpoint=Endpoint.from_dict(endpoint),  # type: ignore
+        async_endpoints: List[ServableEndpoint] = [
+            AsyncServableEndpoint(
+                model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
                 client=self,
             )
             for endpoint in resp["endpoints"]
             if endpoint["endpoint_type"] == "async"
         ]
-        sync_endpoints: List[Union[AsyncModelEndpoint, SyncModelEndpoint]] = [
-            SyncModelEndpoint(
-                endpoint=Endpoint.from_dict(endpoint), client=self  # type: ignore
+        sync_endpoints: List[ServableEndpoint] = [
+            SyncServableEndpoint(
+                model_endpoint=ModelEndpoint.from_dict(endpoint), client=self  # type: ignore
             )
             for endpoint in resp["endpoints"]
             if endpoint["endpoint_type"] == "sync"
@@ -492,13 +497,11 @@ class LaunchClient:
         resp = self.connection.delete(route)
         return resp["deleted"]
 
-    def delete_model_endpoint(
-        self, model_endpoint: Union[AsyncModelEndpoint, SyncModelEndpoint]
-    ):
+    def delete_model_endpoint(self, model_endpoint: ModelEndpoint):
         """
         Deletes a model endpoint.
         """
-        route = f"{ENDPOINT_PATH}/{model_endpoint.endpoint.name}"
+        route = f"{ENDPOINT_PATH}/{model_endpoint.name}"
         resp = self.connection.delete(route)
         return resp["deleted"]
 
@@ -510,9 +513,9 @@ class LaunchClient:
         return_pickled: bool = True,
     ) -> Dict[str, Any]:
         """
-        Not recommended for use, instead use functions provided by SyncModelEndpoint
+        Not recommended for use, instead use functions provided by SyncServableEndpoint
         Makes a request to the Sync Model Endpoint at endpoint_id, and blocks until request completion or timeout.
-        Endpoint at endpoint_id must be a SyncModelEndpoint, otherwise this request will fail.
+        Endpoint at endpoint_id must be a SyncServableEndpoint, otherwise this request will fail.
 
         Parameters:
             endpoint_id: The id of the endpoint to make the request to
@@ -555,7 +558,7 @@ class LaunchClient:
         return_pickled: bool = True,
     ) -> str:
         """
-        Not recommended to use this, instead we recommend to use functions provided by AsyncModelEndpoint.
+        Not recommended to use this, instead we recommend to use functions provided by AsyncServableEndpoint.
         Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key that can be used to retrieve
         the result of inference at a later time.
         Endpoint
@@ -590,7 +593,7 @@ class LaunchClient:
 
     def get_async_response(self, async_task_id: str) -> Dict[str, Any]:
         """
-        Not recommended to use this, instead we recommend to use functions provided by AsyncModelEndpoint.
+        Not recommended to use this, instead we recommend to use functions provided by AsyncServableEndpoint.
         Gets inference results from a previously created task.
 
         Parameters:

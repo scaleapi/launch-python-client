@@ -10,7 +10,7 @@ from launch.cli.endpoints import endpoints
 @dataclass
 class ContextObject:
     self_hosted: bool
-    launch_endpoint: Optional[str] = None
+    gateway_endpoint: Optional[str] = None
     api_key: Optional[str] = None
 
 
@@ -23,11 +23,11 @@ class ContextObject:
 )
 @click.option(
     "-e",
-    "--launch-endpoint",
-    envvar="LAUNCH_ENDPOINT",
+    "--gateway-endpoint",
+    envvar="LAUNCH_GATEWAY_ENDPOINT",
     default=None,
     type=str,
-    help="Redefine Scale Launch endpoint",
+    help="Redefine Scale Launch gateway endpoint. Mandatory parameter when using self-hosted Scale Launch.",
 )
 @click.option(
     "-a",

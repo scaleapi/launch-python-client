@@ -3,19 +3,20 @@ from rich.console import Console
 from rich.table import Table
 
 from launch.cli.client import init_client
-from launch.model_endpoint import AsyncModelEndpoint, Endpoint
+from launch.model_endpoint import ModelEndpoint
 
 
 @click.group("endpoints")
 @click.pass_context
-def endpoints(ctx):
-    """Endpoints is a wrapper around model bundles in Scale Launch"""
+def endpoints(ctx: click.Context):
+    """Endpoints is a wrapper around model endpoints in Scale Launch"""
 
 
 @click.pass_context
 @endpoints.command("list")
-def list_endpoints(ctx):
-    """List all of your Bundles"""
+@click.pass_context
+def list_endpoints(ctx: click.Context):
+    """List all of your Endpoints"""
     client = init_client(ctx)
 
     table = Table(
@@ -40,12 +41,11 @@ def list_endpoints(ctx):
 @endpoints.command("delete")
 @click.argument("endpoint_name")
 @click.pass_context
-def delete_endpoint(ctx, endpoint_name):
-    """Delete a model bundle"""
+def delete_endpoint(ctx: click.Context, endpoint_name: str):
+    """Delete a model endpoint"""
     client = init_client(ctx)
 
     console = Console()
-    endpoint = Endpoint(name=endpoint_name)
-    dummy_endpoint = AsyncModelEndpoint(endpoint=endpoint, client=client)
-    res = client.delete_model_endpoint(dummy_endpoint)
+    endpoint = ModelEndpoint(name=endpoint_name)
+    res = client.delete_model_endpoint(endpoint)
     console.print(res)

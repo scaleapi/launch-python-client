@@ -15,7 +15,7 @@ TASK_FAILURE_STATE = "FAILURE"
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass
-class Endpoint:
+class ModelEndpoint:
     """
     Represents an Endpoint from the database.
     """
@@ -30,7 +30,7 @@ class Endpoint:
 
 class EndpointRequest:
     """
-    Represents a single request to either a SyncModelEndpoint or AsyncModelEndpoint.
+    Represents a single request to either a SyncServableEndpoint or AsyncServableEndpoint.
     Parameters:
         url: A url to some file that can be read in to a ModelBundle's predict function. Can be an image, raw text, etc.
         args: A Dictionary with arguments to a ModelBundle's predict function. If the predict function has signature
@@ -49,7 +49,7 @@ class EndpointRequest:
         return_pickled: Optional[bool] = True,
         request_id: Optional[str] = None,
     ):
-        # TODO: request_id is pretty much here only to support the clientside AsyncModelEndpointBatchResponse
+        # TODO: request_id is pretty much here only to support the clientside AsyncServableEndpointBatchResponse
         # so it should be removed when we get proper batch endpoints working.
         validate_task_request(url=url, args=args)
         if request_id is None:
@@ -62,11 +62,11 @@ class EndpointRequest:
 
 class EndpointResponse:
     """
-    Represents a response received from a ModelEndpoint.
+    Represents a response received from a ServableEndpoint.
     Status is a string representing the status of the request, i.e. SUCCESS, FAILURE, or PENDING
     Exactly one of result_url or result will be populated, depending on the value of `return_pickled` in the request.
-    result_url is a string that is a url containing the pickled python object from the ModelEndpoint's predict function.
-    result is a string that is the serialized return value (in json form) of the ModelEndpoint's predict function.
+    result_url is a string that is a url containing the pickled python object from the ServableEndpoint's predict function.
+    result is a string that is the serialized return value (in json form) of the ServableEndpoint's predict function.
         Specifically, one can json.loads() the value of result to get the original python object back.
     """
 
@@ -79,17 +79,26 @@ class EndpointResponse:
         return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}"
 
 
-class SyncModelEndpoint:
-    def __init__(self, endpoint: Endpoint, client):
-        self.endpoint = endpoint
+class ServableEndpoint:
+    """An abstract class that represent any kind of endpoints in Scale Launch"""
+
+    def __init__(self, model_endpoint: ModelEndpoint):
+        self.model_endpoint = model_endpoint
+
+
+class SyncServableEndpoint(ServableEndpoint):
+    def __init__(self, model_endpoint: ModelEndpoint, client):
+        super().__init__(model_endpoint=model_endpoint)
         self.client = client
 
     def __str__(self):
-        return f"SyncModelEndpoint <endpoint_name:{self.endpoint.name}>"
+        return (
+            f"SyncServableEndpoint <endpoint_name:{self.model_endpoint.name}>"
+        )
 
     def predict(self, request: EndpointRequest) -> EndpointResponse:
         raw_response = self.client.sync_request(
-            self.endpoint.name,
+            self.model_endpoint.name,
             url=request.url,
             args=request.args,
             return_pickled=request.return_pickled,
@@ -105,34 +114,36 @@ class SyncModelEndpoint:
         raise NotImplementedError
 
 
-class AsyncModelEndpoint:
+class AsyncServableEndpoint(ServableEndpoint):
     """
     A higher level abstraction for a Model Endpoint.
     """
 
-    def __init__(self, endpoint: Endpoint, client):
+    def __init__(self, model_endpoint: ModelEndpoint, client):
         """
         Parameters:
-            endpoint: Endpoint object.
+            model_endpoint: ModelEndpoint object.
             client: A LaunchClient object
         """
-        self.endpoint = endpoint
+        super().__init__(model_endpoint=model_endpoint)
         self.client = client
 
     def __str__(self):
-        return f"AsyncModelEndpoint <endpoint_name:{self.endpoint.name}>"
+        return (
+            f"AsyncServableEndpoint <endpoint_name:{self.model_endpoint.name}>"
+        )
 
     def predict_batch(
         self, requests: Sequence[EndpointRequest]
-    ) -> "AsyncModelEndpointBatchResponse":
+    ) -> "AsyncServableEndpointBatchResponse":
         """
-        Runs inference on the data items specified by urls. Returns a AsyncModelEndpointResponse.
+        Runs inference on the data items specified by urls. Returns a AsyncServableEndpointResponse.
 
         Parameters:
             requests: List of EndpointRequests. Request_ids must all be distinct.
 
         Returns:
-            an AsyncModelEndpointResponse keeping track of the inference requests made
+            an AsyncServableEndpointResponse keeping track of the inference requests made
         """
         # Make inference requests to the endpoint,
         # if batches are possible make this aware you can pass batches
@@ -147,7 +158,7 @@ class AsyncModelEndpoint:
             # request has keys url and args
 
             inner_inference_request = self.client.async_request(
-                endpoint_id=self.endpoint.name,
+                endpoint_id=self.model_endpoint.name,
                 url=request.url,
                 args=request.args,
                 return_pickled=request.return_pickled,
@@ -159,13 +170,13 @@ class AsyncModelEndpoint:
             urls_to_requests = executor.map(single_request, requests)
             request_ids = dict(urls_to_requests)
 
-        return AsyncModelEndpointBatchResponse(
+        return AsyncServableEndpointBatchResponse(
             self.client,
             request_ids=request_ids,
         )
 
     def status(self):
-        """Gets the status of the ModelEndpoint.
+        """Gets the status of the ServableEndpoint.
         TODO this functionality currently does not exist on the server.
         """
         raise NotImplementedError
@@ -188,7 +199,7 @@ class AsyncModelEndpoint:
         raise NotImplementedError
 
 
-class AsyncModelEndpointBatchResponse:
+class AsyncServableEndpointBatchResponse:
     """
 
     Currently represents a list of async inference requests to a specific endpoint. Keeps track of the requests made,

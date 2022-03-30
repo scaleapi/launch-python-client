@@ -13,7 +13,7 @@ def bundles():
 
 @bundles.command("list")
 @click.pass_context
-def list_bundles(ctx):
+def list_bundles(ctx: click.Context):
     """List all of your Bundles"""
     client = init_client(ctx)
 
@@ -40,7 +40,7 @@ def list_bundles(ctx):
 @bundles.command("get")
 @click.argument("bundle_name")
 @click.pass_context
-def get_bundle(ctx, bundle_name):
+def get_bundle(ctx: click.Context, bundle_name: str):
     """Print bundle info"""
     client = init_client(ctx)
 
@@ -65,7 +65,7 @@ def get_bundle(ctx, bundle_name):
 @bundles.command("delete")
 @click.argument("bundle_name")
 @click.pass_context
-def delete_bundle(ctx, bundle_name):
+def delete_bundle(ctx: click.Context, bundle_name: str):
     """Delete a model bundle"""
     client = init_client(ctx)
 
