@@ -1,0 +1,9 @@
+# python
+**/__pycache__/
+
+# editor
+.vscode
+**/.idea/
+**/scratch/
+*.swp
+.vim/

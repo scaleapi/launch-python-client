@@ -47,6 +47,8 @@ isort = "^5.10.1"
 pylint = "^2.12.2"
 pre-commit = "^2.17.0"
 coverage = "^6.3.2"
+types-pyyaml = "^6.0.5"
+
 
 [tool.poetry.scripts]
 scale-launch = 'launch.cli.bin:entry_point'
