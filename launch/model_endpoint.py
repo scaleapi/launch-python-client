@@ -2,6 +2,7 @@ import concurrent.futures
 import uuid
 from collections import Counter
 from typing import Dict, Optional, Sequence
+from launch.constants import ENDPOINT_PATH
 
 from launch.request_validation import validate_task_request
 
@@ -57,8 +58,24 @@ class EndpointResponse:
         self.result_url = result_url
         self.result = result
 
-    def __str__(self):
+    def __repr__(self):
         return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}"
+
+class EndpointDetails:
+    """
+    Represents the details of a running ModelEndpoint.
+    Status is a string representing the status of endpoint creation, i.e. SUCCESS, FAILURE, or PENDING
+    Endpoint Name is the name of the ModelEndpoint
+    Current Bundle is the name of the ModelBundle that the ModelEndpoint is currently using.
+    """
+
+    def __init__(self, status, endpoint_name, current_bundle) -> None:
+        self.status = status
+        self.endpoint_name = endpoint_name
+        self.current_bundle = current_bundle
+    
+    def __repr__(self):
+        return f"status: {self.status}, endpoint_name: {self.endpoint_name}, current_bundle: {self.current_bundle}"
 
 
 class SyncModelEndpoint:
@@ -66,7 +83,7 @@ class SyncModelEndpoint:
         self.endpoint_id = endpoint_id
         self.client = client
 
-    def __str__(self):
+    def __repr__(self):
         return f"SyncModelEndpoint <endpoint_id:{self.endpoint_id}>"
 
     def predict(self, request: EndpointRequest) -> EndpointResponse:
@@ -83,8 +100,14 @@ class SyncModelEndpoint:
         )
 
     def status(self):
-        # TODO this functionality doesn't exist serverside
-        raise NotImplementedError
+        """Gets the status of the ModelEndpoint.
+        
+        Returns:
+            An object containing the ModelEndpoint name, the currently deployed bundle, 
+            and the status of the creation task.
+        """
+        resp = self.connection.get(f"{ENDPOINT_PATH}/{self.endpoint_id}")
+        return EndpointDetails(resp.state, resp.endpoint_name, resp.bundle_name)
 
 
 class AsyncModelEndpoint:
@@ -101,7 +124,7 @@ class AsyncModelEndpoint:
         self.endpoint_id = endpoint_id
         self.client = client
 
-    def __str__(self):
+    def __repr__(self):
         return f"AsyncModelEndpoint <endpoint_id:{self.endpoint_id}>"
 
     def predict_batch(
@@ -148,9 +171,14 @@ class AsyncModelEndpoint:
 
     def status(self):
         """Gets the status of the ModelEndpoint.
-        TODO this functionality currently does not exist on the server.
+        
+        Returns:
+            An object containing the ModelEndpoint name, the currently deployed bundle, 
+            and the status of the creation task.
         """
-        raise NotImplementedError
+        resp = self.connection.get(f"{ENDPOINT_PATH}/{self.endpoint_id}")
+        return EndpointDetails(resp.state, resp.endpoint_name, resp.bundle_name)
+
 
     async def async_request(self, url: str) -> str:
         """
