@@ -20,7 +20,12 @@ from launch.constants import (
 )
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.model_bundle import ModelBundle
-from launch.model_endpoint import AsyncModelEndpoint, SyncModelEndpoint
+from launch.model_endpoint import (
+    AsyncEndpoint,
+    Endpoint,
+    ModelEndpoint,
+    SyncEndpoint,
+)
 from launch.request_validation import validate_task_request
 from launch.utils import trim_kwargs
 
@@ -54,8 +59,8 @@ class LaunchClient:
     def __init__(
         self,
         api_key: str,
-        endpoint: str = SCALE_LAUNCH_ENDPOINT,
-        is_self_hosted: bool = False,
+        endpoint: Optional[str] = None,
+        self_hosted: bool = False,
     ):
         """
         Initializes a Scale Launch Client.
@@ -63,10 +68,11 @@ class LaunchClient:
         Parameters:
             api_key: Your Scale API key
             endpoint: The Scale Launch Endpoint (this should not need to be changed)
-            is_self_hosted: True iff you are connecting to a self-hosted Scale Launch
+            self_hosted: True iff you are connecting to a self-hosted Scale Launch
         """
+        endpoint = endpoint or SCALE_LAUNCH_ENDPOINT
         self.connection = Connection(api_key, endpoint)
-        self.is_self_hosted = is_self_hosted
+        self.self_hosted = self_hosted
         self.upload_bundle_fn: Optional[Callable[[str, str], None]] = None
         self.endpoint_auth_decorator_fn: Callable[
             [Dict[str, Any]], Dict[str, Any]
@@ -175,7 +181,7 @@ class LaunchClient:
         finally:
             shutil.rmtree(tmpdir)
 
-        if self.is_self_hosted:
+        if self.self_hosted:
             if self.upload_bundle_fn is None:
                 raise ValueError("Upload_bundle_fn should be registered")
             if self.bundle_location_fn is None:
@@ -334,7 +340,7 @@ class LaunchClient:
 
         serialized_bundle = cloudpickle.dumps(bundle)
 
-        if self.is_self_hosted:
+        if self.self_hosted:
             if self.upload_bundle_fn is None:
                 raise ValueError("Upload_bundle_fn should be registered")
             if self.bundle_location_fn is None and bundle_url is None:
@@ -388,7 +394,7 @@ class LaunchClient:
         per_worker: int,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "async",
-    ) -> Union[AsyncModelEndpoint, SyncModelEndpoint]:
+    ) -> Endpoint:
         """
         Creates a Model Endpoint that is able to serve requests.
         Corresponds to POST/PUT endpoints
@@ -408,12 +414,12 @@ class LaunchClient:
             endpoint_type: Either "sync" or "async". Type of endpoint we want to instantiate.
 
         Returns:
-             A ModelEndpoint object that can be used to make requests to the endpoint.
+             A Endpoint object that can be used to make requests to the endpoint.
 
         """
         payload = dict(
             endpoint_name=endpoint_name,
-            bundle_name=model_bundle.name,
+            bundle_name=model_bundle.bundle_name,
             cpus=cpus,
             memory=memory,
             gpus=gpus,
@@ -435,10 +441,11 @@ class LaunchClient:
         logger.info(
             "Endpoint creation task id is %s", endpoint_creation_task_id
         )
+        model_endpoint = ModelEndpoint(name=endpoint_name)
         if endpoint_type == "async":
-            return AsyncModelEndpoint(endpoint_id=endpoint_name, client=self)
+            return AsyncEndpoint(model_endpoint=model_endpoint, client=self)
         elif endpoint_type == "sync":
-            return SyncModelEndpoint(endpoint_id=endpoint_name, client=self)
+            return SyncEndpoint(model_endpoint=model_endpoint, client=self)
         else:
             raise ValueError(
                 "Endpoint should be one of the types 'sync' or 'async'"
@@ -460,7 +467,7 @@ class LaunchClient:
         Edit an existing model endpoint
         """
         if model_bundle is not None:
-            bundle_name = model_bundle.name
+            bundle_name = model_bundle.bundle_name
         else:
             bundle_name = None
         payload = dict(
@@ -496,13 +503,25 @@ class LaunchClient:
         """
         resp = self.connection.get("model_bundle")
         model_bundles = [
-            ModelBundle(name=item["bundle_name"]) for item in resp["bundles"]
+            ModelBundle.from_dict(item) for item in resp["bundles"]  # type: ignore
         ]
         return model_bundles
 
+    def get_model_bundle(self, bundle_name: str) -> ModelBundle:
+        """
+        Returns a Model Bundle object specified by `bundle_name`.
+        Returns:
+            A ModelBundle object
+        """
+        resp = self.connection.get(f"model_bundle/{bundle_name}")
+        assert (
+            len(resp["bundles"]) == 1
+        ), f"Bundle with name `{bundle_name}` not found"
+        return ModelBundle.from_dict(resp["bundles"][0])  # type: ignore
+
     def list_model_endpoints(
         self,
-    ) -> List[Union[AsyncModelEndpoint, SyncModelEndpoint]]:
+    ) -> List[Endpoint]:
         """
         Lists all model endpoints that the user owns.
         TODO: single get_model_endpoint(self)? route doesn't exist serverside I think
@@ -511,13 +530,18 @@ class LaunchClient:
             A list of ModelEndpoint objects
         """
         resp = self.connection.get(ENDPOINT_PATH)
-        async_endpoints: List[Union[AsyncModelEndpoint, SyncModelEndpoint]] = [
-            AsyncModelEndpoint(endpoint_id=endpoint["name"], client=self)
+        async_endpoints: List[Endpoint] = [
+            AsyncEndpoint(
+                model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
+                client=self,
+            )
             for endpoint in resp["endpoints"]
             if endpoint["endpoint_type"] == "async"
         ]
-        sync_endpoints: List[Union[AsyncModelEndpoint, SyncModelEndpoint]] = [
-            SyncModelEndpoint(endpoint_id=endpoint["name"], client=self)
+        sync_endpoints: List[Endpoint] = [
+            SyncEndpoint(
+                model_endpoint=ModelEndpoint.from_dict(endpoint), client=self  # type: ignore
+            )
             for endpoint in resp["endpoints"]
             if endpoint["endpoint_type"] == "sync"
         ]
@@ -527,17 +551,15 @@ class LaunchClient:
         """
         Deletes the model bundle on the server.
         """
-        route = f"model_bundle/{model_bundle.name}"
+        route = f"model_bundle/{model_bundle.bundle_name}"
         resp = self.connection.delete(route)
         return resp["deleted"]
 
-    def delete_model_endpoint(
-        self, model_endpoint: Union[AsyncModelEndpoint, SyncModelEndpoint]
-    ):
+    def delete_model_endpoint(self, model_endpoint: ModelEndpoint):
         """
         Deletes a model endpoint.
         """
-        route = f"{ENDPOINT_PATH}/{model_endpoint.endpoint_id}"
+        route = f"{ENDPOINT_PATH}/{model_endpoint.name}"
         resp = self.connection.delete(route)
         return resp["deleted"]
 
@@ -549,9 +571,9 @@ class LaunchClient:
         return_pickled: bool = True,
     ) -> Dict[str, Any]:
         """
-        Not recommended for use, instead use functions provided by SyncModelEndpoint
+        Not recommended for use, instead use functions provided by SyncEndpoint
         Makes a request to the Sync Model Endpoint at endpoint_id, and blocks until request completion or timeout.
-        Endpoint at endpoint_id must be a SyncModelEndpoint, otherwise this request will fail.
+        Endpoint at endpoint_id must be a SyncEndpoint, otherwise this request will fail.
 
         Parameters:
             endpoint_id: The id of the endpoint to make the request to
@@ -594,7 +616,7 @@ class LaunchClient:
         return_pickled: bool = True,
     ) -> str:
         """
-        Not recommended to use this, instead we recommend to use functions provided by AsyncModelEndpoint.
+        Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
         Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key that can be used to retrieve
         the result of inference at a later time.
         Endpoint
@@ -629,7 +651,7 @@ class LaunchClient:
 
     def get_async_response(self, async_task_id: str) -> Dict[str, Any]:
         """
-        Not recommended to use this, instead we recommend to use functions provided by AsyncModelEndpoint.
+        Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
         Gets inference results from a previously created task.
 
         Parameters:

@@ -1,7 +1,10 @@
 import concurrent.futures
 import uuid
 from collections import Counter
+from dataclasses import dataclass
 from typing import Dict, Optional, Sequence
+
+from dataclasses_json import Undefined, dataclass_json
 
 from launch.request_validation import validate_task_request
 
@@ -10,9 +13,24 @@ TASK_SUCCESS_STATE = "SUCCESS"
 TASK_FAILURE_STATE = "FAILURE"
 
 
+@dataclass_json(undefined=Undefined.EXCLUDE)
+@dataclass
+class ModelEndpoint:
+    """
+    Represents an Endpoint from the database.
+    """
+
+    name: str
+    metadata: Optional[Dict] = None
+    endpoint_type: Optional[str] = None
+
+    def __str__(self):
+        return f"Endpoint(name={self.name})"
+
+
 class EndpointRequest:
     """
-    Represents a single request to either a SyncModelEndpoint or AsyncModelEndpoint.
+    Represents a single request to either a SyncEndpoint or AsyncEndpoint.
     Parameters:
         url: A url to some file that can be read in to a ModelBundle's predict function. Can be an image, raw text, etc.
         args: A Dictionary with arguments to a ModelBundle's predict function. If the predict function has signature
@@ -31,7 +49,7 @@ class EndpointRequest:
         return_pickled: Optional[bool] = True,
         request_id: Optional[str] = None,
     ):
-        # TODO: request_id is pretty much here only to support the clientside AsyncModelEndpointBatchResponse
+        # TODO: request_id is pretty much here only to support the clientside AsyncEndpointBatchResponse
         # so it should be removed when we get proper batch endpoints working.
         validate_task_request(url=url, args=args)
         if request_id is None:
@@ -44,11 +62,11 @@ class EndpointRequest:
 
 class EndpointResponse:
     """
-    Represents a response received from a ModelEndpoint.
+    Represents a response received from a Endpoint.
     Status is a string representing the status of the request, i.e. SUCCESS, FAILURE, or PENDING
     Exactly one of result_url or result will be populated, depending on the value of `return_pickled` in the request.
-    result_url is a string that is a url containing the pickled python object from the ModelEndpoint's predict function.
-    result is a string that is the serialized return value (in json form) of the ModelEndpoint's predict function.
+    result_url is a string that is a url containing the pickled python object from the Endpoint's predict function.
+    result is a string that is the serialized return value (in json form) of the Endpoint's predict function.
         Specifically, one can json.loads() the value of result to get the original python object back.
     """
 
@@ -61,17 +79,24 @@ class EndpointResponse:
         return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}"
 
 
-class SyncModelEndpoint:
-    def __init__(self, endpoint_id: str, client):
-        self.endpoint_id = endpoint_id
+class Endpoint:
+    """An abstract class that represent any kind of endpoints in Scale Launch"""
+
+    def __init__(self, model_endpoint: ModelEndpoint):
+        self.model_endpoint = model_endpoint
+
+
+class SyncEndpoint(Endpoint):
+    def __init__(self, model_endpoint: ModelEndpoint, client):
+        super().__init__(model_endpoint=model_endpoint)
         self.client = client
 
     def __str__(self):
-        return f"SyncModelEndpoint <endpoint_id:{self.endpoint_id}>"
+        return f"SyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def predict(self, request: EndpointRequest) -> EndpointResponse:
         raw_response = self.client.sync_request(
-            self.endpoint_id,
+            self.model_endpoint.name,
             url=request.url,
             args=request.args,
             return_pickled=request.return_pickled,
@@ -87,34 +112,34 @@ class SyncModelEndpoint:
         raise NotImplementedError
 
 
-class AsyncModelEndpoint:
+class AsyncEndpoint(Endpoint):
     """
     A higher level abstraction for a Model Endpoint.
     """
 
-    def __init__(self, endpoint_id: str, client):
+    def __init__(self, model_endpoint: ModelEndpoint, client):
         """
         Parameters:
-            endpoint_id: The unique name of the ModelEndpoint
+            model_endpoint: ModelEndpoint object.
             client: A LaunchClient object
         """
-        self.endpoint_id = endpoint_id
+        super().__init__(model_endpoint=model_endpoint)
         self.client = client
 
     def __str__(self):
-        return f"AsyncModelEndpoint <endpoint_id:{self.endpoint_id}>"
+        return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def predict_batch(
         self, requests: Sequence[EndpointRequest]
-    ) -> "AsyncModelEndpointBatchResponse":
+    ) -> "AsyncEndpointBatchResponse":
         """
-        Runs inference on the data items specified by urls. Returns a AsyncModelEndpointResponse.
+        Runs inference on the data items specified by urls. Returns a AsyncEndpointResponse.
 
         Parameters:
             requests: List of EndpointRequests. Request_ids must all be distinct.
 
         Returns:
-            an AsyncModelEndpointResponse keeping track of the inference requests made
+            an AsyncEndpointResponse keeping track of the inference requests made
         """
         # Make inference requests to the endpoint,
         # if batches are possible make this aware you can pass batches
@@ -129,7 +154,7 @@ class AsyncModelEndpoint:
             # request has keys url and args
 
             inner_inference_request = self.client.async_request(
-                endpoint_id=self.endpoint_id,
+                endpoint_id=self.model_endpoint.name,
                 url=request.url,
                 args=request.args,
                 return_pickled=request.return_pickled,
@@ -141,13 +166,13 @@ class AsyncModelEndpoint:
             urls_to_requests = executor.map(single_request, requests)
             request_ids = dict(urls_to_requests)
 
-        return AsyncModelEndpointBatchResponse(
+        return AsyncEndpointBatchResponse(
             self.client,
             request_ids=request_ids,
         )
 
     def status(self):
-        """Gets the status of the ModelEndpoint.
+        """Gets the status of the Endpoint.
         TODO this functionality currently does not exist on the server.
         """
         raise NotImplementedError
@@ -170,7 +195,7 @@ class AsyncModelEndpoint:
         raise NotImplementedError
 
 
-class AsyncModelEndpointBatchResponse:
+class AsyncEndpointBatchResponse:
     """
 
     Currently represents a list of async inference requests to a specific endpoint. Keeps track of the requests made,

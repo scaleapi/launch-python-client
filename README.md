@@ -46,6 +46,6 @@ poetry install
 
 Please install the pre-commit hooks by running the following command:
 
-```python
+```bash
 poetry run pre-commit install
 ```
