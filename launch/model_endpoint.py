@@ -62,11 +62,11 @@ class EndpointRequest:
 
 class EndpointResponse:
     """
-    Represents a response received from a ServableEndpoint.
+    Represents a response received from a Endpoint.
     Status is a string representing the status of the request, i.e. SUCCESS, FAILURE, or PENDING
     Exactly one of result_url or result will be populated, depending on the value of `return_pickled` in the request.
-    result_url is a string that is a url containing the pickled python object from the ServableEndpoint's predict function.
-    result is a string that is the serialized return value (in json form) of the ServableEndpoint's predict function.
+    result_url is a string that is a url containing the pickled python object from the Endpoint's predict function.
+    result is a string that is the serialized return value (in json form) of the Endpoint's predict function.
         Specifically, one can json.loads() the value of result to get the original python object back.
     """
 
@@ -79,14 +79,14 @@ class EndpointResponse:
         return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}"
 
 
-class ServableEndpoint:
+class Endpoint:
     """An abstract class that represent any kind of endpoints in Scale Launch"""
 
     def __init__(self, model_endpoint: ModelEndpoint):
         self.model_endpoint = model_endpoint
 
 
-class SyncEndpoint(ServableEndpoint):
+class SyncEndpoint(Endpoint):
     def __init__(self, model_endpoint: ModelEndpoint, client):
         super().__init__(model_endpoint=model_endpoint)
         self.client = client
@@ -112,7 +112,7 @@ class SyncEndpoint(ServableEndpoint):
         raise NotImplementedError
 
 
-class AsyncEndpoint(ServableEndpoint):
+class AsyncEndpoint(Endpoint):
     """
     A higher level abstraction for a Model Endpoint.
     """
@@ -172,7 +172,7 @@ class AsyncEndpoint(ServableEndpoint):
         )
 
     def status(self):
-        """Gets the status of the ServableEndpoint.
+        """Gets the status of the Endpoint.
         TODO this functionality currently does not exist on the server.
         """
         raise NotImplementedError

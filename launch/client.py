@@ -22,8 +22,8 @@ from launch.find_packages import find_packages_from_imports, get_imports
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import (
     AsyncEndpoint,
+    Endpoint,
     ModelEndpoint,
-    ServableEndpoint,
     SyncEndpoint,
 )
 from launch.request_validation import validate_task_request
@@ -394,7 +394,7 @@ class LaunchClient:
         per_worker: int,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "async",
-    ) -> ServableEndpoint:
+    ) -> Endpoint:
         """
         Creates a Model Endpoint that is able to serve requests.
         Corresponds to POST/PUT endpoints
@@ -414,7 +414,7 @@ class LaunchClient:
             endpoint_type: Either "sync" or "async". Type of endpoint we want to instantiate.
 
         Returns:
-             A ServableEndpoint object that can be used to make requests to the endpoint.
+             A Endpoint object that can be used to make requests to the endpoint.
 
         """
         payload = dict(
@@ -521,7 +521,7 @@ class LaunchClient:
 
     def list_model_endpoints(
         self,
-    ) -> List[ServableEndpoint]:
+    ) -> List[Endpoint]:
         """
         Lists all model endpoints that the user owns.
         TODO: single get_model_endpoint(self)? route doesn't exist serverside I think
@@ -530,7 +530,7 @@ class LaunchClient:
             A list of ModelEndpoint objects
         """
         resp = self.connection.get(ENDPOINT_PATH)
-        async_endpoints: List[ServableEndpoint] = [
+        async_endpoints: List[Endpoint] = [
             AsyncEndpoint(
                 model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
                 client=self,
@@ -538,7 +538,7 @@ class LaunchClient:
             for endpoint in resp["endpoints"]
             if endpoint["endpoint_type"] == "async"
         ]
-        sync_endpoints: List[ServableEndpoint] = [
+        sync_endpoints: List[Endpoint] = [
             SyncEndpoint(
                 model_endpoint=ModelEndpoint.from_dict(endpoint), client=self  # type: ignore
             )
