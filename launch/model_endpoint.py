@@ -61,6 +61,7 @@ class EndpointResponse:
     def __repr__(self):
         return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}"
 
+
 class EndpointDetails:
     """
     Represents the details of a running ModelEndpoint.
@@ -73,7 +74,7 @@ class EndpointDetails:
         self.status = status
         self.endpoint_name = endpoint_name
         self.current_bundle = current_bundle
-    
+
     def __repr__(self):
         return f"status: {self.status}, endpoint_name: {self.endpoint_name}, current_bundle: {self.current_bundle}"
 
@@ -178,7 +179,6 @@ class AsyncModelEndpoint:
         """
         resp = self.connection.get(f"{ENDPOINT_PATH}/{self.endpoint_id}")
         return EndpointDetails(resp.state, resp.endpoint_name, resp.bundle_name)
-
 
     async def async_request(self, url: str) -> str:
         """
