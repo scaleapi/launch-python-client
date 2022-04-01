@@ -1,4 +1,5 @@
 import concurrent.futures
+import time
 import uuid
 from collections import Counter
 from dataclasses import dataclass
@@ -70,13 +71,28 @@ class EndpointResponse:
         Specifically, one can json.loads() the value of result to get the original python object back.
     """
 
-    def __init__(self, status, result_url, result):
+    def __init__(self, client, status, result_url, result, async_task_id: Optional[str] = None):
+        self.client = client
         self.status = status
         self.result_url = result_url
         self.result = result
+        self.async_task_id = async_task_id
 
-    def __str__(self):
-        return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}"
+    def __str__(self) -> str:
+        return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}, is_async: {self.is_async}"
+
+    def get(self) -> "EndpointResponse":
+        if not self.async_task_id:
+            raise ValueError("Can only call get() on async EndpointResponse objects")
+
+        while True:
+            async_response = self.client.get_async_response(self.async_task_id)
+            if async_response["state"] == "PENDING":
+                time.sleep(2)
+            else:
+                break
+
+        return self
 
 
 class Endpoint:
@@ -102,9 +118,11 @@ class SyncEndpoint(Endpoint):
             return_pickled=request.return_pickled,
         )
         return EndpointResponse(
+            client=self.client,
             status=TASK_SUCCESS_STATE,
             result_url=raw_response.get("result_url", None),
             result=raw_response.get("result", None),
+            is_async=True,
         )
 
     def status(self):
@@ -128,6 +146,22 @@ class AsyncEndpoint(Endpoint):
 
     def __str__(self):
         return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
+
+    def predict(self, request: EndpointRequest) -> EndpointResponse:
+        raw_response = self.client.async_request(
+            self.model_endpoint.name,
+            url=request.url,
+            args=request.args,
+            return_pickled=request.return_pickled,
+            is_async=True,
+        )
+        return EndpointResponse(
+            client=self.client,
+            status=None,
+            result_url=None,
+            result=None,
+            async_task_id=raw_response["task_id"],
+        )
 
     def predict_batch(
         self, requests: Sequence[EndpointRequest]
