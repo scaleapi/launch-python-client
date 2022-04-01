@@ -18,6 +18,7 @@ from launch.constants import (
     SCALE_LAUNCH_ENDPOINT,
     SYNC_TASK_PATH,
 )
+from launch.errors import APIError
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import (
@@ -394,6 +395,7 @@ class LaunchClient:
         per_worker: int,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "async",
+        update_if_exists: bool = False,
     ) -> Endpoint:
         """
         Creates a Model Endpoint that is able to serve requests.
@@ -417,39 +419,55 @@ class LaunchClient:
              A Endpoint object that can be used to make requests to the endpoint.
 
         """
-        payload = dict(
-            endpoint_name=endpoint_name,
-            bundle_name=model_bundle.bundle_name,
-            cpus=cpus,
-            memory=memory,
-            gpus=gpus,
-            gpu_type=gpu_type,
-            min_workers=min_workers,
-            max_workers=max_workers,
-            per_worker=per_worker,
-            endpoint_type=endpoint_type,
-        )
-        if gpus == 0:
-            del payload["gpu_type"]
-        elif gpus > 0 and gpu_type is None:
-            raise ValueError("If nonzero gpus, must provide gpu_type")
-        payload = self.endpoint_auth_decorator_fn(payload)
-        resp = self.connection.post(payload, ENDPOINT_PATH)
-        endpoint_creation_task_id = resp.get(
-            "endpoint_creation_task_id", None
-        )  # TODO probably throw on None
-        logger.info(
-            "Endpoint creation task id is %s", endpoint_creation_task_id
-        )
-        model_endpoint = ModelEndpoint(name=endpoint_name)
-        if endpoint_type == "async":
-            return AsyncEndpoint(model_endpoint=model_endpoint, client=self)
-        elif endpoint_type == "sync":
-            return SyncEndpoint(model_endpoint=model_endpoint, client=self)
-        else:
-            raise ValueError(
-                "Endpoint should be one of the types 'sync' or 'async'"
+        if update_if_exists and get_model_endpoint(endpoint_name) is not None:
+            edit_model_endpoint(
+                endpoint_name=endpoint_name,
+                model_bundle=model_bundle,
+                cpus=cpus,
+                memory=memory,
+                gpus=gpus,
+                min_workers=min_workers,
+                max_workers=max_workers,
+                per_worker=per_worker,
+                gpu_type=gpu_type,
             )
+        else:
+            # Presumably, the user knows that the endpoint doesn't already exist, and so we can defer
+            # to the server to reject any duplicate creations.
+            logger.info("Creating new endpoint")
+            payload = dict(
+                endpoint_name=endpoint_name,
+                bundle_name=model_bundle.name,
+                cpus=cpus,
+                memory=memory,
+                gpus=gpus,
+                gpu_type=gpu_type,
+                min_workers=min_workers,
+                max_workers=max_workers,
+                per_worker=per_worker,
+                endpoint_type=endpoint_type,
+            )
+            if gpus == 0:
+                del payload["gpu_type"]
+            elif gpus > 0 and gpu_type is None:
+                raise ValueError("If nonzero gpus, must provide gpu_type")
+            payload = self.endpoint_auth_decorator_fn(payload)
+            resp = self.connection.post(payload, ENDPOINT_PATH)
+            endpoint_creation_task_id = resp.get(
+                "endpoint_creation_task_id", None
+            )  # TODO probably throw on None
+            logger.info(
+                "Endpoint creation task id is %s", endpoint_creation_task_id
+            )
+            model_endpoint = ModelEndpoint(name=endpoint_name)
+            if endpoint_type == "async":
+                return AsyncModelEndpoint(model_endpoint=model_endpoint, client=self)
+            elif endpoint_type == "sync":
+                return SyncModelEndpoint(model_endpoint=model_endpoint, client=self)
+            else:
+                raise ValueError(
+                    "Endpoint should be one of the types 'sync' or 'async'"
+                )
 
     def edit_model_endpoint(
         self,
@@ -466,6 +484,7 @@ class LaunchClient:
         """
         Edit an existing model endpoint
         """
+        logger.info("Editing existing endpoint")
         if model_bundle is not None:
             bundle_name = model_bundle.bundle_name
         else:
@@ -491,6 +510,18 @@ class LaunchClient:
             "endpoint_creation_task_id", None
         )  # Returned from server as "creation"
         logger.info("Endpoint edit task id is %s", endpoint_creation_task_id)
+
+
+    def get_model_endpoint(self, endpoint_name: str) -> Optional[Union[AsyncModelEndpoint, SyncModelEndpoint]]:
+        try:
+            resp = self.connection.get(os.path.join(ENDPOINT_PATH), endpoint_name)
+        except APIError:
+            logger.exception("Got an error when retrieving endpoint {endpoint_name}")
+            return None
+
+        # TODO: Return endpoint type and create the right type
+        endpoint = SyncModelEndpoint(endpoint_id=resp["endpoint_name"], client=self)
+        return endpoint
 
     # Relatively small wrappers around http requests
 
