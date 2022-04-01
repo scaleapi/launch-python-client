@@ -71,15 +71,14 @@ class EndpointResponse:
         Specifically, one can json.loads() the value of result to get the original python object back.
     """
 
-    def __init__(self, client, status, result_url, result, async_task_id: Optional[str] = None):
+    def __init__(self, client, status, result_url, result):
         self.client = client
         self.status = status
         self.result_url = result_url
         self.result = result
-        self.async_task_id = async_task_id
 
     def __str__(self) -> str:
-        return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}, is_async: {self.is_async}"
+        return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}"
 
     def get(self) -> "EndpointResponse":
         if not self.async_task_id:
@@ -93,6 +92,35 @@ class EndpointResponse:
                 break
 
         return self
+
+
+class EndpointResponseFuture:
+    def __init__(self, client, async_task_id: str):
+        self.client = client
+        self.async_task_id = async_task_id
+
+    def get(self) -> EndpointResponse:
+        while True:
+            async_response = self.client.get_async_response(self.async_task_id)
+            if async_response["state"] == "PENDING":
+                time.sleep(2)
+            else:
+                if async_response["state"] == "SUCCESS":
+                    return EndpointResponse(
+                        client=self.client,
+                        status=async_response["state"],
+                        result_url=async_response.get("result_url", None),
+                        result=async_response.get("result", None),
+                    )
+                elif async_response["state"] == "FAILURE":
+                    return EndpointResponse(
+                        client=self.client,
+                        status=async_response["state"],
+                        result_url=None,
+                        result=None,
+                    )
+                else:
+                    raise ValueError(f"Unrecognized state: {async_response['state']}")
 
 
 class Endpoint:
@@ -122,7 +150,6 @@ class SyncEndpoint(Endpoint):
             status=TASK_SUCCESS_STATE,
             result_url=raw_response.get("result_url", None),
             result=raw_response.get("result", None),
-            is_async=True,
         )
 
     def status(self):
@@ -147,21 +174,14 @@ class AsyncEndpoint(Endpoint):
     def __str__(self):
         return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
-    def predict(self, request: EndpointRequest) -> EndpointResponse:
+    def predict(self, request: EndpointRequest) -> EndpointResponseFuture:
         raw_response = self.client.async_request(
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
             return_pickled=request.return_pickled,
-            is_async=True,
         )
-        return EndpointResponse(
-            client=self.client,
-            status=None,
-            result_url=None,
-            result=None,
-            async_task_id=raw_response["task_id"],
-        )
+        return EndpointResponseFuture(client=self.client, async_task_id=raw_response["task_id"])
 
     def predict_batch(
         self, requests: Sequence[EndpointRequest]
