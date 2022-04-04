@@ -515,7 +515,7 @@ class LaunchClient:
 
     def get_model_endpoint(self, endpoint_name: str) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
         try:
-            logger.info("Getting model endpoint with path: %s", os.path.join(ENDPOINT_NAME, endpoint_name))
+            logger.info("Getting model endpoint with path: %s", os.path.join(ENDPOINT_PATH, endpoint_name))
             logger.info("connection api_key: %s", self.connection.api_key)
             resp = self.connection.get(os.path.join(ENDPOINT_PATH, endpoint_name))
         except APIError:
