@@ -379,7 +379,7 @@ class LaunchClient:
     def create_model_endpoint(
         self,
         endpoint_name: str,
-        model_bundle: ModelBundle,
+        model_bundle: Union[ModelBundle, str],
         cpus: int = 3,
         memory: str = "8Gi",
         gpus: int = 0,
@@ -411,9 +411,15 @@ class LaunchClient:
              A ModelEndpoint object that can be used to make requests to the endpoint.
 
         """
+        if isinstance(model_bundle, ModelBundle):
+            bundle_name = model_bundle.name
+        elif isinstance(model_bundle, str):
+            bundle_name = model_bundle
+        else:
+            raise TypeError("model_bundle should be type ModelBundle or str")
         payload = dict(
             endpoint_name=endpoint_name,
-            bundle_name=model_bundle.name,
+            bundle_name=bundle_name,
             cpus=cpus,
             memory=memory,
             gpus=gpus,
