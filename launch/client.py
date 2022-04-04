@@ -486,10 +486,7 @@ class LaunchClient:
         Edit an existing model endpoint
         """
         logger.info("Editing existing endpoint")
-        if model_bundle is not None:
-            bundle_name = model_bundle.bundle_name
-        else:
-            bundle_name = None
+        bundle_name = model_bundle.name if model_bundle else None
         payload = dict(
             bundle_name=bundle_name,
             cpus=cpus,
@@ -586,7 +583,7 @@ class LaunchClient:
         """
         Deletes the model bundle on the server.
         """
-        route = f"model_bundle/{model_bundle.bundle_name}"
+        route = f"model_bundle/{model_bundle.name}"
         resp = self.connection.delete(route)
         return resp["deleted"]
 
