@@ -523,7 +523,8 @@ class LaunchClient:
             return None
 
         # TODO: Return endpoint type and create the right type
-        endpoint = SyncEndpoint(endpoint_id=resp["endpoint_name"], client=self)
+        #endpoint = SyncEndpoint(endpoint_id=resp["endpoint_name"], client=self)
+        endpoint = SyncEndpoint(ModelEndpoint(name=resp["endpoint_name"]), client=self)
         return endpoint
 
     # Relatively small wrappers around http requests
