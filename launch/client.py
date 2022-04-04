@@ -420,7 +420,7 @@ class LaunchClient:
              A Endpoint object that can be used to make requests to the endpoint.
 
         """
-        if update_if_exists and get_model_endpoint(endpoint_name) is not None:
+        if update_if_exists and self.get_model_endpoint(endpoint_name) is not None:
             edit_model_endpoint(
                 endpoint_name=endpoint_name,
                 model_bundle=model_bundle,
