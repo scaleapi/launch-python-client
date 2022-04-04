@@ -515,7 +515,7 @@ class LaunchClient:
 
     def get_model_endpoint(self, endpoint_name: str) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
         try:
-            resp = self.connection.get(os.path.join(ENDPOINT_PATH), endpoint_name)
+            resp = self.connection.get(os.path.join(ENDPOINT_PATH, endpoint_name))
         except APIError:
             logger.exception("Got an error when retrieving endpoint {endpoint_name}")
             return None
