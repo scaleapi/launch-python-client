@@ -166,8 +166,9 @@ class LaunchClient:
         tmpdir = tempfile.mkdtemp()
         try:
             tmparchive = os.path.join(tmpdir, "bundle")
-            root_dir = os.path.dirname(base_path)
-            base_dir = os.path.basename(base_path)
+            abs_base_path = os.path.abspath(base_path)
+            root_dir = os.path.dirname(abs_base_path)
+            base_dir = os.path.basename(abs_base_path)
 
             with open(
                 shutil.make_archive(
