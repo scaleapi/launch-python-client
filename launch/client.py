@@ -3,7 +3,6 @@ import logging
 import os
 import shutil
 import tempfile
-import time
 from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
 
 import cloudpickle
@@ -377,36 +376,18 @@ class LaunchClient:
         # TODO check that a model bundle was created and no name collisions happened
         return ModelBundle(model_bundle_name)
 
-    def create_model_endpoint_default(self, model_bundle_name: str):
-        """
-        Creates a Model Endpoint from an existing Model Bundle with sensible defaults.
-        """
-        endpoint_name = f"{model_bundle_name}_{int(time.time())}"
-        return self.create_model_endpoint(
-            endpoint_name=endpoint_name,
-            model_bundle=ModelBundle(name=model_bundle_name),
-            cpus=3,
-            memory="8Gi",
-            gpus=1,
-            min_workers=0,
-            max_workers=1,
-            per_worker=1,
-            gpu_type="nvidia-tesla-t4",
-            endpoint_type="async",
-        )
-
     def create_model_endpoint(
         self,
         endpoint_name: str,
         model_bundle: ModelBundle,
-        cpus: int,
-        memory: str,
-        gpus: int,
-        min_workers: int,
-        max_workers: int,
-        per_worker: int,
+        cpus: int = 3,
+        memory: str = "8Gi",
+        gpus: int = 0,
+        min_workers: int = 1,
+        max_workers: int = 1,
+        per_worker: int = 1,
         gpu_type: Optional[str] = None,
-        endpoint_type: str = "async",
+        endpoint_type: str = "sync",
     ) -> Union[AsyncModelEndpoint, SyncModelEndpoint]:
         """
         Creates a Model Endpoint that is able to serve requests.
