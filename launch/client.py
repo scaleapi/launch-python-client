@@ -462,9 +462,9 @@ class LaunchClient:
             )
             model_endpoint = ModelEndpoint(name=endpoint_name)
             if endpoint_type == "async":
-                return AsyncModelEndpoint(model_endpoint=model_endpoint, client=self)
+                return AsyncEndpoint(model_endpoint=model_endpoint, client=self)
             elif endpoint_type == "sync":
-                return SyncModelEndpoint(model_endpoint=model_endpoint, client=self)
+                return SyncEndpoint(model_endpoint=model_endpoint, client=self)
             else:
                 raise ValueError(
                     "Endpoint should be one of the types 'sync' or 'async'"
@@ -513,7 +513,7 @@ class LaunchClient:
         logger.info("Endpoint edit task id is %s", endpoint_creation_task_id)
 
 
-    def get_model_endpoint(self, endpoint_name: str) -> Optional[Union[AsyncModelEndpoint, SyncModelEndpoint]]:
+    def get_model_endpoint(self, endpoint_name: str) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
         try:
             resp = self.connection.get(os.path.join(ENDPOINT_PATH), endpoint_name)
         except APIError:
@@ -521,7 +521,7 @@ class LaunchClient:
             return None
 
         # TODO: Return endpoint type and create the right type
-        endpoint = SyncModelEndpoint(endpoint_id=resp["endpoint_name"], client=self)
+        endpoint = SyncEndpoint(endpoint_id=resp["endpoint_name"], client=self)
         return endpoint
 
     # Relatively small wrappers around http requests
