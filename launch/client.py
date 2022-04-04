@@ -515,9 +515,11 @@ class LaunchClient:
 
     def get_model_endpoint(self, endpoint_name: str) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
         try:
+            logger.info("Getting model endpoint with path: %s", os.path.join(ENDPOINT_NAME, endpoint_name))
+            logger.info("connection api_key: %s", self.connection.api_key)
             resp = self.connection.get(os.path.join(ENDPOINT_PATH, endpoint_name))
         except APIError:
-            logger.exception("Got an error when retrieving endpoint {endpoint_name}")
+            logger.exception("Got an error when retrieving endpoint %s", endpoint_name)
             return None
 
         # TODO: Return endpoint type and create the right type
