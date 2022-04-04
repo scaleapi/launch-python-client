@@ -421,7 +421,7 @@ class LaunchClient:
 
         """
         if update_if_exists and self.get_model_endpoint(endpoint_name) is not None:
-            edit_model_endpoint(
+            self.edit_model_endpoint(
                 endpoint_name=endpoint_name,
                 model_bundle=model_bundle,
                 cpus=cpus,
