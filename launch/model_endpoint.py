@@ -80,19 +80,6 @@ class EndpointResponse:
     def __str__(self) -> str:
         return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}"
 
-    def get(self) -> "EndpointResponse":
-        if not self.async_task_id:
-            raise ValueError("Can only call get() on async EndpointResponse objects")
-
-        while True:
-            async_response = self.client.get_async_response(self.async_task_id)
-            if async_response["state"] == "PENDING":
-                time.sleep(2)
-            else:
-                break
-
-        return self
-
 
 class EndpointResponseFuture:
     def __init__(self, client, async_task_id: str):
