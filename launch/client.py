@@ -38,6 +38,15 @@ logging.basicConfig()
 LaunchModel_T = TypeVar("LaunchModel_T")
 
 
+def _model_bundle_to_name(model_bundle: Union[ModelBundle, str]) -> str:
+    if isinstance(model_bundle, ModelBundle):
+        return model_bundle.bundle_name
+    elif isinstance(model_bundle, str):
+        return model_bundle
+    else:
+        raise TypeError("model_bundle should be type ModelBundle or str")
+
+
 def _add_app_config_to_bundle_create_payload(
     payload: Dict[str, Any], app_config: Optional[Union[Dict[str, Any], str]]
 ):
@@ -387,15 +396,15 @@ class LaunchClient:
     def create_model_endpoint(
         self,
         endpoint_name: str,
-        model_bundle: ModelBundle,
-        cpus: int,
-        memory: str,
-        gpus: int,
-        min_workers: int,
-        max_workers: int,
-        per_worker: int,
+        model_bundle: Union[ModelBundle, str],
+        cpus: int = 3,
+        memory: str = "8Gi",
+        gpus: int = 0,
+        min_workers: int = 1,
+        max_workers: int = 1,
+        per_worker: int = 1,
         gpu_type: Optional[str] = None,
-        endpoint_type: str = "async",
+        endpoint_type: str = "sync",
         update_if_exists: bool = False,
     ) -> Endpoint:
         """
@@ -438,7 +447,7 @@ class LaunchClient:
             logger.info("Creating new endpoint")
             payload = dict(
                 endpoint_name=endpoint_name,
-                bundle_name=model_bundle.name,
+                bundle_name=_model_bundle_to_name(model_bundle),
                 cpus=cpus,
                 memory=memory,
                 gpus=gpus,
@@ -473,7 +482,7 @@ class LaunchClient:
     def edit_model_endpoint(
         self,
         endpoint_name: str,
-        model_bundle: Optional[ModelBundle] = None,
+        model_bundle: Optional[Union[ModelBundle, str]] = None,
         cpus: Optional[float] = None,
         memory: Optional[str] = None,
         gpus: Optional[int] = None,
@@ -486,7 +495,7 @@ class LaunchClient:
         Edit an existing model endpoint
         """
         logger.info("Editing existing endpoint")
-        bundle_name = model_bundle.name if model_bundle else None
+        bundle_name = _model_bundle_to_name(model_bundle) if model_bundle else None
         payload = dict(
             bundle_name=bundle_name,
             cpus=cpus,
