@@ -527,8 +527,14 @@ class LaunchClient:
             return None
 
         # TODO: Return endpoint type and create the right type
-        endpoint = SyncEndpoint(ModelEndpoint(name=resp["endpoint_name"]), client=self)
-        return endpoint
+        if resp["endpoint_type"] == "async":
+            return AsyncEndpoint(ModelEndpoint(name=resp["endpoint_name"]), client=self)
+        elif resp["endpoint_type"] == "sync":
+            return SyncEndpoint(ModelEndpoint(name=resp["endpoint_name"]), client=self)
+        else:
+            raise ValueError(
+                "Endpoint should be one of the types 'sync' or 'async'"
+            )
 
     # Relatively small wrappers around http requests
 
