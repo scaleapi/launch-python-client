@@ -444,7 +444,7 @@ class LaunchClient:
                 per_worker=per_worker,
                 gpu_type=gpu_type,
             )
-            # R1710: Either all return statements in a function should return an expression, or none of them should. 
+            # R1710: Either all return statements in a function should return an expression, or none of them should.
             return None
         else:
             # Presumably, the user knows that the endpoint doesn't already exist, and so we can defer
