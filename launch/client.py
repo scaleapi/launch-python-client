@@ -40,7 +40,7 @@ LaunchModel_T = TypeVar("LaunchModel_T")
 
 def _model_bundle_to_name(model_bundle: Union[ModelBundle, str]) -> str:
     if isinstance(model_bundle, ModelBundle):
-        return model_bundle.bundle_name
+        return model_bundle.name
     elif isinstance(model_bundle, str):
         return model_bundle
     else:
@@ -433,7 +433,7 @@ class LaunchClient:
             update_if_exists
             and self.get_model_endpoint(endpoint_name) is not None
         ):
-            return self.edit_model_endpoint(
+            self.edit_model_endpoint(
                 endpoint_name=endpoint_name,
                 model_bundle=model_bundle,
                 cpus=cpus,
