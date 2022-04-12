@@ -18,6 +18,7 @@ from launch.constants import (
     SCALE_LAUNCH_ENDPOINT,
     SYNC_TASK_PATH,
 )
+from launch.errors import APIError
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import (
@@ -35,6 +36,15 @@ logger = logging.getLogger(__name__)
 logging.basicConfig()
 
 LaunchModel_T = TypeVar("LaunchModel_T")
+
+
+def _model_bundle_to_name(model_bundle: Union[ModelBundle, str]) -> str:
+    if isinstance(model_bundle, ModelBundle):
+        return model_bundle.name
+    elif isinstance(model_bundle, str):
+        return model_bundle
+    else:
+        raise TypeError("model_bundle should be type ModelBundle or str")
 
 
 def _add_app_config_to_bundle_create_payload(
@@ -165,8 +175,9 @@ class LaunchClient:
         tmpdir = tempfile.mkdtemp()
         try:
             tmparchive = os.path.join(tmpdir, "bundle")
-            root_dir = os.path.dirname(base_path)
-            base_dir = os.path.basename(base_path)
+            abs_base_path = os.path.abspath(base_path)
+            root_dir = os.path.dirname(abs_base_path)
+            base_dir = os.path.basename(abs_base_path)
 
             with open(
                 shutil.make_archive(
@@ -394,7 +405,8 @@ class LaunchClient:
         per_worker: int = 1,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
-    ) -> Endpoint:
+        update_if_exists: bool = False,
+    ) -> Optional[Endpoint]:
         """
         Creates a Model Endpoint that is able to serve requests.
         Corresponds to POST/PUT endpoints
@@ -417,50 +429,67 @@ class LaunchClient:
              A Endpoint object that can be used to make requests to the endpoint.
 
         """
-        if isinstance(model_bundle, ModelBundle):
-            bundle_name = model_bundle.bundle_name
-        elif isinstance(model_bundle, str):
-            bundle_name = model_bundle
-        else:
-            raise TypeError("model_bundle should be type ModelBundle or str")
-        payload = dict(
-            endpoint_name=endpoint_name,
-            bundle_name=bundle_name,
-            cpus=cpus,
-            memory=memory,
-            gpus=gpus,
-            gpu_type=gpu_type,
-            min_workers=min_workers,
-            max_workers=max_workers,
-            per_worker=per_worker,
-            endpoint_type=endpoint_type,
-        )
-        if gpus == 0:
-            del payload["gpu_type"]
-        elif gpus > 0 and gpu_type is None:
-            raise ValueError("If nonzero gpus, must provide gpu_type")
-        payload = self.endpoint_auth_decorator_fn(payload)
-        resp = self.connection.post(payload, ENDPOINT_PATH)
-        endpoint_creation_task_id = resp.get(
-            "endpoint_creation_task_id", None
-        )  # TODO probably throw on None
-        logger.info(
-            "Endpoint creation task id is %s", endpoint_creation_task_id
-        )
-        model_endpoint = ModelEndpoint(name=endpoint_name)
-        if endpoint_type == "async":
-            return AsyncEndpoint(model_endpoint=model_endpoint, client=self)
-        elif endpoint_type == "sync":
-            return SyncEndpoint(model_endpoint=model_endpoint, client=self)
-        else:
-            raise ValueError(
-                "Endpoint should be one of the types 'sync' or 'async'"
+        if (
+            update_if_exists
+            and self.get_model_endpoint(endpoint_name) is not None
+        ):
+            self.edit_model_endpoint(
+                endpoint_name=endpoint_name,
+                model_bundle=model_bundle,
+                cpus=cpus,
+                memory=memory,
+                gpus=gpus,
+                min_workers=min_workers,
+                max_workers=max_workers,
+                per_worker=per_worker,
+                gpu_type=gpu_type,
             )
+            # R1710: Either all return statements in a function should return an expression, or none of them should.
+            return None
+        else:
+            # Presumably, the user knows that the endpoint doesn't already exist, and so we can defer
+            # to the server to reject any duplicate creations.
+            logger.info("Creating new endpoint")
+            payload = dict(
+                endpoint_name=endpoint_name,
+                bundle_name=_model_bundle_to_name(model_bundle),
+                cpus=cpus,
+                memory=memory,
+                gpus=gpus,
+                gpu_type=gpu_type,
+                min_workers=min_workers,
+                max_workers=max_workers,
+                per_worker=per_worker,
+                endpoint_type=endpoint_type,
+            )
+            if gpus == 0:
+                del payload["gpu_type"]
+            elif gpus > 0 and gpu_type is None:
+                raise ValueError("If nonzero gpus, must provide gpu_type")
+            payload = self.endpoint_auth_decorator_fn(payload)
+            resp = self.connection.post(payload, ENDPOINT_PATH)
+            endpoint_creation_task_id = resp.get(
+                "endpoint_creation_task_id", None
+            )  # TODO probably throw on None
+            logger.info(
+                "Endpoint creation task id is %s", endpoint_creation_task_id
+            )
+            model_endpoint = ModelEndpoint(name=endpoint_name)
+            if endpoint_type == "async":
+                return AsyncEndpoint(
+                    model_endpoint=model_endpoint, client=self
+                )
+            elif endpoint_type == "sync":
+                return SyncEndpoint(model_endpoint=model_endpoint, client=self)
+            else:
+                raise ValueError(
+                    "Endpoint should be one of the types 'sync' or 'async'"
+                )
 
     def edit_model_endpoint(
         self,
         endpoint_name: str,
-        model_bundle: Optional[ModelBundle] = None,
+        model_bundle: Optional[Union[ModelBundle, str]] = None,
         cpus: Optional[float] = None,
         memory: Optional[str] = None,
         gpus: Optional[int] = None,
@@ -468,14 +497,14 @@ class LaunchClient:
         max_workers: Optional[int] = None,
         per_worker: Optional[int] = None,
         gpu_type: Optional[str] = None,
-    ):
+    ) -> None:
         """
         Edit an existing model endpoint
         """
-        if model_bundle is not None:
-            bundle_name = model_bundle.bundle_name
-        else:
-            bundle_name = None
+        logger.info("Editing existing endpoint")
+        bundle_name = (
+            _model_bundle_to_name(model_bundle) if model_bundle else None
+        )
         payload = dict(
             bundle_name=bundle_name,
             cpus=cpus,
@@ -497,6 +526,32 @@ class LaunchClient:
             "endpoint_creation_task_id", None
         )  # Returned from server as "creation"
         logger.info("Endpoint edit task id is %s", endpoint_creation_task_id)
+
+    def get_model_endpoint(
+        self, endpoint_name: str
+    ) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
+        try:
+            resp = self.connection.get(
+                os.path.join(ENDPOINT_PATH, endpoint_name)
+            )
+        except APIError:
+            logger.exception(
+                "Got an error when retrieving endpoint %s", endpoint_name
+            )
+            return None
+
+        if resp["endpoint_type"] == "async":
+            return AsyncEndpoint(
+                ModelEndpoint(name=resp["endpoint_name"]), client=self
+            )
+        elif resp["endpoint_type"] == "sync":
+            return SyncEndpoint(
+                ModelEndpoint(name=resp["endpoint_name"]), client=self
+            )
+        else:
+            raise ValueError(
+                "Endpoint should be one of the types 'sync' or 'async'"
+            )
 
     # Relatively small wrappers around http requests
 
@@ -557,7 +612,7 @@ class LaunchClient:
         """
         Deletes the model bundle on the server.
         """
-        route = f"model_bundle/{model_bundle.bundle_name}"
+        route = f"model_bundle/{model_bundle.name}"
         resp = self.connection.delete(route)
         return resp["deleted"]
 
