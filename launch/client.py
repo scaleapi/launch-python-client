@@ -540,7 +540,6 @@ class LaunchClient:
             )
             return None
 
-        # TODO: Return endpoint type and create the right type
         if resp["endpoint_type"] == "async":
             return AsyncEndpoint(
                 ModelEndpoint(name=resp["endpoint_name"]), client=self
