@@ -307,6 +307,7 @@ class AsyncEndpointBatchResponse:
                 self.statuses[url] = state
             if raw_response:
                 response_object = EndpointResponse(
+                    client=self.client,
                     status=raw_response["state"],
                     result_url=raw_response.get("result_url", None),
                     result=raw_response.get("result", None),

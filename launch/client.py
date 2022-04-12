@@ -406,7 +406,7 @@ class LaunchClient:
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
         update_if_exists: bool = False,
-    ) -> Endpoint:
+    ) -> Optional[Endpoint]:
         """
         Creates a Model Endpoint that is able to serve requests.
         Corresponds to POST/PUT endpoints
@@ -433,7 +433,7 @@ class LaunchClient:
             update_if_exists
             and self.get_model_endpoint(endpoint_name) is not None
         ):
-            self.edit_model_endpoint(
+            return self.edit_model_endpoint(
                 endpoint_name=endpoint_name,
                 model_bundle=model_bundle,
                 cpus=cpus,
@@ -495,7 +495,7 @@ class LaunchClient:
         max_workers: Optional[int] = None,
         per_worker: Optional[int] = None,
         gpu_type: Optional[str] = None,
-    ):
+    ) -> None:
         """
         Edit an existing model endpoint
         """
