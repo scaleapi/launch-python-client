@@ -429,7 +429,10 @@ class LaunchClient:
              A Endpoint object that can be used to make requests to the endpoint.
 
         """
-        if update_if_exists and self.get_model_endpoint(endpoint_name) is not None:
+        if (
+            update_if_exists
+            and self.get_model_endpoint(endpoint_name) is not None
+        ):
             self.edit_model_endpoint(
                 endpoint_name=endpoint_name,
                 model_bundle=model_bundle,
@@ -471,7 +474,9 @@ class LaunchClient:
             )
             model_endpoint = ModelEndpoint(name=endpoint_name)
             if endpoint_type == "async":
-                return AsyncEndpoint(model_endpoint=model_endpoint, client=self)
+                return AsyncEndpoint(
+                    model_endpoint=model_endpoint, client=self
+                )
             elif endpoint_type == "sync":
                 return SyncEndpoint(model_endpoint=model_endpoint, client=self)
             else:
@@ -495,7 +500,9 @@ class LaunchClient:
         Edit an existing model endpoint
         """
         logger.info("Editing existing endpoint")
-        bundle_name = _model_bundle_to_name(model_bundle) if model_bundle else None
+        bundle_name = (
+            _model_bundle_to_name(model_bundle) if model_bundle else None
+        )
         payload = dict(
             bundle_name=bundle_name,
             cpus=cpus,
@@ -518,19 +525,28 @@ class LaunchClient:
         )  # Returned from server as "creation"
         logger.info("Endpoint edit task id is %s", endpoint_creation_task_id)
 
-
-    def get_model_endpoint(self, endpoint_name: str) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
+    def get_model_endpoint(
+        self, endpoint_name: str
+    ) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
         try:
-            resp = self.connection.get(os.path.join(ENDPOINT_PATH, endpoint_name))
+            resp = self.connection.get(
+                os.path.join(ENDPOINT_PATH, endpoint_name)
+            )
         except APIError:
-            logger.exception("Got an error when retrieving endpoint %s", endpoint_name)
+            logger.exception(
+                "Got an error when retrieving endpoint %s", endpoint_name
+            )
             return None
 
         # TODO: Return endpoint type and create the right type
         if resp["endpoint_type"] == "async":
-            return AsyncEndpoint(ModelEndpoint(name=resp["endpoint_name"]), client=self)
+            return AsyncEndpoint(
+                ModelEndpoint(name=resp["endpoint_name"]), client=self
+            )
         elif resp["endpoint_type"] == "sync":
-            return SyncEndpoint(ModelEndpoint(name=resp["endpoint_name"]), client=self)
+            return SyncEndpoint(
+                ModelEndpoint(name=resp["endpoint_name"]), client=self
+            )
         else:
             raise ValueError(
                 "Endpoint should be one of the types 'sync' or 'async'"

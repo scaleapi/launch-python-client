@@ -107,7 +107,9 @@ class EndpointResponseFuture:
                         result=None,
                     )
                 else:
-                    raise ValueError(f"Unrecognized state: {async_response['state']}")
+                    raise ValueError(
+                        f"Unrecognized state: {async_response['state']}"
+                    )
 
 
 class Endpoint:
@@ -168,7 +170,9 @@ class AsyncEndpoint(Endpoint):
             args=request.args,
             return_pickled=request.return_pickled,
         )
-        return EndpointResponseFuture(client=self.client, async_task_id=raw_response["task_id"])
+        return EndpointResponseFuture(
+            client=self.client, async_task_id=raw_response["task_id"]
+        )
 
     def predict_batch(
         self, requests: Sequence[EndpointRequest]
