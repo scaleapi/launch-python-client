@@ -624,6 +624,14 @@ class LaunchClient:
         resp = self.connection.delete(route)
         return resp["deleted"]
 
+    def read_endpoint_creation_logs(self, endpoint_name: str):
+        """
+        Get builder logs as text.
+        """
+        route = f"{ENDPOINT_PATH}/creation_logs/{endpoint_name}"
+        resp = self.connection.get(route)
+        return resp["content"]
+
     def sync_request(
         self,
         endpoint_id: str,
