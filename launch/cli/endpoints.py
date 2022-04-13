@@ -48,3 +48,15 @@ def delete_endpoint(ctx: click.Context, endpoint_name: str):
     endpoint = ModelEndpoint(name=endpoint_name)
     res = client.delete_model_endpoint(endpoint)
     console.print(res)
+
+
+@endpoints.command("creation-logs")
+@click.argument("endpoint_name")
+@click.pass_context
+def read_endpoint_creation_logs(ctx: click.Context, endpoint_name: str):
+    """Delete a model endpoint"""
+    client = init_client(ctx)
+
+    res = client.read_endpoint_creation_logs(endpoint_name)
+    # rich fails to render the text because it's already formatted
+    print(res)
