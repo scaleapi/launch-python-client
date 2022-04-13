@@ -14,6 +14,9 @@ def make_service(
     deploy: Deployment,
     init_kwargs: Optional[Dict[str, Any]] = None,
 ) -> SingleServiceDescription:
+    """
+    Create a structure that describes a single service.
+    """
     return SingleServiceDescription(
         service=service,
         runtime=runtime,
@@ -25,4 +28,7 @@ def make_service(
 def make_sequential_pipeline(
     items: List[SingleServiceDescription],
 ) -> SeqPipelineServiceDescription:
+    """
+    Create a structure that describes a sequential pipeline.
+    """
     return SeqPipelineServiceDescription(items=items)

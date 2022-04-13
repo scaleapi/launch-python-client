@@ -6,10 +6,19 @@ from launch.pipeline.runtime import Runtime
 
 
 class ServiceDescription:
-    """Base class."""
+    """
+    Base ServiceDescription.
+    """
+
+    def call(self, *args, **kwargs):
+        raise NotImplementedError()
 
 
 class SingleServiceDescription(ServiceDescription):
+    """
+    The description of a service.
+    """
+
     def __init__(
         self,
         service: Callable,
@@ -43,6 +52,10 @@ class SingleServiceDescription(ServiceDescription):
 
 
 class SeqPipelineServiceDescription(ServiceDescription):
+    """
+    The description of a sequential pipeline.
+    """
+
     def __init__(
         self,
         items: List[SingleServiceDescription],
@@ -50,11 +63,14 @@ class SeqPipelineServiceDescription(ServiceDescription):
         super().__init__()
         self.items = items
 
-    def call(self, *args):
+    def call(self, *args, **kwargs):
         for item in self.items:
-            res = item.call(*args)
+            res = item.call(*args, **kwargs)
             if isinstance(res, tuple):
+                # Assuming call() returns multiple positional outputs
                 args = res
             else:
+                # Handle a case when a service returns one output, so that we can pass it further using *args
                 args = (res,)
+            kwargs = {}
         return res
