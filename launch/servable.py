@@ -24,6 +24,6 @@ def step_decorator(fn):
     fn_name = fn.__name__
 
     def modified_fn(*args, **kwargs):
-        return make_request(fn_name, fn, *args, **kwargs)
+        return make_request(fn_name, fn, args, kwargs)
 
     return modified_fn
