@@ -1,7 +1,7 @@
 from launch.logger import logger
 
 
-def default_make_request(_, fn, *args, **kwargs):
+def default_make_request(_, fn, args, kwargs):
     return fn(*args, **kwargs)
 
 
@@ -27,3 +27,16 @@ def step_decorator(fn):
         return make_request(fn_name, fn, args, kwargs)
 
     return modified_fn
+
+
+def step_decorator_class(class_obj):
+    """
+    Decorator to mark a class as a separate Servable. The class must implement __call__.
+    """
+    old_call = class_obj.__call__
+
+    def modified_call(*args, **kwargs):
+        return make_request(class_obj.__name__, old_call, args, kwargs)
+
+    class_obj.__call__ = modified_call
+    return class_obj
