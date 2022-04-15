@@ -32,6 +32,9 @@ def step_decorator(fn):
 def step_decorator_class(class_obj):
     """
     Decorator to mark a class as a separate Servable. The class must implement __call__.
+    The object used for calling gets instantiated upstream and passed to the child Servable.
+    TODO do we want to have the upstream servable instantiate the object?
+    Also TODO do we want to have a decorator on a class, or a superclass to inherit from?
     """
     old_call = class_obj.__call__
 
