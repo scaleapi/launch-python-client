@@ -171,7 +171,7 @@ class AsyncEndpoint(Endpoint):
             return_pickled=request.return_pickled,
         )
         return EndpointResponseFuture(
-            client=self.client, async_task_id=raw_response["task_id"]
+            client=self.client, async_task_id=raw_response
         )
 
     def predict_batch(
