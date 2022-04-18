@@ -30,7 +30,7 @@ class SingleServiceDescription(ServiceDescription):
         self.service = service
         self.runtime = runtime
         self.deployment = deployment
-        self.init_kwargs = kwargs
+        self.kwargs = kwargs
 
         self._callable_service: Optional[Callable] = None
 
@@ -38,11 +38,11 @@ class SingleServiceDescription(ServiceDescription):
         if self._callable_service:
             return
         if inspect.isclass(self.service):
-            self._callable_service = self.service(**self.init_kwargs)
+            self._callable_service = self.service(**self.kwargs)
         else:
             assert (
-                not self.init_kwargs
-            ), "`init_kwargs` is given, but the service is not a class"
+                not self.kwargs
+            ), "`kwargs` is given, but the service is not a class"
             self._callable_service = self.service
 
     def call(self, *args, **kwargs):

@@ -48,7 +48,8 @@ def test_pipeline():
         service=Joiner,
         runtime=Runtime.SYNC,
         deployment=DummyDeployment(),
-        init_kwargs={"sep": "-"},
+        # kwargs:
+        sep="-",
     )
 
     # test individual steps
