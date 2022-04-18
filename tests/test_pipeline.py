@@ -41,13 +41,13 @@ def test_pipeline():
     step_1 = make_service(
         service=splitter,
         runtime=Runtime.SYNC,
-        deploy=DummyDeployment(),
+        deployment=DummyDeployment(),
     )
 
     step_2 = make_service(
         service=Joiner,
         runtime=Runtime.SYNC,
-        deploy=DummyDeployment(),
+        deployment=DummyDeployment(),
         init_kwargs={"sep": "-"},
     )
 

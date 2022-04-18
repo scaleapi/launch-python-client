@@ -1,7 +1,7 @@
 import inspect
 from typing import Any, Callable, Dict, List, Optional
 
-from launch.pipeline.deploy import Deployment
+from launch.pipeline.deployment import Deployment
 from launch.pipeline.runtime import Runtime
 
 
@@ -23,13 +23,13 @@ class SingleServiceDescription(ServiceDescription):
         self,
         service: Callable,
         runtime: Runtime,
-        deploy: Deployment,
+        deployment: Deployment,
         init_kwargs: Optional[Dict[str, Any]] = None,
     ):
         super().__init__()
         self.service = service
         self.runtime = runtime
-        self.deploy = deploy
+        self.deployment = deployment
         self.init_kwargs = init_kwargs
 
         self._callable_service: Optional[Callable] = None
@@ -51,7 +51,7 @@ class SingleServiceDescription(ServiceDescription):
         return self._callable_service(*args, **kwargs)
 
 
-class SeqPipelineServiceDescription(ServiceDescription):
+class SequentialPipelineDescription(ServiceDescription):
     """
     The description of a sequential pipeline.
     """

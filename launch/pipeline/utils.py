@@ -1,9 +1,9 @@
 from typing import Any, Callable, Dict, List, Optional
 
-from launch.pipeline.deploy import Deployment
+from launch.pipeline.deployment import Deployment
 from launch.pipeline.runtime import Runtime
 from launch.pipeline.service import (
-    SeqPipelineServiceDescription,
+    SequentialPipelineDescription,
     SingleServiceDescription,
 )
 
@@ -11,7 +11,7 @@ from launch.pipeline.service import (
 def make_service(
     service: Callable,
     runtime: Runtime,
-    deploy: Deployment,
+    deployment: Deployment,
     init_kwargs: Optional[Dict[str, Any]] = None,
 ) -> SingleServiceDescription:
     """
@@ -20,15 +20,15 @@ def make_service(
     return SingleServiceDescription(
         service=service,
         runtime=runtime,
-        deploy=deploy,
+        deployment=deployment,
         init_kwargs=init_kwargs,
     )
 
 
 def make_sequential_pipeline(
     items: List[SingleServiceDescription],
-) -> SeqPipelineServiceDescription:
+) -> SequentialPipelineDescription:
     """
     Create a structure that describes a sequential pipeline.
     """
-    return SeqPipelineServiceDescription(items=items)
+    return SequentialPipelineDescription(items=items)
