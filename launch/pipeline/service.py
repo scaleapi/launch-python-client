@@ -24,13 +24,13 @@ class SingleServiceDescription(ServiceDescription):
         service: Callable,
         runtime: Runtime,
         deployment: Deployment,
-        init_kwargs: Optional[Dict[str, Any]] = None,
+        **kwargs: Dict[str, Any],
     ):
         super().__init__()
         self.service = service
         self.runtime = runtime
         self.deployment = deployment
-        self.init_kwargs = init_kwargs
+        self.init_kwargs = kwargs
 
         self._callable_service: Optional[Callable] = None
 
@@ -38,8 +38,7 @@ class SingleServiceDescription(ServiceDescription):
         if self._callable_service:
             return
         if inspect.isclass(self.service):
-            kwargs = self.init_kwargs or {}
-            self._callable_service = self.service(**kwargs)
+            self._callable_service = self.service(**self.init_kwargs)
         else:
             assert (
                 not self.init_kwargs

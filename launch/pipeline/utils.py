@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List
 
 from launch.pipeline.deployment import Deployment
 from launch.pipeline.runtime import Runtime
@@ -12,7 +12,7 @@ def make_service(
     service: Callable,
     runtime: Runtime,
     deployment: Deployment,
-    init_kwargs: Optional[Dict[str, Any]] = None,
+    **kwargs: Dict[str, Any],
 ) -> SingleServiceDescription:
     """
     Create a structure that describes a single service.
@@ -21,7 +21,7 @@ def make_service(
         service=service,
         runtime=runtime,
         deployment=deployment,
-        init_kwargs=init_kwargs,
+        **kwargs,
     )
 
 
