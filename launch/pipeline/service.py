@@ -10,7 +10,7 @@ class ServiceDescription:
     Base ServiceDescription.
     """
 
-    def call(self, *args, **kwargs):
+    def call(self, req: Any) -> Any:
         raise NotImplementedError()
 
 
@@ -45,9 +45,10 @@ class SingleServiceDescription(ServiceDescription):
             ), "`kwargs` is given, but the service is not a class"
             self._callable_service = self.service
 
-    def call(self, *args, **kwargs):
+    def call(self, req: Any) -> Any:
         self._init_callable_service()
-        return self._callable_service(*args, **kwargs)
+        assert self._callable_service, "`_callable_service` is not initialized"
+        return self._callable_service(req)
 
 
 class SequentialPipelineDescription(ServiceDescription):
@@ -62,14 +63,8 @@ class SequentialPipelineDescription(ServiceDescription):
         super().__init__()
         self.items = items
 
-    def call(self, *args, **kwargs):
+    def call(self, req: Any) -> Any:
+        res = req
         for item in self.items:
-            res = item.call(*args, **kwargs)
-            if isinstance(res, tuple):
-                # Assuming call() returns multiple positional outputs
-                args = res
-            else:
-                # Handle a case when a service returns one output, so that we can pass it further using *args
-                args = (res,)
-            kwargs = {}
+            res = item.call(res)
         return res
