@@ -11,7 +11,7 @@ class ModelBundle:
     Represents a ModelBundle.
     """
 
-    bundle_name: str
+    name: str
     bundle_id: Optional[str] = None
     env_params: Optional[Dict[str, str]] = None
     location: Optional[str] = None
@@ -20,4 +20,4 @@ class ModelBundle:
     requirements: Optional[List[str]] = None
 
     def __str__(self):
-        return f"ModelBundle(bundle_name={self.bundle_name})"
+        return f"ModelBundle(bundle_name={self.name})"
