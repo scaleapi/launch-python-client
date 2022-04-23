@@ -164,16 +164,20 @@ class AsyncEndpoint(Endpoint):
         return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def predict(self, request: EndpointRequest) -> EndpointResponseFuture:
-        raw_response = self.client.async_request(
+        async_task_id = self.client.async_request(
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
             return_pickled=request.return_pickled,
         )
-        print(f"raw_response: {raw_response}")
         return EndpointResponseFuture(
-            client=self.client, async_task_id=raw_response["task_id"]
+            client=self.client, async_task_id=async_task_id
         )
+
+        # FIXME: Figure out a way to structure the responses between the client and endpoint
+        # return EndpointResponseFuture(
+        #     client=self.client, async_task_id=raw_response["task_id"]
+        # )
 
     def predict_batch(
         self, requests: Sequence[EndpointRequest]
