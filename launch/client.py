@@ -385,13 +385,15 @@ class LaunchClient:
 
         _add_app_config_to_bundle_create_payload(payload, app_config)
 
-        self.connection.post(
+        resp = self.connection.post(
             payload=payload,
             route="model_bundle",
         )  # TODO use return value somehow
         # resp["data"]["bundle_name"] should equal model_bundle_name
         # TODO check that a model bundle was created and no name collisions happened
-        return ModelBundle(model_bundle_name)
+
+        bundle_id = resp.get('bundle_id')
+        return ModelBundle(model_bundle_name, bundle_id)
 
     def create_model_endpoint(
         self,
