@@ -88,6 +88,7 @@ class LaunchClient:
             [Dict[str, Any]], Dict[str, Any]
         ] = lambda x: x
         self.bundle_location_fn: Optional[Callable[[], str]] = None
+        self.environment = None
 
     def __repr__(self):
         return f"LaunchClient(connection='{self.connection}')"
@@ -136,6 +137,14 @@ class LaunchClient:
         required fields for self-hosting.
         """
         self.endpoint_auth_decorator_fn = endpoint_auth_decorator_fn
+
+    def register_env(self, env):
+        self.environment = env
+
+    def _add_env_to_payload(self, payload):
+        if self.environment is not None:
+            payload["env"] = self.environment
+        return payload
 
     def create_model_bundle_from_dir(
         self,
@@ -230,6 +239,7 @@ class LaunchClient:
             env_params=env_params,
         )
         _add_app_config_to_bundle_create_payload(payload, app_config)
+        self._add_env_to_payload(payload)
 
         self.connection.post(
             payload=payload,
@@ -384,6 +394,7 @@ class LaunchClient:
         )
 
         _add_app_config_to_bundle_create_payload(payload, app_config)
+        self._add_env_to_payload(payload)
 
         self.connection.post(
             payload=payload,
@@ -467,6 +478,7 @@ class LaunchClient:
             elif gpus > 0 and gpu_type is None:
                 raise ValueError("If nonzero gpus, must provide gpu_type")
             payload = self.endpoint_auth_decorator_fn(payload)
+            self._add_env_to_payload(payload)
             resp = self.connection.post(payload, ENDPOINT_PATH)
             endpoint_creation_task_id = resp.get(
                 "endpoint_creation_task_id", None
@@ -517,6 +529,7 @@ class LaunchClient:
         )
         # Allows changing some authorization settings by changing endpoint_auth_decorator_fn
         payload = self.endpoint_auth_decorator_fn(payload)
+        self._add_env_to_payload(payload)
         if gpus == 0 and gpu_type is not None:
             logger.warning("GPU type setting %s will have no effect", gpu_type)
             payload["gpu_type"] = None
@@ -671,6 +684,7 @@ class LaunchClient:
             payload["url"] = url
         if args is not None:
             payload["args"] = args
+        self._add_env_to_payload(payload)
         resp = self.connection.post(
             payload=payload,
             route=f"{SYNC_TASK_PATH}/{endpoint_id}",
@@ -711,7 +725,7 @@ class LaunchClient:
             payload["url"] = url
         if args is not None:
             payload["args"] = args
-
+        self._add_env_to_payload(payload)
         resp = self.connection.post(
             payload=payload,
             route=f"{ASYNC_TASK_PATH}/{endpoint_id}",
