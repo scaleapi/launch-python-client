@@ -545,7 +545,8 @@ class LaunchClient:
     ) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
         try:
             resp = self.connection.get(
-                os.path.join(ENDPOINT_PATH, endpoint_name)
+                os.path.join(ENDPOINT_PATH, endpoint_name),
+                params=self._add_env_to_payload({}),
             )
         except APIError:
             logger.exception(
@@ -575,7 +576,9 @@ class LaunchClient:
         Returns:
             A list of ModelBundle objects
         """
-        resp = self.connection.get("model_bundle")
+        resp = self.connection.get(
+            "model_bundle", params=self._add_env_to_payload({})
+        )
         model_bundles = [
             ModelBundle.from_dict(item) for item in resp["bundles"]  # type: ignore
         ]
@@ -587,7 +590,10 @@ class LaunchClient:
         Returns:
             A ModelBundle object
         """
-        resp = self.connection.get(f"model_bundle/{bundle_name}")
+        resp = self.connection.get(
+            f"model_bundle/{bundle_name}",
+            params=self._add_env_to_payload({}),
+        )
         assert (
             len(resp["bundles"]) == 1
         ), f"Bundle with name `{bundle_name}` not found"
@@ -603,7 +609,9 @@ class LaunchClient:
         Returns:
             A list of ModelEndpoint objects
         """
-        resp = self.connection.get(ENDPOINT_PATH)
+        resp = self.connection.get(
+            ENDPOINT_PATH, params=self._add_env_to_payload({})
+        )
         async_endpoints: List[Endpoint] = [
             AsyncEndpoint(
                 model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
@@ -626,7 +634,9 @@ class LaunchClient:
         Deletes the model bundle on the server.
         """
         route = f"model_bundle/{model_bundle.name}"
-        resp = self.connection.delete(route)
+        resp = self.connection.delete(
+            route, params=self._add_env_to_payload({})
+        )
         return resp["deleted"]
 
     def delete_model_endpoint(self, model_endpoint: ModelEndpoint):
@@ -634,7 +644,9 @@ class LaunchClient:
         Deletes a model endpoint.
         """
         route = f"{ENDPOINT_PATH}/{model_endpoint.name}"
-        resp = self.connection.delete(route)
+        resp = self.connection.delete(
+            route, params=self._add_env_to_payload({})
+        )
         return resp["deleted"]
 
     def read_endpoint_creation_logs(self, endpoint_name: str):
@@ -642,7 +654,7 @@ class LaunchClient:
         Get builder logs as text.
         """
         route = f"{ENDPOINT_PATH}/creation_logs/{endpoint_name}"
-        resp = self.connection.get(route)
+        resp = self.connection.get(route, params=self._add_env_to_payload({}))
         return resp["content"]
 
     def sync_request(
@@ -754,7 +766,8 @@ class LaunchClient:
         """
 
         resp = self.connection.get(
-            route=f"{ASYNC_TASK_RESULT_PATH}/{async_task_id}"
+            route=f"{ASYNC_TASK_RESULT_PATH}/{async_task_id}",
+            params=self._add_env_to_payload({}),
         )
         return resp
 
