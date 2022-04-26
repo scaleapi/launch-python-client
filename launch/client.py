@@ -216,7 +216,7 @@ class LaunchClient:
             )
             s3_path = model_bundle_url["signedUrl"]
             raw_bundle_url = (
-                "s3://{model_bundle_url['bucket']}/{model_bundle_url['key']}"
+                f"s3://{model_bundle_url['bucket']}/{model_bundle_url['key']}"
             )
             requests.put(s3_path, data=data)
 
