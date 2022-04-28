@@ -4,6 +4,7 @@ import os
 import shutil
 import tempfile
 from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
+from uuid import uuid4
 
 import cloudpickle
 import requests
@@ -279,14 +280,15 @@ class LaunchClient:
         """
         now = datetime.now()
         ts = str(now.timestamp())
-        
-        bundle = self.create_model_bundle(model_bundle_name=f"{endpoint_name}_{ts}", env_params=env_params, load_predict_fn=load_predict_fn,
+
+        bundle = self.create_model_bundle(model_bundle_name=f"{endpoint_name}_{ts}_{uuid4()}", env_params=env_params, load_predict_fn=load_predict_fn,
                                           model=model, requirements=requirements, bundle_url=bundle_url, app_config=app_config, globals_copy=globals_copy)
 
         kwargs = {
             "cpus": 1,
             "memory": "8Gi",
             "gpus": 0 if endpoint_type is "sync" else 1,
+            "gpu_type": None if endpoint_type is "sync" else "nvidia-tesla-t4",
             "min_workers": 1,
             "max_workers": 20,
             "per_worker": 1,
