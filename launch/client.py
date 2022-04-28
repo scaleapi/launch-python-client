@@ -29,6 +29,7 @@ from launch.model_endpoint import (
 )
 from launch.request_validation import validate_task_request
 from launch.utils import trim_kwargs
+from datetime import datetime
 
 DEFAULT_NETWORK_TIMEOUT_SEC = 120
 
@@ -236,6 +237,62 @@ class LaunchClient:
             route="model_bundle",
         )
         return ModelBundle(model_bundle_name)
+
+    def quick_create_endpoint(
+        self,
+        endpoint_name: str,
+        env_params: Dict[str, str],
+        load_predict_fn: 
+            Callable[[LaunchModel_T], Callable[[Any], Any]],
+        model: LaunchModel_T,
+        endpoint_type: str = "async",
+        requirements: Optional[List[str]] = None,
+        bundle_url: Optional[str] = None,
+        app_config: Optional[Union[Dict[str, Any], str]] = None,
+        globals_copy: Optional[Dict[str, Any]] = None,
+    ) -> ModelEndpoint:
+        """
+        Uploads a model bundle and creates a model endpoint with reasonable defaults.
+
+        Currently only supports the `load_predict_fn` + `model` paradigm but can support the other options in the future.
+
+        Parameters:
+            endpoint_name: Name of model bundle you want to create. This acts as a unique identifier.
+            model: Typically a trained Neural Network, e.g. a Pytorch module
+            load_predict_fn: Function that when called with model, returns a function that carries out inference
+                I.e. `load_predict_fn(model) -> func; func(REQUEST) -> RESPONSE`
+            bundle_url: Only for self-hosted mode. Desired location of bundle.
+            Overrides any value given by self.bundle_location_fn
+            requirements: A list of python package requirements, e.g.
+                ["tensorflow==2.3.0", "tensorflow-hub==0.11.0"]. If no list has been passed, will default to the currently
+                imported list of packages.
+            app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
+            env_params: A dictionary that dictates environment information e.g.
+                the use of pytorch or tensorflow, which cuda/cudnn versions to use.
+                Specifically, the dictionary should contain the following keys:
+                "framework_type": either "tensorflow" or "pytorch".
+                "pytorch_version": Version of pytorch, e.g. "1.5.1", "1.7.0", etc. Only applicable if framework_type is pytorch
+                "cuda_version": Version of cuda used, e.g. "11.0".
+                "cudnn_version" Version of cudnn used, e.g. "cudnn8-devel".
+                "tensorflow_version": Version of tensorflow, e.g. "2.3.0". Only applicable if framework_type is tensorflow
+            globals_copy: Dictionary of the global symbol table. Normally provided by `globals()` built-in function.
+        """
+        now = datetime.now()
+        ts = now.strftime("%m-%d-%y-%H:%M:%S")
+        bundle = self.create_model_bundle(model_bundle_name=f"{endpoint_name}_{ts}", env_params=env_params, load_predict_fn=load_predict_fn,
+                                          model=model, requirements=requirements, bundle_url=bundle_url, app_config=app_config, globals_copy=globals_copy)
+
+        kwargs = {
+            "cpus": 1,
+            "memory": "8Gi",
+            "gpus": 0 if endpoint_type is "sync" else 1,
+            "min_workers": 1,
+            "max_workers": 20,
+            "per_worker": 1,
+        }
+
+        return self.create_model_endpoint(endpoint_name=endpoint_name, model_bundle=bundle, endpoint_type=endpoint_type, update_if_exists=False, **kwargs)
+
 
     def create_model_bundle(  # pylint: disable=too-many-statements
         self,
