@@ -278,7 +278,8 @@ class LaunchClient:
             globals_copy: Dictionary of the global symbol table. Normally provided by `globals()` built-in function.
         """
         now = datetime.now()
-        ts = now.strftime("%m-%d-%y-%H:%M:%S")
+        ts = str(now.timestamp())
+        
         bundle = self.create_model_bundle(model_bundle_name=f"{endpoint_name}_{ts}", env_params=env_params, load_predict_fn=load_predict_fn,
                                           model=model, requirements=requirements, bundle_url=bundle_url, app_config=app_config, globals_copy=globals_copy)
 
