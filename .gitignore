@@ -9,5 +9,4 @@
 .vim/
 
 # Sphinx documentation
-#docs/_build/
-docs/api/
+docs/_sources

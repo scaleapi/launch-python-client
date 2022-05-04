@@ -1,8 +1,0 @@
-:orphan:
-
-:py:mod:`launch.cli.client`
-===========================
-
-.. py:module:: launch.cli.client
-
-

@@ -1,8 +1,0 @@
-:orphan:
-
-:py:mod:`launch.logger`
-=======================
-
-.. py:module:: launch.logger
-
-

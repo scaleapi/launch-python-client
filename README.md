@@ -13,6 +13,8 @@ Scale Launch provides ML engineers a simple Python interface for turning a local
 A ML engineer needs to call a few functions from Scale's SDK, which quickly spins up a production-ready service.
 The service efficiently utilizes compute resources and automatically scales according to traffic.
 
+Latest API/SDK reference can be found [here](https://scaleapi.github.io/launch-python-client/).
+
 ## Deploying your model via Scale Launch
 
 Central to Scale Launch are the notions of a `ModelBundle` and a `ModelEndpoint`.
