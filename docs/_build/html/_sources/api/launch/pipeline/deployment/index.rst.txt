@@ -1,0 +1,26 @@
+:orphan:
+
+:py:mod:`launch.pipeline.deployment`
+====================================
+
+.. py:module:: launch.pipeline.deployment
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.pipeline.deployment.Deployment
+
+
+
+
+.. py:class:: Deployment
+
+   Base deployment class
+
+

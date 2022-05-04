@@ -1,0 +1,147 @@
+:orphan:
+
+:py:mod:`launch.model_endpoint`
+===============================
+
+.. py:module:: launch.model_endpoint
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.model_endpoint.AsyncEndpoint
+   launch.model_endpoint.AsyncEndpointBatchResponse
+   launch.model_endpoint.Endpoint
+   launch.model_endpoint.EndpointRequest
+   launch.model_endpoint.EndpointResponse
+   launch.model_endpoint.ModelEndpoint
+   launch.model_endpoint.SyncEndpoint
+
+
+
+
+.. py:class:: AsyncEndpoint(model_endpoint, client)
+
+
+
+   A higher level abstraction for a Model Endpoint.
+
+   :param model_endpoint: ModelEndpoint object.
+   :param client: A LaunchClient object
+
+   .. py:method:: async_request(self, url)
+      :abstractmethod:
+      :async:
+
+      Makes an async request to the endpoint. Polls the endpoint under the hood, but provides async/await semantics
+      on top.
+
+      :param url: A url that points to a file containing model input.
+                  Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
+
+      :returns: A signedUrl that contains a cloudpickled Python object, the result of running inference on the model input
+                Example output:
+                    `https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy`
+
+
+   .. py:method:: predict_batch(self, requests)
+
+      Runs inference on the data items specified by urls. Returns a AsyncEndpointResponse.
+
+      :param requests: List of EndpointRequests. Request_ids must all be distinct.
+
+      :returns: an AsyncEndpointResponse keeping track of the inference requests made
+
+
+   .. py:method:: status(self)
+      :abstractmethod:
+
+      Gets the status of the Endpoint.
+      TODO this functionality currently does not exist on the server.
+
+
+
+.. py:class:: AsyncEndpointBatchResponse(client, request_ids)
+
+   Currently represents a list of async inference requests to a specific endpoint. Keeps track of the requests made,
+   and gives a way to poll for their status.
+
+   Invariant: set keys for self.request_ids and self.responses are equal
+
+   idk about this abstraction tbh, could use a redesign maybe?
+
+   Also batch inference sort of removes the need for much of the complication in here
+
+
+   .. py:method:: get_responses(self)
+
+      Returns a dictionary, where each key is the request_id for an EndpointRequest passed in, and the corresponding
+      object at that key is the corresponding EndpointResponse.
+
+
+   .. py:method:: is_done(self, poll=True)
+
+      Checks if all the tasks from this round of requests are done, according to
+      the internal state of this object.
+      Optionally polls the endpoints to pick up new tasks that may have finished.
+
+
+   .. py:method:: poll_endpoints(self)
+
+      Runs one round of polling the endpoint for async task results
+
+
+   .. py:method:: wait(self)
+      :abstractmethod:
+      :async:
+
+      Waits for inference results to complete. Provides async/await semantics, but under the hood does polling.
+      TODO: we'd need to implement some lower level asyncio request code
+
+
+
+.. py:class:: Endpoint(model_endpoint)
+
+   An abstract class that represent any kind of endpoints in Scale Launch
+
+
+.. py:class:: EndpointRequest(url = None, args = None, return_pickled = True, request_id = None)
+
+   Represents a single request to either a SyncEndpoint or AsyncEndpoint.
+   :param url: A url to some file that can be read in to a ModelBundle's predict function. Can be an image, raw text, etc.
+   :param args: A Dictionary with arguments to a ModelBundle's predict function. If the predict function has signature
+                predict_fn(foo, bar), then the keys in the dictionary should be 'foo' and 'bar'. Values must be native Python
+                objects.
+   :param return_pickled: Whether the output should be a pickled python object, or directly returned serialized json
+   :param request_id: A user-specifiable id for requests.
+                      Should be unique among EndpointRequests made in the same batch call.
+                      If one isn't provided the client will generate its own.
+
+
+.. py:class:: EndpointResponse(client, status, result_url, result)
+
+   Represents a response received from a Endpoint.
+   Status is a string representing the status of the request, i.e. SUCCESS, FAILURE, or PENDING
+   Exactly one of result_url or result will be populated, depending on the value of `return_pickled` in the request.
+   result_url is a string that is a url containing the pickled python object from the Endpoint's predict function.
+   result is a string that is the serialized return value (in json form) of the Endpoint's predict function.
+       Specifically, one can json.loads() the value of result to get the original python object back.
+
+
+.. py:class:: ModelEndpoint
+
+   Represents an Endpoint from the database.
+
+
+.. py:class:: SyncEndpoint(model_endpoint, client)
+
+
+
+   An abstract class that represent any kind of endpoints in Scale Launch
+
+

@@ -1,0 +1,41 @@
+:orphan:
+
+:py:mod:`launch.pipeline.runtime`
+=================================
+
+.. py:module:: launch.pipeline.runtime
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.pipeline.runtime.Runtime
+
+
+
+
+.. py:class:: Runtime
+
+
+
+   Generic enumeration.
+
+   Derive from this class to define new enumerations.
+
+
+   .. py:method:: name(self)
+
+      The name of the Enum member.
+
+
+   .. py:method:: value(self)
+
+      The value of the Enum member.
+
+
+

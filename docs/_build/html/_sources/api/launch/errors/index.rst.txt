@@ -1,0 +1,26 @@
+:orphan:
+
+:py:mod:`launch.errors`
+=======================
+
+.. py:module:: launch.errors
+
+
+Module Contents
+---------------
+
+.. py:exception:: APIError(endpoint, command, requests_response=None, aiohttp_response=None)
+
+
+
+   Common base class for all non-exit exceptions.
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+   .. py:method:: with_traceback()
+
+      Exception.with_traceback(tb) --
+      set self.__traceback__ to tb and return self.
+
+
+
