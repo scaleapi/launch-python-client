@@ -59,8 +59,8 @@ To test your local docstring changes, run the following commands from the reposi
 
 ```
 poetry shell
-cd docs
-sphinx-autobuild . ./_build/html --watch ../launch
+cd src_docs
+sphinx-autobuild . ../docs --watch ../launch
 ```
 
 `sphinx-autobuild` will spin up a server on localhost (port 8000 by default) that will watch for and automatically rebuild a version of the API reference based on your local docstring changes.
