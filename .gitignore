@@ -10,3 +10,4 @@
 
 # Sphinx documentation
 docs/_sources
+docs/.doctrees
