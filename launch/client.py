@@ -170,7 +170,7 @@ class LaunchClient:
 
         ```
         my_module1/
-                __init__.py
+            __init__.py
             ...files and directories
             my_inference_file.py
         my_module2/
