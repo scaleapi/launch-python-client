@@ -4,7 +4,7 @@ import os
 import shutil
 import tempfile
 from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
-from zipfile import Zipfile
+from zipfile import ZipFile
 
 import cloudpickle
 import requests
@@ -236,11 +236,10 @@ class LaunchClient:
         bundle_metadata = {
             "load_predict_fn_module_path": load_predict_fn_module_path,
             "load_model_fn_module_path": load_model_fn_module_path,
-            "base_dir": base_dir,
         }
 
         logger.info(
-            "create_model_bundle_from_dir: raw_bundle_url=%s",
+            "create_model_bundle_from_dirs: raw_bundle_url=%s",
             raw_bundle_url,
         )
         payload = dict(
@@ -795,15 +794,18 @@ class LaunchClient:
         raise NotImplementedError
 
 
-def _zip_directory(zipf: zipfile.Zipfile, path: str) -> None:
+def _zip_directory(zipf: ZipFile, path: str) -> None:
     for root, _, files in os.walk(path):
         for file in files:
-            zipf.write(filename=os.path.join(root, file),
-                       arcname=os.path.relpath(os.path.join(root, file),
-                                       os.path.join(path, '..')))
+            zipf.write(
+                filename=os.path.join(root, file),
+                arcname=os.path.relpath(
+                    os.path.join(root, file), os.path.join(path, "..")
+                ),
+            )
 
 
 def _zip_directories(zip_path: str, dir_list: List[str]) -> None:
-    with zipfile.ZipFile(zip_path, 'w') as zip_f:
+    with ZipFile(zip_path, "w") as zip_f:
         for dir in dir_list:
-            zip_directory(zipf, dir)
+            _zip_directory(zip_f, dir)
