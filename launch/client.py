@@ -796,16 +796,16 @@ class LaunchClient:
 
 def _zip_directory(zipf: ZipFile, path: str) -> None:
     for root, _, files in os.walk(path):
-        for file in files:
+        for file_ in files:
             zipf.write(
-                filename=os.path.join(root, file),
+                filename=os.path.join(root, file_),
                 arcname=os.path.relpath(
-                    os.path.join(root, file), os.path.join(path, "..")
+                    os.path.join(root, file_), os.path.join(path, "..")
                 ),
             )
 
 
 def _zip_directories(zip_path: str, dir_list: List[str]) -> None:
     with ZipFile(zip_path, "w") as zip_f:
-        for dir in dir_list:
-            _zip_directory(zip_f, dir)
+        for dir_ in dir_list:
+            _zip_directory(zip_f, dir_)
