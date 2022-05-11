@@ -13,6 +13,8 @@ from launch.connection import Connection
 from launch.constants import (
     ASYNC_TASK_PATH,
     ASYNC_TASK_RESULT_PATH,
+    BATCH_TASK_PATH,
+    BATCH_TASK_RESULTS_PATH,
     ENDPOINT_PATH,
     MODEL_BUNDLE_SIGNED_URL_PATH,
     SCALE_LAUNCH_ENDPOINT,
@@ -744,20 +746,37 @@ class LaunchClient:
         )
         return resp
 
-    def batch_async_request(self, endpoint_id: str, urls: List[str]):
+    def batch_async_request(
+        self,
+        bundle_name: str,
+        urls_file: str,
+        serialization_format: str = "json",
+    ):
         """
         Sends a batch inference request to the Model Endpoint at endpoint_id, returns a key that can be used to retrieve
         the results of inference at a later time.
 
         Parameters:
-            endpoint_id: The id of the endpoint to make the request to
+            bundle_name: The id of the bundle to make the request to
+            serialization_format: Serialization format of output, either 'pickle' or 'json'.
+                'pickle' corresponds to pickling results + returning
+            urls_file: S3 location of a CSV that is used as input to the batch job. TODO this really should be a list of urls
             urls: A list of urls, each pointing to a file containing model input.
                 Must be accessible by Scale Launch, hence urls need to either be public or signedURLs.
 
         Returns:
             An id/key that can be used to fetch inference results at a later time
         """
-        raise NotImplementedError
+        payload = dict(
+            input_path=urls_file,
+            serialization_format=serialization_format,
+        )
+        payload = self.endpoint_auth_decorator_fn(payload)
+        resp = self.connection.post(
+            route=f"{BATCH_TASK_PATH}/{bundle_name}",
+            payload=payload,
+        )
+        return resp["job_id"]
 
     def get_batch_async_response(self, batch_async_task_id: str):
         """
@@ -770,4 +789,7 @@ class LaunchClient:
         Returns:
             TODO Something similar to a list of signed s3URLs
         """
-        raise NotImplementedError
+        resp = self.connection.get(
+            route=f"{BATCH_TASK_RESULTS_PATH}/{batch_async_task_id}"
+        )
+        return resp
