@@ -3,6 +3,7 @@ import logging
 import os
 import shutil
 import tempfile
+from io import StringIO
 from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
 
 import cloudpickle
@@ -22,6 +23,7 @@ from launch.constants import (
 )
 from launch.errors import APIError
 from launch.find_packages import find_packages_from_imports, get_imports
+from launch.make_batch_file import make_batch_input_file
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import (
     AsyncEndpoint,
@@ -86,6 +88,7 @@ class LaunchClient:
         self.connection = Connection(api_key, endpoint)
         self.self_hosted = self_hosted
         self.upload_bundle_fn: Optional[Callable[[str, str], None]] = None
+        self.upload_batch_csv_fn: Optional[Callable[[str, str], None]] = None
         self.endpoint_auth_decorator_fn: Callable[
             [Dict[str, Any]], Dict[str, Any]
         ] = lambda x: x
@@ -110,10 +113,26 @@ class LaunchClient:
         See register_bundle_location_fn for more notes on the signature of upload_bundle_fn
 
         Parameters:
-            upload_bundle_fn: Function that takes in a serialized bundle, and uploads that bundle to an appropriate
+            upload_bundle_fn: Function that takes in a serialized bundle (bytes type), and uploads that bundle to an appropriate
                 location. Only needed for self-hosted mode.
         """
         self.upload_bundle_fn = upload_bundle_fn
+
+    def register_upload_batch_csv_fn(
+        self, upload_batch_csv_fn: Callable[[str, str], None]
+    ):
+        """
+        For self-hosted mode only. Registers a function that handles batch text upload. This function is called as
+
+        upload_batch_csv_fn(csv_text, csv_url)
+
+        This function should directly write the contents of csv_text as a text string into csv_url.
+
+        Parameters:
+            upload_batch_csv_fn: Function that takes in a csv text (string type), and uploads that bundle to an appropriate
+                location. Only needed for self-hosted mode.
+        """
+        self.upload_batch_csv_fn = upload_batch_csv_fn
 
     def register_bundle_location_fn(
         self, bundle_location_fn: Callable[[], str]
@@ -749,7 +768,8 @@ class LaunchClient:
     def batch_async_request(
         self,
         bundle_name: str,
-        urls_file: str,
+        # urls_file: str,
+        urls: List[str],
         serialization_format: str = "json",
     ):
         """
@@ -767,8 +787,28 @@ class LaunchClient:
         Returns:
             An id/key that can be used to fetch inference results at a later time
         """
+        f = StringIO()
+        make_batch_input_file(urls, f)
+        f.seek(0)
+
+        if self.self_hosted:
+            # TODO make this not use bundle_location_fn()
+            file_location = self.bundle_location_fn()  # type: ignore
+            self.upload_batch_csv_fn(
+                f.getvalue(), file_location
+            )  # type: ignore
+        else:
+            model_bundle_s3_url = self.connection.post(
+                {}, MODEL_BUNDLE_SIGNED_URL_PATH
+            )
+            s3_path = model_bundle_s3_url["signedUrl"]
+            requests.put(s3_path, data=f.getvalue())
+            file_location = f"s3://{model_bundle_s3_url['bucket']}/{model_bundle_s3_url['key']}"
+
+        logger.info("Writing batch task csv to %s", file_location)
+
         payload = dict(
-            input_path=urls_file,
+            input_path=file_location,
             serialization_format=serialization_format,
         )
         payload = self.endpoint_auth_decorator_fn(payload)
