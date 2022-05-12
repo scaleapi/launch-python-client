@@ -7,3 +7,9 @@
 **/scratch/
 *.swp
 .vim/
+
+# Sphinx documentation
+docs/_sources
+docs/.doctrees
+
+.DS_Store

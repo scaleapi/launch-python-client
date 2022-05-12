@@ -1,0 +1,945 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="launch.request_validation" href="request_validation/index.html" /><link rel="prev" title="Welcome to the Launch API Reference!" href="../../index.html" />
+
+    <link rel="shortcut icon" href="../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.04.07"/>
+        <title>launch - Launch API Reference</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">Launch API Reference</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/launch-logo.svg" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Launch API Reference</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="request_validation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.request_validation</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.pipeline</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="clientlib/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.clientlib</span></code></a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="module-launch">
+<span id="launch"></span><h1><a class="reference internal" href="#module-launch" title="launch"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch</span></code></a><a class="headerlink" href="#module-launch" title="Permalink to this headline">#</a></h1>
+<p>Moving an ML model from experiment to production requires significant engineering lift.
+Scale Launch provides ML engineers a simple Python interface for turning a local code snippet into a production service.
+A ML engineer simply needs to call a few functions from Scale’s SDK, which quickly spins up a production-ready service.
+The service efficiently utilizes compute resources and automatically scales according to traffic.</p>
+<p>Central to Scale Launch are the notions of a <cite>ModelBundle</cite> and a <cite>ModelEndpoint</cite>.</p>
+<p>A <cite>ModelBundle</cite> consists of a trained model as well as the surrounding preprocessing and postprocessing code.
+Specifically, a <cite>ModelBundle</cite> consists of two Python objects, a <cite>load_predict_fn</cite>, and either a <cite>model</cite> or <cite>load_model_fn</cite>; such that</p>
+<blockquote>
+<div><p>load_predict_fn(model)</p>
+</div></blockquote>
+<p>or</p>
+<blockquote>
+<div><p>load_predict_fn(load_model_fn())</p>
+</div></blockquote>
+<p>returns a function <cite>predict_fn</cite> that takes in one argument representing model input,
+and outputs one argument representing model output.</p>
+<p>Typically, a <cite>model</cite> would be a Pytorch nn.Module or Tensorflow Keras model.</p>
+<a class="reference internal image-reference" href="../../_images/model_bundle.png"><img alt="../../_images/model_bundle.png" src="../../_images/model_bundle.png" style="width: 200px;"/></a>
+<p>TODO should we include a specific example here?</p>
+<p>A <cite>ModelEndpoint</cite> is the compute layer that takes in a <cite>ModelBundle</cite>, and is able to carry out inference requests
+by using the <cite>ModelBundle</cite> to carry out predictions. The <cite>ModelEndpoint</cite> also knows infrastructure-level details,
+such as how many GPUs are needed, what type they are, how much memory, etc. The <cite>ModelEndpoint</cite> automatically handles
+infrastructure level details such as autoscaling and task queueing. There are two types of <a href="#id1"><span class="problematic" id="id2">`</span></a>ModelEndpoint`s:
+<a href="#id3"><span class="problematic" id="id4">`</span></a>SyncEndpoint`s and <a href="#id5"><span class="problematic" id="id6">`</span></a>AsyncEndpoint`s.</p>
+<a class="reference internal image-reference" href="../../_images/model_endpoint.png"><img alt="../../_images/model_endpoint.png" src="../../_images/model_endpoint.png" style="width: 400px;"/></a>
+<p>A <cite>SyncEndpoint</cite> takes in requests and immediately returns the response in a blocking manner.
+The <cite>SyncEndpoint</cite> always consumes resources, and autoscales on the number of inflight requests.</p>
+<p>An <cite>AsyncEndpoint</cite> takes in requests and returns an asynchronous response token. The user can later query to monitor
+the status of the request. We may later expose a callback mechanism. Asynchronous endpoints can scale up from zero,
+which make them a cost effective choice for services that are not latency sensitive.
+Asynchronous endpoints autoscale on the number of inflight requests.</p>
+<p>In addition, we will expose another abstraction called a <cite>BatchJob</cite>, which takes in a <cite>ModelBundle</cite> and a list of inputs
+to predict on. Once a batch job completes, it cannot be restarted or accept additional requests.
+Launch maintains metadata about batch jobs for users to query, even after batch jobs are complete.</p>
+<p>Choosing between different types of inference:</p>
+<p><cite>SyncEndpoints</cite> are good if:</p>
+<ul class="simple">
+<li><p>You have strict latency requirements (e.g. on the order of seconds or less)</p></li>
+<li><p>You are willing to have resources continually allocated</p></li>
+</ul>
+<p><cite>AsyncEndpoints</cite> are good if:</p>
+<ul class="simple">
+<li><p>You want to save on compute costs</p></li>
+<li><p>Your inference code takes a long time to run</p></li>
+<li><p>Your latency requirements are on the order of minutes.</p></li>
+</ul>
+<p><cite>BatchJobs</cite> are good if:</p>
+<ul class="simple">
+<li><p>You know there is a large batch of inputs ahead of time</p></li>
+<li><p>You want to process data in an offline fashion</p></li>
+</ul>
+<p>Steps to deploy your model via Scale Launch:</p>
+<p>1. First, you create and upload a <cite>ModelBundle</cite>. Pass your trained model as well as pre-/post-processing code to
+the Scale Launch Python SDK, and we’ll create a model bundle based on the code and store it in our Bundle Store.</p>
+<p>2. Then, you create a <cite>ModelEndpoint</cite>. Pass a <cite>ModelBundle</cite> as well as infrastructure settings such as #GPUs to our SDK.
+This provisions resources on Scale’s cluster dedicated to your <cite>ModelEndpoint</cite>.</p>
+<p>3. Lastly, you make requests to the <cite>ModelEndpoint</cite>. You can make requests through the Python SDK, or make HTTP requests directly
+to Scale.</p>
+<a class="reference internal image-reference" href="../../_images/request_lifecycle.png"><img alt="../../_images/request_lifecycle.png" src="../../_images/request_lifecycle.png" style="width: 400px;"/></a>
+<p>TODO: link some example colab notebook</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="request_validation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.request_validation</span></code></a></li>
+</ul>
+</div>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Permalink to this headline">#</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
+<div class="table-wrapper"><table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%"/>
+<col style="width: 90%"/>
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#launch.AsyncEndpoint" title="launch.AsyncEndpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AsyncEndpoint</span></code></a></p></td>
+<td><p>A higher level abstraction for a Model Endpoint.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#launch.AsyncEndpointBatchResponse" title="launch.AsyncEndpointBatchResponse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AsyncEndpointBatchResponse</span></code></a></p></td>
+<td><p>Currently represents a list of async inference requests to a specific endpoint. Keeps track of the requests made,</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#launch.Connection" title="launch.Connection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Connection</span></code></a></p></td>
+<td><p>Wrapper of HTTP requests to the Launch endpoint.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#launch.LaunchClient" title="launch.LaunchClient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LaunchClient</span></code></a></p></td>
+<td><p>Scale Launch Python Client extension.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#launch.ModelBundle" title="launch.ModelBundle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelBundle</span></code></a></p></td>
+<td><p>Represents a ModelBundle.</p></td>
+</tr>
+</tbody>
+</table></div>
+<dl class="py class">
+<dt class="sig sig-object py" id="launch.AsyncEndpoint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.</span></span><span class="sig-name descname"><span class="pre">AsyncEndpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.AsyncEndpoint" title="Permalink to this definition">#</a></dt>
+<dd><p>A higher level abstraction for a Model Endpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_endpoint</strong> (<a class="reference internal" href="model_endpoint/index.html#launch.model_endpoint.ModelEndpoint" title="launch.model_endpoint.ModelEndpoint"><em>ModelEndpoint</em></a>) – ModelEndpoint object.</p></li>
+<li><p><strong>client</strong> – A LaunchClient object</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.AsyncEndpoint.async_request">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">async_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.AsyncEndpoint.async_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Makes an async request to the endpoint. Polls the endpoint under the hood, but provides async/await semantics
+on top.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – A url that points to a file containing model input.
+Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A signedUrl that contains a cloudpickled Python object, the result of running inference on the model input
+Example output:</p>
+<blockquote>
+<div><p><cite>https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy</cite></p>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.AsyncEndpoint.predict_batch">
+<span class="sig-name descname"><span class="pre">predict_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.AsyncEndpoint.predict_batch" title="Permalink to this definition">#</a></dt>
+<dd><p>Runs inference on the data items specified by urls. Returns a AsyncEndpointResponse.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>requests</strong> (<em>Sequence</em><em>[</em><a class="reference internal" href="model_endpoint/index.html#launch.model_endpoint.EndpointRequest" title="launch.model_endpoint.EndpointRequest"><em>EndpointRequest</em></a><em>]</em>) – List of EndpointRequests. Request_ids must all be distinct.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>an AsyncEndpointResponse keeping track of the inference requests made</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#launch.AsyncEndpointBatchResponse" title="launch.AsyncEndpointBatchResponse">AsyncEndpointBatchResponse</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.AsyncEndpoint.status">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.AsyncEndpoint.status" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets the status of the Endpoint.
+TODO this functionality currently does not exist on the server.</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="launch.AsyncEndpointBatchResponse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.</span></span><span class="sig-name descname"><span class="pre">AsyncEndpointBatchResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.AsyncEndpointBatchResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Currently represents a list of async inference requests to a specific endpoint. Keeps track of the requests made,
+and gives a way to poll for their status.</p>
+<p>Invariant: set keys for self.request_ids and self.responses are equal</p>
+<p>idk about this abstraction tbh, could use a redesign maybe?</p>
+<p>Also batch inference sort of removes the need for much of the complication in here</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>request_ids</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – </p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.AsyncEndpointBatchResponse.get_responses">
+<span class="sig-name descname"><span class="pre">get_responses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.AsyncEndpointBatchResponse.get_responses" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a dictionary, where each key is the request_id for an EndpointRequest passed in, and the corresponding
+object at that key is the corresponding EndpointResponse.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[str, Optional[<a class="reference internal" href="model_endpoint/index.html#launch.model_endpoint.EndpointResponse" title="launch.model_endpoint.EndpointResponse">EndpointResponse</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.AsyncEndpointBatchResponse.is_done">
+<span class="sig-name descname"><span class="pre">is_done</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poll</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.AsyncEndpointBatchResponse.is_done" title="Permalink to this definition">#</a></dt>
+<dd><p>Checks if all the tasks from this round of requests are done, according to
+the internal state of this object.
+Optionally polls the endpoints to pick up new tasks that may have finished.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.AsyncEndpointBatchResponse.poll_endpoints">
+<span class="sig-name descname"><span class="pre">poll_endpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.AsyncEndpointBatchResponse.poll_endpoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Runs one round of polling the endpoint for async task results</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.AsyncEndpointBatchResponse.wait">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.AsyncEndpointBatchResponse.wait" title="Permalink to this definition">#</a></dt>
+<dd><p>Waits for inference results to complete. Provides async/await semantics, but under the hood does polling.
+TODO: we’d need to implement some lower level asyncio request code</p>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="launch.Connection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.</span></span><span class="sig-name descname"><span class="pre">Connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.Connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Wrapper of HTTP requests to the Launch endpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>api_key</strong> (<em>str</em>) – </p></li>
+<li><p><strong>endpoint</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.Connection.make_request">
+<span class="sig-name descname"><span class="pre">make_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requests_command</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">requests.post</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.Connection.make_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Makes a request to Launch endpoint and logs a warning if not
+successful.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>payload</strong> (<em>dict</em>) – given payload</p></li>
+<li><p><strong>route</strong> (<em>str</em>) – route for the request</p></li>
+<li><p><strong>requests_command</strong> – requests.post, requests.get, requests.delete</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>response JSON</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="launch.LaunchClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.</span></span><span class="sig-name descname"><span class="pre">LaunchClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_hosted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Scale Launch Python Client extension.</p>
+<p>Initializes a Scale Launch Client.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>api_key</strong> (<em>str</em>) – Your Scale API key</p></li>
+<li><p><strong>endpoint</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The Scale Launch Endpoint (this should not need to be changed)</p></li>
+<li><p><strong>self_hosted</strong> (<em>bool</em>) – True iff you are connecting to a self-hosted Scale Launch</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.async_request">
+<span class="sig-name descname"><span class="pre">async_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_pickled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.async_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
+Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key that can be used to retrieve
+the result of inference at a later time.
+Endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint_id</strong> (<em>str</em>) – The id of the endpoint to make the request to</p></li>
+<li><p><strong>url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A url that points to a file containing model input.
+Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.</p></li>
+<li><p><strong>args</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – A dictionary of arguments to the ModelBundle’s predict function.
+Must be json-serializable, i.e. composed of str, int, float, etc.
+If your <cite>predict</cite> function has signature <cite>predict(foo, bar)</cite>, then args should be a dictionary with
+keys <cite>foo</cite> and <cite>bar</cite>. Exactly one of url and args must be specified.</p></li>
+<li><p><strong>return_pickled</strong> (<em>bool</em>) – Whether the python object returned is pickled, or directly written to the file returned.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>An id/key that can be used to fetch inference results at a later time.
+Example output:</p>
+<blockquote>
+<div><p><cite>abcabcab-cabc-abca-0123456789ab</cite></p>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.batch_async_request">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">batch_async_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">urls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.batch_async_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Sends a batch inference request to the Model Endpoint at endpoint_id, returns a key that can be used to retrieve
+the results of inference at a later time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint_id</strong> (<em>str</em>) – The id of the endpoint to make the request to</p></li>
+<li><p><strong>urls</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of urls, each pointing to a file containing model input.
+Must be accessible by Scale Launch, hence urls need to either be public or signedURLs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An id/key that can be used to fetch inference results at a later time</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.create_model_bundle">
+<span class="sig-name descname"><span class="pre">create_model_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_params</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_predict_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predict_fn_or_cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_model_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bundle_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">globals_copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.create_model_bundle" title="Permalink to this definition">#</a></dt>
+<dd><p>Grabs a s3 signed url and uploads a model bundle to Scale Launch.</p>
+<p>A model bundle consists of exactly {predict_fn_or_cls}, {load_predict_fn + model}, or {load_predict_fn + load_model_fn}.
+Pre/post-processing code can be included inside load_predict_fn/model or in predict_fn_or_cls call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_bundle_name</strong> (<em>str</em>) – Name of model bundle you want to create. This acts as a unique identifier.</p></li>
+<li><p><strong>predict_fn_or_cls</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – Function or a Callable class that runs end-to-end (pre/post processing and model inference) on the call.
+I.e. <cite>predict_fn_or_cls(REQUEST) -&gt; RESPONSE</cite>.</p></li>
+<li><p><strong>model</strong> (<em>Optional</em><em>[</em><em>LaunchModel_T</em><em>]</em>) – Typically a trained Neural Network, e.g. a Pytorch module</p></li>
+<li><p><strong>load_predict_fn</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>LaunchModel_T</em><em>]</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>]</em>) – Function that when called with model, returns a function that carries out inference
+I.e. <cite>load_predict_fn(model) -&gt; func; func(REQUEST) -&gt; RESPONSE</cite></p></li>
+<li><p><strong>load_model_fn</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>LaunchModel_T</em><em>]</em><em>]</em>) – Function that when run, loads a model, e.g. a Pytorch module
+I.e. <cite>load_predict_fn(load_model_fn()) -&gt; func; func(REQUEST) -&gt; RESPONSE</cite></p></li>
+<li><p><strong>bundle_url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – Only for self-hosted mode. Desired location of bundle.</p></li>
+<li><p><strong>self.bundle_location_fn</strong> (<em>Overrides any value given by</em>) – </p></li>
+<li><p><strong>requirements</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – A list of python package requirements, e.g.
+[“tensorflow==2.3.0”, “tensorflow-hub==0.11.0”]. If no list has been passed, will default to the currently
+imported list of packages.</p></li>
+<li><p><strong>app_config</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Either a Dictionary that represents a YAML file contents or a local path to a YAML file.</p></li>
+<li><p><strong>env_params</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – A dictionary that dictates environment information e.g.
+the use of pytorch or tensorflow, which cuda/cudnn versions to use.
+Specifically, the dictionary should contain the following keys:
+“framework_type”: either “tensorflow” or “pytorch”.
+“pytorch_version”: Version of pytorch, e.g. “1.5.1”, “1.7.0”, etc. Only applicable if framework_type is pytorch
+“cuda_version”: Version of cuda used, e.g. “11.0”.
+“cudnn_version” Version of cudnn used, e.g. “cudnn8-devel”.
+“tensorflow_version”: Version of tensorflow, e.g. “2.3.0”. Only applicable if framework_type is tensorflow</p></li>
+<li><p><strong>globals_copy</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – Dictionary of the global symbol table. Normally provided by <cite>globals()</cite> built-in function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="model_bundle/index.html#launch.model_bundle.ModelBundle" title="launch.model_bundle.ModelBundle">launch.model_bundle.ModelBundle</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.create_model_bundle_from_dir">
+<span class="sig-name descname"><span class="pre">create_model_bundle_from_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requirements_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_predict_fn_module_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_model_fn_module_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.create_model_bundle_from_dir" title="Permalink to this definition">#</a></dt>
+<dd><p>Packages up code from a local filesystem folder and uploads that as a bundle to Scale Launch.
+In this mode, a bundle is just local code instead of a serialized object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_bundle_name</strong> (<em>str</em>) – Name of model bundle you want to create. This acts as a unique identifier.</p></li>
+<li><p><strong>base_path</strong> (<em>str</em>) – The path on the local filesystem where the bundle code lives.</p></li>
+<li><p><strong>requirements_path</strong> (<em>str</em>) – A path on the local filesystem where a requirements.txt file lives.</p></li>
+<li><p><strong>env_params</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – A dictionary that dictates environment information e.g.
+the use of pytorch or tensorflow, which cuda/cudnn versions to use.
+Specifically, the dictionary should contain the following keys:
+“framework_type”: either “tensorflow” or “pytorch”.
+“pytorch_version”: Version of pytorch, e.g. “1.5.1”, “1.7.0”, etc. Only applicable if framework_type is pytorch
+“cuda_version”: Version of cuda used, e.g. “11.0”.
+“cudnn_version” Version of cudnn used, e.g. “cudnn8-devel”.
+“tensorflow_version”: Version of tensorflow, e.g. “2.3.0”. Only applicable if framework_type is tensorflow</p></li>
+<li><p><strong>load_predict_fn_module_path</strong> (<em>str</em>) – A python module path within base_path for a function that, when called with the output of
+load_model_fn_module_path, returns a function that carries out inference.</p></li>
+<li><p><strong>load_model_fn_module_path</strong> (<em>str</em>) – A python module path within base_path for a function that returns a model. The output feeds into
+the function located at load_predict_fn_module_path.</p></li>
+<li><p><strong>app_config</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Either a Dictionary that represents a YAML file contents or a local path to a YAML file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="model_bundle/index.html#launch.model_bundle.ModelBundle" title="launch.model_bundle.ModelBundle">launch.model_bundle.ModelBundle</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.create_model_endpoint">
+<span class="sig-name descname"><span class="pre">create_model_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'8Gi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_worker</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sync'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_if_exists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.create_model_endpoint" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a Model Endpoint that is able to serve requests.
+Corresponds to POST/PUT endpoints</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint_name</strong> (<em>str</em>) – Name of model endpoint. Must be unique.</p></li>
+<li><p><strong>model_bundle</strong> (<em>Union</em><em>[</em><a class="reference internal" href="model_bundle/index.html#launch.model_bundle.ModelBundle" title="launch.model_bundle.ModelBundle"><em>launch.model_bundle.ModelBundle</em></a><em>, </em><em>str</em><em>]</em>) – The ModelBundle that you want your Model Endpoint to serve</p></li>
+<li><p><strong>cpus</strong> (<em>int</em>) – Number of cpus each worker should get, e.g. 1, 2, etc.</p></li>
+<li><p><strong>memory</strong> (<em>str</em>) – Amount of memory each worker should get, e.g. “4Gi”, “512Mi”, etc.</p></li>
+<li><p><strong>gpus</strong> (<em>int</em>) – Number of gpus each worker should get, e.g. 0, 1, etc.</p></li>
+<li><p><strong>min_workers</strong> (<em>int</em>) – Minimum number of workers for model endpoint</p></li>
+<li><p><strong>max_workers</strong> (<em>int</em>) – Maximum number of workers for model endpoint</p></li>
+<li><p><strong>per_worker</strong> (<em>int</em>) – An autoscaling parameter. Use this to make a tradeoff between latency and costs,
+a lower per_worker will mean more workers are created for a given workload</p></li>
+<li><p><strong>gpu_type</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – If specifying a non-zero number of gpus, this controls the type of gpu requested. Current options are
+“nvidia-tesla-t4” for NVIDIA T4s, or “nvidia-tesla-v100” for NVIDIA V100s.</p></li>
+<li><p><strong>endpoint_type</strong> (<em>str</em>) – Either “sync” or “async”. Type of endpoint we want to instantiate.</p></li>
+<li><p><strong>update_if_exists</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Endpoint object that can be used to make requests to the endpoint.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Optional[<a class="reference internal" href="model_endpoint/index.html#launch.model_endpoint.Endpoint" title="launch.model_endpoint.Endpoint">launch.model_endpoint.Endpoint</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.delete_model_bundle">
+<span class="sig-name descname"><span class="pre">delete_model_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.delete_model_bundle" title="Permalink to this definition">#</a></dt>
+<dd><p>Deletes the model bundle on the server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model_bundle</strong> (<a class="reference internal" href="model_bundle/index.html#launch.model_bundle.ModelBundle" title="launch.model_bundle.ModelBundle"><em>launch.model_bundle.ModelBundle</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.delete_model_endpoint">
+<span class="sig-name descname"><span class="pre">delete_model_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_endpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.delete_model_endpoint" title="Permalink to this definition">#</a></dt>
+<dd><p>Deletes a model endpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>model_endpoint</strong> (<a class="reference internal" href="model_endpoint/index.html#launch.model_endpoint.ModelEndpoint" title="launch.model_endpoint.ModelEndpoint"><em>launch.model_endpoint.ModelEndpoint</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.edit_model_endpoint">
+<span class="sig-name descname"><span class="pre">edit_model_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_worker</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.edit_model_endpoint" title="Permalink to this definition">#</a></dt>
+<dd><p>Edit an existing model endpoint</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>model_bundle</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference internal" href="model_bundle/index.html#launch.model_bundle.ModelBundle" title="launch.model_bundle.ModelBundle"><em>launch.model_bundle.ModelBundle</em></a><em>, </em><em>str</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>cpus</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – </p></li>
+<li><p><strong>memory</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>gpus</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>min_workers</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>max_workers</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>per_worker</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>gpu_type</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.get_async_response">
+<span class="sig-name descname"><span class="pre">get_async_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">async_task_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.get_async_response" title="Permalink to this definition">#</a></dt>
+<dd><p>Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
+Gets inference results from a previously created task.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>async_task_id</strong> (<em>str</em>) – The id/key returned from a previous invocation of async_request.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A dictionary that contains task status and optionally a result url or result if the task has completed.
+Result url or result will be returned if the task has succeeded. Will return a result url iff <cite>return_pickled</cite>
+was set to True on task creation.
+Dictionary’s keys are as follows:
+state: ‘PENDING’ or ‘SUCCESS’ or ‘FAILURE’
+result_url: a url pointing to inference results. This url is accessible for 12 hours after the request has been made.
+result: the value returned by the endpoint’s <cite>predict</cite> function, serialized as json
+Example output:</p>
+<blockquote>
+<div><p><cite>{‘state’: ‘SUCCESS’, ‘result_url’: ‘https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy’}</cite></p>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+<p>TODO: do we want to read the results from here as well? i.e. translate result_url into a python object</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.get_batch_async_response">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_batch_async_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_async_task_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.get_batch_async_response" title="Permalink to this definition">#</a></dt>
+<dd><p>TODO not sure about how the batch task returns an identifier for the batch.
+Gets inference results from a previously created batch task.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>batch_async_task_id</strong> (<em>str</em>) – An id representing the batch task job</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>TODO Something similar to a list of signed s3URLs</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.get_model_bundle">
+<span class="sig-name descname"><span class="pre">get_model_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bundle_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.get_model_bundle" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a Model Bundle object specified by <cite>bundle_name</cite>.
+:returns: A ModelBundle object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bundle_name</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="model_bundle/index.html#launch.model_bundle.ModelBundle" title="launch.model_bundle.ModelBundle">launch.model_bundle.ModelBundle</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.list_model_bundles">
+<span class="sig-name descname"><span class="pre">list_model_bundles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.list_model_bundles" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a list of model bundles that the user owns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of ModelBundle objects</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="model_bundle/index.html#launch.model_bundle.ModelBundle" title="launch.model_bundle.ModelBundle">launch.model_bundle.ModelBundle</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.list_model_endpoints">
+<span class="sig-name descname"><span class="pre">list_model_endpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.list_model_endpoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists all model endpoints that the user owns.
+TODO: single get_model_endpoint(self)? route doesn’t exist serverside I think</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of ModelEndpoint objects</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[<a class="reference internal" href="model_endpoint/index.html#launch.model_endpoint.Endpoint" title="launch.model_endpoint.Endpoint">launch.model_endpoint.Endpoint</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.read_endpoint_creation_logs">
+<span class="sig-name descname"><span class="pre">read_endpoint_creation_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.read_endpoint_creation_logs" title="Permalink to this definition">#</a></dt>
+<dd><p>Get builder logs as text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>endpoint_name</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.register_bundle_location_fn">
+<span class="sig-name descname"><span class="pre">register_bundle_location_fn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bundle_location_fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.register_bundle_location_fn" title="Permalink to this definition">#</a></dt>
+<dd><p>For self-hosted mode only. Registers a function that gives a location for a model bundle. Should give different
+locations each time. This function is called as bundle_location_fn(), and should return a bundle_url that
+register_upload_bundle_fn can take.</p>
+<p>Strictly, bundle_location_fn() does not need to return a str. The only requirement is that if bundle_location_fn
+returns a value of type T, then upload_bundle_fn() takes in an object of type T as its second argument
+(i.e. bundle_url).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bundle_location_fn</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>str</em><em>]</em>) – Function that generates bundle_urls for upload_bundle_fn.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.register_endpoint_auth_decorator">
+<span class="sig-name descname"><span class="pre">register_endpoint_auth_decorator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_auth_decorator_fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.register_endpoint_auth_decorator" title="Permalink to this definition">#</a></dt>
+<dd><p>For self-hosted mode only. Registers a function that modifies the endpoint creation payload to include
+required fields for self-hosting.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.register_upload_bundle_fn">
+<span class="sig-name descname"><span class="pre">register_upload_bundle_fn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_bundle_fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.register_upload_bundle_fn" title="Permalink to this definition">#</a></dt>
+<dd><p>For self-hosted mode only. Registers a function that handles model bundle upload. This function is called as</p>
+<p>upload_bundle_fn(serialized_bundle, bundle_url)</p>
+<p>This function should directly write the contents of serialized_bundle as a binary string into bundle_url.</p>
+<p>See register_bundle_location_fn for more notes on the signature of upload_bundle_fn</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>upload_bundle_fn</strong> (<em>Callable</em><em>[</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>, </em><em>None</em><em>]</em>) – Function that takes in a serialized bundle, and uploads that bundle to an appropriate
+location. Only needed for self-hosted mode.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="launch.LaunchClient.sync_request">
+<span class="sig-name descname"><span class="pre">sync_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_pickled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.LaunchClient.sync_request" title="Permalink to this definition">#</a></dt>
+<dd><p>Not recommended for use, instead use functions provided by SyncEndpoint
+Makes a request to the Sync Model Endpoint at endpoint_id, and blocks until request completion or timeout.
+Endpoint at endpoint_id must be a SyncEndpoint, otherwise this request will fail.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint_id</strong> (<em>str</em>) – The id of the endpoint to make the request to</p></li>
+<li><p><strong>url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A url that points to a file containing model input.
+Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.</p></li>
+<li><p><strong>args</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – A dictionary of arguments to the <cite>predict</cite> function defined in your model bundle.
+Must be json-serializable, i.e. composed of str, int, float, etc.
+If your <cite>predict</cite> function has signature <cite>predict(foo, bar)</cite>, then args should be a dictionary with
+keys <cite>foo</cite> and <cite>bar</cite>. Exactly one of url and args must be specified.</p></li>
+<li><p><strong>return_pickled</strong> (<em>bool</em>) – Whether the python object returned is pickled, or directly written to the file returned.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>A dictionary with key either “result_url” or “result”, depending on the value of <cite>return_pickled</cite>.
+If <cite>return_pickled</cite> is true, the key will be “result_url”,
+and the value is a signedUrl that contains a cloudpickled Python object,
+the result of running inference on the model input.
+Example output:</p>
+<blockquote>
+<div><p><cite>https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy</cite></p>
+</div></blockquote>
+<p>Otherwise, if <cite>return_pickled</cite> is false, the key will be “result”,
+and the value is the output of the endpoint’s <cite>predict</cite> function, serialized as json.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="launch.ModelBundle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.</span></span><span class="sig-name descname"><span class="pre">ModelBundle</span></span><a class="headerlink" href="#launch.ModelBundle" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents a ModelBundle.</p>
+</dd></dl>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="request_validation/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.request_validation</span></code></div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../../index.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, Scale
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch</span></code></a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#package-contents">Package Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#launch.AsyncEndpoint">AsyncEndpoint</a><ul>
+<li><a class="reference internal" href="#launch.AsyncEndpoint.async_request">async_request</a></li>
+<li><a class="reference internal" href="#launch.AsyncEndpoint.predict_batch">predict_batch</a></li>
+<li><a class="reference internal" href="#launch.AsyncEndpoint.status">status</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#launch.AsyncEndpointBatchResponse">AsyncEndpointBatchResponse</a><ul>
+<li><a class="reference internal" href="#launch.AsyncEndpointBatchResponse.get_responses">get_responses</a></li>
+<li><a class="reference internal" href="#launch.AsyncEndpointBatchResponse.is_done">is_done</a></li>
+<li><a class="reference internal" href="#launch.AsyncEndpointBatchResponse.poll_endpoints">poll_endpoints</a></li>
+<li><a class="reference internal" href="#launch.AsyncEndpointBatchResponse.wait">wait</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#launch.Connection">Connection</a><ul>
+<li><a class="reference internal" href="#launch.Connection.make_request">make_request</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#launch.LaunchClient">LaunchClient</a><ul>
+<li><a class="reference internal" href="#launch.LaunchClient.async_request">async_request</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.batch_async_request">batch_async_request</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.create_model_bundle">create_model_bundle</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.create_model_bundle_from_dir">create_model_bundle_from_dir</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.create_model_endpoint">create_model_endpoint</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.delete_model_bundle">delete_model_bundle</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.delete_model_endpoint">delete_model_endpoint</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.edit_model_endpoint">edit_model_endpoint</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.get_async_response">get_async_response</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.get_batch_async_response">get_batch_async_response</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.get_model_bundle">get_model_bundle</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.list_model_bundles">list_model_bundles</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.list_model_endpoints">list_model_endpoints</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.read_endpoint_creation_logs">read_endpoint_creation_logs</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.register_bundle_location_fn">register_bundle_location_fn</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.register_endpoint_auth_decorator">register_endpoint_auth_decorator</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.register_upload_bundle_fn">register_upload_bundle_fn</a></li>
+<li><a class="reference internal" href="#launch.LaunchClient.sync_request">sync_request</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#launch.ModelBundle">ModelBundle</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    </body>
+</html>

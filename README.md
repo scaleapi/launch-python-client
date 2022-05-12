@@ -13,6 +13,8 @@ Scale Launch provides ML engineers a simple Python interface for turning a local
 A ML engineer needs to call a few functions from Scale's SDK, which quickly spins up a production-ready service.
 The service efficiently utilizes compute resources and automatically scales according to traffic.
 
+Latest API/SDK reference can be found [here](https://scaleapi.github.io/launch-python-client/).
+
 ## Deploying your model via Scale Launch
 
 Central to Scale Launch are the notions of a `ModelBundle` and a `ModelEndpoint`.
@@ -49,3 +51,18 @@ Please install the pre-commit hooks by running the following command:
 ```bash
 poetry run pre-commit install
 ```
+
+### Documentation
+
+**Updating documentation:**
+We use [Sphinx](https://www.sphinx-doc.org/en/master/) to autogenerate our API Reference from docstrings.
+
+To test your local docstring changes, run the following commands from the repository's root directory:
+
+```
+poetry shell
+cd src_docs
+sphinx-autobuild . ../docs --watch ../launch
+```
+
+`sphinx-autobuild` will spin up a server on localhost (port 8000 by default) that will watch for and automatically rebuild a version of the API reference based on your local docstring changes.
