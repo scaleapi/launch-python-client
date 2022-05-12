@@ -798,9 +798,9 @@ class LaunchClient:
                 file_location = self.bundle_location_fn()  # type: ignore
             else:
                 file_location = batch_url_file_location
-            self.upload_batch_csv_fn(
+            self.upload_batch_csv_fn(  # type: ignore
                 f.getvalue(), file_location
-            )  # type: ignore
+            )
         else:
             # TODO make this not use MODEL_BUNDLE_SIGNED_URL_PATH
             model_bundle_s3_url = self.connection.post(
