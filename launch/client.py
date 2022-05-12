@@ -802,6 +802,7 @@ class LaunchClient:
                 f.getvalue(), file_location
             )  # type: ignore
         else:
+            # TODO make this not use MODEL_BUNDLE_SIGNED_URL_PATH
             model_bundle_s3_url = self.connection.post(
                 {}, MODEL_BUNDLE_SIGNED_URL_PATH
             )
