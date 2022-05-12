@@ -26,6 +26,7 @@ Sections
    api/launch/index
    api/launch/cli/index
    api/launch/pipeline/index
+   api/launch/clientlib/index
 
 
 Index
