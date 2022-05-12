@@ -164,6 +164,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/launch/cli/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/launch/pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.pipeline</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/launch/clientlib/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.clientlib</span></code></a></li>
 </ul>
 
 </div>
@@ -199,13 +200,15 @@
           
 <section class="genindex-section">
   <h1 id="index">Index</h1>
-  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#W"><strong>W</strong></a></div>
+  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#J"><strong>J</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#W"><strong>W</strong></a></div>
 </section>
 <section id="A" class="genindex-section">
   <h2>A</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/launch/errors/index.html#launch.errors.APIError">APIError</a>
+</li>
+        <li><a href="api/launch/clientlib/object_conf_from_std_ml_serve/index.html#launch.clientlib.object_conf_from_std_ml_serve.ObjectConf.args">args (launch.clientlib.object_conf_from_std_ml_serve.ObjectConf attribute)</a>
 </li>
         <li><a href="api/launch/index.html#launch.AsyncEndpoint.async_request">async_request() (launch.AsyncEndpoint method)</a>
 
@@ -247,6 +250,10 @@
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/batching/types/index.html#launch.clientlib.batching.types.BatchableService">BatchableService (class in launch.clientlib.batching.types)</a>
+</li>
+        <li><a href="api/launch/clientlib/batching/types/index.html#launch.clientlib.batching.types.Batcher">Batcher (class in launch.clientlib.batching.types)</a>
+</li>
         <li><a href="api/launch/cli/bundles/index.html#launch.cli.bundles.bundles">bundles() (in module launch.cli.bundles)</a>
 </li>
     </ul></td>
@@ -257,20 +264,26 @@
   <h2>C</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.ReferencedDeployment.call">call() (launch.clientlib.ReferencedDeployment method)</a>
+</li>
+        <li><a href="api/launch/clientlib/object_conf_from_std_ml_serve/index.html#launch.clientlib.object_conf_from_std_ml_serve.ObjectConf.class_name">class_name (launch.clientlib.object_conf_from_std_ml_serve.ObjectConf attribute)</a>
+</li>
         <li><a href="api/launch/index.html#launch.Connection">Connection (class in launch)</a>
 
         <ul>
           <li><a href="api/launch/connection/index.html#launch.connection.Connection">(class in launch.connection)</a>
 </li>
         </ul></li>
+        <li><a href="api/launch/clientlib/object_conf_from_std_ml_serve/index.html#launch.clientlib.object_conf_from_std_ml_serve.ObjectConf.construct">construct() (launch.clientlib.object_conf_from_std_ml_serve.ObjectConf method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/launch/client/index.html#launch.client.LaunchClient.create_model_bundle">create_model_bundle() (launch.client.LaunchClient method)</a>
 
         <ul>
           <li><a href="api/launch/index.html#launch.LaunchClient.create_model_bundle">(launch.LaunchClient method)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/launch/client/index.html#launch.client.LaunchClient.create_model_bundle_from_dir">create_model_bundle_from_dir() (launch.client.LaunchClient method)</a>
 
         <ul>
@@ -301,12 +314,18 @@
           <li><a href="api/launch/index.html#launch.LaunchClient.delete_model_bundle">(launch.LaunchClient method)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/launch/client/index.html#launch.client.LaunchClient.delete_model_endpoint">delete_model_endpoint() (launch.client.LaunchClient method)</a>
 
         <ul>
           <li><a href="api/launch/index.html#launch.LaunchClient.delete_model_endpoint">(launch.LaunchClient method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.DeployedService">DeployedService (class in launch.clientlib)</a>
+
+        <ul>
+          <li><a href="api/launch/clientlib/deployment/index.html#launch.clientlib.deployment.DeployedService">(class in launch.clientlib.deployment)</a>
 </li>
         </ul></li>
         <li><a href="api/launch/pipeline/index.html#launch.pipeline.Deployment">Deployment (class in launch.pipeline)</a>
@@ -315,6 +334,8 @@
           <li><a href="api/launch/pipeline/deployment/index.html#launch.pipeline.deployment.Deployment">(class in launch.pipeline.deployment)</a>
 </li>
         </ul></li>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.DeploymentOptions">DeploymentOptions (class in launch.clientlib)</a>
+</li>
     </ul></td>
   </tr></table>
 </section>
@@ -351,10 +372,16 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/launch/find_packages/index.html#launch.find_packages.find_packages_from_imports">find_packages_from_imports() (in module launch.find_packages)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/launch/find_packages/index.html#launch.find_packages.find_packages_from_path">find_packages_from_path() (in module launch.find_packages)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.FullService">FullService (class in launch.clientlib)</a>
+
+        <ul>
+          <li><a href="api/launch/clientlib/service/index.html#launch.clientlib.service.FullService">(class in launch.clientlib.service)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -401,12 +428,30 @@
   <h2>I</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/model_service/types/index.html#launch.clientlib.model_service.types.InferenceService">InferenceService (class in launch.clientlib.model_service.types)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/launch/index.html#launch.AsyncEndpointBatchResponse.is_done">is_done() (launch.AsyncEndpointBatchResponse method)</a>
 
         <ul>
           <li><a href="api/launch/model_endpoint/index.html#launch.model_endpoint.AsyncEndpointBatchResponse.is_done">(launch.model_endpoint.AsyncEndpointBatchResponse method)</a>
 </li>
         </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="J" class="genindex-section">
+  <h2>J</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.JsonHandler">JsonHandler (class in launch.clientlib)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.JsonService">JsonService (class in launch.clientlib)</a>
+</li>
     </ul></td>
   </tr></table>
 </section>
@@ -465,6 +510,190 @@
 </li>
         </ul></li>
         <li>
+    launch.clientlib
+
+        <ul>
+          <li><a href="api/launch/clientlib/index.html#module-launch.clientlib">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.batching
+
+        <ul>
+          <li><a href="api/launch/clientlib/batching/index.html#module-launch.clientlib.batching">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.batching.implementation
+
+        <ul>
+          <li><a href="api/launch/clientlib/batching/implementation/index.html#module-launch.clientlib.batching.implementation">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.batching.named_arrays
+
+        <ul>
+          <li><a href="api/launch/clientlib/batching/named_arrays/index.html#module-launch.clientlib.batching.named_arrays">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.batching.single_array
+
+        <ul>
+          <li><a href="api/launch/clientlib/batching/single_array/index.html#module-launch.clientlib.batching.single_array">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.batching.types
+
+        <ul>
+          <li><a href="api/launch/clientlib/batching/types/index.html#module-launch.clientlib.batching.types">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.core
+
+        <ul>
+          <li><a href="api/launch/clientlib/core/index.html#module-launch.clientlib.core">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.demonstration
+
+        <ul>
+          <li><a href="api/launch/clientlib/demonstration/index.html#module-launch.clientlib.demonstration">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.deployment
+
+        <ul>
+          <li><a href="api/launch/clientlib/deployment/index.html#module-launch.clientlib.deployment">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.exe
+
+        <ul>
+          <li><a href="api/launch/clientlib/exe/index.html#module-launch.clientlib.exe">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.exe.run_service
+
+        <ul>
+          <li><a href="api/launch/clientlib/exe/run_service/index.html#module-launch.clientlib.exe.run_service">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.full_service
+
+        <ul>
+          <li><a href="api/launch/clientlib/full_service/index.html#module-launch.clientlib.full_service">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.http
+
+        <ul>
+          <li><a href="api/launch/clientlib/http/index.html#module-launch.clientlib.http">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.loader
+
+        <ul>
+          <li><a href="api/launch/clientlib/loader/index.html#module-launch.clientlib.loader">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.model
+
+        <ul>
+          <li><a href="api/launch/clientlib/model/index.html#module-launch.clientlib.model">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.model_service
+
+        <ul>
+          <li><a href="api/launch/clientlib/model_service/index.html#module-launch.clientlib.model_service">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.model_service.implementation
+
+        <ul>
+          <li><a href="api/launch/clientlib/model_service/implementation/index.html#module-launch.clientlib.model_service.implementation">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.model_service.named_arrays
+
+        <ul>
+          <li><a href="api/launch/clientlib/model_service/named_arrays/index.html#module-launch.clientlib.model_service.named_arrays">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.model_service.single_array
+
+        <ul>
+          <li><a href="api/launch/clientlib/model_service/single_array/index.html#module-launch.clientlib.model_service.single_array">module</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li>
+    launch.clientlib.model_service.types
+
+        <ul>
+          <li><a href="api/launch/clientlib/model_service/types/index.html#module-launch.clientlib.model_service.types">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.object_conf_from_std_ml_serve
+
+        <ul>
+          <li><a href="api/launch/clientlib/object_conf_from_std_ml_serve/index.html#module-launch.clientlib.object_conf_from_std_ml_serve">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.pipeline
+
+        <ul>
+          <li><a href="api/launch/clientlib/pipeline/index.html#module-launch.clientlib.pipeline">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.service
+
+        <ul>
+          <li><a href="api/launch/clientlib/service/index.html#module-launch.clientlib.service">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.triton
+
+        <ul>
+          <li><a href="api/launch/clientlib/triton/index.html#module-launch.clientlib.triton">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.types
+
+        <ul>
+          <li><a href="api/launch/clientlib/types/index.html#module-launch.clientlib.types">module</a>
+</li>
+        </ul></li>
+        <li>
+    launch.clientlib.utils
+
+        <ul>
+          <li><a href="api/launch/clientlib/utils/index.html#module-launch.clientlib.utils">module</a>
+</li>
+        </ul></li>
+        <li>
     launch.connection
 
         <ul>
@@ -506,8 +735,6 @@
           <li><a href="api/launch/model_bundle/index.html#module-launch.model_bundle">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     launch.model_endpoint
 
@@ -593,6 +820,8 @@
           <li><a href="api/launch/index.html#launch.LaunchClient.list_model_endpoints">(launch.LaunchClient method)</a>
 </li>
         </ul></li>
+        <li><a href="api/launch/clientlib/loader/index.html#launch.clientlib.loader.Loader">Loader (class in launch.clientlib.loader)</a>
+</li>
     </ul></td>
   </tr></table>
 </section>
@@ -645,6 +874,58 @@
 </li>
           <li><a href="api/launch/client/index.html#module-launch.client">launch.client</a>
 </li>
+          <li><a href="api/launch/clientlib/index.html#module-launch.clientlib">launch.clientlib</a>
+</li>
+          <li><a href="api/launch/clientlib/batching/index.html#module-launch.clientlib.batching">launch.clientlib.batching</a>
+</li>
+          <li><a href="api/launch/clientlib/batching/implementation/index.html#module-launch.clientlib.batching.implementation">launch.clientlib.batching.implementation</a>
+</li>
+          <li><a href="api/launch/clientlib/batching/named_arrays/index.html#module-launch.clientlib.batching.named_arrays">launch.clientlib.batching.named_arrays</a>
+</li>
+          <li><a href="api/launch/clientlib/batching/single_array/index.html#module-launch.clientlib.batching.single_array">launch.clientlib.batching.single_array</a>
+</li>
+          <li><a href="api/launch/clientlib/batching/types/index.html#module-launch.clientlib.batching.types">launch.clientlib.batching.types</a>
+</li>
+          <li><a href="api/launch/clientlib/core/index.html#module-launch.clientlib.core">launch.clientlib.core</a>
+</li>
+          <li><a href="api/launch/clientlib/demonstration/index.html#module-launch.clientlib.demonstration">launch.clientlib.demonstration</a>
+</li>
+          <li><a href="api/launch/clientlib/deployment/index.html#module-launch.clientlib.deployment">launch.clientlib.deployment</a>
+</li>
+          <li><a href="api/launch/clientlib/exe/index.html#module-launch.clientlib.exe">launch.clientlib.exe</a>
+</li>
+          <li><a href="api/launch/clientlib/exe/run_service/index.html#module-launch.clientlib.exe.run_service">launch.clientlib.exe.run_service</a>
+</li>
+          <li><a href="api/launch/clientlib/full_service/index.html#module-launch.clientlib.full_service">launch.clientlib.full_service</a>
+</li>
+          <li><a href="api/launch/clientlib/http/index.html#module-launch.clientlib.http">launch.clientlib.http</a>
+</li>
+          <li><a href="api/launch/clientlib/loader/index.html#module-launch.clientlib.loader">launch.clientlib.loader</a>
+</li>
+          <li><a href="api/launch/clientlib/model/index.html#module-launch.clientlib.model">launch.clientlib.model</a>
+</li>
+          <li><a href="api/launch/clientlib/model_service/index.html#module-launch.clientlib.model_service">launch.clientlib.model_service</a>
+</li>
+          <li><a href="api/launch/clientlib/model_service/implementation/index.html#module-launch.clientlib.model_service.implementation">launch.clientlib.model_service.implementation</a>
+</li>
+          <li><a href="api/launch/clientlib/model_service/named_arrays/index.html#module-launch.clientlib.model_service.named_arrays">launch.clientlib.model_service.named_arrays</a>
+</li>
+          <li><a href="api/launch/clientlib/model_service/single_array/index.html#module-launch.clientlib.model_service.single_array">launch.clientlib.model_service.single_array</a>
+</li>
+          <li><a href="api/launch/clientlib/model_service/types/index.html#module-launch.clientlib.model_service.types">launch.clientlib.model_service.types</a>
+</li>
+          <li><a href="api/launch/clientlib/object_conf_from_std_ml_serve/index.html#module-launch.clientlib.object_conf_from_std_ml_serve">launch.clientlib.object_conf_from_std_ml_serve</a>
+</li>
+          <li><a href="api/launch/clientlib/pipeline/index.html#module-launch.clientlib.pipeline">launch.clientlib.pipeline</a>
+</li>
+          <li><a href="api/launch/clientlib/service/index.html#module-launch.clientlib.service">launch.clientlib.service</a>
+</li>
+          <li><a href="api/launch/clientlib/triton/index.html#module-launch.clientlib.triton">launch.clientlib.triton</a>
+</li>
+          <li><a href="api/launch/clientlib/types/index.html#module-launch.clientlib.types">launch.clientlib.types</a>
+</li>
+          <li><a href="api/launch/clientlib/utils/index.html#module-launch.clientlib.utils">launch.clientlib.utils</a>
+</li>
           <li><a href="api/launch/connection/index.html#module-launch.connection">launch.connection</a>
 </li>
           <li><a href="api/launch/constants/index.html#module-launch.constants">launch.constants</a>
@@ -684,12 +965,24 @@
   <h2>N</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/launch/pipeline/index.html#launch.pipeline.Runtime.name">name() (launch.pipeline.Runtime method)</a>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.Status.name">name() (launch.clientlib.Status method)</a>
 
         <ul>
+          <li><a href="api/launch/pipeline/index.html#launch.pipeline.Runtime.name">(launch.pipeline.Runtime method)</a>
+</li>
           <li><a href="api/launch/pipeline/runtime/index.html#launch.pipeline.runtime.Runtime.name">(launch.pipeline.runtime.Runtime method)</a>
 </li>
         </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="O" class="genindex-section">
+  <h2>O</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/object_conf_from_std_ml_serve/index.html#launch.clientlib.object_conf_from_std_ml_serve.ObjectConf">ObjectConf (class in launch.clientlib.object_conf_from_std_ml_serve)</a>
+</li>
     </ul></td>
   </tr></table>
 </section>
@@ -698,6 +991,8 @@
   <h2>P</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/object_conf_from_std_ml_serve/index.html#launch.clientlib.object_conf_from_std_ml_serve.ObjectConf.pass_args_whole">pass_args_whole (launch.clientlib.object_conf_from_std_ml_serve.ObjectConf attribute)</a>
+</li>
         <li><a href="api/launch/index.html#launch.AsyncEndpointBatchResponse.poll_endpoints">poll_endpoints() (launch.AsyncEndpointBatchResponse method)</a>
 
         <ul>
@@ -712,6 +1007,8 @@
           <li><a href="api/launch/model_endpoint/index.html#launch.model_endpoint.AsyncEndpoint.predict_batch">(launch.model_endpoint.AsyncEndpoint method)</a>
 </li>
         </ul></li>
+        <li><a href="api/launch/clientlib/model_service/types/index.html#launch.clientlib.model_service.types.Processor">Processor (class in launch.clientlib.model_service.types)</a>
+</li>
     </ul></td>
   </tr></table>
 </section>
@@ -728,14 +1025,14 @@
           <li><a href="api/launch/index.html#launch.LaunchClient.read_endpoint_creation_logs">(launch.LaunchClient method)</a>
 </li>
         </ul></li>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.ReferencedDeployment">ReferencedDeployment (class in launch.clientlib)</a>
+</li>
         <li><a href="api/launch/client/index.html#launch.client.LaunchClient.register_bundle_location_fn">register_bundle_location_fn() (launch.client.LaunchClient method)</a>
 
         <ul>
           <li><a href="api/launch/index.html#launch.LaunchClient.register_bundle_location_fn">(launch.LaunchClient method)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/launch/client/index.html#launch.client.LaunchClient.register_endpoint_auth_decorator">register_endpoint_auth_decorator() (launch.client.LaunchClient method)</a>
 
         <ul>
@@ -748,9 +1045,35 @@
           <li><a href="api/launch/index.html#launch.LaunchClient.register_upload_bundle_fn">(launch.LaunchClient method)</a>
 </li>
         </ul></li>
-        <li><a href="api/launch/pipeline/index.html#launch.pipeline.Runtime">Runtime (class in launch.pipeline)</a>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.RequestHandler">RequestHandler (class in launch.clientlib)</a>
 
         <ul>
+          <li><a href="api/launch/clientlib/full_service/index.html#launch.clientlib.full_service.RequestHandler">(class in launch.clientlib.full_service)</a>
+</li>
+          <li><a href="api/launch/clientlib/service/index.html#launch.clientlib.service.RequestHandler">(class in launch.clientlib.service)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.ResponseHandler">ResponseHandler (class in launch.clientlib)</a>
+
+        <ul>
+          <li><a href="api/launch/clientlib/full_service/index.html#launch.clientlib.full_service.ResponseHandler">(class in launch.clientlib.full_service)</a>
+</li>
+          <li><a href="api/launch/clientlib/service/index.html#launch.clientlib.service.ResponseHandler">(class in launch.clientlib.service)</a>
+</li>
+        </ul></li>
+        <li><a href="api/launch/clientlib/full_service/index.html#launch.clientlib.full_service.RunnableService">RunnableService (class in launch.clientlib.full_service)</a>
+</li>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.RunnableTritonConfig">RunnableTritonConfig (class in launch.clientlib)</a>
+</li>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.Runtime">Runtime (class in launch.clientlib)</a>
+
+        <ul>
+          <li><a href="api/launch/clientlib/core/index.html#launch.clientlib.core.Runtime">(class in launch.clientlib.core)</a>
+</li>
+          <li><a href="api/launch/pipeline/index.html#launch.pipeline.Runtime">(class in launch.pipeline)</a>
+</li>
           <li><a href="api/launch/pipeline/runtime/index.html#launch.pipeline.runtime.Runtime">(class in launch.pipeline.runtime)</a>
 </li>
         </ul></li>
@@ -768,7 +1091,15 @@
           <li><a href="api/launch/pipeline/service/index.html#launch.pipeline.service.SequentialPipelineDescription">(class in launch.pipeline.service)</a>
 </li>
         </ul></li>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.Service">Service (class in launch.clientlib)</a>
+
+        <ul>
+          <li><a href="api/launch/clientlib/core/index.html#launch.clientlib.core.Service">(class in launch.clientlib.core)</a>
+</li>
+        </ul></li>
         <li><a href="api/launch/pipeline/service/index.html#launch.pipeline.service.ServiceDescription">ServiceDescription (class in launch.pipeline.service)</a>
+</li>
+        <li><a href="api/launch/clientlib/loader/index.html#launch.clientlib.loader.ServiceLoader">ServiceLoader (class in launch.clientlib.loader)</a>
 </li>
         <li><a href="api/launch/pipeline/index.html#launch.pipeline.SingleServiceDescription">SingleServiceDescription (class in launch.pipeline)</a>
 
@@ -776,8 +1107,22 @@
           <li><a href="api/launch/pipeline/service/index.html#launch.pipeline.service.SingleServiceDescription">(class in launch.pipeline.service)</a>
 </li>
         </ul></li>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.SpecsTritonModel">SpecsTritonModel (class in launch.clientlib)</a>
+
+        <ul>
+          <li><a href="api/launch/clientlib/model/index.html#launch.clientlib.model.SpecsTritonModel">(class in launch.clientlib.model)</a>
+</li>
+        </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/core/index.html#launch.clientlib.core.Runtime.start">start() (launch.clientlib.core.Runtime method)</a>
+
+        <ul>
+          <li><a href="api/launch/clientlib/index.html#launch.clientlib.Runtime.start">(launch.clientlib.Runtime method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.Status">Status (class in launch.clientlib)</a>
+</li>
         <li><a href="api/launch/index.html#launch.AsyncEndpoint.status">status() (launch.AsyncEndpoint method)</a>
 
         <ul>
@@ -800,7 +1145,21 @@
   <h2>T</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.ToProtobufText">ToProtobufText (class in launch.clientlib)</a>
+</li>
         <li><a href="api/launch/utils/index.html#launch.utils.trim_kwargs">trim_kwargs() (in module launch.utils)</a>
+</li>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.TritonModel">TritonModel (class in launch.clientlib)</a>
+
+        <ul>
+          <li><a href="api/launch/clientlib/model/index.html#launch.clientlib.model.TritonModel">(class in launch.clientlib.model)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.TritonModelConfig">TritonModelConfig (class in launch.clientlib)</a>
+</li>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.TritonTensor">TritonTensor (class in launch.clientlib)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -810,9 +1169,11 @@
   <h2>V</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/launch/pipeline/index.html#launch.pipeline.Runtime.value">value() (launch.pipeline.Runtime method)</a>
+        <li><a href="api/launch/clientlib/index.html#launch.clientlib.Status.value">value() (launch.clientlib.Status method)</a>
 
         <ul>
+          <li><a href="api/launch/pipeline/index.html#launch.pipeline.Runtime.value">(launch.pipeline.Runtime method)</a>
+</li>
           <li><a href="api/launch/pipeline/runtime/index.html#launch.pipeline.runtime.Runtime.value">(launch.pipeline.runtime.Runtime method)</a>
 </li>
         </ul></li>
