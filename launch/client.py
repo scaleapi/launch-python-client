@@ -768,8 +768,8 @@ class LaunchClient:
     def batch_async_request(
         self,
         bundle_name: str,
-        # urls_file: str,
         urls: List[str],
+        batch_url_file_location: str = None,
         serialization_format: str = "json",
     ):
         """
@@ -780,9 +780,10 @@ class LaunchClient:
             bundle_name: The id of the bundle to make the request to
             serialization_format: Serialization format of output, either 'pickle' or 'json'.
                 'pickle' corresponds to pickling results + returning
-            urls_file: S3 location of a CSV that is used as input to the batch job. TODO this really should be a list of urls
             urls: A list of urls, each pointing to a file containing model input.
                 Must be accessible by Scale Launch, hence urls need to either be public or signedURLs.
+            batch_url_file_location: In self-hosted mode, the input to the batch job will be uploaded
+                to this location if provided. Otherwise, one will be determined from bundle_location_fn()
 
         Returns:
             An id/key that can be used to fetch inference results at a later time
@@ -793,7 +794,10 @@ class LaunchClient:
 
         if self.self_hosted:
             # TODO make this not use bundle_location_fn()
-            file_location = self.bundle_location_fn()  # type: ignore
+            if batch_url_file_location is None:
+                file_location = self.bundle_location_fn()  # type: ignore
+            else:
+                file_location = batch_url_file_location
             self.upload_batch_csv_fn(
                 f.getvalue(), file_location
             )  # type: ignore
