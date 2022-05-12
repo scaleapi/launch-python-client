@@ -26,7 +26,7 @@ and outputs one argument representing model output.
 
 Typically, a `model` would be a Pytorch nn.Module or Tensorflow Keras model.
 
-.. image:: /../docs/images/model_bundle.png
+.. image:: /../src_docs/images/model_bundle.png
     :width: 200px
 
 TODO should we include a specific example here?
@@ -37,7 +37,7 @@ such as how many GPUs are needed, what type they are, how much memory, etc. The 
 infrastructure level details such as autoscaling and task queueing. There are two types of `ModelEndpoint`s:
 `SyncEndpoint`s and `AsyncEndpoint`s.
 
-.. image:: /../docs/images/model_endpoint.png
+.. image:: /../src_docs/images/model_endpoint.png
     :width: 400px
 
 A `SyncEndpoint` takes in requests and immediately returns the response in a blocking manner.
@@ -85,11 +85,13 @@ This provisions resources on Scale's cluster dedicated to your `ModelEndpoint`.
 3. Lastly, you make requests to the `ModelEndpoint`. You can make requests through the Python SDK, or make HTTP requests directly
 to Scale.
 
-.. image:: /../docs/images/request_lifecycle.png
+.. image:: /../src_docs/images/request_lifecycle.png
     :width: 400px
 
 TODO: link some example colab notebook
 """
+
+import pkg_resources
 
 from .client import LaunchClient
 from .connection import Connection
@@ -98,3 +100,5 @@ from .logger import logger
 from .model_bundle import ModelBundle
 from .model_endpoint import AsyncEndpoint, AsyncEndpointBatchResponse
 from .retry_strategy import RetryStrategy
+
+__version__ = pkg_resources.get_distribution("scale-launch").version
