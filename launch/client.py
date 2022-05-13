@@ -14,6 +14,7 @@ from launch.connection import Connection
 from launch.constants import (
     ASYNC_TASK_PATH,
     ASYNC_TASK_RESULT_PATH,
+    BATCH_TASK_INPUT_SIGNED_URL_PATH,
     BATCH_TASK_PATH,
     BATCH_TASK_RESULTS_PATH,
     ENDPOINT_PATH,
@@ -386,7 +387,7 @@ class LaunchClient:
         else:
             # Grab a signed url to make upload to
             model_bundle_s3_url = self.connection.post(
-                {}, MODEL_BUNDLE_SIGNED_URL_PATH
+                {}, BATCH_TASK_INPUT_SIGNED_URL_PATH
             )
             s3_path = model_bundle_s3_url["signedUrl"]
             raw_bundle_url = f"s3://{model_bundle_s3_url['bucket']}/{model_bundle_s3_url['key']}"
