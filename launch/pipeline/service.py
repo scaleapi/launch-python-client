@@ -1,8 +1,11 @@
 import inspect
+import uuid
 from typing import Any, Callable, Dict, List, Optional
 
 from launch.pipeline.deployment import Deployment
 from launch.pipeline.runtime import Runtime
+
+MAX_SERVICE_NAME_SIZE = 50
 
 
 class ServiceDescription:
@@ -10,8 +13,21 @@ class ServiceDescription:
     Base ServiceDescription.
     """
 
+    service_name: str
+
+    def __init__(self):
+        self.make_request: Optional[Callable] = None
+
+    def set_make_request(
+        self, make_request: Callable, force: bool = False
+    ) -> None:
+        raise NotImplementedError()
+
     def call(self, req: Any) -> Any:
         raise NotImplementedError()
+
+    def __call__(self, req: Any) -> Any:
+        return self.call(req)
 
 
 class SingleServiceDescription(ServiceDescription):
@@ -31,6 +47,10 @@ class SingleServiceDescription(ServiceDescription):
         self.runtime = runtime
         self.deployment = deployment
         self.kwargs = kwargs
+        func_name = service.__name__.replace("_", "").replace("-", "")
+        self.service_name = f"{func_name}{uuid.uuid4()}"[
+            :MAX_SERVICE_NAME_SIZE
+        ]
 
         self._callable_service: Optional[Callable] = None
 
@@ -45,10 +65,26 @@ class SingleServiceDescription(ServiceDescription):
             ), "`kwargs` is given, but the service is not a class"
             self._callable_service = self.service
 
+    def set_make_request(
+        self, make_request: Callable, force: bool = False
+    ) -> None:
+        if force:
+            self.make_request = make_request
+
     def call(self, req: Any) -> Any:
-        self._init_callable_service()
-        assert self._callable_service, "`_callable_service` is not initialized"
-        return self._callable_service(req)
+        if self.make_request:
+            return self.make_request(
+                servable_id=self.service_name,
+                local_fn=self.service,
+                args=[req],
+                kwargs={},
+            )
+        else:
+            self._init_callable_service()
+            assert (
+                self._callable_service
+            ), "`_callable_service` is not initialized"
+            return self._callable_service(req)
 
 
 class SequentialPipelineDescription(ServiceDescription):
@@ -59,9 +95,22 @@ class SequentialPipelineDescription(ServiceDescription):
     def __init__(
         self,
         items: List[SingleServiceDescription],
+        runtime: Runtime,
+        deployment: Deployment,
     ):
         super().__init__()
         self.items = items
+        self.runtime = runtime
+        self.deployment = deployment
+        self.service_name = f"pipeline{uuid.uuid4()}"[:MAX_SERVICE_NAME_SIZE]
+
+    def set_make_request(
+        self, make_request: Callable, force: bool = False
+    ) -> None:
+        if force:
+            self.make_request = make_request
+        for item in self.items:
+            item.set_make_request(make_request, force=True)
 
     def call(self, req: Any) -> Any:
         res = req
