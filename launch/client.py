@@ -387,7 +387,7 @@ class LaunchClient:
         else:
             # Grab a signed url to make upload to
             model_bundle_s3_url = self.connection.post(
-                {}, BATCH_TASK_INPUT_SIGNED_URL_PATH
+                {}, MODEL_BUNDLE_SIGNED_URL_PATH
             )
             s3_path = model_bundle_s3_url["signedUrl"]
             raw_bundle_url = f"s3://{model_bundle_s3_url['bucket']}/{model_bundle_s3_url['key']}"
@@ -803,9 +803,8 @@ class LaunchClient:
                 f.getvalue(), file_location
             )
         else:
-            # TODO make this not use MODEL_BUNDLE_SIGNED_URL_PATH
             model_bundle_s3_url = self.connection.post(
-                {}, MODEL_BUNDLE_SIGNED_URL_PATH
+                {}, BATCH_TASK_INPUT_SIGNED_URL_PATH
             )
             s3_path = model_bundle_s3_url["signedUrl"]
             requests.put(s3_path, data=f.getvalue())
