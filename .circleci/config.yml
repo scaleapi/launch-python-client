@@ -38,23 +38,23 @@ jobs:
       - run:
           name: Black Formatting Check # Only validation, without re-formatting
           command: |
-            poetry run black --check -t py36 .
+            poetry run black --check -t py36 launch
       - run:
           name: Flake8 Lint Check # Uses setup.cfg for configuration
           command: |
-            poetry run flake8 . --count --statistics
+            poetry run flake8 launch --count --statistics --exclude launch/clientlib
       - run:
           name: Pylint Lint Check # Uses .pylintrc for configuration
           command: |
-            poetry run pylint launch
+            poetry run pylint launch --ignore=clientlib
       - run :
           name: MyPy typing check
           command: |
-            poetry run mypy --ignore-missing-imports launch
+            poetry run mypy --ignore-missing-imports launch --exclude launch/clientlib
       - run :
           name: Isort Import Formatting Check # Only validation, without re-formatting
           command: |
-            poetry run isort --check-only .
+            poetry run isort --check-only launch
       - run:
           name: Pytest Test Cases
           command: |
