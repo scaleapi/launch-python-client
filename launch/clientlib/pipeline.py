@@ -8,7 +8,9 @@ class PipelineService(Service[I, O]):
     def __init__(
         self,
         service_classes_and_init_args: List[
-            Union[Type[Service], Tuple[Type[Service], Union[Sequence[Any], Any]]]
+            Union[
+                Type[Service], Tuple[Type[Service], Union[Sequence[Any], Any]]
+            ]
         ],
     ) -> None:
         self.services: List[Service] = []

@@ -43,7 +43,9 @@ class TritonModelServer(Runtime):
     runtime_name = Runtimes.Triton
 
     def start(self) -> None:
-        logger.info(f"Downloading & extracting model repository: {self.model_repository_artifact}")
+        logger.info(
+            f"Downloading & extracting model repository: {self.model_repository_artifact}"
+        )
         dl = download(self.model_repository_artifact)
         local_model_repo = extract(dl)
         triton_cmd: List[str] = [
@@ -75,7 +77,9 @@ class ReferenceTritonModelServer(TritonModel):
     use_grpc: bool = True
 
     def call(self, input_: NamedArrays) -> NamedArrays:
-        result = self.triton_client.inference_async(name=self.model_name, input=input_)
+        result = self.triton_client.inference_async(
+            name=self.model_name, input=input_
+        )
         return result.get()
 
 
@@ -144,7 +148,9 @@ class RunnableTritonConfig(NamedTuple):
 
 
 def make_pytorch_triton_configuration(
-    models_to_configure_for_triton: List[Tuple[torch.Module, TritonModelConfig]],
+    models_to_configure_for_triton: List[
+        Tuple[torch.Module, TritonModelConfig]
+    ],
     s3_client: Any,
     gzip_compression: bool = False,
     backend_for_model_artifact_storage: str = "s3://scale-ml/home/malcolmgreaves/prod/model_artifact_base",
@@ -166,7 +172,9 @@ def make_pytorch_triton_configuration(
             )
             raise
         else:
-            jitted_models_to_configurations.append((jitted_model, triton_model_configuration))
+            jitted_models_to_configurations.append(
+                (jitted_model, triton_model_configuration)
+            )
 
     saved_artifacts: Dict[str, RunnableTritonConfig] = dict()
     # create model artifact file structure
@@ -183,7 +191,9 @@ def make_pytorch_triton_configuration(
             i += 1
 
             # make model artifact directory file & directory structure
-            artifact_dir: Path = tempdir / triton_model_configuration.model_name
+            artifact_dir: Path = (
+                tempdir / triton_model_configuration.model_name
+            )
             artifact_dir.mkdir()
 
             model_dir: Path = artifact_dir / f"{i}"
@@ -209,14 +219,18 @@ def make_pytorch_triton_configuration(
                 w.add(str(artifact_dir), recursive=True, filter=None)
 
             # upload the archive
-            s3_location = f"{backend_for_model_artifact_storage}/{uuid4()}/{tar_name}"
+            s3_location = (
+                f"{backend_for_model_artifact_storage}/{uuid4()}/{tar_name}"
+            )
             s3_client.copy(tar_name, s3_location)
             logger.info(
                 f"[{i}/{len(jitted_models_to_configurations)}] Formatted and saved model "
                 f'"{triton_model_configuration.model_name}" to {s3_location}'
             )
 
-            saved_artifacts[triton_model_configuration.model_name] = RunnableTritonConfig(
+            saved_artifacts[
+                triton_model_configuration.model_name
+            ] = RunnableTritonConfig(
                 model_artifact_uri=s3_location,
                 config=triton_model_configuration,
             )
@@ -232,7 +246,9 @@ def triton_config_pytorch_model(
     max_batch_size: int,
     dynamic_batching: Optional[float] = None,
 ) -> TritonModelConfig:
-    def convert(shapes: List[EnrichedTensor], *, is_input: bool) -> List[TritonTensor]:
+    def convert(
+        shapes: List[EnrichedTensor], *, is_input: bool
+    ) -> List[TritonTensor]:
         prefix = "input" if is_input else "output"
         return [
             TritonTensor(
@@ -295,8 +311,14 @@ def demo():
 
     triton_format_model = triton_config_pytorch_model(
         model_name="mymodel",
-        input_shapes=[EnrichedTensor(data_type="TYPE_INT32", format=None, dims=[255, 255, 3])],
-        output_shapes=[EnrichedTensor(data_type="TYPE_FLOAT16", format=None, dims=[1000])],
+        input_shapes=[
+            EnrichedTensor(
+                data_type="TYPE_INT32", format=None, dims=[255, 255, 3]
+            )
+        ],
+        output_shapes=[
+            EnrichedTensor(data_type="TYPE_FLOAT16", format=None, dims=[1000])
+        ],
         max_batch_size=8,
         dynamic_batching=50000,
     )
@@ -310,7 +332,9 @@ def demo():
     assert model_name == "mymodel"
     assert isinstance(runnable_config, RunnableTritonConfig)
 
-    logger.info(f"The following model artifact: {runnable_config.model_artifact_uri}")
+    logger.info(
+        f"The following model artifact: {runnable_config.model_artifact_uri}"
+    )
     logger.info(
         f"Will work with the following Triton model configuration:\n{runnable_config.config.as_pbtext()}"
     )
@@ -324,7 +348,9 @@ def demo():
 
     client: LaunchClient = None
 
-    reference: ReferenceTritonModelServer = client.triton_standin(triton_format_model)
+    reference: ReferenceTritonModelServer = client.triton_standin(
+        triton_format_model
+    )
 
     JsonVal = Any
     import numpy as np

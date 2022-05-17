@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Generic, Sequence, TypeVar, Optional, Mapping, Any
+from typing import Any, Generic, Mapping, Optional, Sequence, TypeVar
 
 from scaleml.scaleml.utils import import_by_name
 
@@ -7,11 +7,10 @@ from scaleml.scaleml.utils import import_by_name
 COPIED FROM std-ml-srv: ml_serve.configuration.ObjectConf
 """
 
-__all__: Sequence[str] = (
-    'ObjectConf',
-)
+__all__: Sequence[str] = ("ObjectConf",)
 
-T = TypeVar('T')
+T = TypeVar("T")
+
 
 @dataclass(frozen=True)
 class ObjectConf(Generic[T]):

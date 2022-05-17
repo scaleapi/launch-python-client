@@ -11,20 +11,23 @@ __all__: Sequence[str] = (
     "S",
 )
 
-T = TypeVar('T')
+T = TypeVar("T")
+
 
 class Loader(Generic[T], ABC):
     @abstractmethod
     def load(self) -> T:
         raise NotImplementedError
 
+
 S = TypeVar("S", bound=Service)
 
-class ServiceLoader(Generic[I, O, S], Loader[S[I,O]], ABC):
+
+class ServiceLoader(Generic[I, O, S], Loader[S[I, O]], ABC):
     pass
 
 
-L = TypeVar('L', bound=Loader)
+L = TypeVar("L", bound=Loader)
 
 
 class LoaderSpec(ObjectConf[L]):
