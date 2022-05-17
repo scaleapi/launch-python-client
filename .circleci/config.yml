@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Pylint Lint Check # Uses .pylintrc for configuration
           command: |
-            poetry run pylint launch
+            poetry run pylint launch --ignore=clientlib
       - run :
           name: MyPy typing check
           command: |
