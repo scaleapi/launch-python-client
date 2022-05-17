@@ -7,7 +7,6 @@ from launch_api.batching.types import Batcher
 from launch_api.loader import LoaderSpec
 from launch_api.model import ModelSingle
 from launch_api.types import I, O
-
 from scaleml.utils.logging import logger_name, make_logger
 
 logger = make_logger(logger_name())
@@ -22,9 +21,13 @@ BatcherSingle = Batcher[I, O, np.ndarray]
 
 
 @dataclass(frozen=True, init=False)
-class LoaderSingleBatchableService(LoaderBatchableServiceImpl[I, O, np.ndarray]):
+class LoaderSingleBatchableService(
+    LoaderBatchableServiceImpl[I, O, np.ndarray]
+):
     def __init__(
-        self, batcher: LoaderSpec[BatcherSingle[I, O]], model: LoaderSpec[ModelSingle]
+        self,
+        batcher: LoaderSpec[BatcherSingle[I, O]],
+        model: LoaderSpec[ModelSingle],
     ) -> None:
         super().__init__(batcher, model, logger)
 

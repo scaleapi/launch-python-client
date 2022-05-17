@@ -5,6 +5,7 @@ import shutil
 import tempfile
 from io import StringIO
 from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
+from zipfile import ZipFile
 
 import cloudpickle
 import requests
@@ -159,10 +160,10 @@ class LaunchClient:
         """
         self.endpoint_auth_decorator_fn = endpoint_auth_decorator_fn
 
-    def create_model_bundle_from_dir(
+    def create_model_bundle_from_dirs(
         self,
         model_bundle_name: str,
-        base_path: str,
+        base_paths: List[str],
         requirements_path: str,
         env_params: Dict[str, str],
         load_predict_fn_module_path: str,
@@ -170,12 +171,44 @@ class LaunchClient:
         app_config: Optional[Union[Dict[str, Any], str]] = None,
     ) -> ModelBundle:
         """
-        Packages up code from a local filesystem folder and uploads that as a bundle to Scale Launch.
+        Packages up code from one or more local filesystem folders and uploads them as a bundle to Scale Launch.
         In this mode, a bundle is just local code instead of a serialized object.
+
+        For example, if you have a directory structure like so, and your current working directory is also `my_root`:
+
+        ```
+        my_root/
+            my_module1/
+                __init__.py
+                ...files and directories
+                my_inference_file.py
+            my_module2/
+                __init__.py
+                ...files and directories
+        ```
+
+        then calling `create_model_bundle_from_dirs` with `base_paths=["my_module1", "my_module2"]` essentially
+        creates a zip file without the root directory, e.g.:
+
+        ```
+        my_module1/
+            __init__.py
+            ...files and directories
+            my_inference_file.py
+        my_module2/
+            __init__.py
+            ...files and directories
+        ```
+
+        and these contents will be unzipped relative to the server side `PYTHONPATH`. Bear these points in mind when
+        referencing Python module paths for this bundle. For instance, if `my_inference_file.py` has `def f(...)`
+        as the desired inference loading function, then the `load_predict_fn_module_path` argument should be
+        `my_module1.my_inference_file.f`.
+
 
         Parameters:
             model_bundle_name: Name of model bundle you want to create. This acts as a unique identifier.
-            base_path: The path on the local filesystem where the bundle code lives.
+            base_paths: The paths on the local filesystem where the bundle code lives.
             requirements_path: A path on the local filesystem where a requirements.txt file lives.
             env_params: A dictionary that dictates environment information e.g.
                 the use of pytorch or tensorflow, which cuda/cudnn versions to use.
@@ -185,9 +218,9 @@ class LaunchClient:
                 "cuda_version": Version of cuda used, e.g. "11.0".
                 "cudnn_version" Version of cudnn used, e.g. "cudnn8-devel".
                 "tensorflow_version": Version of tensorflow, e.g. "2.3.0". Only applicable if framework_type is tensorflow
-            load_predict_fn_module_path: A python module path within base_path for a function that, when called with the output of
+            load_predict_fn_module_path: A python module path for a function that, when called with the output of
                 load_model_fn_module_path, returns a function that carries out inference.
-            load_model_fn_module_path: A python module path within base_path for a function that returns a model. The output feeds into
+            load_model_fn_module_path: A python module path for a function that returns a model. The output feeds into
                 the function located at load_predict_fn_module_path.
             app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
         """
@@ -196,20 +229,9 @@ class LaunchClient:
 
         tmpdir = tempfile.mkdtemp()
         try:
-            tmparchive = os.path.join(tmpdir, "bundle")
-            abs_base_path = os.path.abspath(base_path)
-            root_dir = os.path.dirname(abs_base_path)
-            base_dir = os.path.basename(abs_base_path)
-
-            with open(
-                shutil.make_archive(
-                    base_name=tmparchive,
-                    format="zip",
-                    root_dir=root_dir,
-                    base_dir=base_dir,
-                ),
-                "rb",
-            ) as zip_f:
+            zip_path = os.path.join(tmpdir, "bundle.zip")
+            _zip_directories(zip_path, base_paths)
+            with open(zip_path, "rb") as zip_f:
                 data = zip_f.read()
         finally:
             shutil.rmtree(tmpdir)
@@ -236,11 +258,10 @@ class LaunchClient:
         bundle_metadata = {
             "load_predict_fn_module_path": load_predict_fn_module_path,
             "load_model_fn_module_path": load_model_fn_module_path,
-            "base_dir": base_dir,
         }
 
         logger.info(
-            "create_model_bundle_from_dir: raw_bundle_url=%s",
+            "create_model_bundle_from_dirs: raw_bundle_url=%s",
             raw_bundle_url,
         )
         payload = dict(
@@ -838,3 +859,20 @@ class LaunchClient:
             route=f"{BATCH_TASK_RESULTS_PATH}/{batch_async_task_id}"
         )
         return resp
+
+
+def _zip_directory(zipf: ZipFile, path: str) -> None:
+    for root, _, files in os.walk(path):
+        for file_ in files:
+            zipf.write(
+                filename=os.path.join(root, file_),
+                arcname=os.path.relpath(
+                    os.path.join(root, file_), os.path.join(path, "..")
+                ),
+            )
+
+
+def _zip_directories(zip_path: str, dir_list: List[str]) -> None:
+    with ZipFile(zip_path, "w") as zip_f:
+        for dir_ in dir_list:
+            _zip_directory(zip_f, dir_)
