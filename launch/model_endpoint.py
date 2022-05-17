@@ -82,13 +82,16 @@ class EndpointResponse:
 
 
 class EndpointResponseFuture:
-    def __init__(self, client, async_task_id: str):
+    def __init__(self, client, endpoint_name: str, async_task_id: str):
         self.client = client
+        self.endpoint_name = endpoint_name
         self.async_task_id = async_task_id
 
     def get(self) -> EndpointResponse:
         while True:
-            async_response = self.client.get_async_response(self.async_task_id)
+            async_response = self.client.get_async_endpoint_response(
+                self.endpoint_name, self.async_task_id
+            )
             if async_response["state"] == "PENDING":
                 time.sleep(2)
             else:
@@ -171,12 +174,14 @@ class AsyncEndpoint(Endpoint):
             return_pickled=request.return_pickled,
         )
         return EndpointResponseFuture(
-            client=self.client, async_task_id=async_task_id
+            client=self.client, endpoint_name=self.model_endpoint.name, async_task_id=async_task_id
         )
 
         # FIXME: Figure out a way to structure the responses between the client and endpoint
         # return EndpointResponseFuture(
-        #     client=self.client, async_task_id=raw_response["task_id"]
+        #     client=self.client,
+        #     endpoint_name=self.model_endpoint.name,
+        #     async_task_id=raw_response["task_id"],
         # )
 
     def predict_batch(
@@ -218,6 +223,7 @@ class AsyncEndpoint(Endpoint):
 
         return AsyncEndpointBatchResponse(
             self.client,
+            endpoint_name=self.model_endpoint.name,
             request_ids=request_ids,
         )
 
@@ -262,10 +268,12 @@ class AsyncEndpointBatchResponse:
     def __init__(
         self,
         client,
+        endpoint_name: str,
         request_ids: Dict[str, str],
     ):
 
         self.client = client
+        self.endpoint_name = endpoint_name
         self.request_ids = (
             request_ids.copy()
         )  # custom request_id (clientside) -> task_id (serverside)
@@ -288,7 +296,9 @@ class AsyncEndpointBatchResponse:
             if self.statuses[inner_url] != TASK_PENDING_STATE:
                 # Skip polling tasks that are completed
                 return None
-            inner_response = self.client.get_async_response(inner_task_id)
+            inner_response = self.client.get_async_endpoint_response(
+                self.endpoint_name, inner_task_id
+            )
             print("inner response", inner_response)
             return (
                 inner_url,

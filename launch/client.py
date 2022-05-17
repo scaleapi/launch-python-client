@@ -20,6 +20,7 @@ from launch.constants import (
     BATCH_TASK_RESULTS_PATH,
     ENDPOINT_PATH,
     MODEL_BUNDLE_SIGNED_URL_PATH,
+    RESULT_PATH,
     SCALE_LAUNCH_ENDPOINT,
     SYNC_TASK_PATH,
 )
@@ -722,7 +723,7 @@ class LaunchClient:
 
     def async_request(
         self,
-        endpoint_id: str,
+        endpoint_name: str,
         url: Optional[str] = None,
         args: Optional[Dict] = None,
         return_pickled: bool = True,
@@ -734,7 +735,7 @@ class LaunchClient:
         Endpoint
 
         Parameters:
-            endpoint_id: The id of the endpoint to make the request to
+            endpoint_name: The name of the endpoint to make the request to
             url: A url that points to a file containing model input.
                 Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
             args: A dictionary of arguments to the ModelBundle's predict function.
@@ -757,7 +758,7 @@ class LaunchClient:
 
         resp = self.connection.post(
             payload=payload,
-            route=f"{ASYNC_TASK_PATH}/{endpoint_id}",
+            route=f"{ASYNC_TASK_PATH}/{endpoint_name}",
         )
         return resp["task_id"]
 
@@ -784,6 +785,33 @@ class LaunchClient:
 
         resp = self.connection.get(
             route=f"{ASYNC_TASK_RESULT_PATH}/{async_task_id}"
+        )
+        return resp
+
+    def get_async_endpoint_response(self, endpoint_name: str, async_task_id: str) -> Dict[str, Any]:
+        """
+        Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
+        Gets inference results from a previously created task.
+
+        Parameters:
+            endpoint_name: The name of the endpoint the request was made to.
+            async_task_id: The id/key returned from a previous invocation of async_request.
+
+        Returns:
+            A dictionary that contains task status and optionally a result url or result if the task has completed.
+            Result url or result will be returned if the task has succeeded. Will return a result url iff `return_pickled`
+            was set to True on task creation.
+            Dictionary's keys are as follows:
+            state: 'PENDING' or 'SUCCESS' or 'FAILURE'
+            result_url: a url pointing to inference results. This url is accessible for 12 hours after the request has been made.
+            result: the value returned by the endpoint's `predict` function, serialized as json
+            Example output:
+                `{'state': 'SUCCESS', 'result_url': 'https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy'}`
+        TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
+        """
+
+        resp = self.connection.get(
+            route=f"{ASYNC_TASK_PATH}/{endpoint_name}/{RESULT_PATH}/{async_task_id}"
         )
         return resp
 
