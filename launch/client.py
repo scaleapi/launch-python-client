@@ -788,7 +788,9 @@ class LaunchClient:
         )
         return resp
 
-    def get_async_endpoint_response(self, endpoint_name: str, async_task_id: str) -> Dict[str, Any]:
+    def get_async_endpoint_response(
+        self, endpoint_name: str, async_task_id: str
+    ) -> Dict[str, Any]:
         """
         Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
         Gets inference results from a previously created task.
