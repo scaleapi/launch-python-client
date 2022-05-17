@@ -449,6 +449,7 @@ class LaunchClient:
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
         update_if_exists: bool = False,
+        labels: Optional[Dict[str, str]] = None,
     ) -> Optional[Endpoint]:
         """
         Creates a Model Endpoint that is able to serve requests.
@@ -467,6 +468,12 @@ class LaunchClient:
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Current options are
                 "nvidia-tesla-t4" for NVIDIA T4s, or "nvidia-tesla-v100" for NVIDIA V100s.
             endpoint_type: Either "sync" or "async". Type of endpoint we want to instantiate.
+            update_if_exists: If True, will attempt to update the endpoint if it exists. Otherwise, will
+                unconditionally try to create a new endpoint. Note that endpoint names for a given user must be unique,
+                so attempting to call this function with update_if_exists=False for an existing endpoint will raise
+                an error.
+            labels: An optional dictionary of key/value pairs to associate with this endpoint.
+
 
         Returns:
              A Endpoint object that can be used to make requests to the endpoint.
@@ -504,6 +511,7 @@ class LaunchClient:
                 max_workers=max_workers,
                 per_worker=per_worker,
                 endpoint_type=endpoint_type,
+                labels=labels,
             )
             if gpus == 0:
                 del payload["gpu_type"]
