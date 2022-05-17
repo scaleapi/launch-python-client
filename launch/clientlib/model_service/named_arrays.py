@@ -6,7 +6,6 @@ from launch_api.model import ModelNamed, NamedArrays
 from launch_api.model_service import Processor
 from launch_api.model_service.implementation import LoaderInferenceServiceImpl
 from launch_api.types import I, O
-
 from scaleml.utils.logging import logger_name, make_logger
 
 logger = make_logger(logger_name())
@@ -20,8 +19,12 @@ ProcessorNamed = Processor[I, O, NamedArrays]
 
 
 @dataclass(frozen=True, init=False)
-class LoaderNamedInferenceService(LoaderInferenceServiceImpl[I, O, NamedArrays]):
+class LoaderNamedInferenceService(
+    LoaderInferenceServiceImpl[I, O, NamedArrays]
+):
     def __init__(
-        self, Processor: LoaderSpec[ProcessorNamed[I, O]], model: LoaderSpec[ModelNamed]
+        self,
+        Processor: LoaderSpec[ProcessorNamed[I, O]],
+        model: LoaderSpec[ModelNamed],
     ) -> None:
         super().__init__(Processor, model, logger)

@@ -16,12 +16,15 @@ class HttpRuntime(Runtime):
 
     def start(self) -> None:
         app = HttpRuntime.server(
-            self.service, self.name if self.name is not None else "http-service"
+            self.service,
+            self.name if self.name is not None else "http-service",
         )
         app.run(port=self.port, debug=self.is_debug)
 
     @staticmethod
-    def server(service: Service[I, O], existing_app_or_name: Union[Flask, str]) -> Flask:
+    def server(
+        service: Service[I, O], existing_app_or_name: Union[Flask, str]
+    ) -> Flask:
 
         if isinstance(existing_app_or_name, str):
             app: Flask = Flask(existing_app_or_name)

@@ -32,19 +32,25 @@ class RunnableService(Generic[I, O]):
         try:
             input_: I = self.request_handler.deserialize(request)
         except:
-            logger.exception(f"Could not deserialize request ({type(request)=} | {request=})")
+            logger.exception(
+                f"Could not deserialize request ({type(request)=} | {request=})"
+            )
             raise
         # run service logic
         try:
             output: O = self.service.call(input_)
         except:
-            logger.exception(f"Could not perform service calculation ({type(input_)=})")
+            logger.exception(
+                f"Could not perform service calculation ({type(input_)=})"
+            )
             raise
         # serialize service output into JSON
         try:
             response: bytes = self.response_handler.serialize(output)
         except:
-            logger.exception(f"Could not serialize service output ({type(output)=} | {output=})")
+            logger.exception(
+                f"Could not serialize service output ({type(output)=} | {output=})"
+            )
             raise
         # serialized response for sending over network
         return response

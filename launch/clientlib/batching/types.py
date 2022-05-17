@@ -21,7 +21,9 @@ class Batcher(Generic[I, O, B], ABC):
         raise NotImplementedError
 
 
-class BatchableService(Service[List[I], List[O]], Batcher[I, O, B], Model[B], ABC):
+class BatchableService(
+    Service[List[I], List[O]], Batcher[I, O, B], Model[B], ABC
+):
     """A service that operates on batches of requests.
 
     The objective is to provide optimized throughput for model inference services.
