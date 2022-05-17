@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Flake8 Lint Check # Uses setup.cfg for configuration
           command: |
-            poetry run flake8 launch --count --statistics
+            poetry run flake8 launch --count --statistics --exclude launch/clientlib
       - run:
           name: Pylint Lint Check # Uses .pylintrc for configuration
           command: |
@@ -50,7 +50,7 @@ jobs:
       - run :
           name: MyPy typing check
           command: |
-            poetry run mypy --ignore-missing-imports launch
+            poetry run mypy --ignore-missing-imports launch --exclude launch/clientlib
       - run :
           name: Isort Import Formatting Check # Only validation, without re-formatting
           command: |
