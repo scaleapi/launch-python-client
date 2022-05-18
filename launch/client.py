@@ -20,7 +20,6 @@ from launch.constants import (
     BATCH_TASK_RESULTS_PATH,
     ENDPOINT_PATH,
     MODEL_BUNDLE_SIGNED_URL_PATH,
-    RESULT_PATH,
     SCALE_LAUNCH_ENDPOINT,
     SYNC_TASK_PATH,
 )
@@ -813,7 +812,7 @@ class LaunchClient:
         """
 
         resp = self.connection.get(
-            route=f"{ASYNC_TASK_PATH}/{endpoint_name}/{RESULT_PATH}/{async_task_id}"
+            route=f"{ENDPOINT_PATH}/{endpoint_name}/{ASYNC_TASK_PATH}/{async_task_id}"
         )
         return resp
 
