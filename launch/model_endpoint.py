@@ -211,7 +211,7 @@ class AsyncEndpoint(Endpoint):
             # request has keys url and args
 
             inner_inference_request = self.client.async_request(
-                endpoint_id=self.model_endpoint.name,
+                endpoint_name=self.model_endpoint.name,
                 url=request.url,
                 args=request.args,
                 return_pickled=request.return_pickled,
