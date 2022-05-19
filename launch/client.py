@@ -791,8 +791,9 @@ class LaunchClient:
         self,
         bundle_name: str,
         urls: List[str],
-        batch_url_file_location: str = None,
+        batch_url_file_location: Optional[str] = None,
         serialization_format: str = "json",
+        batch_task_options: Optional[Dict[str, Any]] = None,
     ):
         """
         Sends a batch inference request to the Model Endpoint at endpoint_id, returns a key that can be used to retrieve
@@ -806,10 +807,33 @@ class LaunchClient:
                 Must be accessible by Scale Launch, hence urls need to either be public or signedURLs.
             batch_url_file_location: In self-hosted mode, the input to the batch job will be uploaded
                 to this location if provided. Otherwise, one will be determined from bundle_location_fn()
+            batch_task_options: A Dict of optional endpoint/batch task settings, i.e. certain endpoint settings
+                like cpus, memory, gpus, gpu_type, max_workers, as well as under-the-hood batch job settings, like
+                pyspark_partition_size, pyspark_max_executors.
 
         Returns:
             An id/key that can be used to fetch inference results at a later time
         """
+
+        if batch_task_options is None:
+            batch_task_options = {}
+        allowed_batch_task_options = {
+            "cpus",
+            "memory",
+            "gpus",
+            "gpu_type",
+            "max_workers",
+            "pyspark_partition_size",
+            "pyspark_max_executors",
+        }
+        if (
+            len(set(batch_task_options.keys()) - allowed_batch_task_options)
+            > 0
+        ):
+            raise ValueError(
+                f"Disallowed options {set(batch_task_options.keys()) - allowed_batch_task_options} for batch task"
+            )
+
         f = StringIO()
         make_batch_input_file(urls, f)
         f.seek(0)
@@ -837,6 +861,7 @@ class LaunchClient:
             input_path=file_location,
             serialization_format=serialization_format,
         )
+        payload.update(batch_task_options)
         payload = self.endpoint_auth_decorator_fn(payload)
         resp = self.connection.post(
             route=f"{BATCH_TASK_PATH}/{bundle_name}",
