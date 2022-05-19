@@ -43,7 +43,8 @@ class InferenceServiceImpl(InferenceService[I, O, B]):
             pred = self.__call__(model_input)
         except Exception:
             self.logger.exception(
-                "Failed inference on request " f"({type(model_input)=}, {request=})"
+                "Failed inference on request "
+                f"({type(model_input)=}, {request=})"
             )
             raise
         try:
@@ -75,14 +76,18 @@ class LoaderInferenceServiceImpl(Loader[InferenceService[I, O, B]]):
         try:
             batcher = processor_loader.load()
         except Exception:
-            self.logger.exception(f"Could not create processor from {type(processor_loader)}")
+            self.logger.exception(
+                f"Could not create processor from {type(processor_loader)}"
+            )
             raise
         else:
             self.logger.info(f"Created processor: {batcher}")
         try:
             model = model_loader.load()
         except Exception:
-            self.logger.exception(f"Could not create model from {type(model_loader)}")
+            self.logger.exception(
+                f"Could not create model from {type(model_loader)}"
+            )
             raise
         else:
             self.logger.info(f"Created model: {model}")

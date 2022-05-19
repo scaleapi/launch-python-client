@@ -4,6 +4,8 @@ max-line-length = 79
 max-complexity = 18
 select = B,C,E,F,W,T4,B9
 exclude =
+    # clientlib is documentation only, not runnable code
+    launch/clientlib
     # All of these excludes should mirror something in .gitignore
     .git,
     __pychache__,

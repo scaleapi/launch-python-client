@@ -37,7 +37,8 @@ class BatchableServiceImpl(BatchableService[I, O, B]):
             batch = self.batch(requests)
         except Exception:
             self.logger.exception(
-                f"Failed to preprocess & batch requests " f"({len(requests)=}, {requests=})"
+                f"Failed to preprocess & batch requests "
+                f"({len(requests)=}, {requests=})"
             )
             raise
         try:
@@ -77,14 +78,18 @@ class LoaderBatchableServiceImpl(Loader[BatchableService[I, O, B]]):
         try:
             batcher = batcher_loader.load()
         except Exception:
-            self.logger.exception(f"Could not create batcher from {type(batcher_loader)}")
+            self.logger.exception(
+                f"Could not create batcher from {type(batcher_loader)}"
+            )
             raise
         else:
             self.logger.info(f"Created batcher: {batcher}")
         try:
             model = model_loader.load()
         except Exception:
-            self.logger.exception(f"Could not create model from {type(model_loader)}")
+            self.logger.exception(
+                f"Could not create model from {type(model_loader)}"
+            )
             raise
         else:
             self.logger.info(f"Created model: {model}")
