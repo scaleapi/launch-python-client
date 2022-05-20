@@ -26,17 +26,13 @@ class ModelEndpoint:
     destination: str
     bundle_name: str
     status: str
-    resource_settings: Optional[Dict] = None
-    worker_settings: Optional[Dict] = None
-    metadata: Optional[Dict] = None
+    resource_settings: dict = None
+    worker_settings: dict = None
+    metadata: dict = None
     endpoint_type: Optional[str] = None
 
     def __repr__(self):
         return json.dumps(self.__dict__)
-
-    def __str__(self):
-        return f"Endpoint(name={self.name})"
-
 
 class EndpointRequest:
     """
