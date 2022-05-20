@@ -11,7 +11,7 @@ import cloudpickle
 import requests
 import yaml
 
-import launch
+import launch  # pylint: disable=R0401
 from launch.connection import Connection
 from launch.constants import (
     ASYNC_TASK_PATH,
