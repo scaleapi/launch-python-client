@@ -26,9 +26,9 @@ class ModelEndpoint:
     destination: str
     bundle_name: str
     status: str
-    resource_settings: dict = None
-    worker_settings: dict = None
-    metadata: dict = None
+    resource_settings: Optional[dict] = None
+    worker_settings: Optional[dict] = None
+    metadata: Optional[dict] = None
     endpoint_type: Optional[str] = None
 
     def __repr__(self):
