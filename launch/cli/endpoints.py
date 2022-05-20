@@ -23,6 +23,9 @@ def list_endpoints(ctx: click.Context):
         "Endpoint name",
         "Metadata",
         "Endpoint type",
+        "Status",
+        "Min Workers",
+        "Max Workers",
         title="Endpoints",
         title_justify="left",
     )
@@ -32,6 +35,9 @@ def list_endpoints(ctx: click.Context):
             servable_endpoint.model_endpoint.name,
             servable_endpoint.model_endpoint.metadata,
             servable_endpoint.model_endpoint.endpoint_type,
+            servable_endpoint.model_endpoint.status,
+            servable_endpoint.model_endpoint.worker_settings.min_workers,
+            servable_endpoint.model_endpoint.worker_settings.max_workers,
         )
     console = Console()
     console.print(table)
