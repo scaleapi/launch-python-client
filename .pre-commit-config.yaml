@@ -36,6 +36,6 @@ repos:
     hooks:
     - id: system
       name: mypy
-      entry: poetry run mypy --ignore-missing-imports launch
+      entry: poetry run mypy --ignore-missing-imports launch --exclude launch/clientlib
       pass_filenames: false
       language: system

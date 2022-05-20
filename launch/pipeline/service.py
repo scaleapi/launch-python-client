@@ -14,6 +14,10 @@ class ServiceDescription:
     """
 
     service_name: str
+    service: Callable
+    runtime: Runtime
+    deployment: Deployment
+    env_params: Dict[str, str]
 
     def __init__(self):
         self.make_request: Optional[Callable] = None
@@ -40,12 +44,14 @@ class SingleServiceDescription(ServiceDescription):
         service: Callable,
         runtime: Runtime,
         deployment: Deployment,
+        env_params: Dict[str, str],
         **kwargs: Dict[str, Any],
     ):
         super().__init__()
-        self.service = service
+        setattr(self, "service", service)
         self.runtime = runtime
         self.deployment = deployment
+        self.env_params = env_params
         self.kwargs = kwargs
         func_name = service.__name__.replace("_", "").replace("-", "")
         self.service_name = f"{func_name}{uuid.uuid4()}"[
@@ -97,11 +103,16 @@ class SequentialPipelineDescription(ServiceDescription):
         items: List[SingleServiceDescription],
         runtime: Runtime,
         deployment: Deployment,
+        env_params: Dict[str, str],
     ):
         super().__init__()
+        setattr(
+            self, "service", self
+        )  # Pipeline is itself a service via the __call__ function
         self.items = items
         self.runtime = runtime
         self.deployment = deployment
+        self.env_params = env_params
         self.service_name = f"pipeline{uuid.uuid4()}"[:MAX_SERVICE_NAME_SIZE]
 
     def set_make_request(

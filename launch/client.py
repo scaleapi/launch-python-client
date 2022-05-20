@@ -34,12 +34,6 @@ from launch.model_endpoint import (
     ModelEndpoint,
     SyncEndpoint,
 )
-from launch.pipeline import (
-    Deployment,
-    Runtime,
-    ServiceDescription,
-    find_all_sub_service_descriptions,
-)
 from launch.request_validation import validate_task_request
 from launch.utils import trim_kwargs
 
@@ -538,86 +532,6 @@ class LaunchClient:
                 raise ValueError(
                     "Endpoint should be one of the types 'sync' or 'async'"
                 )
-
-    def deploy_service(
-        self,
-        model_bundle_name: str,
-        endpoint_name: str,
-        service_description: ServiceDescription,
-        bundle_url_prefix: Optional[str] = None,
-        globals_copy: Optional[Dict[str, Any]] = None,
-    ) -> Optional[Endpoint]:
-        """
-        Deploy a service represented by a Service Description object such as a Step or a Pipeline.
-
-        Parameters:
-            model_bundle_name: Name of model bundle you want to create. This acts as a unique identifier.
-            endpoint_name: Name of model endpoint. Must be unique.
-            service_description: A step or a Pipeline.
-            bundle_url_prefix: Only for self-hosted mode. Desired location of bundle.
-            globals_copy: Dictionary of the global symbol table. Normally provided by `globals()` built-in function.
-
-        Returns:
-             A Endpoint object that can be used to make requests to the endpoint.
-
-        """
-        sub_service_descriptions = find_all_sub_service_descriptions(
-            service_description
-        )
-        # Fill `child_fn_info` needed for service discovery
-        child_fn_info = {}
-        for sub_service_description in sub_service_descriptions:
-            # If this is the root service target.
-            if (
-                service_description.service_name
-                == sub_service_description.service_name
-            ):
-                sub_service_description.service_name = model_bundle_name
-
-            child_fn_info[sub_service_description.service_name] = dict(
-                remote=True,
-                endpoint_type=sub_service_description.runtime.name.lower(),
-                destination="undefined",
-            )
-
-        res_endpoint = None
-        for sub_service_description in sub_service_descriptions:
-            service_name = sub_service_description.service_name
-
-            if bundle_url_prefix:
-                bundle_url = f"{bundle_url_prefix}/{service_name}.pkl"
-            else:
-                bundle_url = None
-
-            model_bundle = self.create_model_bundle(
-                service_name,
-                predict_fn_or_cls=sub_service_description,
-                bundle_url=bundle_url,
-                env_params=sub_service_description.deployment.env_params,
-                globals_copy=globals_copy,
-            )
-
-            logger.info(f"Bundle {service_name} created")
-
-            endpoint = self.create_model_endpoint(
-                endpoint_name=service_name,
-                model_bundle=model_bundle,
-                cpus=service_description.deployment.cpu,
-                memory=service_description.deployment.memory,
-                gpus=service_description.deployment.gpu,
-                min_workers=service_description.deployment.min_workers,
-                max_workers=service_description.deployment.max_workers,
-                per_worker=service_description.deployment.per_worker,
-                gpu_type=service_description.deployment.gpu_type,
-                endpoint_type=service_description.runtime.name.lower(),
-                update_if_exists=False,
-                child_fn_info=child_fn_info,
-            )
-            logger.info(f"Endpoint {service_name} created")
-
-            if (service_description.service_name == sub_service_description.service_name):
-                res_endpoint = endpoint
-        return res_endpoint
 
     def edit_model_endpoint(
         self,
