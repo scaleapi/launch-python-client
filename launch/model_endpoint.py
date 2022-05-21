@@ -34,6 +34,7 @@ class ModelEndpoint:
     def __repr__(self):
         return json.dumps(self.__dict__)
 
+
 class EndpointRequest:
     """
     Represents a single request to either a SyncEndpoint or AsyncEndpoint.
