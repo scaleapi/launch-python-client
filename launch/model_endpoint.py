@@ -25,7 +25,6 @@ class ModelEndpoint:
     name: str
     bundle_name: Optional[str] = None
     status: Optional[str] = None
-    destination: Optional[str] = None
     resource_settings: Optional[dict] = None
     worker_settings: Optional[dict] = None
     metadata: Optional[dict] = None
