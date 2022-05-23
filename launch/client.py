@@ -518,7 +518,9 @@ class LaunchClient:
             logger.info(
                 "Endpoint creation task id is %s", endpoint_creation_task_id
             )
-            model_endpoint = ModelEndpoint(name=endpoint_name, bundle_name=bundle_name)
+            model_endpoint = ModelEndpoint(
+                name=endpoint_name, bundle_name=bundle_name
+            )
             if endpoint_type == "async":
                 return AsyncEndpoint(
                     model_endpoint=model_endpoint, client=self
@@ -585,13 +587,9 @@ class LaunchClient:
             return None
 
         if resp["endpoint_type"] == "async":
-            return AsyncEndpoint(
-                ModelEndpoint.from_dict(resp), client=self
-            )
+            return AsyncEndpoint(ModelEndpoint.from_dict(resp), client=self)
         elif resp["endpoint_type"] == "sync":
-            return SyncEndpoint(
-                ModelEndpoint.from_dict(resp), client=self
-            )
+            return SyncEndpoint(ModelEndpoint.from_dict(resp), client=self)
         else:
             raise ValueError(
                 "Endpoint should be one of the types 'sync' or 'async'"
