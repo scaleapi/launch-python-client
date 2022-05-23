@@ -32,7 +32,7 @@ class ModelEndpoint:
     endpoint_type: Optional[str] = None
 
     def __repr__(self):
-        return json.dumps(self.__dict__)
+        return f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', status='{self.status}', resource_settings='{json.dumps(self.resource_settings)}', worker_settings='{json.dumps(self.worker_settings)}', endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
 
 
 class EndpointRequest:
