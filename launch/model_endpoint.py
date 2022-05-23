@@ -1,4 +1,5 @@
 import concurrent.futures
+import json
 import time
 import uuid
 from collections import Counter
@@ -22,11 +23,15 @@ class ModelEndpoint:
     """
 
     name: str
-    metadata: Optional[Dict] = None
+    bundle_name: Optional[str] = None
+    status: Optional[str] = None
+    resource_settings: Optional[dict] = None
+    worker_settings: Optional[dict] = None
+    metadata: Optional[dict] = None
     endpoint_type: Optional[str] = None
 
-    def __str__(self):
-        return f"Endpoint(name={self.name})"
+    def __repr__(self):
+        return f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', status='{self.status}', resource_settings='{json.dumps(self.resource_settings)}', worker_settings='{json.dumps(self.worker_settings)}', endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
 
 
 class EndpointRequest:

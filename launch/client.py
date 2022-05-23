@@ -493,9 +493,10 @@ class LaunchClient:
             # Presumably, the user knows that the endpoint doesn't already exist, and so we can defer
             # to the server to reject any duplicate creations.
             logger.info("Creating new endpoint")
+            bundle_name = _model_bundle_to_name(model_bundle)
             payload = dict(
                 endpoint_name=endpoint_name,
-                bundle_name=_model_bundle_to_name(model_bundle),
+                bundle_name=bundle_name,
                 cpus=cpus,
                 memory=memory,
                 gpus=gpus,
@@ -517,7 +518,9 @@ class LaunchClient:
             logger.info(
                 "Endpoint creation task id is %s", endpoint_creation_task_id
             )
-            model_endpoint = ModelEndpoint(name=endpoint_name)
+            model_endpoint = ModelEndpoint(
+                name=endpoint_name, bundle_name=bundle_name
+            )
             if endpoint_type == "async":
                 return AsyncEndpoint(
                     model_endpoint=model_endpoint, client=self
@@ -584,13 +587,9 @@ class LaunchClient:
             return None
 
         if resp["endpoint_type"] == "async":
-            return AsyncEndpoint(
-                ModelEndpoint(name=resp["endpoint_name"]), client=self
-            )
+            return AsyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
         elif resp["endpoint_type"] == "sync":
-            return SyncEndpoint(
-                ModelEndpoint(name=resp["endpoint_name"]), client=self
-            )
+            return SyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
         else:
             raise ValueError(
                 "Endpoint should be one of the types 'sync' or 'async'"
