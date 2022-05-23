@@ -37,8 +37,8 @@ def list_endpoints(ctx: click.Context):
             servable_endpoint.model_endpoint.bundle_name,
             servable_endpoint.model_endpoint.status,
             servable_endpoint.model_endpoint.endpoint_type,
-            servable_endpoint.model_endpoint.worker_settings.min_workers or 0,
-            servable_endpoint.model_endpoint.worker_settings.max_workers or 0,
+            servable_endpoint.model_endpoint.worker_settings.min_workers,
+            servable_endpoint.model_endpoint.worker_settings.max_workers,
             servable_endpoint.model_endpoint.metadata or "{}",
         )
     console = Console()
