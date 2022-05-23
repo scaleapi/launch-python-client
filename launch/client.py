@@ -587,9 +587,9 @@ class LaunchClient:
             return None
 
         if resp["endpoint_type"] == "async":
-            return AsyncEndpoint(ModelEndpoint.from_dict(resp), client=self)
+            return AsyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
         elif resp["endpoint_type"] == "sync":
-            return SyncEndpoint(ModelEndpoint.from_dict(resp), client=self)
+            return SyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
         else:
             raise ValueError(
                 "Endpoint should be one of the types 'sync' or 'async'"
