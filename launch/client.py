@@ -548,7 +548,7 @@ class LaunchClient:
         max_workers: Optional[int] = None,
         per_worker: Optional[int] = None,
         gpu_type: Optional[str] = None,
-        post_inference_hooks: List[PostInferenceHooks] = [],
+        post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
     ) -> None:
         """
         Edit an existing model endpoint
