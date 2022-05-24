@@ -25,6 +25,7 @@ from launch.constants import (
 )
 from launch.errors import APIError
 from launch.find_packages import find_packages_from_imports, get_imports
+from launch.hooks import PostInferenceHooks
 from launch.make_batch_file import make_batch_input_file
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import (
@@ -448,6 +449,7 @@ class LaunchClient:
         per_worker: int = 1,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
+        post_inference_hooks: List[PostInferenceHooks] = [],
         update_if_exists: bool = False,
     ) -> Optional[Endpoint]:
         """
@@ -467,6 +469,8 @@ class LaunchClient:
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Current options are
                 "nvidia-tesla-t4" for NVIDIA T4s, or "nvidia-tesla-v100" for NVIDIA V100s.
             endpoint_type: Either "sync" or "async". Type of endpoint we want to instantiate.
+            post_inference_hooks: List of hooks to trigger after inference tasks are served.
+            update_if_exists: Whether to update the Endpoint in place if it already exists.
 
         Returns:
              A Endpoint object that can be used to make requests to the endpoint.
@@ -505,6 +509,7 @@ class LaunchClient:
                 max_workers=max_workers,
                 per_worker=per_worker,
                 endpoint_type=endpoint_type,
+                post_inference_hooks=post_inference_hooks,
             )
             if gpus == 0:
                 del payload["gpu_type"]
@@ -543,6 +548,7 @@ class LaunchClient:
         max_workers: Optional[int] = None,
         per_worker: Optional[int] = None,
         gpu_type: Optional[str] = None,
+        post_inference_hooks: List[PostInferenceHooks] = [],
     ) -> None:
         """
         Edit an existing model endpoint
@@ -560,6 +566,7 @@ class LaunchClient:
             min_workers=min_workers,
             max_workers=max_workers,
             per_worker=per_worker,
+            post_inference_hooks=post_inference_hooks,
         )
         # Allows changing some authorization settings by changing endpoint_auth_decorator_fn
         payload = self.endpoint_auth_decorator_fn(payload)
