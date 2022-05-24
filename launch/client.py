@@ -449,7 +449,7 @@ class LaunchClient:
         per_worker: int = 1,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
-        post_inference_hooks: List[PostInferenceHooks] = [],
+        post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
         update_if_exists: bool = False,
     ) -> Optional[Endpoint]:
         """
