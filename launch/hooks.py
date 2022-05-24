@@ -1,5 +1,5 @@
 from enum import Enum
 
 
-class PostInferenceHooks(Enum, str):
+class PostInferenceHooks(str, Enum):
     INSIGHT = "INSIGHT"
