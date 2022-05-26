@@ -11,6 +11,8 @@ MAX_SERVICE_NAME_SIZE = 50
 class ServiceDescription:
     """
     Base ServiceDescription.
+    This object contains all of the information about the bundle, such as the bundle code, deployment, and runtime.
+    It is also used as a bundle itself thorough the `__call__` method.
     """
 
     service_name: str
@@ -20,11 +22,16 @@ class ServiceDescription:
     env_params: Dict[str, str]
 
     def __init__(self):
-        self.make_request: Optional[Callable] = None
+        # `make_request_fn` is an internal attribute that implements the logic behind calling other services.
+        self.make_request_fn: Optional[Callable] = None
 
-    def set_make_request(
-        self, make_request: Callable, force: bool = False
+    def set_make_request_fn(
+        self, make_request_fn: Callable, is_top_level: bool = True
     ) -> None:
+        """
+        This function will be called on the Launch API backend side to initialize internal requests.
+        `make_request_fn` is overriden to let the services call other services.
+        """
         raise NotImplementedError()
 
     def call(self, req: Any) -> Any:
@@ -71,15 +78,15 @@ class SingleServiceDescription(ServiceDescription):
             ), "`kwargs` is given, but the service is not a class"
             self._callable_service = self.service
 
-    def set_make_request(
-        self, make_request: Callable, force: bool = False
+    def set_make_request_fn(
+        self, make_request_fn: Callable, is_top_level: bool = True
     ) -> None:
-        if force:
-            self.make_request = make_request
+        if not is_top_level:
+            self.make_request_fn = make_request_fn
 
     def call(self, req: Any) -> Any:
-        if self.make_request:
-            return self.make_request(
+        if self.make_request_fn:
+            return self.make_request_fn(
                 servable_id=self.service_name,
                 local_fn=self.service,
                 args=[req],
@@ -115,13 +122,13 @@ class SequentialPipelineDescription(ServiceDescription):
         self.env_params = env_params
         self.service_name = f"pipeline{uuid.uuid4()}"[:MAX_SERVICE_NAME_SIZE]
 
-    def set_make_request(
-        self, make_request: Callable, force: bool = False
+    def set_make_request_fn(
+        self, make_request_fn: Callable, is_top_level: bool = True
     ) -> None:
-        if force:
-            self.make_request = make_request
+        if not is_top_level:
+            self.make_request_fn = make_request_fn
         for item in self.items:
-            item.set_make_request(make_request, force=True)
+            item.set_make_request_fn(make_request_fn, is_top_level=False)
 
     def call(self, req: Any) -> Any:
         res = req
