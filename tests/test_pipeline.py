@@ -35,6 +35,9 @@ class DummyDeployment(Deployment):
     memory: int = 4000
 
 
+DUMMY_ENV_PARAMS = {}
+
+
 def test_pipeline():
     TEST_CASE = "hello,world"
 
@@ -42,12 +45,14 @@ def test_pipeline():
         service=splitter,
         runtime=Runtime.SYNC,
         deployment=DummyDeployment(),
+        env_params=DUMMY_ENV_PARAMS,
     )
 
     step_2 = make_service(
         service=Joiner,
         runtime=Runtime.SYNC,
         deployment=DummyDeployment(),
+        env_params=DUMMY_ENV_PARAMS,
         # kwargs:
         sep="-",
     )
@@ -57,5 +62,10 @@ def test_pipeline():
     assert "hello-world" == step_2.call(step_1.call(TEST_CASE))
 
     # test sequential pipeline
-    replace_pipeline = make_sequential_pipeline([step_1, step_2])
+    replace_pipeline = make_sequential_pipeline(
+        [step_1, step_2],
+        runtime=Runtime.SYNC,
+        deployment=DummyDeployment(),
+        env_params=DUMMY_ENV_PARAMS,
+    )
     assert "hello-world" == replace_pipeline.call("hello,world")
