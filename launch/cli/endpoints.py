@@ -21,8 +21,12 @@ def list_endpoints(ctx: click.Context):
 
     table = Table(
         "Endpoint name",
-        "Metadata",
+        "Bundle name",
+        "Status",
         "Endpoint type",
+        "Min Workers",
+        "Max Workers",
+        "Metadata",
         title="Endpoints",
         title_justify="left",
     )
@@ -30,8 +34,12 @@ def list_endpoints(ctx: click.Context):
     for servable_endpoint in client.list_model_endpoints():
         table.add_row(
             servable_endpoint.model_endpoint.name,
-            servable_endpoint.model_endpoint.metadata,
+            servable_endpoint.model_endpoint.bundle_name,
+            servable_endpoint.model_endpoint.status,
             servable_endpoint.model_endpoint.endpoint_type,
+            servable_endpoint.model_endpoint.worker_settings.min_workers,
+            servable_endpoint.model_endpoint.worker_settings.max_workers,
+            servable_endpoint.model_endpoint.metadata or "{}",
         )
     console = Console()
     console.print(table)

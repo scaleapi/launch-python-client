@@ -26,6 +26,7 @@ from launch.constants import (
 )
 from launch.errors import APIError
 from launch.find_packages import find_packages_from_imports, get_imports
+from launch.hooks import PostInferenceHooks
 from launch.make_batch_file import make_batch_input_file
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import (
@@ -450,6 +451,7 @@ class LaunchClient:
         per_worker: int = 1,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
+        post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
         update_if_exists: bool = False,
         child_fn_info: Optional[Dict[str, Any]] = None,
     ) -> Optional[Endpoint]:
@@ -470,6 +472,8 @@ class LaunchClient:
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Current options are
                 "nvidia-tesla-t4" for NVIDIA T4s, or "nvidia-tesla-v100" for NVIDIA V100s.
             endpoint_type: Either "sync" or "async". Type of endpoint we want to instantiate.
+            post_inference_hooks: List of hooks to trigger after inference tasks are served.
+            update_if_exists: Whether to update the Endpoint in place if it already exists.
 
         Returns:
              A Endpoint object that can be used to make requests to the endpoint.
@@ -496,9 +500,10 @@ class LaunchClient:
             # Presumably, the user knows that the endpoint doesn't already exist, and so we can defer
             # to the server to reject any duplicate creations.
             logger.info("Creating new endpoint")
+            bundle_name = _model_bundle_to_name(model_bundle)
             payload = dict(
                 endpoint_name=endpoint_name,
-                bundle_name=_model_bundle_to_name(model_bundle),
+                bundle_name=bundle_name,
                 cpus=cpus,
                 memory=memory,
                 gpus=gpus,
@@ -508,6 +513,7 @@ class LaunchClient:
                 per_worker=per_worker,
                 endpoint_type=endpoint_type,
                 child_fn_info=child_fn_info,
+                post_inference_hooks=post_inference_hooks,
             )
             if gpus == 0:
                 del payload["gpu_type"]
@@ -521,7 +527,9 @@ class LaunchClient:
             logger.info(
                 "Endpoint creation task id is %s", endpoint_creation_task_id
             )
-            model_endpoint = ModelEndpoint(name=endpoint_name)
+            model_endpoint = ModelEndpoint(
+                name=endpoint_name, bundle_name=bundle_name
+            )
             if endpoint_type == "async":
                 return AsyncEndpoint(
                     model_endpoint=model_endpoint, client=self
@@ -544,6 +552,7 @@ class LaunchClient:
         max_workers: Optional[int] = None,
         per_worker: Optional[int] = None,
         gpu_type: Optional[str] = None,
+        post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
     ) -> None:
         """
         Edit an existing model endpoint
@@ -561,6 +570,7 @@ class LaunchClient:
             min_workers=min_workers,
             max_workers=max_workers,
             per_worker=per_worker,
+            post_inference_hooks=post_inference_hooks,
         )
         # Allows changing some authorization settings by changing endpoint_auth_decorator_fn
         payload = self.endpoint_auth_decorator_fn(payload)
@@ -588,13 +598,9 @@ class LaunchClient:
             return None
 
         if resp["endpoint_type"] == "async":
-            return AsyncEndpoint(
-                ModelEndpoint(name=resp["endpoint_name"]), client=self
-            )
+            return AsyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
         elif resp["endpoint_type"] == "sync":
-            return SyncEndpoint(
-                ModelEndpoint(name=resp["endpoint_name"]), client=self
-            )
+            return SyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
         else:
             raise ValueError(
                 "Endpoint should be one of the types 'sync' or 'async'"
@@ -726,7 +732,7 @@ class LaunchClient:
 
     def async_request(
         self,
-        endpoint_id: str,
+        endpoint_name: str,
         url: Optional[str] = None,
         args: Optional[Dict] = None,
         return_pickled: bool = True,
@@ -738,7 +744,7 @@ class LaunchClient:
         Endpoint
 
         Parameters:
-            endpoint_id: The id of the endpoint to make the request to
+            endpoint_name: The name of the endpoint to make the request to
             url: A url that points to a file containing model input.
                 Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
             args: A dictionary of arguments to the ModelBundle's predict function.
@@ -761,7 +767,7 @@ class LaunchClient:
 
         resp = self.connection.post(
             payload=payload,
-            route=f"{ASYNC_TASK_PATH}/{endpoint_id}",
+            route=f"{ASYNC_TASK_PATH}/{endpoint_name}",
         )
         return resp["task_id"]
 
@@ -788,6 +794,35 @@ class LaunchClient:
 
         resp = self.connection.get(
             route=f"{ASYNC_TASK_RESULT_PATH}/{async_task_id}"
+        )
+        return resp
+
+    def get_async_endpoint_response(
+        self, endpoint_name: str, async_task_id: str
+    ) -> Dict[str, Any]:
+        """
+        Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
+        Gets inference results from a previously created task.
+
+        Parameters:
+            endpoint_name: The name of the endpoint the request was made to.
+            async_task_id: The id/key returned from a previous invocation of async_request.
+
+        Returns:
+            A dictionary that contains task status and optionally a result url or result if the task has completed.
+            Result url or result will be returned if the task has succeeded. Will return a result url iff `return_pickled`
+            was set to True on task creation.
+            Dictionary's keys are as follows:
+            state: 'PENDING' or 'SUCCESS' or 'FAILURE'
+            result_url: a url pointing to inference results. This url is accessible for 12 hours after the request has been made.
+            result: the value returned by the endpoint's `predict` function, serialized as json
+            Example output:
+                `{'state': 'SUCCESS', 'result_url': 'https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy'}`
+        TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
+        """
+
+        resp = self.connection.get(
+            route=f"{ENDPOINT_PATH}/{endpoint_name}/{ASYNC_TASK_PATH}/{async_task_id}"
         )
         return resp
 
