@@ -451,6 +451,7 @@ class LaunchClient:
         endpoint_type: str = "sync",
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
         update_if_exists: bool = False,
+        labels: Optional[Dict[str, str]] = None,
     ) -> Optional[Endpoint]:
         """
         Creates a Model Endpoint that is able to serve requests.
@@ -470,7 +471,11 @@ class LaunchClient:
                 "nvidia-tesla-t4" for NVIDIA T4s, or "nvidia-tesla-v100" for NVIDIA V100s.
             endpoint_type: Either "sync" or "async". Type of endpoint we want to instantiate.
             post_inference_hooks: List of hooks to trigger after inference tasks are served.
-            update_if_exists: Whether to update the Endpoint in place if it already exists.
+            update_if_exists: If True, will attempt to update the endpoint if it exists. Otherwise, will
+                unconditionally try to create a new endpoint. Note that endpoint names for a given user must be unique,
+                so attempting to call this function with update_if_exists=False for an existing endpoint will raise
+                an error.
+            labels: An optional dictionary of key/value pairs to associate with this endpoint.
 
         Returns:
              A Endpoint object that can be used to make requests to the endpoint.
@@ -510,6 +515,7 @@ class LaunchClient:
                 per_worker=per_worker,
                 endpoint_type=endpoint_type,
                 post_inference_hooks=post_inference_hooks,
+                labels=labels,
             )
             if gpus == 0:
                 del payload["gpu_type"]
