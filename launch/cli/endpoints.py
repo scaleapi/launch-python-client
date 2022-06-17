@@ -22,7 +22,7 @@ def list_endpoints(ctx: click.Context):
     table = Table(
         "Endpoint name",
         "Bundle name",
-        "Status",
+        "State",
         "Endpoint type",
         "Min Workers",
         "Max Workers",
@@ -35,7 +35,7 @@ def list_endpoints(ctx: click.Context):
         table.add_row(
             servable_endpoint.model_endpoint.name,
             servable_endpoint.model_endpoint.bundle_name,
-            servable_endpoint.model_endpoint.status,
+            servable_endpoint.model_endpoint.state,
             servable_endpoint.model_endpoint.endpoint_type,
             (servable_endpoint.model_endpoint.worker_settings or {}).get(
                 "min_workers"
