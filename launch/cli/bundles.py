@@ -29,7 +29,7 @@ def list_bundles(ctx: click.Context):
     for model_bundle in client.list_model_bundles():
         table.add_row(
             model_bundle.bundle_id,
-            model_bundle.bundle_name,
+            model_bundle.name,
             model_bundle.location,
             model_bundle.packaging_type,
         )
@@ -48,7 +48,7 @@ def get_bundle(ctx: click.Context, bundle_name: str):
 
     console = Console()
     console.print(f"bundle_id: {model_bundle.bundle_id}")
-    console.print(f"bundle_name: {model_bundle.bundle_name}")
+    console.print(f"bundle_name: {model_bundle.name}")
     console.print(f"location: {model_bundle.location}")
     console.print(f"packaging_type: {model_bundle.packaging_type}")
     console.print(f"env_params: {model_bundle.env_params}")
