@@ -515,7 +515,7 @@ class LaunchClient:
                 per_worker=per_worker,
                 endpoint_type=endpoint_type,
                 post_inference_hooks=post_inference_hooks,
-                labels=labels,
+                labels=labels or {},
             )
             if gpus == 0:
                 del payload["gpu_type"]
