@@ -2,10 +2,9 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.04.07"/>
+    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.4.0, furo 2022.04.07"/>
         <title>launch.model_endpoint - Launch API Reference</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
@@ -161,12 +160,10 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../request_validation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.request_validation</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../cli/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.pipeline</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../clientlib/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.clientlib</span></code></a></li>
 </ul>
 
 </div>
@@ -199,11 +196,11 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-launch.model_endpoint">
+          <div class="section" id="module-launch.model_endpoint">
 <span id="launch-model-endpoint"></span><h1><a class="reference internal" href="#module-launch.model_endpoint" title="launch.model_endpoint"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.model_endpoint</span></code></a><a class="headerlink" href="#module-launch.model_endpoint" title="Permalink to this headline">#</a></h1>
-<section id="module-contents">
+<div class="section" id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
-<section id="classes">
+<div class="section" id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
 <div class="table-wrapper"><table class="longtable docutils align-default">
 <colgroup>
@@ -294,7 +291,7 @@ TODO this functionality currently does not exist on the server.</p>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpointBatchResponse">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">AsyncEndpointBatchResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpointBatchResponse" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">AsyncEndpointBatchResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpointBatchResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Currently represents a list of async inference requests to a specific endpoint. Keeps track of the requests made,
 and gives a way to poll for their status.</p>
 <p>Invariant: set keys for self.request_ids and self.responses are equal</p>
@@ -302,7 +299,10 @@ and gives a way to poll for their status.</p>
 <p>Also batch inference sort of removes the need for much of the complication in here</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request_ids</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – </p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>request_ids</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – </p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py method">
@@ -400,9 +400,9 @@ result is a string that is the serialized return value (in json form) of the End
 </dd>
 </dl>
 </dd></dl>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
         </article>
       </div>
