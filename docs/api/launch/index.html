@@ -164,6 +164,14 @@
 <li class="toctree-l2"><a class="reference internal" href="request_validation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.request_validation</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../guides/index.html">How-to guides</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../guides/getting_started.html">Introduction to Scale Launch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guides/registering_your_code.html">Registering your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guides/deploying_your_code.html">Deploying your code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guides/integrations.html">Integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../guides/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
 </ul>
 
 </div>
@@ -200,85 +208,6 @@
 <span id="launch"></span><h1><a class="reference internal" href="#module-launch" title="launch"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch</span></code></a><a class="headerlink" href="#module-launch" title="Permalink to this headline">#</a></h1>
 <p>Scale Launch provides ML engineers with a simple Python interface for turning a local code snippet into a
 production service that automatically scales according to traffic.</p>
-<div class="section" id="core-concepts">
-<h2>Core concepts<a class="headerlink" href="#core-concepts" title="Permalink to this headline">#</a></h2>
-<p>Launch has three core concepts:</p>
-<ul class="simple">
-<li><p><cite>ModelBundle</cite></p></li>
-<li><p><cite>ModelEndpoint</cite></p></li>
-<li><p><cite>BatchJob</cite></p></li>
-</ul>
-<p><cite>ModelBundle</cite> represents your model &amp; code, and is what you’re deploying;
-<cite>ModelEndpoint</cite> and <cite>BatchJob</cite> represent the means of how to deploy it.</p>
-<div class="section" id="modelbundle">
-<h3>ModelBundle<a class="headerlink" href="#modelbundle" title="Permalink to this headline">#</a></h3>
-<p>A <cite>ModelBundle</cite> consists of a trained model as well as the surrounding preprocessing and postprocessing code.
-Specifically, a <cite>ModelBundle</cite> consists of two Python objects, a <cite>load_predict_fn</cite>, and either a <cite>model</cite> or <cite>load_model_fn</cite>; such that</p>
-<blockquote>
-<div><p>load_predict_fn(model)</p>
-</div></blockquote>
-<p>or</p>
-<blockquote>
-<div><p>load_predict_fn(load_model_fn())</p>
-</div></blockquote>
-<p>returns a function <cite>predict_fn</cite> that takes in one argument representing model input,
-and outputs one argument representing model output.</p>
-<p>Typically, a <cite>model</cite> would be a Pytorch nn.Module or Tensorflow model, but can also be any arbitrary Python code.</p>
-<a class="reference internal image-reference" href="../../_images/model_bundle.png"><img alt="../../_images/model_bundle.png" src="../../_images/model_bundle.png" style="width: 200px;"/></a>
-</div>
-<div class="section" id="modelendpoint">
-<h3>ModelEndpoint<a class="headerlink" href="#modelendpoint" title="Permalink to this headline">#</a></h3>
-<p>A <cite>ModelEndpoint</cite> is a deployment of a <cite>ModelBundle</cite> that serves inference requests.
-To create a <cite>ModelEndpoint</cite>, the user must specify various infrastructure-level details,
-such as the min &amp; max workers; and the amount of CPU, memory, and GPU resources per worker. A <cite>ModelEndpoint</cite>
-automatically scales the number of workers based on the amount of traffic.</p>
-<a class="reference internal image-reference" href="../../_images/model_endpoint.png"><img alt="../../_images/model_endpoint.png" src="../../_images/model_endpoint.png" style="width: 400px;"/></a>
-<p>There are two types of <cite>ModelEndpoint</cite>:</p>
-<p>A <cite>SyncEndpoint</cite> takes in requests and immediately returns the response in a blocking manner.
-A <cite>SyncEndpoint</cite> must always have at least 1 worker.</p>
-<p>An <cite>AsyncEndpoint</cite> takes in requests and returns an asynchronous response token. The user can later query to monitor
-the status of the request. Asynchronous endpoints can scale up from zero,
-which make them a cost effective choice for services that are not latency sensitive.</p>
-</div>
-<div class="section" id="batchjob">
-<h3>BatchJob<a class="headerlink" href="#batchjob" title="Permalink to this headline">#</a></h3>
-<p>A <cite>BatchJob</cite> takes in a <cite>ModelBundle</cite> and a list of inputs
-to predict on. Once a batch job completes, it cannot be restarted or accept additional requests.
-Launch maintains metadata about batch jobs for users to query, even after batch jobs are complete.</p>
-</div>
-<div class="section" id="choosing-the-right-inference-mode">
-<h3>Choosing the right inference mode<a class="headerlink" href="#choosing-the-right-inference-mode" title="Permalink to this headline">#</a></h3>
-<p>Here are some tips for how to choose between <cite>SyncEndpoint</cite>, <cite>AsyncEndpoint</cite>, and <cite>BatchJob</cite> for deploying your
-<cite>ModelBundle</cite>:</p>
-<p>A <cite>SyncEndpoint</cite> is good if:</p>
-<ul class="simple">
-<li><p>You have strict latency requirements (e.g. on the order of seconds or less).</p></li>
-<li><p>You are willing to have resources continually allocated.</p></li>
-</ul>
-<p>An <cite>AsyncEndpoint</cite> is good if:</p>
-<ul class="simple">
-<li><p>You want to save on compute costs.</p></li>
-<li><p>Your inference code takes a long time to run.</p></li>
-<li><p>Your latency requirements are on the order of minutes.</p></li>
-</ul>
-<p>A <cite>BatchJob</cite> is good if:</p>
-<ul class="simple">
-<li><p>You know there is a large batch of inputs ahead of time.</p></li>
-<li><p>You want to optimize for throughput instead of latency.</p></li>
-</ul>
-</div>
-</div>
-<div class="section" id="overview-of-deployment-steps">
-<h2>Overview of deployment steps<a class="headerlink" href="#overview-of-deployment-steps" title="Permalink to this headline">#</a></h2>
-<p>1. Create and upload a <cite>ModelBundle</cite>. Pass your trained model as well as pre-/post-processing code to
-the Scale Launch Python client, and we’ll create a model bundle based on the code and store it in our Bundle Store.</p>
-<p>2. Create a <cite>ModelEndpoint</cite>. Pass a <cite>ModelBundle</cite> as well as infrastructure settings such as #GPUs to our client.
-This provisions resources on Scale’s cluster dedicated to your <cite>ModelEndpoint</cite>.</p>
-<p>3. Make requests to the <cite>ModelEndpoint</cite>. You can make requests through the Python client, or make HTTP requests directly
-to Scale.</p>
-<p>See the Guides section for more detailed instructions.</p>
-<a class="reference internal image-reference" href="../../_images/request_lifecycle.png"><img alt="../../_images/request_lifecycle.png" src="../../_images/request_lifecycle.png" style="width: 400px;"/></a>
-</div>
 <div class="section" id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">#</a></h2>
 <div class="toctree-wrapper compound">
@@ -1000,14 +929,6 @@ and the value is the output of the endpoint’s <cite>predict</cite> function, s
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch</span></code></a><ul>
-<li><a class="reference internal" href="#core-concepts">Core concepts</a><ul>
-<li><a class="reference internal" href="#modelbundle">ModelBundle</a></li>
-<li><a class="reference internal" href="#modelendpoint">ModelEndpoint</a></li>
-<li><a class="reference internal" href="#batchjob">BatchJob</a></li>
-<li><a class="reference internal" href="#choosing-the-right-inference-mode">Choosing the right inference mode</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#overview-of-deployment-steps">Overview of deployment steps</a></li>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#package-contents">Package Contents</a><ul>
