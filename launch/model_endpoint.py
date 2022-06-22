@@ -95,7 +95,7 @@ class EndpointResponseFuture:
 
     def get(self) -> EndpointResponse:
         while True:
-            async_response = self.client.get_async_endpoint_response(
+            async_response = self.client._get_async_endpoint_response(
                 self.endpoint_name, self.async_task_id
             )
             if async_response["state"] == "PENDING":
@@ -137,7 +137,7 @@ class SyncEndpoint(Endpoint):
         return f"SyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def predict(self, request: EndpointRequest) -> EndpointResponse:
-        raw_response = self.client.sync_request(
+        raw_response = self.client._sync_request(
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
@@ -173,7 +173,7 @@ class AsyncEndpoint(Endpoint):
         return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def predict(self, request: EndpointRequest) -> EndpointResponseFuture:
-        async_task_id = self.client.async_request(
+        async_task_id = self.client._async_request(
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
@@ -216,7 +216,7 @@ class AsyncEndpoint(Endpoint):
         def single_request(request):
             # request has keys url and args
 
-            inner_inference_request = self.client.async_request(
+            inner_inference_request = self.client._async_request(
                 endpoint_name=self.model_endpoint.name,
                 url=request.url,
                 args=request.args,
@@ -304,7 +304,7 @@ class AsyncEndpointBatchResponse:
             if self.statuses[inner_url] != TASK_PENDING_STATE:
                 # Skip polling tasks that are completed
                 return None
-            inner_response = self.client.get_async_endpoint_response(
+            inner_response = self.client._get_async_endpoint_response(
                 self.endpoint_name, inner_task_id
             )
             print("inner response", inner_response)
