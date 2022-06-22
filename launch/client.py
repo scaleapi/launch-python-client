@@ -26,7 +26,10 @@ from launch.constants import (
 from launch.errors import APIError
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.hooks import PostInferenceHooks
-from launch.make_batch_file import make_batch_input_dict_file, make_batch_input_file
+from launch.make_batch_file import (
+    make_batch_input_dict_file,
+    make_batch_input_file,
+)
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import (
     AsyncEndpoint,
@@ -876,14 +879,16 @@ class LaunchClient:
             raise ValueError(
                 f"Disallowed options {set(batch_task_options.keys()) - allowed_batch_task_options} for batch task"
             )
-    
-        if (not (bool(inputs) ^ bool(urls))):
+
+        if not (bool(inputs) ^ bool(urls)):
             raise ValueError(
                 f"Exactly one of inputs and urls is required for batch tasks"
             )
-            
+
         f = StringIO()
-        make_batch_input_file(urls, f) if urls else make_batch_input_dict_file(inputs, f)
+        make_batch_input_file(urls, f) if urls else make_batch_input_dict_file(
+            inputs, f
+        )
         f.seek(0)
 
         if self.self_hosted:

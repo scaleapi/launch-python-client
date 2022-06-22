@@ -9,6 +9,7 @@ def make_batch_input_file(urls: List[str], file: IO[str]):
     for i, url in enumerate(urls):
         writer.writerow({"id": i, "url": url})
 
+
 def make_batch_input_dict_file(inputs: List[Dict[str, Any]], file: IO[str]):
     writer = csv.DictWriter(file, fieldnames=["id", "args"])
     writer.writeheader()
