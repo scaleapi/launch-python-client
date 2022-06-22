@@ -26,7 +26,7 @@ from launch.constants import (
 from launch.errors import APIError
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.hooks import PostInferenceHooks
-from launch.make_batch_file import make_batch_input_file
+from launch.make_batch_file import make_batch_input_dict_file, make_batch_input_file
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import (
     AsyncEndpoint,
@@ -832,6 +832,7 @@ class LaunchClient:
         self,
         bundle_name: str,
         urls: List[str],
+        inputs: Optional[List[Dict[str, Any]]],
         batch_url_file_location: Optional[str] = None,
         serialization_format: str = "json",
         batch_task_options: Optional[Dict[str, Any]] = None,
@@ -846,6 +847,7 @@ class LaunchClient:
                 'pickle' corresponds to pickling results + returning
             urls: A list of urls, each pointing to a file containing model input.
                 Must be accessible by Scale Launch, hence urls need to either be public or signedURLs.
+            inputs: A list of model inputs, if exists, we will upload the inputs and pass it in to Launch.
             batch_url_file_location: In self-hosted mode, the input to the batch job will be uploaded
                 to this location if provided. Otherwise, one will be determined from bundle_location_fn()
             batch_task_options: A Dict of optional endpoint/batch task settings, i.e. certain endpoint settings
@@ -874,9 +876,14 @@ class LaunchClient:
             raise ValueError(
                 f"Disallowed options {set(batch_task_options.keys()) - allowed_batch_task_options} for batch task"
             )
-
+    
+        if (not (bool(inputs) ^ bool(urls))):
+            raise ValueError(
+                f"Exactly one of inputs and urls is required for batch tasks"
+            )
+            
         f = StringIO()
-        make_batch_input_file(urls, f)
+        make_batch_input_file(urls, f) if urls else make_batch_input_dict_file(inputs, f)
         f.seek(0)
 
         if self.self_hosted:
