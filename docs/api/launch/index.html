@@ -632,20 +632,22 @@ to:</p>
 </p></li>
 <li><p><strong>app_config</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Either a Dictionary that represents a YAML file contents or a local path to a YAML file.</p></li>
 <li><p><strong>env_params</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – <p>A dictionary that dictates environment information e.g.
-the use of pytorch or tensorflow, which cuda/cudnn versions to use.
+the use of pytorch or tensorflow, which base image tag to use, etc.
 Specifically, the dictionary should contain the following keys:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">framework_type</span></code>: either <code class="docutils literal notranslate"><span class="pre">tensorflow</span></code> or <code class="docutils literal notranslate"><span class="pre">pytorch</span></code>.</p></li>
 <li><dl>
 <dt>PyTorch fields:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pytorch_version</span></code>: Version of pytorch, e.g. <code class="docutils literal notranslate"><span class="pre">"1.5.1"</span></code>, <code class="docutils literal notranslate"><span class="pre">"1.7.0"</span></code>, etc.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cuda_version</span></code>: Version of cuda used, e.g. <code class="docutils literal notranslate"><span class="pre">"11.0"</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cudnn_version</span></code> Version of cudnn used, e.g. <code class="docutils literal notranslate"><span class="pre">"cudnn8-devel"</span></code>.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">pytorch_image_tag</span></code>: An image tag for the <code class="docutils literal notranslate"><span class="pre">pytorch</span></code> docker base image. The list of tags</dt><dd><p>can be found from <a class="reference external" href="https://hub.docker.com/r/pytorch/pytorch/tags">https://hub.docker.com/r/pytorch/pytorch/tags</a>.</p>
+</dd>
+</dl>
+</li>
 <li><p>Example:</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">"framework_type"</span><span class="p">:</span> <span class="s2">"pytorch"</span><span class="p">,</span>
-    <span class="s2">"cuda_version"</span><span class="p">:</span> <span class="s2">"1.10.0-cuda11.3-cudnn8-runtime"</span>
+    <span class="s2">"pytorch_image_tag"</span><span class="p">:</span> <span class="s2">"1.10.0-cuda11.3-cudnn8-runtime"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -710,20 +712,22 @@ bundles that you own.</p></li>
 <li><p><strong>base_paths</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – The paths on the local filesystem where the bundle code lives.</p></li>
 <li><p><strong>requirements_path</strong> (<em>str</em>) – A path on the local filesystem where a <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file lives.</p></li>
 <li><p><strong>env_params</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – <p>A dictionary that dictates environment information e.g.
-the use of pytorch or tensorflow, which cuda/cudnn versions to use.
+the use of pytorch or tensorflow, which base image tag to use, etc.
 Specifically, the dictionary should contain the following keys:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">framework_type</span></code>: either <code class="docutils literal notranslate"><span class="pre">tensorflow</span></code> or <code class="docutils literal notranslate"><span class="pre">pytorch</span></code>.</p></li>
 <li><dl>
 <dt>PyTorch fields:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">pytorch_version</span></code>: Version of pytorch, e.g. <code class="docutils literal notranslate"><span class="pre">"1.5.1"</span></code>, <code class="docutils literal notranslate"><span class="pre">"1.7.0"</span></code>, etc.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cuda_version</span></code>: Version of cuda used, e.g. <code class="docutils literal notranslate"><span class="pre">"11.0"</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cudnn_version</span></code> Version of cudnn used, e.g. <code class="docutils literal notranslate"><span class="pre">"cudnn8-devel"</span></code>.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">pytorch_image_tag</span></code>: An image tag for the <code class="docutils literal notranslate"><span class="pre">pytorch</span></code> docker base image. The list of tags</dt><dd><p>can be found from <a class="reference external" href="https://hub.docker.com/r/pytorch/pytorch/tags">https://hub.docker.com/r/pytorch/pytorch/tags</a>.</p>
+</dd>
+</dl>
+</li>
 <li><p>Example:</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">"framework_type"</span><span class="p">:</span> <span class="s2">"pytorch"</span><span class="p">,</span>
-    <span class="s2">"cuda_version"</span><span class="p">:</span> <span class="s2">"1.10.0-cuda11.3-cudnn8-runtime"</span>
+    <span class="s2">"pytorch_image_tag"</span><span class="p">:</span> <span class="s2">"1.10.0-cuda11.3-cudnn8-runtime"</span>
 <span class="p">}</span>
 </pre></div>
 </div>

@@ -218,21 +218,20 @@ class LaunchClient:
             requirements_path: A path on the local filesystem where a ``requirements.txt`` file lives.
 
             env_params: A dictionary that dictates environment information e.g.
-                the use of pytorch or tensorflow, which cuda/cudnn versions to use.
+                the use of pytorch or tensorflow, which base image tag to use, etc.
                 Specifically, the dictionary should contain the following keys:
 
                 - ``framework_type``: either ``tensorflow`` or ``pytorch``.
                 - PyTorch fields:
-                    - ``pytorch_version``: Version of pytorch, e.g. ``"1.5.1"``, ``"1.7.0"``, etc.
-                    - ``cuda_version``: Version of cuda used, e.g. ``"11.0"``.
-                    - ``cudnn_version`` Version of cudnn used, e.g. ``"cudnn8-devel"``.
+                    - ``pytorch_image_tag``: An image tag for the ``pytorch`` docker base image. The list of tags
+                        can be found from https://hub.docker.com/r/pytorch/pytorch/tags.
                     - Example:
 
                     .. code-block:: python
                        
                        {
                            "framework_type": "pytorch",
-                           "cuda_version": "1.10.0-cuda11.3-cudnn8-runtime"
+                           "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime"
                        }
 
             load_predict_fn_module_path: A python module path for a function that, when called with the output of
@@ -367,21 +366,20 @@ class LaunchClient:
             app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
 
             env_params: A dictionary that dictates environment information e.g.
-                the use of pytorch or tensorflow, which cuda/cudnn versions to use.
+                the use of pytorch or tensorflow, which base image tag to use, etc.
                 Specifically, the dictionary should contain the following keys:
 
                 - ``framework_type``: either ``tensorflow`` or ``pytorch``.
                 - PyTorch fields:
-                    - ``pytorch_version``: Version of pytorch, e.g. ``"1.5.1"``, ``"1.7.0"``, etc.
-                    - ``cuda_version``: Version of cuda used, e.g. ``"11.0"``.
-                    - ``cudnn_version`` Version of cudnn used, e.g. ``"cudnn8-devel"``.
+                    - ``pytorch_image_tag``: An image tag for the ``pytorch`` docker base image. The list of tags
+                        can be found from https://hub.docker.com/r/pytorch/pytorch/tags.
                     - Example:
 
                     .. code-block:: python
                        
                        {
                            "framework_type": "pytorch",
-                           "cuda_version": "1.10.0-cuda11.3-cudnn8-runtime"
+                           "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime"
                        }
 
                 - Tensorflow fields:
