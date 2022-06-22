@@ -882,7 +882,7 @@ class LaunchClient:
 
         if not (bool(inputs) ^ bool(urls)):
             raise ValueError(
-                f"Exactly one of inputs and urls is required for batch tasks"
+                "Exactly one of inputs and urls is required for batch tasks"
             )
 
         f = StringIO()
