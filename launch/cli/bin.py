@@ -39,7 +39,8 @@ class ContextObject:
 )
 @click.pass_context
 def entry_point(ctx, **kwargs):
-    """Launch CLI
+    """
+    Launch CLI
 
         \b
     ██╗      █████╗ ██╗   ██╗███╗   ██╗ ██████╗██╗  ██╗
