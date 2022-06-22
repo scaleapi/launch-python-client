@@ -481,10 +481,7 @@ class LaunchClient:
              A Endpoint object that can be used to make requests to the endpoint.
 
         """
-        if (
-            update_if_exists
-            and self.get_model_endpoint(endpoint_name) is not None
-        ):
+        if update_if_exists and self.model_endpoint_exists(endpoint_name):
             self.edit_model_endpoint(
                 endpoint_name=endpoint_name,
                 model_bundle=model_bundle,
@@ -585,6 +582,12 @@ class LaunchClient:
             "endpoint_creation_task_id", None
         )  # Returned from server as "creation"
         logger.info("Endpoint edit task id is %s", endpoint_creation_task_id)
+
+    def model_endpoint_exists(self, endpoint_name: str) -> bool:
+        for existing_endpoint in self.list_model_endpoints():
+            if endpoint_name == existing_endpoint.model_endpoint.name:
+                return True
+        return False
 
     def get_model_endpoint(
         self, endpoint_name: str
