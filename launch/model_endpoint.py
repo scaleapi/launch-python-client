@@ -75,11 +75,15 @@ class EndpointRequest:
         url: A url to some file that can be read in to a ModelBundle's predict function. Can be an image, raw text, etc.
             **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
             to the predict function. If you instead want to pass the url itself as an input to the predict function,
-            see ``args``. Exactly one of ``url`` and ``args`` must be specified.
+            see ``args``.
+
+            Exactly one of ``url`` and ``args`` must be specified.
 
         args: A Dictionary with arguments to a ModelBundle's predict function. If the predict function has signature
             ``predict_fn(foo, bar)``, then the keys in the dictionary should be ``"foo"`` and ``"bar"``.
-            Values must be native Python objects. Exactly one of ``url`` and ``args`` must be specified.
+            Values must be native Python objects.
+
+            Exactly one of ``url`` and ``args`` must be specified.
 
         return_pickled: Whether the output should be a pickled python object, or directly returned serialized json.
 
@@ -120,11 +124,13 @@ class EndpointResponse:
             status: A string representing the status of the request, i.e. ``SUCCESS``, ``FAILURE``, or ``PENDING``
 
             result_url: A string that is a url containing the pickled python object from the Endpoint's predict function.
+
                 Exactly one of ``result_url`` or ``result`` will be populated,
                 depending on the value of ``return_pickled`` in the request.
 
             result: A string that is the serialized return value (in json form) of the Endpoint's predict function.
                 Specifically, one can ``json.loads()`` the value of result to get the original python object back.
+
                 Exactly one of ``result_url`` or ``result`` will be populated,
                 depending on the value of ``return_pickled`` in the request.
 

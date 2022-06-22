@@ -333,12 +333,14 @@ class LaunchClient:
             predict_fn_or_cls: ``Function`` or a ``Callable`` class that runs end-to-end (pre/post processing and model inference) on the call.
                 i.e. ``predict_fn_or_cls(REQUEST) -> RESPONSE``.
 
-            model: Typically a trained Neural Network, e.g. a Pytorch module. Exactly one of ``model`` and
-                ``load_model_fn`` must be provided.
+            model: Typically a trained Neural Network, e.g. a Pytorch module.
+
+                Exactly one of ``model`` and ``load_model_fn`` must be provided.
 
             load_model_fn: A function that, when run, loads a model. This function is essentially a deferred
-                wrapper around the ``model`` argument. Exactly one of ``model`` and ``load_model_fn`` must
-                be provided.
+                wrapper around the ``model`` argument.
+
+                Exactly one of ``model`` and ``load_model_fn`` must be provided.
 
             load_predict_fn: Function that, when called with a model, returns a function that carries out inference.
 
@@ -845,6 +847,9 @@ class LaunchClient:
 
             url: A url that points to a file containing model input.
                 Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
+                **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
+                to the predict function. If you instead want to pass the url itself as an input to the predict function,
+                see ``args``.
 
             args: A dictionary of arguments to the ``predict`` function defined in your model bundle.
                 Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``, etc.
@@ -891,12 +896,22 @@ class LaunchClient:
 
         Parameters:
             endpoint_name: The name of the endpoint to make the request to
+
             url: A url that points to a file containing model input.
                 Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
+                **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
+                to the predict function. If you instead want to pass the url itself as an input to the predict function,
+                see ``args``.
+
+                Exactly one of ``url`` and ``args`` must be specified.
+
             args: A dictionary of arguments to the ModelBundle's predict function.
-                Must be json-serializable, i.e. composed of str, int, float, etc.
-                If your `predict` function has signature `predict(foo, bar)`, then args should be a dictionary with
-                keys `foo` and `bar`. Exactly one of url and args must be specified.
+                Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``, etc.
+                If your predict function has signature ``predict(foo, bar)``, then args should be a dictionary with
+                keys ``"foo"`` and ``"bar"``.
+
+                Exactly one of ``url`` and ``args`` must be specified.
+
             return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
 
         Returns:
@@ -919,12 +934,20 @@ class LaunchClient:
 
         Parameters:
             endpoint_name: The name of the endpoint to make the request to
+
             url: A url that points to a file containing model input.
                 Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
+                **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
+                to the predict function. If you instead want to pass the url itself as an input to the predict function,
+                see ``args``.
+
             args: A dictionary of arguments to the ModelBundle's predict function.
-                Must be json-serializable, i.e. composed of str, int, float, etc.
-                If your `predict` function has signature `predict(foo, bar)`, then args should be a dictionary with
-                keys `foo` and `bar`. Exactly one of url and args must be specified.
+                Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``, etc.
+                If your predict function has signature ``predict(foo, bar)``, then args should be a dictionary with
+                keys ``"foo"`` and ``"bar"``.
+
+                Exactly one of ``url`` and ``args`` must be specified.
+
             return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
 
         Returns:

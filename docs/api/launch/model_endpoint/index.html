@@ -393,13 +393,17 @@ TODO: we’d need to implement some lower level asyncio request code</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A url to some file that can be read in to a ModelBundle’s predict function. Can be an image, raw text, etc.
+<li><p><strong>url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>A url to some file that can be read in to a ModelBundle’s predict function. Can be an image, raw text, etc.
 <strong>Note</strong>: the contents of the file located at <code class="docutils literal notranslate"><span class="pre">url</span></code> are opened as a sequence of <code class="docutils literal notranslate"><span class="pre">bytes</span></code> and passed
 to the predict function. If you instead want to pass the url itself as an input to the predict function,
-see <code class="docutils literal notranslate"><span class="pre">args</span></code>. Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p></li>
-<li><p><strong>args</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – A Dictionary with arguments to a ModelBundle’s predict function. If the predict function has signature
+see <code class="docutils literal notranslate"><span class="pre">args</span></code>.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p>
+</p></li>
+<li><p><strong>args</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – <p>A Dictionary with arguments to a ModelBundle’s predict function. If the predict function has signature
 <code class="docutils literal notranslate"><span class="pre">predict_fn(foo,</span> <span class="pre">bar)</span></code>, then the keys in the dictionary should be <code class="docutils literal notranslate"><span class="pre">"foo"</span></code> and <code class="docutils literal notranslate"><span class="pre">"bar"</span></code>.
-Values must be native Python objects. Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p></li>
+Values must be native Python objects.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p>
+</p></li>
 <li><p><strong>return_pickled</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – Whether the output should be a pickled python object, or directly returned serialized json.</p></li>
 <li><p><strong>request_id</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – (deprecated) A user-specifiable id for requests.
 Should be unique among EndpointRequests made in the same batch call.
@@ -417,13 +421,15 @@ If one isn’t provided the client will generate its own.</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client</strong> – An instance of <code class="docutils literal notranslate"><span class="pre">LaunchClient</span></code>.</p></li>
 <li><p><strong>status</strong> (<em>str</em>) – A string representing the status of the request, i.e. <code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code>, <code class="docutils literal notranslate"><span class="pre">FAILURE</span></code>, or <code class="docutils literal notranslate"><span class="pre">PENDING</span></code></p></li>
-<li><p><strong>result_url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A string that is a url containing the pickled python object from the Endpoint’s predict function.
-Exactly one of <code class="docutils literal notranslate"><span class="pre">result_url</span></code> or <code class="docutils literal notranslate"><span class="pre">result</span></code> will be populated,
-depending on the value of <code class="docutils literal notranslate"><span class="pre">return_pickled</span></code> in the request.</p></li>
-<li><p><strong>result</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A string that is the serialized return value (in json form) of the Endpoint’s predict function.
-Specifically, one can <code class="docutils literal notranslate"><span class="pre">json.loads()</span></code> the value of result to get the original python object back.
-Exactly one of <code class="docutils literal notranslate"><span class="pre">result_url</span></code> or <code class="docutils literal notranslate"><span class="pre">result</span></code> will be populated,
-depending on the value of <code class="docutils literal notranslate"><span class="pre">return_pickled</span></code> in the request.</p></li>
+<li><p><strong>result_url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>A string that is a url containing the pickled python object from the Endpoint’s predict function.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">result_url</span></code> or <code class="docutils literal notranslate"><span class="pre">result</span></code> will be populated,
+depending on the value of <code class="docutils literal notranslate"><span class="pre">return_pickled</span></code> in the request.</p>
+</p></li>
+<li><p><strong>result</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>A string that is the serialized return value (in json form) of the Endpoint’s predict function.
+Specifically, one can <code class="docutils literal notranslate"><span class="pre">json.loads()</span></code> the value of result to get the original python object back.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">result_url</span></code> or <code class="docutils literal notranslate"><span class="pre">result</span></code> will be populated,
+depending on the value of <code class="docutils literal notranslate"><span class="pre">return_pickled</span></code> in the request.</p>
+</p></li>
 </ul>
 </dd>
 </dl>

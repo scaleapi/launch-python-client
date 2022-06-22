@@ -438,13 +438,17 @@ successful.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A url to some file that can be read in to a ModelBundle’s predict function. Can be an image, raw text, etc.
+<li><p><strong>url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>A url to some file that can be read in to a ModelBundle’s predict function. Can be an image, raw text, etc.
 <strong>Note</strong>: the contents of the file located at <code class="docutils literal notranslate"><span class="pre">url</span></code> are opened as a sequence of <code class="docutils literal notranslate"><span class="pre">bytes</span></code> and passed
 to the predict function. If you instead want to pass the url itself as an input to the predict function,
-see <code class="docutils literal notranslate"><span class="pre">args</span></code>. Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p></li>
-<li><p><strong>args</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – A Dictionary with arguments to a ModelBundle’s predict function. If the predict function has signature
+see <code class="docutils literal notranslate"><span class="pre">args</span></code>.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p>
+</p></li>
+<li><p><strong>args</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – <p>A Dictionary with arguments to a ModelBundle’s predict function. If the predict function has signature
 <code class="docutils literal notranslate"><span class="pre">predict_fn(foo,</span> <span class="pre">bar)</span></code>, then the keys in the dictionary should be <code class="docutils literal notranslate"><span class="pre">"foo"</span></code> and <code class="docutils literal notranslate"><span class="pre">"bar"</span></code>.
-Values must be native Python objects. Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p></li>
+Values must be native Python objects.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p>
+</p></li>
 <li><p><strong>return_pickled</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – Whether the output should be a pickled python object, or directly returned serialized json.</p></li>
 <li><p><strong>request_id</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – (deprecated) A user-specifiable id for requests.
 Should be unique among EndpointRequests made in the same batch call.
@@ -462,13 +466,15 @@ If one isn’t provided the client will generate its own.</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client</strong> – An instance of <code class="docutils literal notranslate"><span class="pre">LaunchClient</span></code>.</p></li>
 <li><p><strong>status</strong> (<em>str</em>) – A string representing the status of the request, i.e. <code class="docutils literal notranslate"><span class="pre">SUCCESS</span></code>, <code class="docutils literal notranslate"><span class="pre">FAILURE</span></code>, or <code class="docutils literal notranslate"><span class="pre">PENDING</span></code></p></li>
-<li><p><strong>result_url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A string that is a url containing the pickled python object from the Endpoint’s predict function.
-Exactly one of <code class="docutils literal notranslate"><span class="pre">result_url</span></code> or <code class="docutils literal notranslate"><span class="pre">result</span></code> will be populated,
-depending on the value of <code class="docutils literal notranslate"><span class="pre">return_pickled</span></code> in the request.</p></li>
-<li><p><strong>result</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A string that is the serialized return value (in json form) of the Endpoint’s predict function.
-Specifically, one can <code class="docutils literal notranslate"><span class="pre">json.loads()</span></code> the value of result to get the original python object back.
-Exactly one of <code class="docutils literal notranslate"><span class="pre">result_url</span></code> or <code class="docutils literal notranslate"><span class="pre">result</span></code> will be populated,
-depending on the value of <code class="docutils literal notranslate"><span class="pre">return_pickled</span></code> in the request.</p></li>
+<li><p><strong>result_url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>A string that is a url containing the pickled python object from the Endpoint’s predict function.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">result_url</span></code> or <code class="docutils literal notranslate"><span class="pre">result</span></code> will be populated,
+depending on the value of <code class="docutils literal notranslate"><span class="pre">return_pickled</span></code> in the request.</p>
+</p></li>
+<li><p><strong>result</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>A string that is the serialized return value (in json form) of the Endpoint’s predict function.
+Specifically, one can <code class="docutils literal notranslate"><span class="pre">json.loads()</span></code> the value of result to get the original python object back.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">result_url</span></code> or <code class="docutils literal notranslate"><span class="pre">result</span></code> will be populated,
+depending on the value of <code class="docutils literal notranslate"><span class="pre">return_pickled</span></code> in the request.</p>
+</p></li>
 </ul>
 </dd>
 </dl>
@@ -523,12 +529,19 @@ the result of inference at a later time.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>endpoint_name</strong> (<em>str</em>) – The name of the endpoint to make the request to</p></li>
-<li><p><strong>url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – A url that points to a file containing model input.
-Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.</p></li>
-<li><p><strong>args</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – A dictionary of arguments to the ModelBundle’s predict function.
-Must be json-serializable, i.e. composed of str, int, float, etc.
-If your <cite>predict</cite> function has signature <cite>predict(foo, bar)</cite>, then args should be a dictionary with
-keys <cite>foo</cite> and <cite>bar</cite>. Exactly one of url and args must be specified.</p></li>
+<li><p><strong>url</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>A url that points to a file containing model input.
+Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
+<strong>Note</strong>: the contents of the file located at <code class="docutils literal notranslate"><span class="pre">url</span></code> are opened as a sequence of <code class="docutils literal notranslate"><span class="pre">bytes</span></code> and passed
+to the predict function. If you instead want to pass the url itself as an input to the predict function,
+see <code class="docutils literal notranslate"><span class="pre">args</span></code>.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p>
+</p></li>
+<li><p><strong>args</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – <p>A dictionary of arguments to the ModelBundle’s predict function.
+Must be json-serializable, i.e. composed of <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, etc.
+If your predict function has signature <code class="docutils literal notranslate"><span class="pre">predict(foo,</span> <span class="pre">bar)</span></code>, then args should be a dictionary with
+keys <code class="docutils literal notranslate"><span class="pre">"foo"</span></code> and <code class="docutils literal notranslate"><span class="pre">"bar"</span></code>.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p>
+</p></li>
 <li><p><strong>return_pickled</strong> (<em>bool</em>) – Whether the python object returned is pickled, or directly written to the file returned.</p></li>
 </ul>
 </dd>
@@ -588,11 +601,13 @@ job settings, like <code class="docutils literal notranslate"><span class="pre">
 bundles that you own.</p></li>
 <li><p><strong>predict_fn_or_cls</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – <code class="docutils literal notranslate"><span class="pre">Function</span></code> or a <code class="docutils literal notranslate"><span class="pre">Callable</span></code> class that runs end-to-end (pre/post processing and model inference) on the call.
 i.e. <code class="docutils literal notranslate"><span class="pre">predict_fn_or_cls(REQUEST)</span> <span class="pre">-&gt;</span> <span class="pre">RESPONSE</span></code>.</p></li>
-<li><p><strong>model</strong> (<em>Optional</em><em>[</em><em>LaunchModel_T</em><em>]</em>) – Typically a trained Neural Network, e.g. a Pytorch module. Exactly one of <code class="docutils literal notranslate"><span class="pre">model</span></code> and
-<code class="docutils literal notranslate"><span class="pre">load_model_fn</span></code> must be provided.</p></li>
-<li><p><strong>load_model_fn</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>LaunchModel_T</em><em>]</em><em>]</em>) – A function that, when run, loads a model. This function is essentially a deferred
-wrapper around the <code class="docutils literal notranslate"><span class="pre">model</span></code> argument. Exactly one of <code class="docutils literal notranslate"><span class="pre">model</span></code> and <code class="docutils literal notranslate"><span class="pre">load_model_fn</span></code> must
-be provided.</p></li>
+<li><p><strong>model</strong> (<em>Optional</em><em>[</em><em>LaunchModel_T</em><em>]</em>) – <p>Typically a trained Neural Network, e.g. a Pytorch module.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">model</span></code> and <code class="docutils literal notranslate"><span class="pre">load_model_fn</span></code> must be provided.</p>
+</p></li>
+<li><p><strong>load_model_fn</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>LaunchModel_T</em><em>]</em><em>]</em>) – <p>A function that, when run, loads a model. This function is essentially a deferred
+wrapper around the <code class="docutils literal notranslate"><span class="pre">model</span></code> argument.</p>
+<p>Exactly one of <code class="docutils literal notranslate"><span class="pre">model</span></code> and <code class="docutils literal notranslate"><span class="pre">load_model_fn</span></code> must be provided.</p>
+</p></li>
 <li><p><strong>load_predict_fn</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>LaunchModel_T</em><em>]</em><em>, </em><em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>]</em>) – <p>Function that, when called with a model, returns a function that carries out inference.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">model</span></code> is specified, then this is equivalent
 to:</p>
