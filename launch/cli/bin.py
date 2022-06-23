@@ -56,5 +56,5 @@ def entry_point(ctx, **kwargs):
 entry_point.add_command(bundles)  # type: ignore
 entry_point.add_command(endpoints)  # type: ignore
 
-#if __name__ == "__main__":
-#    entry_point()  # pylint: disable=no-value-for-parameter
+if __name__ == "__main__":
+    entry_point()  # pylint: disable=no-value-for-parameter
