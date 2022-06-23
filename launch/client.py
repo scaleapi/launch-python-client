@@ -27,7 +27,10 @@ from launch.constants import (
 from launch.errors import APIError
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.hooks import PostInferenceHooks
-from launch.make_batch_file import make_batch_input_file
+from launch.make_batch_file import (
+    make_batch_input_dict_file,
+    make_batch_input_file,
+)
 from launch.model_bundle import ModelBundle
 from launch.model_endpoint import (
     AsyncEndpoint,
@@ -97,6 +100,7 @@ class LaunchClient:
             [Dict[str, Any]], Dict[str, Any]
         ] = lambda x: x
         self.bundle_location_fn: Optional[Callable[[], str]] = None
+        self.batch_csv_location_fn: Optional[Callable[[], str]] = None
 
     def __repr__(self):
         return f"LaunchClient(connection='{self.connection}')"
@@ -155,6 +159,23 @@ class LaunchClient:
             bundle_location_fn: Function that generates bundle_urls for upload_bundle_fn.
         """
         self.bundle_location_fn = bundle_location_fn
+
+    def register_batch_csv_location_fn(
+        self, batch_csv_location_fn: Callable[[], str]
+    ):
+        """
+        For self-hosted mode only. Registers a function that gives a location for batch CSV inputs. Should give different
+        locations each time. This function is called as batch_csv_location_fn(), and should return a batch_csv_url that
+        upload_batch_csv_fn can take.
+
+        Strictly, batch_csv_location_fn() does not need to return a str. The only requirement is that if batch_csv_location_fn
+        returns a value of type T, then upload_batch_csv_fn() takes in an object of type T as its second argument
+        (i.e. batch_csv_url).
+
+        Parameters:
+            batch_csv_location_fn: Function that generates batch_csv_urls for upload_batch_csv_fn.
+        """
+        self.batch_csv_location_fn = batch_csv_location_fn
 
     def register_endpoint_auth_decorator(self, endpoint_auth_decorator_fn):
         """
@@ -568,10 +589,7 @@ class LaunchClient:
              A Endpoint object that can be used to make requests to the endpoint.
 
         """
-        if (
-            update_if_exists
-            and self.get_model_endpoint(endpoint_name) is not None
-        ):
+        if update_if_exists and self.model_endpoint_exists(endpoint_name):
             self.edit_model_endpoint(
                 endpoint_name=endpoint_name,
                 model_bundle=model_bundle,
@@ -714,7 +732,15 @@ class LaunchClient:
         )  # Returned from server as "creation"
         logger.info("Endpoint edit task id is %s", endpoint_creation_task_id)
 
-    def get_model_endpoint(self, endpoint_name: str) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
+    def model_endpoint_exists(self, endpoint_name: str) -> bool:
+        for existing_endpoint in self.list_model_endpoints():
+            if endpoint_name == existing_endpoint.model_endpoint.name:
+                return True
+        return False
+
+    def get_model_endpoint(
+        self, endpoint_name: str
+    ) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
         """
         Gets a model endpoint associated with a name.
 
@@ -1041,7 +1067,8 @@ class LaunchClient:
     def batch_async_request(
         self,
         bundle_name: str,
-        urls: List[str],
+        urls: List[str] = None,
+        inputs: Optional[List[Dict[str, Any]]] = None,
         batch_url_file_location: Optional[str] = None,
         serialization_format: str = "json",
         batch_task_options: Optional[Dict[str, Any]] = None,
@@ -1050,11 +1077,15 @@ class LaunchClient:
         Sends a batch inference request using a given bundle. Returns a key that can be used to retrieve
         the results of inference at a later time.
 
+        Must have exactly one of urls or inputs passed in.
+
         Parameters:
             bundle_name: The name of the bundle to use for inference.
 
             urls: A list of urls, each pointing to a file containing model input.
                 Must be accessible by Scale Launch, hence urls need to either be public or signedURLs.
+
+            inputs: A list of model inputs, if exists, we will upload the inputs and pass it in to Launch.
 
             batch_url_file_location: In self-hosted mode, the input to the batch job will be uploaded
                 to this location if provided. Otherwise, one will be determined from bundle_location_fn()
@@ -1089,16 +1120,21 @@ class LaunchClient:
                 f"Disallowed options {set(batch_task_options.keys()) - allowed_batch_task_options} for batch task"
             )
 
+        if not bool(inputs) ^ bool(urls):
+            raise ValueError(
+                "Exactly one of inputs and urls is required for batch tasks"
+            )
+
         f = StringIO()
-        make_batch_input_file(urls, f)
+        if urls:
+            make_batch_input_file(urls, f)
+        elif inputs:
+            make_batch_input_dict_file(inputs, f)
         f.seek(0)
 
         if self.self_hosted:
             # TODO make this not use bundle_location_fn()
-            if batch_url_file_location is None:
-                file_location = self.bundle_location_fn()  # type: ignore
-            else:
-                file_location = batch_url_file_location
+            file_location = batch_url_file_location or self.batch_csv_location_fn() or self.bundle_location_fn()  # type: ignore
             self.upload_batch_csv_fn(  # type: ignore
                 f.getvalue(), file_location
             )
