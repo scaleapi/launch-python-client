@@ -844,6 +844,8 @@ class LaunchClient:
         Sends a batch inference request to the Model Endpoint at endpoint_id, returns a key that can be used to retrieve
         the results of inference at a later time.
 
+        Must have exactly one of urls or inputs passed in.
+
         Parameters:
             bundle_name: The id of the bundle to make the request to
             serialization_format: Serialization format of output, either 'pickle' or 'json'.

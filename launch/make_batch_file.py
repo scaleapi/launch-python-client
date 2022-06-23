@@ -1,6 +1,6 @@
 import csv
 import json
-from typing import IO, List, Any, Dict
+from typing import IO, Any, Dict, List
 
 
 def make_batch_input_file(urls: List[str], file: IO[str]):
@@ -11,7 +11,7 @@ def make_batch_input_file(urls: List[str], file: IO[str]):
 
 
 def make_batch_input_dict_file(inputs: List[Dict[str, Any]], file: IO[str]):
-    writer = csv.DictWriter(file, fieldnames=["id", "args"], escapechar='"')
+    writer = csv.DictWriter(file, fieldnames=["id", "args"], quotechar="'")
     writer.writeheader()
     for i, args in enumerate(inputs):
         writer.writerow({"id": i, "args": json.dumps(args)})
