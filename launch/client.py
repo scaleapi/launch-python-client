@@ -886,9 +886,10 @@ class LaunchClient:
             )
 
         f = StringIO()
-        make_batch_input_file(urls, f) if urls else make_batch_input_dict_file(
-            inputs, f
-        )
+        if urls:
+            make_batch_input_file(urls, f)
+        else: 
+            make_batch_input_dict_file(inputs, f)
         f.seek(0)
 
         if self.self_hosted:
