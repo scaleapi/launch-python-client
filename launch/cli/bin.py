@@ -35,22 +35,20 @@ class ContextObject:
     envvar="LAUNCH_API_KEY",
     required=True,
     type=str,
-    help="Scale Lunch API key",
+    help="Scale Launch API key",
 )
 @click.pass_context
 def entry_point(ctx, **kwargs):
     """
-    Launch CLI
+    This is the command line interface (CLI) package for Scale Launch.
 
-        \b
-    ██╗      █████╗ ██╗   ██╗███╗   ██╗ ██████╗██╗  ██╗
-    ██║     ██╔══██╗██║   ██║████╗  ██║██╔════╝██║  ██║
-    ██║     ███████║██║   ██║██╔██╗ ██║██║     ███████║
-    ██║     ██╔══██║██║   ██║██║╚██╗██║██║     ██╔══██║
-    ███████╗██║  ██║╚██████╔╝██║ ╚████║╚██████╗██║  ██║
-    ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝
+       ██╗      █████╗ ██╗   ██╗███╗   ██╗ ██████╗██╗  ██╗
+       ██║     ██╔══██╗██║   ██║████╗  ██║██╔════╝██║  ██║
+       ██║     ███████║██║   ██║██╔██╗ ██║██║     ███████║
+       ██║     ██╔══██║██║   ██║██║╚██╗██║██║     ██╔══██║
+       ███████╗██║  ██║╚██████╔╝██║ ╚████║╚██████╗██║  ██║
+       ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝
 
-        `scale-launch` is a command line interface to interact with Scale Launch
     """
     ctx.obj = ContextObject(**kwargs)
 
@@ -58,5 +56,5 @@ def entry_point(ctx, **kwargs):
 entry_point.add_command(bundles)  # type: ignore
 entry_point.add_command(endpoints)  # type: ignore
 
-if __name__ == "__main__":
-    entry_point()  # pylint: disable=no-value-for-parameter
+#if __name__ == "__main__":
+#    entry_point()  # pylint: disable=no-value-for-parameter
