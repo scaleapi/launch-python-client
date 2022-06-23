@@ -42,6 +42,8 @@ def entry_point(ctx, **kwargs):
     """
     This is the command line interface (CLI) package for Scale Launch.
 
+    .. code-block:: text
+
        ██╗      █████╗ ██╗   ██╗███╗   ██╗ ██████╗██╗  ██╗
        ██║     ██╔══██╗██║   ██║████╗  ██║██╔════╝██║  ██║
        ██║     ███████║██║   ██║██╔██╗ ██║██║     ███████║
