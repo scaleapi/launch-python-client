@@ -99,6 +99,7 @@ class LaunchClient:
             [Dict[str, Any]], Dict[str, Any]
         ] = lambda x: x
         self.bundle_location_fn: Optional[Callable[[], str]] = None
+        self.batch_csv_location_fn: Optional[Callable[[], str]] = None
 
     def __repr__(self):
         return f"LaunchClient(connection='{self.connection}')"
@@ -156,6 +157,23 @@ class LaunchClient:
             bundle_location_fn: Function that generates bundle_urls for upload_bundle_fn.
         """
         self.bundle_location_fn = bundle_location_fn
+
+    def register_batch_csv_location_fn(
+        self, batch_csv_location_fn: Callable[[], str]
+    ):
+        """
+        For self-hosted mode only. Registers a function that gives a location for batch CSV inputs. Should give different
+        locations each time. This function is called as batch_csv_location_fn(), and should return a batch_csv_url that
+        upload_batch_csv_fn can take.
+
+        Strictly, batch_csv_location_fn() does not need to return a str. The only requirement is that if batch_csv_location_fn
+        returns a value of type T, then upload_batch_csv_fn() takes in an object of type T as its second argument
+        (i.e. batch_csv_url).
+
+        Parameters:
+            batch_csv_location_fn: Function that generates batch_csv_urls for upload_batch_csv_fn.
+        """
+        self.batch_csv_location_fn = batch_csv_location_fn
 
     def register_endpoint_auth_decorator(self, endpoint_auth_decorator_fn):
         """
@@ -896,10 +914,7 @@ class LaunchClient:
 
         if self.self_hosted:
             # TODO make this not use bundle_location_fn()
-            if batch_url_file_location is None:
-                file_location = self.bundle_location_fn()  # type: ignore
-            else:
-                file_location = batch_url_file_location
+            file_location = batch_url_file_location or self.batch_csv_location_fn() or self.bundle_location_fn()  # type: ignore
             self.upload_batch_csv_fn(  # type: ignore
                 f.getvalue(), file_location
             )
