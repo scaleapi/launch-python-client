@@ -834,8 +834,8 @@ class LaunchClient:
     def batch_async_request(
         self,
         bundle_name: str,
-        urls: List[str],
-        inputs: Optional[List[Dict[str, Any]]],
+        urls: List[str] = None,
+        inputs: Optional[List[Dict[str, Any]]] = None,
         batch_url_file_location: Optional[str] = None,
         serialization_format: str = "json",
         batch_task_options: Optional[Dict[str, Any]] = None,
@@ -880,7 +880,7 @@ class LaunchClient:
                 f"Disallowed options {set(batch_task_options.keys()) - allowed_batch_task_options} for batch task"
             )
 
-        if not (bool(inputs) ^ bool(urls)):
+        if not bool(inputs) ^ bool(urls):
             raise ValueError(
                 "Exactly one of inputs and urls is required for batch tasks"
             )
