@@ -888,7 +888,7 @@ class LaunchClient:
         f = StringIO()
         if urls:
             make_batch_input_file(urls, f)
-        else: 
+        else:
             make_batch_input_dict_file(inputs, f)
         f.seek(0)
 
