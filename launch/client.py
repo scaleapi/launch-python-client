@@ -1028,9 +1028,10 @@ class LaunchClient:
 
         """
         # TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
-        return self._get_async_response(
-            endpoint_name=endpoint_name, async_task_id=async_task_id
+        resp = self.connection.get(
+            route=f"{ASYNC_TASK_RESULT_PATH}/{async_task_id}"
         )
+        return resp
 
     def _get_async_endpoint_response(
         self, endpoint_name: str, async_task_id: str
