@@ -589,7 +589,10 @@ class LaunchClient:
              A Endpoint object that can be used to make requests to the endpoint.
 
         """
-        if update_if_exists and self.model_endpoint_exists(endpoint_name):
+        if (
+            update_if_exists
+            and self.get_model_endpoint(endpoint_name, quiet=True) is not None
+        ):
             self.edit_model_endpoint(
                 endpoint_name=endpoint_name,
                 model_bundle=model_bundle,
@@ -732,29 +735,27 @@ class LaunchClient:
         )  # Returned from server as "creation"
         logger.info("Endpoint edit task id is %s", endpoint_creation_task_id)
 
-    def model_endpoint_exists(self, endpoint_name: str) -> bool:
-        for existing_endpoint in self.list_model_endpoints():
-            if endpoint_name == existing_endpoint.model_endpoint.name:
-                return True
-        return False
-
     def get_model_endpoint(
-        self, endpoint_name: str
+        self,
+        endpoint_name: str,
+        quiet: bool = False,
     ) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
         """
         Gets a model endpoint associated with a name.
 
         Parameters:
             endpoint_name: The name of the endpoint to retrieve.
+            quiet: If ``True``, will return ``None`` without logging an error when the endpoint does not exist.
         """
         try:
             resp = self.connection.get(
                 os.path.join(ENDPOINT_PATH, endpoint_name)
             )
         except APIError:
-            logger.exception(
-                "Got an error when retrieving endpoint %s", endpoint_name
-            )
+            if not quiet:
+                logger.exception(
+                    "Got an error when retrieving endpoint %s", endpoint_name
+                )
             return None
 
         if resp["endpoint_type"] == "async":
