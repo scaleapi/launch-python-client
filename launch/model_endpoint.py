@@ -4,11 +4,11 @@ import time
 import uuid
 from collections import Counter
 from dataclasses import dataclass
-from deprecation import deprecated
 from typing import Dict, Optional, Sequence
 
 from dataclasses_json import Undefined, dataclass_json
 
+from deprecation import deprecated
 from launch.request_validation import validate_task_request
 
 TASK_PENDING_STATE = "PENDING"
