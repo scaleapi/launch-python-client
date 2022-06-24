@@ -2,12 +2,13 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.4.0, furo 2022.04.07"/>
+    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.06.21"/>
         <title>launch.clientlib - Launch API Reference</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -190,7 +191,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -204,16 +206,17 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="module-launch.clientlib">
+          <section id="module-launch.clientlib">
 <span id="launch-clientlib"></span><h1><a class="reference internal" href="#module-launch.clientlib" title="launch.clientlib"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.clientlib</span></code></a><a class="headerlink" href="#module-launch.clientlib" title="Permalink to this headline">#</a></h1>
-<div class="section" id="package-contents">
+<section id="package-contents">
 <h2>Package Contents<a class="headerlink" href="#package-contents" title="Permalink to this headline">#</a></h2>
-<div class="section" id="classes">
+<section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="longtable docutils align-default">
+<div class="table-wrapper longtable docutils container">
+<table class="longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#launch.clientlib.DeployedService" title="launch.clientlib.DeployedService"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeployedService</span></code></a></p></td>
@@ -268,18 +271,21 @@
 <td><p>Helper class that provides a standard way to create an ABC using</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.DeployedService">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">DeployedService</span></span><a class="headerlink" href="#launch.clientlib.DeployedService" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper class that provides a standard way to create an ABC using
 inheritance.</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.DeploymentOptions">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">DeploymentOptions</span></span><a class="headerlink" href="#launch.clientlib.DeploymentOptions" title="Permalink to this definition">#</a></dt>
 <dd><p>The configuration options that determine where the service is deployed and how it acts in the cluster.</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.FullService">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">FullService</span></span><a class="headerlink" href="#launch.clientlib.FullService" title="Permalink to this definition">#</a></dt>
@@ -287,11 +293,13 @@ inheritance.</p>
 <p>Its the service logic + knowing how to encode &amp; decode things into the transit data format.
 Default implementation is to use JSON formatted strings.</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.JsonHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">JsonHandler</span></span><a class="headerlink" href="#launch.clientlib.JsonHandler" title="Permalink to this definition">#</a></dt>
 <dd><p>Responsible for converting protocol-formatted data (D) into a service’s input type (I).</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.JsonService">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">JsonService</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.clientlib.JsonService" title="Permalink to this definition">#</a></dt>
@@ -306,6 +314,7 @@ Default implementation is to use JSON formatted strings.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.ReferencedDeployment">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">ReferencedDeployment</span></span><a class="headerlink" href="#launch.clientlib.ReferencedDeployment" title="Permalink to this definition">#</a></dt>
@@ -322,17 +331,21 @@ until the caller invokes <cite>.get()</cite>.</p>
 <p>If the call fails, then the result will be an exception.
 If <cite>.status()</cite> is not <cite>complete</cite>, then all <a href="#id1"><span class="problematic" id="id2">`</span></a>call`s will fail.</p>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.RequestHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">RequestHandler</span></span><a class="headerlink" href="#launch.clientlib.RequestHandler" title="Permalink to this definition">#</a></dt>
 <dd><p>Responsible for converting protocol-formatted data (D) into a service’s input type (I).</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.ResponseHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">ResponseHandler</span></span><a class="headerlink" href="#launch.clientlib.ResponseHandler" title="Permalink to this definition">#</a></dt>
 <dd><p>Responsible for converting a service’s output (O) into the protocol’s data format (D).</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.RunnableTritonConfig">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">RunnableTritonConfig</span></span><a class="headerlink" href="#launch.clientlib.RunnableTritonConfig" title="Permalink to this definition">#</a></dt>
@@ -344,21 +357,22 @@ If <cite>.status()</cite> is not <cite>complete</cite>, then all <a href="#id1">
 </pre></div>
 </div>
 <p>This is equivalent to:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Employee</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">'Employee'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'name'</span><span class="p">,</span> <span class="s1">'id'</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Employee</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Employee&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>The resulting class has an extra __annotations__ attribute, giving a
 dict that maps field names to types.  (The field names are also in
 the _fields attribute, which is part of the namedtuple API.)
 Alternative equivalent keyword syntax is also accepted:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Employee</span> <span class="o">=</span> <span class="n">NamedTuple</span><span class="p">(</span><span class="s1">'Employee'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Employee</span> <span class="o">=</span> <span class="n">NamedTuple</span><span class="p">(</span><span class="s1">&#39;Employee&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In Python versions &lt;= 3.5 use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Employee</span> <span class="o">=</span> <span class="n">NamedTuple</span><span class="p">(</span><span class="s1">'Employee'</span><span class="p">,</span> <span class="p">[(</span><span class="s1">'name'</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="nb">int</span><span class="p">)])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Employee</span> <span class="o">=</span> <span class="n">NamedTuple</span><span class="p">(</span><span class="s1">&#39;Employee&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)])</span>
 </pre></div>
 </div>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.Runtime">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">Runtime</span></span><a class="headerlink" href="#launch.clientlib.Runtime" title="Permalink to this definition">#</a></dt>
@@ -374,7 +388,9 @@ inheritance.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.Service">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">Service</span></span><a class="headerlink" href="#launch.clientlib.Service" title="Permalink to this definition">#</a></dt>
@@ -382,11 +398,13 @@ inheritance.</p>
 <p>Users <em>must</em> implement a Service to their sepecifications! The <cite>Service</cite> class is
 where a Launch user can define all of their custom code.</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.SpecsTritonModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">SpecsTritonModel</span></span><a class="headerlink" href="#launch.clientlib.SpecsTritonModel" title="Permalink to this definition">#</a></dt>
 <dd><p>A model that also describes the shapes of its input and output tensors.</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.Status">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">Status</span></span><a class="headerlink" href="#launch.clientlib.Status" title="Permalink to this definition">#</a></dt>
@@ -397,38 +415,45 @@ where a Launch user can define all of their custom code.</p>
 <span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.clientlib.Status.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the Enum member.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.clientlib.Status.value">
 <span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.clientlib.Status.value" title="Permalink to this definition">#</a></dt>
 <dd><p>The value of the Enum member.</p>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.ToProtobufText">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">ToProtobufText</span></span><a class="headerlink" href="#launch.clientlib.ToProtobufText" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper class that provides a standard way to create an ABC using
 inheritance.</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.TritonModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">TritonModel</span></span><a class="headerlink" href="#launch.clientlib.TritonModel" title="Permalink to this definition">#</a></dt>
 <dd><p>A kind of service that only executes a model’s forward pass for inference.</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.TritonModelConfig">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">TritonModelConfig</span></span><a class="headerlink" href="#launch.clientlib.TritonModelConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper class that provides a standard way to create an ABC using
 inheritance.</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.clientlib.TritonTensor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.clientlib.</span></span><span class="sig-name descname"><span class="pre">TritonTensor</span></span><a class="headerlink" href="#launch.clientlib.TritonTensor" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper class that provides a standard way to create an ABC using
 inheritance.</p>
 </dd></dl>
-</div>
-</div>
-</div>
+
+</section>
+</section>
+</section>
 
         </article>
       </div>
