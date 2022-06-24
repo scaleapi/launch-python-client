@@ -1,9 +1,8 @@
-import inspect
+import inspect  # pylint: disable=C0302
 import logging
 import os
 import shutil
 import tempfile
-from deprecation import deprecated
 from io import StringIO
 from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
 from zipfile import ZipFile
@@ -11,6 +10,8 @@ from zipfile import ZipFile
 import cloudpickle
 import requests
 import yaml
+
+from deprecation import deprecated
 
 from launch.connection import Connection
 from launch.constants import (
