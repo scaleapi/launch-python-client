@@ -235,7 +235,10 @@ class SyncEndpoint(Endpoint):
         )
 
     def status(self):
-        # TODO this functionality doesn't exist serverside
+        """Gets the status of the Endpoint.
+
+        TODO: Implement this by leveraging the LaunchClient object.
+        """
         raise NotImplementedError
 
 
@@ -291,7 +294,7 @@ class AsyncEndpoint(Endpoint):
         self, requests: Sequence[EndpointRequest]
     ) -> "AsyncEndpointBatchResponse":
         """
-        (deprecated) 
+        (deprecated)
         Runs inference on the data items specified by urls. Returns a AsyncEndpointResponse.
 
         Parameters:
@@ -333,7 +336,8 @@ class AsyncEndpoint(Endpoint):
 
     def status(self):
         """Gets the status of the Endpoint.
-        TODO this functionality currently does not exist on the server.
+
+        TODO: Implement this by leveraging the LaunchClient object.
         """
         raise NotImplementedError
 
@@ -376,10 +380,11 @@ class AsyncEndpointBatchResponse:
 
     def poll_endpoints(self):
         """
-        Runs one round of polling the endpoint for async task results
+        Runs one round of polling the endpoint for async task results.
         """
 
         # TODO: replace with batch endpoint, or make requests in parallel
+        # TODO: Make this private.
 
         def single_request(inner_url, inner_task_id):
             if self.statuses[inner_url] != TASK_PENDING_STATE:
@@ -420,9 +425,11 @@ class AsyncEndpointBatchResponse:
 
     def is_done(self, poll=True) -> bool:
         """
-        Checks if all the tasks from this round of requests are done, according to
-        the internal state of this object.
-        Optionally polls the endpoints to pick up new tasks that may have finished.
+        Checks the client local state to see if all requests are done.
+
+        Parameters:
+            poll: If ``True``, then this will first check the state for a subset
+            of the remaining incomplete tasks on the Launch server.
         """
         # TODO: make some request to some endpoint
         if poll:
@@ -443,10 +450,3 @@ class AsyncEndpointBatchResponse:
     def batch_status(self):
         counter = Counter(self.statuses.values())
         return dict(counter)
-
-    async def wait(self):
-        """
-        Waits for inference results to complete. Provides async/await semantics, but under the hood does polling.
-        TODO: we'd need to implement some lower level asyncio request code
-        """
-        raise NotImplementedError
