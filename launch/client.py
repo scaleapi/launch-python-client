@@ -1,4 +1,4 @@
-import inspect
+import inspect  # pylint: disable=C0302
 import logging
 import os
 import shutil
@@ -10,6 +10,7 @@ from zipfile import ZipFile
 import cloudpickle
 import requests
 import yaml
+from deprecation import deprecated
 
 from launch.connection import Connection
 from launch.constants import (
@@ -74,7 +75,7 @@ def _add_app_config_to_bundle_create_payload(
 
 
 class LaunchClient:
-    """Scale Launch Python Client extension."""
+    """Scale Launch Python Client."""
 
     def __init__(
         self,
@@ -113,11 +114,12 @@ class LaunchClient:
         """
         For self-hosted mode only. Registers a function that handles model bundle upload. This function is called as
 
-        upload_bundle_fn(serialized_bundle, bundle_url)
+            upload_bundle_fn(serialized_bundle, bundle_url)
 
-        This function should directly write the contents of serialized_bundle as a binary string into bundle_url.
+        This function should directly write the contents of ``serialized_bundle`` as a
+        binary string into ``bundle_url``.
 
-        See register_bundle_location_fn for more notes on the signature of upload_bundle_fn
+        See ``register_bundle_location_fn`` for more notes on the signature of ``upload_bundle_fn``
 
         Parameters:
             upload_bundle_fn: Function that takes in a serialized bundle (bytes type), and uploads that bundle to an appropriate
@@ -131,9 +133,9 @@ class LaunchClient:
         """
         For self-hosted mode only. Registers a function that handles batch text upload. This function is called as
 
-        upload_batch_csv_fn(csv_text, csv_url)
+            upload_batch_csv_fn(csv_text, csv_url)
 
-        This function should directly write the contents of csv_text as a text string into csv_url.
+        This function should directly write the contents of ``csv_text`` as a text string into ``csv_url``.
 
         Parameters:
             upload_batch_csv_fn: Function that takes in a csv text (string type), and uploads that bundle to an appropriate
@@ -146,12 +148,12 @@ class LaunchClient:
     ):
         """
         For self-hosted mode only. Registers a function that gives a location for a model bundle. Should give different
-        locations each time. This function is called as bundle_location_fn(), and should return a bundle_url that
-        register_upload_bundle_fn can take.
+        locations each time. This function is called as ``bundle_location_fn()``, and should return a ``bundle_url``
+        that ``register_upload_bundle_fn`` can take.
 
-        Strictly, bundle_location_fn() does not need to return a str. The only requirement is that if bundle_location_fn
-        returns a value of type T, then upload_bundle_fn() takes in an object of type T as its second argument
-        (i.e. bundle_url).
+        Strictly, ``bundle_location_fn()`` does not need to return a ``str``. The only requirement is that if
+        ``bundle_location_fn`` returns a value of type ``T``, then ``upload_bundle_fn()`` takes in an object of type T
+        as its second argument (i.e. bundle_url).
 
         Parameters:
             bundle_location_fn: Function that generates bundle_urls for upload_bundle_fn.
@@ -196,54 +198,69 @@ class LaunchClient:
         Packages up code from one or more local filesystem folders and uploads them as a bundle to Scale Launch.
         In this mode, a bundle is just local code instead of a serialized object.
 
-        For example, if you have a directory structure like so, and your current working directory is also `my_root`:
+        For example, if you have a directory structure like so, and your current working directory is also ``my_root``:
 
-        ```
-        my_root/
-            my_module1/
-                __init__.py
-                ...files and directories
-                my_inference_file.py
-            my_module2/
-                __init__.py
-                ...files and directories
-        ```
+        .. code-block:: text
 
-        then calling `create_model_bundle_from_dirs` with `base_paths=["my_module1", "my_module2"]` essentially
+           my_root/
+               my_module1/
+                   __init__.py
+                   ...files and directories
+                   my_inference_file.py
+               my_module2/
+                   __init__.py
+                   ...files and directories
+
+        then calling ``create_model_bundle_from_dirs`` with ``base_paths=["my_module1", "my_module2"]`` essentially
         creates a zip file without the root directory, e.g.:
 
-        ```
-        my_module1/
-            __init__.py
-            ...files and directories
-            my_inference_file.py
-        my_module2/
-            __init__.py
-            ...files and directories
-        ```
+        .. code-block:: text
 
-        and these contents will be unzipped relative to the server side `PYTHONPATH`. Bear these points in mind when
-        referencing Python module paths for this bundle. For instance, if `my_inference_file.py` has `def f(...)`
+           my_module1/
+               __init__.py
+               ...files and directories
+               my_inference_file.py
+           my_module2/
+               __init__.py
+               ...files and directories
+
+        and these contents will be unzipped relative to the server side application root. Bear these points in mind when
+        referencing Python module paths for this bundle. For instance, if ``my_inference_file.py`` has ``def f(...)``
         as the desired inference loading function, then the `load_predict_fn_module_path` argument should be
         `my_module1.my_inference_file.f`.
 
 
         Parameters:
-            model_bundle_name: Name of model bundle you want to create. This acts as a unique identifier.
+            model_bundle_name: The name of the model bundle you want to create. The name must be unique across all
+                bundles that you own.
+
             base_paths: The paths on the local filesystem where the bundle code lives.
-            requirements_path: A path on the local filesystem where a requirements.txt file lives.
+
+            requirements_path: A path on the local filesystem where a ``requirements.txt`` file lives.
+
             env_params: A dictionary that dictates environment information e.g.
-                the use of pytorch or tensorflow, which cuda/cudnn versions to use.
+                the use of pytorch or tensorflow, which base image tag to use, etc.
                 Specifically, the dictionary should contain the following keys:
-                "framework_type": either "tensorflow" or "pytorch".
-                "pytorch_version": Version of pytorch, e.g. "1.5.1", "1.7.0", etc. Only applicable if framework_type is pytorch
-                "cuda_version": Version of cuda used, e.g. "11.0".
-                "cudnn_version" Version of cudnn used, e.g. "cudnn8-devel".
-                "tensorflow_version": Version of tensorflow, e.g. "2.3.0". Only applicable if framework_type is tensorflow
+
+                - ``framework_type``: either ``tensorflow`` or ``pytorch``.
+                - PyTorch fields:
+                    - ``pytorch_image_tag``: An image tag for the ``pytorch`` docker base image. The list of tags
+                        can be found from https://hub.docker.com/r/pytorch/pytorch/tags.
+                    - Example:
+
+                    .. code-block:: python
+
+                       {
+                           "framework_type": "pytorch",
+                           "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime"
+                       }
+
             load_predict_fn_module_path: A python module path for a function that, when called with the output of
                 load_model_fn_module_path, returns a function that carries out inference.
+
             load_model_fn_module_path: A python module path for a function that returns a model. The output feeds into
                 the function located at load_predict_fn_module_path.
+
             app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
         """
         with open(requirements_path, "r", encoding="utf-8") as req_f:
@@ -319,35 +336,80 @@ class LaunchClient:
         globals_copy: Optional[Dict[str, Any]] = None,
     ) -> ModelBundle:
         """
-        Grabs a s3 signed url and uploads a model bundle to Scale Launch.
+        Uploads and registers a model bundle to Scale Launch.
 
-        A model bundle consists of exactly {predict_fn_or_cls}, {load_predict_fn + model}, or {load_predict_fn + load_model_fn}.
+        A model bundle consists of exactly one of the following:
+
+        - ``predict_fn_or_cls``
+        - ``load_predict_fn + model``
+        - ``load_predict_fn + load_model_fn``
+
         Pre/post-processing code can be included inside load_predict_fn/model or in predict_fn_or_cls call.
 
         Parameters:
-            model_bundle_name: Name of model bundle you want to create. This acts as a unique identifier.
-            predict_fn_or_cls: Function or a Callable class that runs end-to-end (pre/post processing and model inference) on the call.
-                I.e. `predict_fn_or_cls(REQUEST) -> RESPONSE`.
-            model: Typically a trained Neural Network, e.g. a Pytorch module
-            load_predict_fn: Function that when called with model, returns a function that carries out inference
-                I.e. `load_predict_fn(model) -> func; func(REQUEST) -> RESPONSE`
-            load_model_fn: Function that when run, loads a model, e.g. a Pytorch module
-                I.e. `load_predict_fn(load_model_fn()) -> func; func(REQUEST) -> RESPONSE`
-            bundle_url: Only for self-hosted mode. Desired location of bundle.
-            Overrides any value given by self.bundle_location_fn
-            requirements: A list of python package requirements, e.g.
-                ["tensorflow==2.3.0", "tensorflow-hub==0.11.0"]. If no list has been passed, will default to the currently
-                imported list of packages.
+            model_bundle_name: The name of the model bundle you want to create. The name must be unique across all
+                bundles that you own.
+
+            predict_fn_or_cls: ``Function`` or a ``Callable`` class that runs end-to-end (pre/post processing and model inference) on the call.
+                i.e. ``predict_fn_or_cls(REQUEST) -> RESPONSE``.
+
+            model: Typically a trained Neural Network, e.g. a Pytorch module.
+
+                Exactly one of ``model`` and ``load_model_fn`` must be provided.
+
+            load_model_fn: A function that, when run, loads a model. This function is essentially a deferred
+                wrapper around the ``model`` argument.
+
+                Exactly one of ``model`` and ``load_model_fn`` must be provided.
+
+            load_predict_fn: Function that, when called with a model, returns a function that carries out inference.
+
+                If ``model`` is specified, then this is equivalent
+                to:
+                    ``load_predict_fn(model, app_config=optional_app_config]) -> predict_fn``
+
+                Otherwise, if ``load_model_fn`` is specified, then this is equivalent
+                to:
+                    ``load_predict_fn(load_model_fn(), app_config=optional_app_config]) -> predict_fn``
+
+                In both cases, ``predict_fn`` is then the inference function, i.e.:
+                    ``predict_fn(REQUEST) -> RESPONSE``
+
+
+            requirements: A list of python package requirements, where each list element is of the form
+                ``<package_name>==<package_version>``, e.g.
+
+                ``["tensorflow==2.3.0", "tensorflow-hub==0.11.0"]``
+
+                If you do not pass in a value for ``requirements``, then you must pass in ``globals()`` for the
+                ``globals_copy`` argument.
+
             app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
+
             env_params: A dictionary that dictates environment information e.g.
-                the use of pytorch or tensorflow, which cuda/cudnn versions to use.
+                the use of pytorch or tensorflow, which base image tag to use, etc.
                 Specifically, the dictionary should contain the following keys:
-                "framework_type": either "tensorflow" or "pytorch".
-                "pytorch_version": Version of pytorch, e.g. "1.5.1", "1.7.0", etc. Only applicable if framework_type is pytorch
-                "cuda_version": Version of cuda used, e.g. "11.0".
-                "cudnn_version" Version of cudnn used, e.g. "cudnn8-devel".
-                "tensorflow_version": Version of tensorflow, e.g. "2.3.0". Only applicable if framework_type is tensorflow
-            globals_copy: Dictionary of the global symbol table. Normally provided by `globals()` built-in function.
+
+                - ``framework_type``: either ``tensorflow`` or ``pytorch``.
+                - PyTorch fields:
+                    - ``pytorch_image_tag``: An image tag for the ``pytorch`` docker base image. The list of tags
+                        can be found from https://hub.docker.com/r/pytorch/pytorch/tags.
+                    - Example:
+
+                    .. code-block:: python
+
+                       {
+                           "framework_type": "pytorch",
+                           "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime"
+                       }
+
+                - Tensorflow fields:
+                    - ``tensorflow_version``: Version of tensorflow, e.g. ``"2.3.0"``.
+
+            globals_copy: Dictionary of the global symbol table. Normally provided by ``globals()`` built-in function.
+
+            bundle_url: (Only used in self-hosted mode.) The desired location of bundle.
+                Overrides any value given by ``self.bundle_location_fn``
         """
         # TODO(ivan): remove `disable=too-many-branches` when get rid of `load_*` functions
         # pylint: disable=too-many-branches
@@ -475,27 +537,52 @@ class LaunchClient:
         labels: Optional[Dict[str, str]] = None,
     ) -> Optional[Endpoint]:
         """
-        Creates a Model Endpoint that is able to serve requests.
-        Corresponds to POST/PUT endpoints
+        Creates and registers a model endpoint in Scale Launch. The returned object is an instance of type ``Endpoint``,
+        which is a base class of either ``SyncEndpoint`` or ``AsyncEndpoint``. This is the object
+        to which you sent inference requests.
 
         Parameters:
-            endpoint_name: Name of model endpoint. Must be unique.
-            model_bundle: The ModelBundle that you want your Model Endpoint to serve
-            cpus: Number of cpus each worker should get, e.g. 1, 2, etc.
-            memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc.
+            endpoint_name: The name of the model endpoint you want to create. The name must be unique across
+                all endpoints that you own.
+
+            model_bundle: The ``ModelBundle`` that the endpoint should serve.
+
+            cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater than or equal to 1.
+
+            memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must be a positive
+                amount of memory.
+
             gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
-            min_workers: Minimum number of workers for model endpoint
-            max_workers: Maximum number of workers for model endpoint
-            per_worker: An autoscaling parameter. Use this to make a tradeoff between latency and costs,
-                a lower per_worker will mean more workers are created for a given workload
-            gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Current options are
-                "nvidia-tesla-t4" for NVIDIA T4s, or "nvidia-tesla-v100" for NVIDIA V100s.
-            endpoint_type: Either "sync" or "async". Type of endpoint we want to instantiate.
+
+            min_workers: The minimum number of workers. Must be greater than or equal to 0.
+
+            max_workers: The maximum number of workers. Must be greater than or equal to 0, and as well as
+                greater than or equal to ``min_workers``.
+
+            per_worker: The maximum number of concurrent requests that an individual worker can service. Launch
+                automatically scales the number of workers for the endpoint so that each worker is processing
+                ``per_worker`` requests:
+
+                - If the average number of concurrent requests per worker is lower than ``per_worker``, then the number
+                  of workers will be reduced.
+                - Otherwise, if the average number of concurrent requests per worker is higher
+                  than ``per_worker``, then the number of workers will be increased to meet the elevated traffic.
+
+            gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Here are the
+                supported values:
+
+                - ``nvidia-tesla-t4``
+                - ``nvidia-ampere-a10``
+
+            endpoint_type: Either ``"sync"`` or ``"async"``.
+
             post_inference_hooks: List of hooks to trigger after inference tasks are served.
-            update_if_exists: If True, will attempt to update the endpoint if it exists. Otherwise, will
+
+            update_if_exists: If ``True``, will attempt to update the endpoint if it exists. Otherwise, will
                 unconditionally try to create a new endpoint. Note that endpoint names for a given user must be unique,
-                so attempting to call this function with update_if_exists=False for an existing endpoint will raise
+                so attempting to call this function with ``update_if_exists=False`` for an existing endpoint will raise
                 an error.
+
             labels: An optional dictionary of key/value pairs to associate with this endpoint.
 
         Returns:
@@ -575,7 +662,48 @@ class LaunchClient:
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
     ) -> None:
         """
-        Edit an existing model endpoint
+        Edits an existing model endpoint. Here are the fields that **cannot** be edited on an existing endpoint:
+
+        - The endpoint's name.
+        - The endpoint's type (i.e. you cannot go from a ``SyncEnpdoint`` to an ``AsyncEndpoint`` or vice versa.
+
+        Parameters:
+            endpoint_name: The name of the model endpoint you want to create. The name must be unique across
+                all endpoints that you own.
+
+            model_bundle: The ``ModelBundle`` that the endpoint should serve.
+
+            cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater than or equal to 1.
+
+            memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must be a positive
+                amount of memory.
+
+            gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
+
+            min_workers: The minimum number of workers. Must be greater than or equal to 0.
+
+            max_workers: The maximum number of workers. Must be greater than or equal to 0, and as well as
+                greater than or equal to ``min_workers``.
+
+            per_worker: The maximum number of concurrent requests that an individual worker can service. Launch
+                automatically scales the number of workers for the endpoint so that each worker is processing
+                ``per_worker`` requests:
+
+                - If the average number of concurrent requests per worker is lower than ``per_worker``, then the number
+                  of workers will be reduced.
+                - Otherwise, if the average number of concurrent requests per worker is higher
+                  than ``per_worker``, then the number of workers will be increased to meet the elevated traffic.
+
+            gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Here are the
+                supported values:
+
+                - ``nvidia-tesla-t4``
+                - ``nvidia-ampere-a10``
+
+            endpoint_type: Either ``"sync"`` or ``"async"``.
+
+            post_inference_hooks: List of hooks to trigger after inference tasks are served.
+
         """
         logger.info("Editing existing endpoint")
         bundle_name = (
@@ -613,6 +741,12 @@ class LaunchClient:
     def get_model_endpoint(
         self, endpoint_name: str
     ) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
+        """
+        Gets a model endpoint associated with a name.
+
+        Parameters:
+            endpoint_name: The name of the endpoint to retrieve.
+        """
         try:
             resp = self.connection.get(
                 os.path.join(ENDPOINT_PATH, endpoint_name)
@@ -632,8 +766,6 @@ class LaunchClient:
                 "Endpoint should be one of the types 'sync' or 'async'"
             )
 
-    # Relatively small wrappers around http requests
-
     def list_model_bundles(self) -> List[ModelBundle]:
         """
         Returns a list of model bundles that the user owns.
@@ -649,9 +781,13 @@ class LaunchClient:
 
     def get_model_bundle(self, bundle_name: str) -> ModelBundle:
         """
-        Returns a Model Bundle object specified by `bundle_name`.
+        Returns a model bundle specified by ``bundle_name`` that the user owns.
+
+        Parameters:
+            bundle_name: The name of the bundle.
+
         Returns:
-            A ModelBundle object
+            A ``ModelBundle`` object
         """
         resp = self.connection.get(f"model_bundle/{bundle_name}")
         assert (
@@ -659,15 +795,12 @@ class LaunchClient:
         ), f"Bundle with name `{bundle_name}` not found"
         return ModelBundle.from_dict(resp["bundles"][0])  # type: ignore
 
-    def list_model_endpoints(
-        self,
-    ) -> List[Endpoint]:
+    def list_model_endpoints(self) -> List[Endpoint]:
         """
         Lists all model endpoints that the user owns.
-        TODO: single get_model_endpoint(self)? route doesn't exist serverside I think
 
         Returns:
-            A list of ModelEndpoint objects
+            A list of ``ModelEndpoint`` objects.
         """
         resp = self.connection.get(ENDPOINT_PATH)
         async_endpoints: List[Endpoint] = [
@@ -689,7 +822,11 @@ class LaunchClient:
 
     def delete_model_bundle(self, model_bundle: ModelBundle):
         """
-        Deletes the model bundle on the server.
+        Deletes the model bundle.
+
+        Parameters:
+            model_bundle: A ``ModelBundle`` object.
+
         """
         route = f"model_bundle/{model_bundle.name}"
         resp = self.connection.delete(route)
@@ -698,6 +835,9 @@ class LaunchClient:
     def delete_model_endpoint(self, model_endpoint: ModelEndpoint):
         """
         Deletes a model endpoint.
+
+        Parameters:
+            model_endpoint: A ``ModelEndpoint`` object.
         """
         route = f"{ENDPOINT_PATH}/{model_endpoint.name}"
         resp = self.connection.delete(route)
@@ -705,13 +845,16 @@ class LaunchClient:
 
     def read_endpoint_creation_logs(self, endpoint_name: str):
         """
-        Get builder logs as text.
+        Retrieves the logs for the creation of the endpoint.
+
+        Parameters:
+            endpoint_name: The name of the endpoint.
         """
         route = f"{ENDPOINT_PATH}/creation_logs/{endpoint_name}"
         resp = self.connection.get(route)
         return resp["content"]
 
-    def sync_request(
+    def _sync_request(
         self,
         endpoint_id: str,
         url: Optional[str] = None,
@@ -725,24 +868,30 @@ class LaunchClient:
 
         Parameters:
             endpoint_id: The id of the endpoint to make the request to
+
             url: A url that points to a file containing model input.
                 Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
-            args: A dictionary of arguments to the `predict` function defined in your model bundle.
-                Must be json-serializable, i.e. composed of str, int, float, etc.
-                If your `predict` function has signature `predict(foo, bar)`, then args should be a dictionary with
-                keys `foo` and `bar`. Exactly one of url and args must be specified.
+                **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
+                to the predict function. If you instead want to pass the url itself as an input to the predict function,
+                see ``args``.
+
+            args: A dictionary of arguments to the ``predict`` function defined in your model bundle.
+                Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``, etc.
+                If your ``predict`` function has signature ``predict(foo, bar)``, then args should be a dictionary with
+                keys ``foo`` and ``bar``. Exactly one of ``url`` and ``args`` must be specified.
+
             return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
 
         Returns:
-            A dictionary with key either "result_url" or "result", depending on the value of `return_pickled`.
-            If `return_pickled` is true, the key will be "result_url",
+            A dictionary with key either ``"result_url"`` or ``"result"``, depending on the value
+            of ``return_pickled``. If ``return_pickled`` is true, the key will be ``"result_url"``,
             and the value is a signedUrl that contains a cloudpickled Python object,
             the result of running inference on the model input.
             Example output:
-                `https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy`
+                ``https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy``
 
-            Otherwise, if `return_pickled` is false, the key will be "result",
-            and the value is the output of the endpoint's `predict` function, serialized as json.
+            Otherwise, if ``return_pickled`` is false, the key will be ``"result"``,
+            and the value is the output of the endpoint's ``predict`` function, serialized as json.
         """
         validate_task_request(url=url, args=args)
         payload: Dict[str, Any] = dict(return_pickled=return_pickled)
@@ -756,6 +905,7 @@ class LaunchClient:
         )
         return resp
 
+    @deprecated
     def async_request(
         self,
         endpoint_name: str,
@@ -767,16 +917,66 @@ class LaunchClient:
         Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
         Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key that can be used to retrieve
         the result of inference at a later time.
-        Endpoint
 
         Parameters:
             endpoint_name: The name of the endpoint to make the request to
+
             url: A url that points to a file containing model input.
                 Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
+                **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
+                to the predict function. If you instead want to pass the url itself as an input to the predict function,
+                see ``args``.
+
+                Exactly one of ``url`` and ``args`` must be specified.
+
             args: A dictionary of arguments to the ModelBundle's predict function.
-                Must be json-serializable, i.e. composed of str, int, float, etc.
-                If your `predict` function has signature `predict(foo, bar)`, then args should be a dictionary with
-                keys `foo` and `bar`. Exactly one of url and args must be specified.
+                Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``, etc.
+                If your predict function has signature ``predict(foo, bar)``, then args should be a dictionary with
+                keys ``"foo"`` and ``"bar"``.
+
+                Exactly one of ``url`` and ``args`` must be specified.
+
+            return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
+
+        Returns:
+            An id/key that can be used to fetch inference results at a later time.
+            Example output:
+                `abcabcab-cabc-abca-0123456789ab`
+        """
+        return self._async_request(
+            endpoint_name=endpoint_name,
+            url=url,
+            args=args,
+            return_pickled=return_pickled,
+        )
+
+    def _async_request(
+        self,
+        endpoint_name: str,
+        url: Optional[str] = None,
+        args: Optional[Dict] = None,
+        return_pickled: bool = True,
+    ) -> str:
+        """
+        Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key that can be used to retrieve
+        the result of inference at a later time.
+
+        Parameters:
+            endpoint_name: The name of the endpoint to make the request to
+
+            url: A url that points to a file containing model input.
+                Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
+                **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
+                to the predict function. If you instead want to pass the url itself as an input to the predict function,
+                see ``args``.
+
+            args: A dictionary of arguments to the ModelBundle's predict function.
+                Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``, etc.
+                If your predict function has signature ``predict(foo, bar)``, then args should be a dictionary with
+                keys ``"foo"`` and ``"bar"``.
+
+                Exactly one of ``url`` and ``args`` must be specified.
+
             return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
 
         Returns:
@@ -797,33 +997,43 @@ class LaunchClient:
         )
         return resp["task_id"]
 
+    @deprecated
     def get_async_response(self, async_task_id: str) -> Dict[str, Any]:
         """
-        Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
+        Not recommended to use this, instead we recommend to use functions provided by ``AsyncEndpoint``.
         Gets inference results from a previously created task.
 
         Parameters:
-            async_task_id: The id/key returned from a previous invocation of async_request.
+            async_task_id: The id/key returned from a previous invocation of ``async_request``.
 
         Returns:
             A dictionary that contains task status and optionally a result url or result if the task has completed.
-            Result url or result will be returned if the task has succeeded. Will return a result url iff `return_pickled`
-            was set to True on task creation.
-            Dictionary's keys are as follows:
-            state: 'PENDING' or 'SUCCESS' or 'FAILURE'
-            result_url: a url pointing to inference results. This url is accessible for 12 hours after the request has been made.
-            result: the value returned by the endpoint's `predict` function, serialized as json
-            Example output:
-                `{'state': 'SUCCESS', 'result_url': 'https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy'}`
-        TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
-        """
+            Result url or result will be returned if the task has succeeded. Will return a result url iff
+            ``return_pickled`` was set to ``True`` on task creation.
 
+            The dictionary's keys are as follows:
+
+            - ``state``: ``'PENDING'`` or ``'SUCCESS'`` or ``'FAILURE'``
+            - ``result_url``: a url pointing to inference results. This url is accessible for 12 hours after the request has been made.
+            - ``result``: the value returned by the endpoint's `predict` function, serialized as json
+
+            Example output:
+
+            .. code-block:: json
+
+                {
+                    'state': 'SUCCESS',
+                    'result_url': 'https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy'
+                }
+
+        """
+        # TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
         resp = self.connection.get(
             route=f"{ASYNC_TASK_RESULT_PATH}/{async_task_id}"
         )
         return resp
 
-    def get_async_endpoint_response(
+    def _get_async_endpoint_response(
         self, endpoint_name: str, async_task_id: str
     ) -> Dict[str, Any]:
         """
@@ -836,17 +1046,26 @@ class LaunchClient:
 
         Returns:
             A dictionary that contains task status and optionally a result url or result if the task has completed.
-            Result url or result will be returned if the task has succeeded. Will return a result url iff `return_pickled`
-            was set to True on task creation.
-            Dictionary's keys are as follows:
-            state: 'PENDING' or 'SUCCESS' or 'FAILURE'
-            result_url: a url pointing to inference results. This url is accessible for 12 hours after the request has been made.
-            result: the value returned by the endpoint's `predict` function, serialized as json
-            Example output:
-                `{'state': 'SUCCESS', 'result_url': 'https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy'}`
-        TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
-        """
+            Result url or result will be returned if the task has succeeded. Will return a result url iff
+            ``return_pickled`` was set to ``True`` on task creation.
 
+            The dictionary's keys are as follows:
+
+            - ``state``: ``'PENDING'`` or ``'SUCCESS'`` or ``'FAILURE'``
+            - ``result_url``: a url pointing to inference results. This url is accessible for 12 hours after the request has been made.
+            - ``result``: the value returned by the endpoint's `predict` function, serialized as json
+
+            Example output:
+
+            .. code-block:: json
+
+                {
+                    'state': 'SUCCESS',
+                    'result_url': 'https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy'
+                }
+
+        """
+        # TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
         resp = self.connection.get(
             route=f"{ENDPOINT_PATH}/{endpoint_name}/{ASYNC_TASK_PATH}/{async_task_id}"
         )
@@ -862,23 +1081,28 @@ class LaunchClient:
         batch_task_options: Optional[Dict[str, Any]] = None,
     ):
         """
-        Sends a batch inference request to the Model Endpoint at endpoint_id, returns a key that can be used to retrieve
+        Sends a batch inference request using a given bundle. Returns a key that can be used to retrieve
         the results of inference at a later time.
 
         Must have exactly one of urls or inputs passed in.
 
         Parameters:
-            bundle_name: The id of the bundle to make the request to
-            serialization_format: Serialization format of output, either 'pickle' or 'json'.
-                'pickle' corresponds to pickling results + returning
+            bundle_name: The name of the bundle to use for inference.
+
             urls: A list of urls, each pointing to a file containing model input.
                 Must be accessible by Scale Launch, hence urls need to either be public or signedURLs.
+
             inputs: A list of model inputs, if exists, we will upload the inputs and pass it in to Launch.
+
             batch_url_file_location: In self-hosted mode, the input to the batch job will be uploaded
                 to this location if provided. Otherwise, one will be determined from bundle_location_fn()
+
+            serialization_format: Serialization format of output, either 'pickle' or 'json'.
+                'pickle' corresponds to pickling results + returning
+
             batch_task_options: A Dict of optional endpoint/batch task settings, i.e. certain endpoint settings
-                like cpus, memory, gpus, gpu_type, max_workers, as well as under-the-hood batch job settings, like
-                pyspark_partition_size, pyspark_max_executors.
+                like ``cpus``, ``memory``, ``gpus``, ``gpu_type``, ``max_workers``, as well as under-the-hood batch
+                job settings, like ``pyspark_partition_size``, ``pyspark_max_executors``.
 
         Returns:
             An id/key that can be used to fetch inference results at a later time
@@ -943,16 +1167,22 @@ class LaunchClient:
         )
         return resp["job_id"]
 
-    def get_batch_async_response(self, batch_async_task_id: str):
+    def get_batch_async_response(
+        self, batch_async_task_id: str
+    ) -> Dict[str, Any]:
         """
-        TODO not sure about how the batch task returns an identifier for the batch.
-        Gets inference results from a previously created batch task.
+        Gets inference results from a previously created batch job.
 
         Parameters:
-            batch_async_task_id: An id representing the batch task job
+            batch_async_task_id: An id representing the batch task job. This id is the in the response from
+                calling ``batch_async_request``.
 
         Returns:
-            TODO Something similar to a list of signed s3URLs
+            A dictionary that contains the following fields:
+
+            - ``status``: The status of the job.
+            - ``result``: The url where the result is stored.
+            - ``duration``: A string representation of how long the job took to finish.
         """
         resp = self.connection.get(
             route=f"{BATCH_TASK_RESULTS_PATH}/{batch_async_task_id}"
