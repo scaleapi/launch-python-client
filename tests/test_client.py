@@ -11,8 +11,14 @@ import requests_mock
 import launch
 
 
-def _get_mock_client():
-    client = launch.LaunchClient(api_key="test")
+@pytest.fixture()
+def mock_client():
+    # TODO: change API_KEY
+    tianwei_api_key = (
+        "scaleint_b03c26486af74848a237e0df9f6971b0|61a67d767bce560024c7eb96"
+    )
+    # client = launch.LaunchClient(api_key="test")
+    client = launch.LaunchClient(api_key=tianwei_api_key)
     return client
 
 
@@ -43,7 +49,7 @@ def fake_project_dir():
 
 
 def test_create_model_bundle_from_dirs_bundle_contents_correct(
-    requests_mock, fake_project_dir  # noqa: F811
+    mock_client, requests_mock, fake_project_dir  # noqa: F811
 ):
     def check_bundle_upload_data(request):
         request_body = request._request.body
@@ -73,8 +79,7 @@ def test_create_model_bundle_from_dirs_bundle_contents_correct(
         "https://api.scale.com/v1/hosted_inference/model_bundle", json={}
     )
 
-    client = _get_mock_client()
-    client.create_model_bundle_from_dirs(
+    mock_client.create_model_bundle_from_dirs(
         model_bundle_name="my_test_bundle",
         base_paths=[
             os.path.join(fake_project_dir, "project_root/my_module1"),
@@ -88,3 +93,31 @@ def test_create_model_bundle_from_dirs_bundle_contents_correct(
         load_model_fn_module_path="a.b.c",
         app_config=None,
     )
+
+
+@pytest.fixture()
+def returns_returns_1():
+    def returns_1(x):
+        return 1
+
+    return returns_1
+
+
+# copied from hosted_model_inference/tests/integration/endpoint_builder/client_e2e.py
+def test_create_model_bundle(mock_client, returns_returns_1):
+    print("test_create_model_bundle")
+    env_params = {
+        "framework_type": "pytorch",
+        "pytorch_image_tag": "1.7.1-cuda11.0-cudnn8-runtime",  # python version was 3.7.11 in a later image gg
+    }
+    # TODO: make sure the args covers what we'd like to test
+    bundle = mock_client.create_model_bundle(
+        model_bundle_name="test-bundle-1",
+        model=1,
+        load_predict_fn=returns_returns_1,
+        env_params=env_params,
+        requirements=[],
+        # app_config=dict(key1=42, key2="value2", key3=dict(key4="value4")),
+    )
+    print("successfully created model bundle test-bundle-1")
+    return bundle
