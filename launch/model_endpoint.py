@@ -176,7 +176,7 @@ class EndpointResponseFuture:
         Retrieves the ``EndpointResponse`` for the prediction request after it completes. This method blocks.
         """
         while True:
-            async_response = self.client._get_async_endpoint_response(
+            async_response = self.client._get_async_endpoint_response(  # pylint: disable=W0212
                 self.endpoint_name, self.async_task_id
             )
             if async_response["state"] == "PENDING":
@@ -228,7 +228,7 @@ class SyncEndpoint(Endpoint):
         Parameters:
             request: The ``EndpointRequest`` object that contains the payload.
         """
-        raw_response = self.client._sync_request(
+        raw_response = self.client._sync_request(  # pylint: disable=W0212
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
@@ -284,7 +284,7 @@ class AsyncEndpoint(Endpoint):
                f: EndpointResponseFuture = my_endpoint.predict(EndpointRequest(...))
                result = f.get()  # blocks on completion
         """
-        async_task_id = self.client._async_request(
+        async_task_id = self.client._async_request(  # pylint: disable=W0212
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
@@ -322,7 +322,7 @@ class AsyncEndpoint(Endpoint):
         def single_request(request):
             # request has keys url and args
 
-            inner_inference_request = self.client._async_request(
+            inner_inference_request = self.client._async_request(  # pylint: disable=W0212
                 endpoint_name=self.model_endpoint.name,
                 url=request.url,
                 args=request.args,
@@ -397,7 +397,7 @@ class AsyncEndpointBatchResponse:
             if self.statuses[inner_url] != TASK_PENDING_STATE:
                 # Skip polling tasks that are completed
                 return None
-            inner_response = self.client._get_async_endpoint_response(
+            inner_response = self.client._get_async_endpoint_response(  # pylint: disable=W0212
                 self.endpoint_name, inner_task_id
             )
             print("inner response", inner_response)
