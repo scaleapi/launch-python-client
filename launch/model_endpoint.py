@@ -116,7 +116,13 @@ class EndpointResponse:
 
     """
 
-    def __init__(self, client, status: str, result_url: Optional[str] = None, result: Optional[str] = None):
+    def __init__(
+        self,
+        client,
+        status: str,
+        result_url: Optional[str] = None,
+        result: Optional[str] = None,
+    ):
         """
         Parameters:
             client: An instance of ``LaunchClient``.
@@ -151,6 +157,7 @@ class EndpointResponseFuture:
 
     This object should not be directly instantiated by the user.
     """
+
     def __init__(self, client, endpoint_name: str, async_task_id: str):
         """
         Parameters:

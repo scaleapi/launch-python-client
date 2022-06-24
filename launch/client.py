@@ -249,7 +249,7 @@ class LaunchClient:
                     - Example:
 
                     .. code-block:: python
-                       
+
                        {
                            "framework_type": "pytorch",
                            "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime"
@@ -397,7 +397,7 @@ class LaunchClient:
                     - Example:
 
                     .. code-block:: python
-                       
+
                        {
                            "framework_type": "pytorch",
                            "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime"
@@ -943,7 +943,12 @@ class LaunchClient:
             Example output:
                 `abcabcab-cabc-abca-0123456789ab`
         """
-        return self._async_request(endpoint_name=endpoint_name, url=url, args=args, return_pickled=return_pickled)
+        return self._async_request(
+            endpoint_name=endpoint_name,
+            url=url,
+            args=args,
+            return_pickled=return_pickled,
+        )
 
     def _async_request(
         self,
@@ -992,7 +997,6 @@ class LaunchClient:
         )
         return resp["task_id"]
 
-
     @deprecated
     def get_async_response(self, async_task_id: str) -> Dict[str, Any]:
         """
@@ -1014,7 +1018,7 @@ class LaunchClient:
             - ``result``: the value returned by the endpoint's `predict` function, serialized as json
 
             Example output:
-            
+
             .. code-block:: json
 
                 {
@@ -1024,7 +1028,9 @@ class LaunchClient:
 
         """
         # TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
-        return self._get_async_response(endpoint_name=endpoint_name, async_task_id=async_task_id)
+        return self._get_async_response(
+            endpoint_name=endpoint_name, async_task_id=async_task_id
+        )
 
     def _get_async_endpoint_response(
         self, endpoint_name: str, async_task_id: str
@@ -1049,7 +1055,7 @@ class LaunchClient:
             - ``result``: the value returned by the endpoint's `predict` function, serialized as json
 
             Example output:
-            
+
             .. code-block:: json
 
                 {
@@ -1160,7 +1166,9 @@ class LaunchClient:
         )
         return resp["job_id"]
 
-    def get_batch_async_response(self, batch_async_task_id: str) -> Dict[str, Any]:
+    def get_batch_async_response(
+        self, batch_async_task_id: str
+    ) -> Dict[str, Any]:
         """
         Gets inference results from a previously created batch job.
 
