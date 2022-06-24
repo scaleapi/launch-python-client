@@ -322,11 +322,13 @@ class AsyncEndpoint(Endpoint):
         def single_request(request):
             # request has keys url and args
 
-            inner_inference_request = self.client._async_request(  # pylint: disable=W0212
-                endpoint_name=self.model_endpoint.name,
-                url=request.url,
-                args=request.args,
-                return_pickled=request.return_pickled,
+            inner_inference_request = (
+                self.client._async_request(  # pylint: disable=W0212
+                    endpoint_name=self.model_endpoint.name,
+                    url=request.url,
+                    args=request.args,
+                    return_pickled=request.return_pickled,
+                )
             )
             request_key = request.request_id
             return request_key, inner_inference_request
