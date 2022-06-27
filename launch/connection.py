@@ -25,22 +25,46 @@ class Connection:
             self.api_key == other.api_key and self.endpoint == other.endpoint
         )
 
-    def delete(self, route: str):
-        return self.make_request({}, route, requests_command=requests.delete)
-
-    def get(self, route: str):
-        return self.make_request({}, route, requests_command=requests.get)
-
-    def post(self, payload: dict, route: str):
+    def delete(self, route: str, handle_bad_response: bool = True):
         return self.make_request(
-            payload, route, requests_command=requests.post
+            {},
+            route,
+            requests_command=requests.delete,
+            handle_bad_response=handle_bad_response,
         )
 
-    def put(self, payload: dict, route: str):
-        return self.make_request(payload, route, requests_command=requests.put)
+    def get(self, route: str, handle_bad_response: bool = True):
+        return self.make_request(
+            {},
+            route,
+            requests_command=requests.get,
+            handle_bad_response=handle_bad_response,
+        )
+
+    def post(
+        self, payload: dict, route: str, handle_bad_response: bool = True
+    ):
+        return self.make_request(
+            payload,
+            route,
+            requests_command=requests.post,
+            handle_bad_response=handle_bad_response,
+        )
+
+    def put(self, payload: dict, route: str, handle_bad_response: bool = True):
+        return self.make_request(
+            payload,
+            route,
+            requests_command=requests.put,
+            handle_bad_response=handle_bad_response,
+        )
 
     def make_request(
-        self, payload: dict, route: str, requests_command=requests.post
+        self,
+        payload: dict,
+        route: str,
+        handle_bad_response: bool,
+        requests_command=requests.post,
     ) -> dict:
         """
         Makes a request to Launch endpoint and logs a warning if not
@@ -49,6 +73,7 @@ class Connection:
         :param payload: given payload
         :param route: route for the request
         :param requests_command: requests.post, requests.get, requests.delete
+        :param handle_bad_response: whether to raise on bad response
         :return: response JSON
         """
         endpoint = f"{self.endpoint}/{route}"
@@ -70,7 +95,7 @@ class Connection:
                 break
             time.sleep(retry_wait_time)
 
-        if not response.ok:
+        if not response.ok and handle_bad_response:
             self.handle_bad_response(endpoint, requests_command, response)
 
         return response.json()

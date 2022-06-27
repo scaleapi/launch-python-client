@@ -243,9 +243,10 @@ class SyncEndpoint(Endpoint):
         # TODO catch error response and populate traceback?
         return EndpointResponse(
             client=self.client,
-            status=TASK_SUCCESS_STATE,
+            status=raw_response.get("state"),
             result_url=raw_response.get("result_url", None),
             result=raw_response.get("result", None),
+            traceback=raw_response.get("traceback", None),
         )
 
     def status(self):
