@@ -9,6 +9,7 @@ import requests
 import requests_mock
 
 import launch
+from launch.errors import APIError
 
 
 @pytest.fixture()
@@ -103,21 +104,89 @@ def returns_returns_1():
     return returns_1
 
 
-# copied from hosted_model_inference/tests/integration/endpoint_builder/client_e2e.py
-def test_create_model_bundle(mock_client, returns_returns_1):
-    print("test_create_model_bundle")
+@pytest.fixture()
+def get_bundle_params():
+    # copied from hosted_model_inference/tests/integration/endpoint_builder/client_e2e.py
     env_params = {
         "framework_type": "pytorch",
         "pytorch_image_tag": "1.7.1-cuda11.0-cudnn8-runtime",  # python version was 3.7.11 in a later image gg
     }
     # TODO: make sure the args covers what we'd like to test
-    bundle = mock_client.create_model_bundle(
-        model_bundle_name="test-bundle-1",
-        model=1,
-        load_predict_fn=returns_returns_1,
-        env_params=env_params,
-        requirements=[],
-        # app_config=dict(key1=42, key2="value2", key3=dict(key4="value4")),
+
+    bundle_params = {
+        "model_bundle_name": "tmp-bundle",
+        "model": 1,
+        "load_predict_fn": returns_returns_1,
+        "env_params": env_params,
+        "requirements": [],
+    }
+
+    return bundle_params
+
+
+@pytest.fixture()
+def get_endpoint_params():
+    endpoint_params = {
+        # "endpoint_name": "test-endpoint",
+        "cpus": 1,
+        "memory": "4Gi",
+        "gpus": 0,
+        "min_workers": 1,
+        "max_workers": 1,
+        "per_worker": 1,
+        # "endpoint_type": "async",
+    }
+
+    return endpoint_params
+
+
+def test_model_bundle(mock_client, get_bundle_params):
+
+    bundle = mock_client.create_model_bundle(**get_bundle_params)
+    print("successfully created model bundle tmp-bundle")
+
+    # create a bundle with the same name - this should error out
+    with pytest.raises(APIError):
+        bundle = mock_client.create_model_bundle(**get_bundle_params)
+
+    # delete the bundle
+    assert mock_client.delete_model_bundle(bundle) == "true"
+    print("successfully deleted model bundle tmp-bundle")
+
+
+def _test_model_endpoint(mock_client, get_endpoint_params, endpoint_type):
+
+    endpoint_params = get_endpoint_params
+    endpoint_params["endpoint_name"] = f"test-endpoint-{endpoint_type}"
+    endpoint_params["endpoint_type"] = endpoint_type
+
+    # test-bundle was created beforehand using internal client to bypass the review process
+    bundle = launch.ModelBundle(name="test-bundle")
+
+    print(f"creating model endpoint {endpoint_params['endpoint_name']} ...")
+    endpoint = mock_client.create_model_endpoint(
+        model_bundle=bundle, **endpoint_params
     )
-    print("successfully created model bundle test-bundle-1")
-    return bundle
+    print(
+        f"successfully created {endpoint_type} model endpoint {endpoint_params['endpoint_name']}"
+    )
+
+    print("sleeping for 5s")
+    import time
+
+    time.sleep(5)
+
+    # delete the endpoint
+    assert mock_client.delete_model_endpoint(endpoint.model_endpoint) == "true"
+    print(
+        f"successfully deleted model endpoint {endpoint_params['endpoint_name']}"
+    )
+
+
+def test_model_endpoint(mock_client, get_endpoint_params):
+    _test_model_endpoint(
+        mock_client, get_endpoint_params, endpoint_type="async"
+    )
+    _test_model_endpoint(
+        mock_client, get_endpoint_params, endpoint_type="sync"
+    )
