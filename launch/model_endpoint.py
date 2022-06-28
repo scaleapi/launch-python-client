@@ -240,7 +240,6 @@ class SyncEndpoint(Endpoint):
             args=request.args,
             return_pickled=request.return_pickled,
         )
-        # TODO catch error response and populate traceback?
         return EndpointResponse(
             client=self.client,
             status=raw_response.get("state"),
