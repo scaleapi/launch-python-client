@@ -902,7 +902,6 @@ class LaunchClient:
         resp = self.connection.post(
             payload=payload,
             route=f"{SYNC_TASK_PATH}/{endpoint_id}",
-            handle_bad_response=False,
         )
         return resp
 
