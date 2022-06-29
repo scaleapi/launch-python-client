@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="launch" href="api/launch/index.html" />
 
-    <link rel="shortcut icon" href="_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.06.21"/>
+    <link rel="shortcut icon" href="_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.04.07"/>
         <title>Launch API Reference</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
@@ -161,18 +161,12 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api/launch/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/launch/cli/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/launch/request_validation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.request_validation</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="guides/index.html">How-to guides</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="guides/getting_started.html">Introduction to Scale Launch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/registering_your_code.html">Registering your code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/deploying_your_code.html">Deploying your code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/integrations.html">Integrations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/troubleshooting.html">Troubleshooting</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="api/launch/cli/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/launch/pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.pipeline</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/launch/clientlib/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.clientlib</span></code></a></li>
 </ul>
 
 </div>
@@ -191,8 +185,7 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -222,13 +215,6 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/launch/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch</span></code></a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/launch/index.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/launch/cli/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/launch/cli/index.html#scale-launch">This is the command line interface (CLI) package for Scale Launch.</a></li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="toctree-l2"><a class="reference internal" href="api/launch/index.html#submodules">Submodules</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/launch/request_validation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.request_validation</span></code></a></li>
 </ul>
@@ -238,39 +224,53 @@
 <li class="toctree-l4"><a class="reference internal" href="api/launch/index.html#launch.AsyncEndpoint">AsyncEndpoint</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/launch/index.html#launch.AsyncEndpointBatchResponse">AsyncEndpointBatchResponse</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/launch/index.html#launch.Connection">Connection</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/launch/index.html#launch.EndpointRequest">EndpointRequest</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/launch/index.html#launch.EndpointResponse">EndpointResponse</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/launch/index.html#launch.EndpointResponseFuture">EndpointResponseFuture</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/launch/index.html#launch.LaunchClient">LaunchClient</a></li>
 <li class="toctree-l4"><a class="reference internal" href="api/launch/index.html#launch.ModelBundle">ModelBundle</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/launch/index.html#launch.SyncEndpoint">SyncEndpoint</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="guides/index.html">How-to guides</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="guides/getting_started.html">Introduction to Scale Launch</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="guides/getting_started.html#modelbundle">ModelBundle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="guides/getting_started.html#modelendpoint">ModelEndpoint</a></li>
-<li class="toctree-l3"><a class="reference internal" href="guides/getting_started.html#batchjob">BatchJob</a></li>
-<li class="toctree-l3"><a class="reference internal" href="guides/getting_started.html#choosing-the-right-inference-mode">Choosing the right inference mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="guides/getting_started.html#overview-of-deployment-steps">Overview of deployment steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/launch/cli/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/launch/pipeline/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.pipeline</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/launch/pipeline/index.html#package-contents">Package Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/launch/pipeline/index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/launch/pipeline/index.html#functions">Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/pipeline/index.html#launch.pipeline.Deployment">Deployment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/pipeline/index.html#launch.pipeline.Runtime">Runtime</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/pipeline/index.html#launch.pipeline.SequentialPipelineDescription">SequentialPipelineDescription</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/pipeline/index.html#launch.pipeline.SingleServiceDescription">SingleServiceDescription</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/pipeline/index.html#launch.pipeline.make_sequential_pipeline">make_sequential_pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/pipeline/index.html#launch.pipeline.make_service">make_service</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="guides/registering_your_code.html">Registering your code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/deploying_your_code.html">Deploying your code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guides/integrations.html">Integrations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="guides/integrations.html#integration-with-scale-train">Integration with Scale Train</a></li>
-<li class="toctree-l3"><a class="reference internal" href="guides/integrations.html#integration-with-scale-insight">Integration with Scale Insight</a></li>
-<li class="toctree-l3"><a class="reference internal" href="guides/integrations.html#integration-with-scale-nucleus">Integration with Scale Nucleus</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="guides/troubleshooting.html">Troubleshooting</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="guides/troubleshooting.html#bundles">Bundles</a></li>
-<li class="toctree-l3"><a class="reference internal" href="guides/troubleshooting.html#endpoints">Endpoints</a></li>
-<li class="toctree-l3"><a class="reference internal" href="guides/troubleshooting.html#batch-jobs">Batch jobs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/launch/clientlib/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.clientlib</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/launch/clientlib/index.html#package-contents">Package Contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/launch/clientlib/index.html#classes">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.DeployedService">DeployedService</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.DeploymentOptions">DeploymentOptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.FullService">FullService</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.JsonHandler">JsonHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.JsonService">JsonService</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.ReferencedDeployment">ReferencedDeployment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.RequestHandler">RequestHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.ResponseHandler">ResponseHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.RunnableTritonConfig">RunnableTritonConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.Runtime">Runtime</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.Service">Service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.SpecsTritonModel">SpecsTritonModel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.Status">Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.ToProtobufText">ToProtobufText</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.TritonModel">TritonModel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.TritonModelConfig">TritonModelConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/launch/clientlib/index.html#launch.clientlib.TritonTensor">TritonTensor</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

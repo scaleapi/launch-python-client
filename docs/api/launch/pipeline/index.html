@@ -3,12 +3,12 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="launch.clientlib" href="../clientlib/index.html" /><link rel="prev" title="launch.cli" href="../cli/index.html" />
 
-    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.06.21"/>
+    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.04.07"/>
         <title>launch.pipeline - Launch API Reference</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -159,20 +159,14 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
+  <ul class="current">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../cli/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../request_validation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.request_validation</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../guides/index.html">How-to guides</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../guides/getting_started.html">Introduction to Scale Launch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../guides/registering_your_code.html">Registering your code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../guides/deploying_your_code.html">Deploying your code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../guides/integrations.html">Integrations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../guides/troubleshooting.html">Troubleshooting</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.pipeline</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../clientlib/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.clientlib</span></code></a></li>
 </ul>
 
 </div>
@@ -191,8 +185,7 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -212,11 +205,10 @@
 <h2>Package Contents<a class="headerlink" href="#package-contents" title="Permalink to this headline">#</a></h2>
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper longtable docutils container">
-<table class="longtable docutils align-default">
+<div class="table-wrapper"><table class="longtable docutils align-default">
 <colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
+<col style="width: 10%"/>
+<col style="width: 90%"/>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#launch.pipeline.Deployment" title="launch.pipeline.Deployment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Deployment</span></code></a></p></td>
@@ -232,33 +224,29 @@
 <td><p>The description of a service.</p></td>
 </tr>
 </tbody>
-</table>
-</div>
+</table></div>
 </section>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper longtable docutils container">
-<table class="longtable docutils align-default">
+<div class="table-wrapper"><table class="longtable docutils align-default">
 <colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
+<col style="width: 10%"/>
+<col style="width: 90%"/>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#launch.pipeline.make_sequential_pipeline" title="launch.pipeline.make_sequential_pipeline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_sequential_pipeline</span></code></a>(items)</p></td>
 <td><p>Create a structure that describes a sequential pipeline.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#launch.pipeline.make_service" title="launch.pipeline.make_service"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_service</span></code></a>(service, runtime, deployment, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#launch.pipeline.make_service" title="launch.pipeline.make_service"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_service</span></code></a>(service, runtime, deployment, **kwargs)</p></td>
 <td><p>Create a structure that describes a single service.</p></td>
 </tr>
 </tbody>
-</table>
-</div>
+</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.pipeline.Deployment">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.pipeline.</span></span><span class="sig-name descname"><span class="pre">Deployment</span></span><a class="headerlink" href="#launch.pipeline.Deployment" title="Permalink to this definition">#</a></dt>
 <dd><p>Base deployment class</p>
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.pipeline.Runtime">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.pipeline.</span></span><span class="sig-name descname"><span class="pre">Runtime</span></span><a class="headerlink" href="#launch.pipeline.Runtime" title="Permalink to this definition">#</a></dt>
@@ -269,15 +257,12 @@
 <span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.pipeline.Runtime.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the Enum member.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.pipeline.Runtime.value">
 <span class="sig-name descname"><span class="pre">value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.pipeline.Runtime.value" title="Permalink to this definition">#</a></dt>
 <dd><p>The value of the Enum member.</p>
 </dd></dl>
-
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.pipeline.SequentialPipelineDescription">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.pipeline.</span></span><span class="sig-name descname"><span class="pre">SequentialPipelineDescription</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.pipeline.SequentialPipelineDescription" title="Permalink to this definition">#</a></dt>
@@ -288,7 +273,6 @@
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.pipeline.SingleServiceDescription">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.pipeline.</span></span><span class="sig-name descname"><span class="pre">SingleServiceDescription</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deployment</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.pipeline.SingleServiceDescription" title="Permalink to this definition">#</a></dt>
@@ -304,7 +288,6 @@
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="launch.pipeline.make_sequential_pipeline">
 <span class="sig-prename descclassname"><span class="pre">launch.pipeline.</span></span><span class="sig-name descname"><span class="pre">make_sequential_pipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.pipeline.make_sequential_pipeline" title="Permalink to this definition">#</a></dt>
@@ -318,7 +301,6 @@
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="launch.pipeline.make_service">
 <span class="sig-prename descclassname"><span class="pre">launch.pipeline.</span></span><span class="sig-name descname"><span class="pre">make_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deployment</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.pipeline.make_service" title="Permalink to this definition">#</a></dt>
@@ -337,7 +319,6 @@
 </dd>
 </dl>
 </dd></dl>
-
 </section>
 </section>
 </section>
@@ -347,8 +328,26 @@
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="../clientlib/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.clientlib</span></code></div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../cli/index.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">

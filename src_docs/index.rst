@@ -24,7 +24,9 @@ Sections
    :maxdepth: 4
 
    api/launch/index
-   guides/index
+   api/launch/cli/index
+   api/launch/pipeline/index
+   api/launch/clientlib/index
 
 
 Index
