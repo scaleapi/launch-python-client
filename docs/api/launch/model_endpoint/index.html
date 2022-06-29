@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.04.07"/>
+    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.06.21"/>
         <title>launch.model_endpoint - Launch API Reference</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -185,7 +185,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -205,10 +206,11 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="longtable docutils align-default">
+<div class="table-wrapper longtable docutils container">
+<table class="longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#launch.model_endpoint.AsyncEndpoint" title="launch.model_endpoint.AsyncEndpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AsyncEndpoint</span></code></a></p></td>
@@ -233,7 +235,8 @@
 <td><p>An abstract class that represent any kind of endpoints in Scale Launch</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpoint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">AsyncEndpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpoint" title="Permalink to this definition">#</a></dt>
@@ -269,6 +272,7 @@ Example output:</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpoint.predict_batch">
 <span class="sig-name descname"><span class="pre">predict_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpoint.predict_batch" title="Permalink to this definition">#</a></dt>
@@ -285,16 +289,19 @@ Example output:</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpoint.status">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpoint.status" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the status of the Endpoint.
 TODO this functionality currently does not exist on the server.</p>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpointBatchResponse">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">AsyncEndpointBatchResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpointBatchResponse" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">AsyncEndpointBatchResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpointBatchResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Currently represents a list of async inference requests to a specific endpoint. Keeps track of the requests made,
 and gives a way to poll for their status.</p>
 <p>Invariant: set keys for self.request_ids and self.responses are equal</p>
@@ -302,7 +309,10 @@ and gives a way to poll for their status.</p>
 <p>Also batch inference sort of removes the need for much of the complication in here</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>request_ids</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – </p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>request_ids</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – </p></li>
+</ul>
 </dd>
 </dl>
 <dl class="py method">
@@ -316,6 +326,7 @@ object at that key is the corresponding EndpointResponse.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpointBatchResponse.is_done">
 <span class="sig-name descname"><span class="pre">is_done</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poll</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpointBatchResponse.is_done" title="Permalink to this definition">#</a></dt>
@@ -328,18 +339,22 @@ Optionally polls the endpoints to pick up new tasks that may have finished.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpointBatchResponse.poll_endpoints">
 <span class="sig-name descname"><span class="pre">poll_endpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpointBatchResponse.poll_endpoints" title="Permalink to this definition">#</a></dt>
 <dd><p>Runs one round of polling the endpoint for async task results</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpointBatchResponse.wait">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpointBatchResponse.wait" title="Permalink to this definition">#</a></dt>
 <dd><p>Waits for inference results to complete. Provides async/await semantics, but under the hood does polling.
 TODO: we’d need to implement some lower level asyncio request code</p>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.Endpoint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">Endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_endpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.Endpoint" title="Permalink to this definition">#</a></dt>
@@ -350,6 +365,7 @@ TODO: we’d need to implement some lower level asyncio request code</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.EndpointRequest">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">EndpointRequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_pickled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.EndpointRequest" title="Permalink to this definition">#</a></dt>
@@ -373,6 +389,7 @@ If one isn’t provided the client will generate its own.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.EndpointResponse">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">EndpointResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.EndpointResponse" title="Permalink to this definition">#</a></dt>
@@ -385,11 +402,13 @@ result is a string that is the serialized return value (in json form) of the End
 <div><p>Specifically, one can json.loads() the value of result to get the original python object back.</p>
 </div></blockquote>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.ModelEndpoint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">ModelEndpoint</span></span><a class="headerlink" href="#launch.model_endpoint.ModelEndpoint" title="Permalink to this definition">#</a></dt>
 <dd><p>Represents an Endpoint from the database.</p>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.SyncEndpoint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">SyncEndpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.SyncEndpoint" title="Permalink to this definition">#</a></dt>
@@ -400,6 +419,7 @@ result is a string that is the serialized return value (in json form) of the End
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>
