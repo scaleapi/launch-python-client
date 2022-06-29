@@ -26,21 +26,38 @@ class Connection:
         )
 
     def delete(self, route: str):
-        return self.make_request({}, route, requests_command=requests.delete)
+        return self.make_request(
+            {},
+            route,
+            requests_command=requests.delete,
+        )
 
     def get(self, route: str):
-        return self.make_request({}, route, requests_command=requests.get)
+        return self.make_request(
+            {},
+            route,
+            requests_command=requests.get,
+        )
 
     def post(self, payload: dict, route: str):
         return self.make_request(
-            payload, route, requests_command=requests.post
+            payload,
+            route,
+            requests_command=requests.post,
         )
 
     def put(self, payload: dict, route: str):
-        return self.make_request(payload, route, requests_command=requests.put)
+        return self.make_request(
+            payload,
+            route,
+            requests_command=requests.put,
+        )
 
     def make_request(
-        self, payload: dict, route: str, requests_command=requests.post
+        self,
+        payload: dict,
+        route: str,
+        requests_command=requests.post,
     ) -> dict:
         """
         Makes a request to Launch endpoint and logs a warning if not

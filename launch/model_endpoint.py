@@ -122,6 +122,7 @@ class EndpointResponse:
         status: str,
         result_url: Optional[str] = None,
         result: Optional[str] = None,
+        traceback: Optional[str] = None,
     ):
         """
         Parameters:
@@ -140,14 +141,17 @@ class EndpointResponse:
                 Exactly one of ``result_url`` or ``result`` will be populated,
                 depending on the value of ``return_pickled`` in the request.
 
+            traceback: The stack trace if the inference endpoint raised an error. Can be used for debugging
+
         """
         self.client = client
         self.status = status
         self.result_url = result_url
         self.result = result
+        self.traceback = traceback
 
     def __str__(self) -> str:
-        return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}"
+        return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}, traceback: {self.traceback}"
 
 
 class EndpointResponseFuture:
@@ -188,6 +192,7 @@ class EndpointResponseFuture:
                         status=async_response["state"],
                         result_url=async_response.get("result_url", None),
                         result=async_response.get("result", None),
+                        traceback=None,
                     )
                 elif async_response["state"] == "FAILURE":
                     return EndpointResponse(
@@ -195,6 +200,7 @@ class EndpointResponseFuture:
                         status=async_response["state"],
                         result_url=None,
                         result=None,
+                        traceback=async_response.get("traceback", None),
                     )
                 else:
                     raise ValueError(
@@ -236,9 +242,10 @@ class SyncEndpoint(Endpoint):
         )
         return EndpointResponse(
             client=self.client,
-            status=TASK_SUCCESS_STATE,
+            status=raw_response.get("state"),
             result_url=raw_response.get("result_url", None),
             result=raw_response.get("result", None),
+            traceback=raw_response.get("traceback", None),
         )
 
     def status(self):
@@ -429,6 +436,7 @@ class AsyncEndpointBatchResponse:
                     status=raw_response["state"],
                     result_url=raw_response.get("result_url", None),
                     result=raw_response.get("result", None),
+                    traceback=raw_response.get("traceback", None),
                 )
                 self.responses[url] = response_object
 

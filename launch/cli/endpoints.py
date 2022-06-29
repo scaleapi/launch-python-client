@@ -37,11 +37,15 @@ def list_endpoints(ctx: click.Context):
             servable_endpoint.model_endpoint.bundle_name,
             servable_endpoint.model_endpoint.status,
             servable_endpoint.model_endpoint.endpoint_type,
-            (servable_endpoint.model_endpoint.worker_settings or {}).get(
-                "min_workers"
+            str(
+                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                    "min_workers"
+                )
             ),
-            (servable_endpoint.model_endpoint.worker_settings or {}).get(
-                "max_workers"
+            str(
+                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                    "max_workers"
+                )
             ),
             servable_endpoint.model_endpoint.metadata or "{}",
         )
