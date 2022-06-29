@@ -66,7 +66,7 @@ def delete_endpoint(ctx: click.Context, endpoint_name: str):
 @click.argument("endpoint_name")
 @click.pass_context
 def read_endpoint_creation_logs(ctx: click.Context, endpoint_name: str):
-    """Delete a model endpoint"""
+    """Reads the creation logs for an endpoint"""
     client = init_client(ctx)
 
     res = client.read_endpoint_creation_logs(endpoint_name)
