@@ -7,7 +7,6 @@ from dataclasses import dataclass
 from typing import Dict, Optional, Sequence
 
 from dataclasses_json import Undefined, dataclass_json
-from deprecation import deprecated
 
 from launch.request_validation import validate_task_request
 
@@ -24,44 +23,13 @@ class ModelEndpoint:
     """
 
     name: str
-    """
-    The name of the endpoint. Must be unique across all endpoints owned by the user.
-    """
-
     bundle_name: Optional[str] = None
-    """
-    The name of the bundle for the endpoint. The owner of the bundle must be the same as the owner for the endpoint.
-    """
-
     status: Optional[str] = None
-    """
-    The status of the endpoint.
-    """
-
     resource_settings: Optional[dict] = None
-    """
-    Resource settings for the endpoint.
-    """
-
     worker_settings: Optional[dict] = None
-    """
-    Worker settings for the endpoint.
-    """
-
     metadata: Optional[dict] = None
-    """
-    Metadata for the endpoint.
-    """
-
     endpoint_type: Optional[str] = None
-    """
-    The type of the endpoint. Must be ``'async'`` or ``'sync'``.
-    """
-
     configs: Optional[dict] = None
-    """
-    Config for the endpoint.
-    """
 
     def __repr__(self):
         return f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', status='{self.status}', resource_settings='{json.dumps(self.resource_settings)}', worker_settings='{json.dumps(self.worker_settings)}', endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
@@ -69,25 +37,14 @@ class ModelEndpoint:
 
 class EndpointRequest:
     """
-    Represents a single request to either a ``SyncEndpoint`` or ``AsyncEndpoint``.
-
+    Represents a single request to either a SyncEndpoint or AsyncEndpoint.
     Parameters:
         url: A url to some file that can be read in to a ModelBundle's predict function. Can be an image, raw text, etc.
-            **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
-            to the predict function. If you instead want to pass the url itself as an input to the predict function,
-            see ``args``.
-
-            Exactly one of ``url`` and ``args`` must be specified.
-
         args: A Dictionary with arguments to a ModelBundle's predict function. If the predict function has signature
-            ``predict_fn(foo, bar)``, then the keys in the dictionary should be ``"foo"`` and ``"bar"``.
-            Values must be native Python objects.
-
-            Exactly one of ``url`` and ``args`` must be specified.
-
-        return_pickled: Whether the output should be a pickled python object, or directly returned serialized json.
-
-        request_id: (deprecated) A user-specifiable id for requests.
+            predict_fn(foo, bar), then the keys in the dictionary should be 'foo' and 'bar'. Values must be native Python
+            objects.
+        return_pickled: Whether the output should be a pickled python object, or directly returned serialized json
+        request_id: A user-specifiable id for requests.
             Should be unique among EndpointRequests made in the same batch call.
             If one isn't provided the client will generate its own.
     """
@@ -113,34 +70,14 @@ class EndpointRequest:
 class EndpointResponse:
     """
     Represents a response received from a Endpoint.
-
+    Status is a string representing the status of the request, i.e. SUCCESS, FAILURE, or PENDING
+    Exactly one of result_url or result will be populated, depending on the value of `return_pickled` in the request.
+    result_url is a string that is a url containing the pickled python object from the Endpoint's predict function.
+    result is a string that is the serialized return value (in json form) of the Endpoint's predict function.
+        Specifically, one can json.loads() the value of result to get the original python object back.
     """
 
-    def __init__(
-        self,
-        client,
-        status: str,
-        result_url: Optional[str] = None,
-        result: Optional[str] = None,
-    ):
-        """
-        Parameters:
-            client: An instance of ``LaunchClient``.
-
-            status: A string representing the status of the request, i.e. ``SUCCESS``, ``FAILURE``, or ``PENDING``
-
-            result_url: A string that is a url containing the pickled python object from the Endpoint's predict function.
-
-                Exactly one of ``result_url`` or ``result`` will be populated,
-                depending on the value of ``return_pickled`` in the request.
-
-            result: A string that is the serialized return value (in json form) of the Endpoint's predict function.
-                Specifically, one can ``json.loads()`` the value of result to get the original python object back.
-
-                Exactly one of ``result_url`` or ``result`` will be populated,
-                depending on the value of ``return_pickled`` in the request.
-
-        """
+    def __init__(self, client, status, result_url, result):
         self.client = client
         self.status = status
         self.result_url = result_url
@@ -151,32 +88,14 @@ class EndpointResponse:
 
 
 class EndpointResponseFuture:
-    """
-    Represents a future response from an Endpoint. Specifically, when the ``EndpointResponseFuture`` is ready,
-    then its ``get`` method will return an actual instance of ``EndpointResponse``.
-
-    This object should not be directly instantiated by the user.
-    """
-
     def __init__(self, client, endpoint_name: str, async_task_id: str):
-        """
-        Parameters:
-            client: An instance of ``LaunchClient``.
-
-            endpoint_name: The name of the endpoint.
-
-            async_task_id: An async task id.
-        """
         self.client = client
         self.endpoint_name = endpoint_name
         self.async_task_id = async_task_id
 
     def get(self) -> EndpointResponse:
-        """
-        Retrieves the ``EndpointResponse`` for the prediction request after it completes. This method blocks.
-        """
         while True:
-            async_response = self.client._get_async_endpoint_response(  # pylint: disable=W0212
+            async_response = self.client.get_async_endpoint_response(
                 self.endpoint_name, self.async_task_id
             )
             if async_response["state"] == "PENDING":
@@ -210,10 +129,6 @@ class Endpoint:
 
 
 class SyncEndpoint(Endpoint):
-    """
-    A synchronous model endpoint.
-    """
-
     def __init__(self, model_endpoint: ModelEndpoint, client):
         super().__init__(model_endpoint=model_endpoint)
         self.client = client
@@ -222,13 +137,7 @@ class SyncEndpoint(Endpoint):
         return f"SyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def predict(self, request: EndpointRequest) -> EndpointResponse:
-        """
-        Runs a synchronous prediction request.
-
-        Parameters:
-            request: The ``EndpointRequest`` object that contains the payload.
-        """
-        raw_response = self.client._sync_request(  # pylint: disable=W0212
+        raw_response = self.client.sync_request(
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
@@ -242,23 +151,19 @@ class SyncEndpoint(Endpoint):
         )
 
     def status(self):
-        """Gets the status of the Endpoint.
-
-        TODO: Implement this by leveraging the LaunchClient object.
-        """
+        # TODO this functionality doesn't exist serverside
         raise NotImplementedError
 
 
 class AsyncEndpoint(Endpoint):
     """
-    An asynchronous model endpoint.
+    A higher level abstraction for a Model Endpoint.
     """
 
     def __init__(self, model_endpoint: ModelEndpoint, client):
         """
         Parameters:
             model_endpoint: ModelEndpoint object.
-
             client: A LaunchClient object
         """
         super().__init__(model_endpoint=model_endpoint)
@@ -268,23 +173,7 @@ class AsyncEndpoint(Endpoint):
         return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def predict(self, request: EndpointRequest) -> EndpointResponseFuture:
-        """
-        Runs an asynchronous prediction request.
-
-        Parameters:
-            request: The ``EndpointRequest`` object that contains the payload.
-
-        Returns:
-            An ``EndpointResponseFuture`` such the user can use to query the status of the request.
-            Example:
-
-            .. code-block:: python
-
-               my_endpoint = AsyncEndpoint(...)
-               f: EndpointResponseFuture = my_endpoint.predict(EndpointRequest(...))
-               result = f.get()  # blocks on completion
-        """
-        async_task_id = self.client._async_request(  # pylint: disable=W0212
+        async_task_id = self.client.async_request(
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
@@ -296,12 +185,17 @@ class AsyncEndpoint(Endpoint):
             async_task_id=async_task_id,
         )
 
-    @deprecated
+        # FIXME: Figure out a way to structure the responses between the client and endpoint
+        # return EndpointResponseFuture(
+        #     client=self.client,
+        #     endpoint_name=self.model_endpoint.name,
+        #     async_task_id=raw_response["task_id"],
+        # )
+
     def predict_batch(
         self, requests: Sequence[EndpointRequest]
     ) -> "AsyncEndpointBatchResponse":
         """
-        (deprecated)
         Runs inference on the data items specified by urls. Returns a AsyncEndpointResponse.
 
         Parameters:
@@ -322,13 +216,11 @@ class AsyncEndpoint(Endpoint):
         def single_request(request):
             # request has keys url and args
 
-            inner_inference_request = (
-                self.client._async_request(  # pylint: disable=W0212
-                    endpoint_name=self.model_endpoint.name,
-                    url=request.url,
-                    args=request.args,
-                    return_pickled=request.return_pickled,
-                )
+            inner_inference_request = self.client.async_request(
+                endpoint_name=self.model_endpoint.name,
+                url=request.url,
+                args=request.args,
+                return_pickled=request.return_pickled,
             )
             request_key = request.request_id
             return request_key, inner_inference_request
@@ -345,16 +237,30 @@ class AsyncEndpoint(Endpoint):
 
     def status(self):
         """Gets the status of the Endpoint.
-
-        TODO: Implement this by leveraging the LaunchClient object.
+        TODO this functionality currently does not exist on the server.
         """
         raise NotImplementedError
 
+    async def async_request(self, url: str) -> str:
+        """
+        Makes an async request to the endpoint. Polls the endpoint under the hood, but provides async/await semantics
+        on top.
 
-@deprecated
+        Parameters:
+            url: A url that points to a file containing model input.
+                Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
+
+        Returns:
+            A signedUrl that contains a cloudpickled Python object, the result of running inference on the model input
+            Example output:
+                `https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy`
+        """
+        # TODO implement some lower level async stuff inside client library (some asyncio client)
+        raise NotImplementedError
+
+
 class AsyncEndpointBatchResponse:
     """
-    (deprecated)
 
     Currently represents a list of async inference requests to a specific endpoint. Keeps track of the requests made,
     and gives a way to poll for their status.
@@ -389,17 +295,16 @@ class AsyncEndpointBatchResponse:
 
     def poll_endpoints(self):
         """
-        Runs one round of polling the endpoint for async task results.
+        Runs one round of polling the endpoint for async task results
         """
 
         # TODO: replace with batch endpoint, or make requests in parallel
-        # TODO: Make this private.
 
         def single_request(inner_url, inner_task_id):
             if self.statuses[inner_url] != TASK_PENDING_STATE:
                 # Skip polling tasks that are completed
                 return None
-            inner_response = self.client._get_async_endpoint_response(  # pylint: disable=W0212
+            inner_response = self.client.get_async_endpoint_response(
                 self.endpoint_name, inner_task_id
             )
             print("inner response", inner_response)
@@ -434,11 +339,9 @@ class AsyncEndpointBatchResponse:
 
     def is_done(self, poll=True) -> bool:
         """
-        Checks the client local state to see if all requests are done.
-
-        Parameters:
-            poll: If ``True``, then this will first check the state for a subset
-            of the remaining incomplete tasks on the Launch server.
+        Checks if all the tasks from this round of requests are done, according to
+        the internal state of this object.
+        Optionally polls the endpoints to pick up new tasks that may have finished.
         """
         # TODO: make some request to some endpoint
         if poll:
@@ -459,3 +362,10 @@ class AsyncEndpointBatchResponse:
     def batch_status(self):
         counter = Counter(self.statuses.values())
         return dict(counter)
+
+    async def wait(self):
+        """
+        Waits for inference results to complete. Provides async/await semantics, but under the hood does polling.
+        TODO: we'd need to implement some lower level asyncio request code
+        """
+        raise NotImplementedError

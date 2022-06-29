@@ -7,18 +7,14 @@ from launch.cli.client import init_client
 
 
 @click.group("bundles")
-def bundles(ctx: click.Context):
-    """
-    Bundles is a wrapper around model bundles in Scale Launch
-    """
+def bundles():
+    """Bundles is a wrapper around model bundles in Scale Launch"""
 
 
 @bundles.command("list")
 @click.pass_context
 def list_bundles(ctx: click.Context):
-    """
-    List all of your Bundles
-    """
+    """List all of your Bundles"""
     client = init_client(ctx)
 
     table = Table(
@@ -70,9 +66,7 @@ def get_bundle(ctx: click.Context, bundle_name: str):
 @click.argument("bundle_name")
 @click.pass_context
 def delete_bundle(ctx: click.Context, bundle_name: str):
-    """
-    Deletes a model bundle.
-    """
+    """Delete a model bundle"""
     client = init_client(ctx)
 
     console = Console()
