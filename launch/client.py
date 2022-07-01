@@ -779,16 +779,19 @@ class LaunchClient:
         ]
         return model_bundles
 
-    def get_model_bundle(self, bundle_name: str) -> ModelBundle:
+    def get_model_bundle(
+        self, model_bundle: Union[ModelBundle, str]
+    ) -> ModelBundle:
         """
         Returns a model bundle specified by ``bundle_name`` that the user owns.
 
         Parameters:
-            bundle_name: The name of the bundle.
+            model_bundle: The bundle or its name.
 
         Returns:
             A ``ModelBundle`` object
         """
+        bundle_name = _model_bundle_to_name(model_bundle)
         resp = self.connection.get(f"model_bundle/{bundle_name}")
         assert (
             len(resp["bundles"]) == 1
@@ -820,15 +823,16 @@ class LaunchClient:
         ]
         return async_endpoints + sync_endpoints
 
-    def delete_model_bundle(self, model_bundle: ModelBundle):
+    def delete_model_bundle(self, model_bundle: Union[ModelBundle, str]):
         """
         Deletes the model bundle.
 
         Parameters:
-            model_bundle: A ``ModelBundle`` object.
+            model_bundle: A ``ModelBundle`` object or the name of a model bundle.
 
         """
-        route = f"model_bundle/{model_bundle.name}"
+        bundle_name = _model_bundle_to_name(model_bundle)
+        route = f"model_bundle/{bundle_name}"
         resp = self.connection.delete(route)
         return resp["deleted"]
 
@@ -1076,7 +1080,7 @@ class LaunchClient:
 
     def batch_async_request(
         self,
-        bundle_name: str,
+        model_bundle: Union[ModelBundle, str],
         urls: List[str] = None,
         inputs: Optional[List[Dict[str, Any]]] = None,
         batch_url_file_location: Optional[str] = None,
@@ -1090,7 +1094,7 @@ class LaunchClient:
         Must have exactly one of urls or inputs passed in.
 
         Parameters:
-            bundle_name: The name of the bundle to use for inference.
+            model_bundle: The bundle or the name of a the bundle to use for inference.
 
             urls: A list of urls, each pointing to a file containing model input.
                 Must be accessible by Scale Launch, hence urls need to either be public or signedURLs.
@@ -1110,6 +1114,8 @@ class LaunchClient:
         Returns:
             An id/key that can be used to fetch inference results at a later time
         """
+
+        bundle_name = _model_bundle_to_name(model_bundle)
 
         if batch_task_options is None:
             batch_task_options = {}
