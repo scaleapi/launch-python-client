@@ -58,6 +58,15 @@ def _model_bundle_to_name(model_bundle: Union[ModelBundle, str]) -> str:
         raise TypeError("model_bundle should be type ModelBundle or str")
 
 
+def _model_endpoint_to_name(model_endpoint: Union[ModelEndpoint, str]) -> str:
+    if isinstance(model_endpoint, ModelEndpoint):
+        return model_endpoint.name
+    elif isinstance(model_endpoint, str):
+        return model_endpoint
+    else:
+        raise TypeError("model_endpoint should be type ModelEndpoint or str")
+
+
 def _add_app_config_to_bundle_create_payload(
     payload: Dict[str, Any], app_config: Optional[Union[Dict[str, Any], str]]
 ):
@@ -591,7 +600,7 @@ class LaunchClient:
         """
         if update_if_exists and self.model_endpoint_exists(endpoint_name):
             self.edit_model_endpoint(
-                endpoint_name=endpoint_name,
+                model_endpoint=endpoint_name,
                 model_bundle=model_bundle,
                 cpus=cpus,
                 memory=memory,
@@ -650,7 +659,7 @@ class LaunchClient:
 
     def edit_model_endpoint(
         self,
-        endpoint_name: str,
+        model_endpoint: Union[ModelEndpoint, str],
         model_bundle: Optional[Union[ModelBundle, str]] = None,
         cpus: Optional[float] = None,
         memory: Optional[str] = None,
@@ -668,7 +677,7 @@ class LaunchClient:
         - The endpoint's type (i.e. you cannot go from a ``SyncEnpdoint`` to an ``AsyncEndpoint`` or vice versa.
 
         Parameters:
-            endpoint_name: The name of the model endpoint you want to create. The name must be unique across
+            model_endpoint: The model endpoint (or its name) you want to edit. The name must be unique across
                 all endpoints that you own.
 
             model_bundle: The ``ModelBundle`` that the endpoint should serve.
@@ -709,6 +718,7 @@ class LaunchClient:
         bundle_name = (
             _model_bundle_to_name(model_bundle) if model_bundle else None
         )
+        endpoint_name = _model_endpoint_to_name(model_endpoint)
         payload = dict(
             bundle_name=bundle_name,
             cpus=cpus,
@@ -836,24 +846,28 @@ class LaunchClient:
         resp = self.connection.delete(route)
         return resp["deleted"]
 
-    def delete_model_endpoint(self, model_endpoint: ModelEndpoint):
+    def delete_model_endpoint(self, model_endpoint: Union[ModelEndpoint, str]):
         """
         Deletes a model endpoint.
 
         Parameters:
             model_endpoint: A ``ModelEndpoint`` object.
         """
-        route = f"{ENDPOINT_PATH}/{model_endpoint.name}"
+        endpoint_name = _model_endpoint_to_name(model_endpoint)
+        route = f"{ENDPOINT_PATH}/{endpoint_name}"
         resp = self.connection.delete(route)
         return resp["deleted"]
 
-    def read_endpoint_creation_logs(self, endpoint_name: str):
+    def read_endpoint_creation_logs(
+        self, model_endpoint: Union[ModelEndpoint, str]
+    ):
         """
         Retrieves the logs for the creation of the endpoint.
 
         Parameters:
-            endpoint_name: The name of the endpoint.
+            model_endpoint: The endpoint or its name.
         """
+        endpoint_name = _model_endpoint_to_name(model_endpoint)
         route = f"{ENDPOINT_PATH}/creation_logs/{endpoint_name}"
         resp = self.connection.get(route)
         return resp["content"]
