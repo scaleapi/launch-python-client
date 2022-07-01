@@ -997,8 +997,10 @@ class LaunchClient:
         )
         return resp["task_id"]
 
-    @deprecated(details="Use EndpointResponseFuture.get(), where EndpointResponseFuture "
-                        "is returned by AsyncEndpoint.predict()")
+    @deprecated(
+        details="Use EndpointResponseFuture.get(), where EndpointResponseFuture "
+        "is returned by AsyncEndpoint.predict()"
+    )
     def get_async_response(self, async_task_id: str) -> Dict[str, Any]:
         """
         Not recommended to use this, instead we recommend to use functions provided by ``AsyncEndpoint``.
