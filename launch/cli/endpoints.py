@@ -26,6 +26,8 @@ def list_endpoints(ctx: click.Context):
         "Endpoint type",
         "Min Workers",
         "Max Workers",
+        "Available Workers",
+        "Unavailable Workers",
         "Metadata",
         title="Endpoints",
         title_justify="left",
@@ -39,12 +41,22 @@ def list_endpoints(ctx: click.Context):
             servable_endpoint.model_endpoint.endpoint_type,
             str(
                 (servable_endpoint.model_endpoint.worker_settings or {}).get(
-                    "min_workers"
+                    "min_workers", ""
                 )
             ),
             str(
                 (servable_endpoint.model_endpoint.worker_settings or {}).get(
-                    "max_workers"
+                    "max_workers", ""
+                )
+            ),
+            str(
+                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                    "available_workers", ""
+                )
+            ),
+            str(
+                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                    "unavailable_workers", ""
                 )
             ),
             servable_endpoint.model_endpoint.metadata or "{}",
