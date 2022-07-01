@@ -58,7 +58,7 @@ sphinx-autobuild = "^2021.3.14"
 sphinx-autoapi = "^1.8.4"
 furo = "^2022.4.7"
 smart_open = "^5.2.0"
-
+boto3 = "^1.12.32"
 
 [tool.poetry.scripts]
 scale-launch = 'launch.cli.bin:entry_point'
