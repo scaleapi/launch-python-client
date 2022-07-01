@@ -62,6 +62,10 @@ furo = "^2022.4.7"
 [tool.poetry.scripts]
 scale-launch = 'launch.cli.bin:entry_point'
 
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
