@@ -7,6 +7,7 @@ from launch.cli.client import init_client
 
 
 @click.group("bundles")
+@click.pass_context
 def bundles(ctx: click.Context):
     """
     Bundles is a wrapper around model bundles in Scale Launch
