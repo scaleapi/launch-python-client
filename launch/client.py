@@ -1164,7 +1164,12 @@ class LaunchClient:
 
         if self.self_hosted:
             # TODO make this not use bundle_location_fn()
-            file_location = batch_url_file_location or self.batch_csv_location_fn() or self.bundle_location_fn()  # type: ignore
+            location_fn = self.batch_csv_location_fn or self.bundle_location_fn
+            if location_fn is None and batch_url_file_location is None:
+                raise ValueError(
+                    "Must register batch_csv_location_fn if csv file location not passed in"
+                )
+            file_location = batch_url_file_location or location_fn()  # type: ignore
             self.upload_batch_csv_fn(  # type: ignore
                 f.getvalue(), file_location
             )
