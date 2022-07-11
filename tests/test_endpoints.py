@@ -90,4 +90,5 @@ def _test_model_endpoint(client, endpoint_type):
 
 def test_model_endpoint(client):
     _test_model_endpoint(client, endpoint_type="async")
+    # TODO uncomment this when sync endpoint is ready for testing
     # _test_model_endpoint(client, endpoint_type="sync")
