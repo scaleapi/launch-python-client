@@ -26,6 +26,8 @@ def list_endpoints(ctx: click.Context):
         "Endpoint type",
         "Min Workers",
         "Max Workers",
+        "Available Workers",
+        "Unavailable Workers",
         "Metadata",
         title="Endpoints",
         title_justify="left",
@@ -37,11 +39,25 @@ def list_endpoints(ctx: click.Context):
             servable_endpoint.model_endpoint.bundle_name,
             servable_endpoint.model_endpoint.status,
             servable_endpoint.model_endpoint.endpoint_type,
-            (servable_endpoint.model_endpoint.worker_settings or {}).get(
-                "min_workers"
+            str(
+                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                    "min_workers", ""
+                )
             ),
-            (servable_endpoint.model_endpoint.worker_settings or {}).get(
-                "max_workers"
+            str(
+                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                    "max_workers", ""
+                )
+            ),
+            str(
+                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                    "available_workers", ""
+                )
+            ),
+            str(
+                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                    "unavailable_workers", ""
+                )
             ),
             servable_endpoint.model_endpoint.metadata or "{}",
         )
@@ -66,7 +82,7 @@ def delete_endpoint(ctx: click.Context, endpoint_name: str):
 @click.argument("endpoint_name")
 @click.pass_context
 def read_endpoint_creation_logs(ctx: click.Context, endpoint_name: str):
-    """Delete a model endpoint"""
+    """Reads the creation logs for an endpoint"""
     client = init_client(ctx)
 
     res = client.read_endpoint_creation_logs(endpoint_name)
