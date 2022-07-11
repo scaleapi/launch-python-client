@@ -60,7 +60,9 @@ jobs:
           command: |
             mkdir test_results
             set -e
+            export LAUNCH_TEST_API_KEY="${LAUNCH_TEST_API_KEY}"
             TEST_FILES=$(circleci tests glob "tests/**/test_*.py")
+            TEST_FILES="tests/test_bundles.py"
             poetry run coverage run --include=launch/* -m pytest -s $TEST_FILES
             poetry run coverage report
             poetry run coverage html
