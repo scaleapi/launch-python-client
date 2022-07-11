@@ -23,7 +23,6 @@ def get_endpoint_params():
 
 
 def _make_request(endpoint, endpoint_type, expected_output):
-    # TODO: make this configurable
     dummy_input = "s3://scale-ml-hosted-model-inference/demos/pennfudan/FudanPed00001.png"
 
     if endpoint_type == "async":
@@ -44,8 +43,8 @@ def _make_request(endpoint, endpoint_type, expected_output):
 
 def _edit_model_bundle(client, endpoint, endpoint_type):
     # edit model bundle
-    # TODO test_returns_2 was created beforehand using internal client to bypass the review process
-    returns2_bundle = client.get_model_bundle("test_returns_2")
+    # TODO test-returns-2 was created beforehand using internal client to bypass the review process
+    returns2_bundle = client.get_model_bundle("test-returns-2")
     client.edit_model_endpoint(
         model_endpoint=endpoint.model_endpoint.name,
         model_bundle=returns2_bundle,
@@ -61,8 +60,8 @@ def _test_model_endpoint(client, endpoint_type):
     endpoint_params["endpoint_name"] = endpoint_name  # TODO: add a timestamp
     endpoint_params["endpoint_type"] = endpoint_type
 
-    # TODO test_returns_1 was created beforehand using internal client to bypass the review process
-    bundle = launch.ModelBundle(name="test_returns_1")
+    # TODO test-returns-1 was created beforehand using internal client to bypass the review process
+    bundle = launch.ModelBundle(name="test-returns-1")
 
     logger.info(f"creating model endpoint {endpoint_name} ...")
     endpoint = client.create_model_endpoint(
