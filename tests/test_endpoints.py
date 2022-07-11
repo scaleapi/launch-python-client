@@ -1,4 +1,5 @@
 import logging
+import time
 
 import launch
 from launch.model_endpoint import EndpointRequest
@@ -7,19 +8,16 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def get_endpoint_params():
-    endpoint_params = {
-        # "endpoint_name": "test-endpoint",
-        "cpus": 1,
-        "memory": "4Gi",
-        "gpus": 0,
-        "min_workers": 1,
-        "max_workers": 1,
-        "per_worker": 1,
-        # "endpoint_type": "async",
-    }
-
-    return endpoint_params
+ENDPOINT_PARAMS = {
+    # "endpoint_name": "test-endpoint",
+    "cpus": 1,
+    "memory": "4Gi",
+    "gpus": 0,
+    "min_workers": 1,
+    "max_workers": 1,
+    "per_worker": 1,
+    # "endpoint_type": "async",
+}
 
 
 def _make_request(endpoint, endpoint_type, expected_output):
@@ -43,7 +41,6 @@ def _make_request(endpoint, endpoint_type, expected_output):
 
 def _edit_model_bundle(client, endpoint, endpoint_type):
     # edit model bundle
-    # TODO test-returns-2 was created beforehand using internal client to bypass the review process
     returns2_bundle = client.get_model_bundle("test-returns-2")
     client.edit_model_endpoint(
         model_endpoint=endpoint.model_endpoint.name,
@@ -55,17 +52,15 @@ def _edit_model_bundle(client, endpoint, endpoint_type):
 
 def _test_model_endpoint(client, endpoint_type):
 
-    endpoint_params = get_endpoint_params()
     endpoint_name = f"test-endpoint-{endpoint_type}"
-    endpoint_params["endpoint_name"] = endpoint_name  # TODO: add a timestamp
-    endpoint_params["endpoint_type"] = endpoint_type
+    ENDPOINT_PARAMS["endpoint_name"] = '-'.join([endpoint_name, str(int(time.time()))])
+    ENDPOINT_PARAMS["endpoint_type"] = endpoint_type
 
-    # TODO test-returns-1 was created beforehand using internal client to bypass the review process
     bundle = launch.ModelBundle(name="test-returns-1")
 
     logger.info(f"creating model endpoint {endpoint_name} ...")
     endpoint = client.create_model_endpoint(
-        model_bundle=bundle, **endpoint_params
+        model_bundle=bundle, **ENDPOINT_PARAMS
     )
     logger.info(
         f"successfully created {endpoint_type} model endpoint {endpoint_name}"
@@ -76,6 +71,7 @@ def _test_model_endpoint(client, endpoint_type):
         _make_request(endpoint, endpoint_type, expected_output="1")
         logger.info(f"got response from model endpoint {endpoint_name}")
 
+        # TODO edit other params
         _edit_model_bundle(client, endpoint, endpoint_type)
 
     finally:
@@ -88,6 +84,7 @@ def _test_model_endpoint(client, endpoint_type):
 
 
 def test_model_endpoint(client):
+    # NOTE this will take some time
     _test_model_endpoint(client, endpoint_type="async")
     # TODO uncomment this when sync endpoint is ready for testing
     # _test_model_endpoint(client, endpoint_type="sync")

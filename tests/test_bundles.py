@@ -2,34 +2,16 @@ import logging
 import os
 import shutil
 import tempfile
+import time
 
 import pytest
 
 from launch.errors import APIError
+from .conftest import BUNDLE_PARAMS
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
-def returns_returns_1(x):
-    def returns_1(y):
-        return 1
-
-    return returns_1
-
-
-ENV_PARAMS = {
-    "framework_type": "pytorch",
-    "pytorch_image_tag": "1.7.1-cuda11.0-cudnn8-runtime",
-}
-
-BUNDLE_PARAMS = {
-    "model_bundle_name": "tmp-bundle",
-    "model": 1,
-    "load_predict_fn": returns_returns_1,
-    "env_params": ENV_PARAMS,
-    "requirements": [],
-}
 
 @pytest.fixture()
 def fake_project_dir():
@@ -60,7 +42,7 @@ def fake_project_dir():
 
 
 def test_model_bundle_from_dirs(client, fake_project_dir):
-    bundle_name = "tmp-bundle-from-dirs"
+    bundle_name = '-'.join(["tmp-bundle-from-dirs", str(int(time.time()))])
 
     # create a bundle
     bundle = client.create_model_bundle_from_dirs(
@@ -77,6 +59,7 @@ def test_model_bundle_from_dirs(client, fake_project_dir):
         load_model_fn_module_path="a.b.c",
         app_config=None,
     )
+    logger.info(f"successfully created model bundle {bundle_name}")
 
     # create a bundle with the same name - this should error out
     with pytest.raises(APIError):
@@ -97,13 +80,15 @@ def test_model_bundle_from_dirs(client, fake_project_dir):
 
     # delete the bundle
     assert client.delete_model_bundle(bundle) == "true"
-    logger.info("successfully deleted model bundle {bundle_name}")
+    logger.info(f"successfully deleted model bundle {bundle_name}")
 
 
 def test_model_bundle(client):
     # create a bundle
+    bundle_name = '-'.join(["tmp-bundle", str(int(time.time()))])
+    BUNDLE_PARAMS["model_bundle_name"] = bundle_name
     bundle = client.create_model_bundle(**BUNDLE_PARAMS)
-    logger.info("successfully created model bundle tmp-bundle")
+    logger.info(f"successfully created model bundle {bundle_name}")
 
     # create a bundle with the same name - this should error out
     with pytest.raises(APIError):
@@ -111,4 +96,4 @@ def test_model_bundle(client):
 
     # delete the bundle
     assert client.delete_model_bundle(bundle) == "true"
-    logger.info("successfully deleted model bundle tmp-bundle")
+    logger.info(f"successfully deleted model bundle {bundle_name}")
