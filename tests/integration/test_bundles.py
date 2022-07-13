@@ -1,4 +1,3 @@
-import logging
 import os
 import shutil
 import tempfile
@@ -9,8 +8,9 @@ import pytest
 from launch.errors import APIError
 from .conftest import BUNDLE_PARAMS
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from scaleml.utils.logging import logger_name, make_logger
+
+logger = make_logger(logger_name())
 
 
 @pytest.fixture()

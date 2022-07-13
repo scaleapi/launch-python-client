@@ -1,9 +1,9 @@
-import logging
 import time
 import launch
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from scaleml.utils.logging import logger_name, make_logger
+
+logger = make_logger(logger_name())
 
 
 def test_batch_job(client):
