@@ -15,6 +15,7 @@ class APIError(Exception):
         message = f"Your client is on version {launch_client_version}. If you have not recently done so, please make sure you have updated to the latest version of the client by reinstalling the client.\n"
         if requests_response is not None:
             message += f"Tried to {command.__name__} {endpoint}, but received {requests_response.status_code}: {requests_response.reason}."
+            self.status_code = requests_response.status_code
             if hasattr(requests_response, "text"):
                 if requests_response.text:
                     message += (
@@ -24,6 +25,7 @@ class APIError(Exception):
         if aiohttp_response is not None:
             status, reason, data = aiohttp_response
             message += f"Tried to {command.__name__} {endpoint}, but received {status}: {reason}."
+            self.status_code = status
             if data:
                 message += f"\nThe detailed error is:\n{data}"
 

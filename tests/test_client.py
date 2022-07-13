@@ -88,3 +88,14 @@ def test_create_model_bundle_from_dirs_bundle_contents_correct(
         load_model_fn_module_path="a.b.c",
         app_config=None,
     )
+
+
+def test_get_non_existent_model_endpoint(requests_mock):  # noqa: F811
+    client = _get_mock_client()
+    requests_mock.get(
+        "https://api.scale.com/v1/hosted_inference/endpoints/non-existent-endpoint",
+        status_code=404,
+        reason="Not Found",
+    )
+    endpoint = client.get_model_endpoint("non-existent-endpoint")
+    assert endpoint is None
