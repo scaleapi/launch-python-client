@@ -63,6 +63,11 @@ class ModelEndpoint:
     Config for the endpoint.
     """
 
+    destination: Optional[str] = None
+    """
+    Queue identifier for endpoint, use only for debugging.
+    """
+
     def __repr__(self):
         return f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', status='{self.status}', resource_settings='{json.dumps(self.resource_settings)}', worker_settings='{json.dumps(self.worker_settings)}', endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
 
@@ -227,6 +232,9 @@ class SyncEndpoint(Endpoint):
     def __str__(self):
         return f"SyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
+    def __repr__(self):
+        return f"SyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_settings='{json.dumps(self.model_endpoint.resource_settings)}', worker_settings='{json.dumps(self.model_endpoint.worker_settings)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
+
     def predict(self, request: EndpointRequest) -> EndpointResponse:
         """
         Runs a synchronous prediction request.
@@ -249,11 +257,8 @@ class SyncEndpoint(Endpoint):
         )
 
     def status(self):
-        """Gets the status of the Endpoint.
-
-        TODO: Implement this by leveraging the LaunchClient object.
-        """
-        raise NotImplementedError
+        """Gets the status of the Endpoint."""
+        return self.model_endpoint.status
 
 
 class AsyncEndpoint(Endpoint):
@@ -273,6 +278,9 @@ class AsyncEndpoint(Endpoint):
 
     def __str__(self):
         return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
+
+    def __repr__(self):
+        return f"AsyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_settings='{json.dumps(self.model_endpoint.resource_settings)}', worker_settings='{json.dumps(self.model_endpoint.worker_settings)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
 
     def predict(self, request: EndpointRequest) -> EndpointResponseFuture:
         """
@@ -351,11 +359,8 @@ class AsyncEndpoint(Endpoint):
         )
 
     def status(self):
-        """Gets the status of the Endpoint.
-
-        TODO: Implement this by leveraging the LaunchClient object.
-        """
-        raise NotImplementedError
+        """Gets the status of the Endpoint."""
+        return self.model_endpoint.status
 
 
 @deprecated
