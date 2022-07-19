@@ -222,25 +222,25 @@ class Endpoint:
         self.model_endpoint = model_endpoint
         self.client = client
 
-    def _update_model_endpoint(self):
+    def _update_model_endpoint_view(self):
         resp = self.client.connection.get(
             os.path.join(ENDPOINT_PATH, self.model_endpoint.name)
         )
         self.model_endpoint = ModelEndpoint.from_dict(resp)
 
-    def status(self):
+    def status(self) -> Optional[str]:
         """Gets the status of the Endpoint."""
-        self._update_model_endpoint()
+        self._update_model_endpoint_view()
         return self.model_endpoint.status
 
-    def resource_settings(self):
+    def resource_settings(self) -> Optional[dict]:
         """Gets the resource settings of the Endpoint."""
-        self._update_model_endpoint()
+        self._update_model_endpoint_view()
         return self.model_endpoint.resource_settings
 
-    def worker_settings(self):
+    def worker_settings(self) -> Optional[dict]:
         """Gets the worker settings of the Endpoint."""
-        self._update_model_endpoint()
+        self._update_model_endpoint_view()
         return self.model_endpoint.worker_settings
 
 
