@@ -1095,6 +1095,7 @@ class LaunchClient:
         batch_url_file_location: Optional[str] = None,
         serialization_format: str = "json",
         batch_task_options: Optional[Dict[str, Any]] = None,
+        labels: Optional[Dict[str, str]] = None,
     ):
         """
         Sends a batch inference request using a given bundle. Returns a key that can be used to retrieve
@@ -1181,6 +1182,7 @@ class LaunchClient:
         payload = dict(
             input_path=file_location,
             serialization_format=serialization_format,
+            labels=labels,
         )
         payload.update(batch_task_options)
         payload = self.endpoint_auth_decorator_fn(payload)
