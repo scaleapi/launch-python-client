@@ -56,6 +56,6 @@ def test_status_returns_updated_value(requests_mock):  # noqa: F811
         ],
     )
 
-    endpoint = client.get_model_endpoint("test-endpoint")
+    endpoint = client.get_model_endpoint("test-endpoint")  # UPDATE_PENDING
     assert endpoint.status() == "UPDATE_IN_PROGRESS"
     assert endpoint.status() == "READY"
