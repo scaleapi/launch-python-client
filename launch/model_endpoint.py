@@ -1,5 +1,6 @@
 import concurrent.futures
 import json
+import os
 import time
 import uuid
 from collections import Counter
@@ -9,6 +10,7 @@ from typing import Dict, Optional, Sequence
 from dataclasses_json import Undefined, dataclass_json
 from deprecation import deprecated
 
+from launch.constants import ENDPOINT_PATH
 from launch.request_validation import validate_task_request
 
 TASK_PENDING_STATE = "PENDING"
@@ -216,8 +218,30 @@ class EndpointResponseFuture:
 class Endpoint:
     """An abstract class that represent any kind of endpoints in Scale Launch"""
 
-    def __init__(self, model_endpoint: ModelEndpoint):
+    def __init__(self, model_endpoint: ModelEndpoint, client):
         self.model_endpoint = model_endpoint
+        self.client = client
+
+    def _update_model_endpoint(self):
+        resp = self.client.connection.get(
+            os.path.join(ENDPOINT_PATH, self.model_endpoint.name)
+        )
+        self.model_endpoint = ModelEndpoint.from_dict(resp)
+
+    def status(self):
+        """Gets the status of the Endpoint."""
+        self._update_model_endpoint()
+        return self.model_endpoint.status
+
+    def resource_settings(self):
+        """Gets the resource settings of the Endpoint."""
+        self._update_model_endpoint()
+        return self.model_endpoint.resource_settings
+
+    def worker_settings(self):
+        """Gets the worker settings of the Endpoint."""
+        self._update_model_endpoint()
+        return self.model_endpoint.worker_settings
 
 
 class SyncEndpoint(Endpoint):
@@ -226,8 +250,13 @@ class SyncEndpoint(Endpoint):
     """
 
     def __init__(self, model_endpoint: ModelEndpoint, client):
-        super().__init__(model_endpoint=model_endpoint)
-        self.client = client
+        """
+        Parameters:
+            model_endpoint: ModelEndpoint object.
+
+            client: A LaunchClient object
+        """
+        super().__init__(model_endpoint=model_endpoint, client=client)
 
     def __str__(self):
         return f"SyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
@@ -256,10 +285,6 @@ class SyncEndpoint(Endpoint):
             traceback=raw_response.get("traceback", None),
         )
 
-    def status(self):
-        """Gets the status of the Endpoint."""
-        return self.model_endpoint.status
-
 
 class AsyncEndpoint(Endpoint):
     """
@@ -273,8 +298,7 @@ class AsyncEndpoint(Endpoint):
 
             client: A LaunchClient object
         """
-        super().__init__(model_endpoint=model_endpoint)
-        self.client = client
+        super().__init__(model_endpoint=model_endpoint, client=client)
 
     def __str__(self):
         return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
@@ -357,10 +381,6 @@ class AsyncEndpoint(Endpoint):
             endpoint_name=self.model_endpoint.name,
             request_ids=request_ids,
         )
-
-    def status(self):
-        """Gets the status of the Endpoint."""
-        return self.model_endpoint.status
 
 
 @deprecated
