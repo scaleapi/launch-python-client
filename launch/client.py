@@ -577,6 +577,21 @@ class LaunchClient:
                 - Otherwise, if the average number of concurrent requests per worker is higher
                   than ``per_worker``, then the number of workers will be increased to meet the elevated traffic.
 
+                Note that there is a duality to the number of workers (which we'll represent using ``max_workers`` here)
+                and the value of ``per_worker``. This can be illustrated by considering two extreme scenarios - in both
+                scenarios, let ``T`` be the target throughput for completing the entire request workload, and let ``c``
+                be the amount of time needed for a single inference request:
+
+                In the first scenario, your worker can process at most 1 concurrent request, i.e. ``per_worker == 1``.
+                Then, you would want to set ``max_workers == T / c``.
+
+                In the second scenario, your worker can process ``T / c`` concurrent requests. Then, you only need
+                a single worker, i.e. ``max_workers == 1``.
+
+                In reality, your scenario likely falls somewhere between the two. You should determine the
+                maximum concurrency for your worker and set ``per_worker`` to that value,
+                and then set ``max_workers`` to the lowest possible value to satisfy your target throughput ``T``.
+
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Here are the
                 supported values:
 
