@@ -538,7 +538,7 @@ class LaunchClient:
         gpus: int = 0,
         min_workers: int = 1,
         max_workers: int = 1,
-        per_worker: int = 1,
+        per_worker: int = 10,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
