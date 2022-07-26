@@ -538,7 +538,7 @@ class LaunchClient:
         gpus: int = 0,
         min_workers: int = 1,
         max_workers: int = 1,
-        per_worker: int = 1,
+        per_worker: int = 10,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
@@ -563,19 +563,28 @@ class LaunchClient:
 
             gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
 
-            min_workers: The minimum number of workers. Must be greater than or equal to 0.
+            min_workers: The minimum number of workers. Must be greater than or equal to 0. This should be determined
+                by computing the minimum throughput of your workload and dividing it by the throughput of a single
+                worker. This field must be at least ``1`` for synchronous endpoints.
 
             max_workers: The maximum number of workers. Must be greater than or equal to 0, and as well as
-                greater than or equal to ``min_workers``.
+                greater than or equal to ``min_workers``. This should be determined by computing the maximum throughput
+                of your workload and dividing it by the throughput of a single worker.
 
             per_worker: The maximum number of concurrent requests that an individual worker can service. Launch
                 automatically scales the number of workers for the endpoint so that each worker is processing
-                ``per_worker`` requests:
+                ``per_worker`` requests, subject to the limits defined by ``min_workers`` and ``max_workers``.
 
                 - If the average number of concurrent requests per worker is lower than ``per_worker``, then the number
                   of workers will be reduced.
                 - Otherwise, if the average number of concurrent requests per worker is higher
                   than ``per_worker``, then the number of workers will be increased to meet the elevated traffic.
+
+                Here is our recommendation for computing ``per_worker``:
+
+                1. Compute ``min_workers`` and ``max_workers`` per your minimum and maximum throughput requirements.
+                2. Determine a value for the maximum number of concurrent requests in the workload. Divide this number
+                by ``max_workers``. Doing this ensures that the number of workers will "climb" to ``max_workers``.
 
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Here are the
                 supported values:

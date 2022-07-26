@@ -2,13 +2,12 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="launch.request_validation" href="../request_validation/index.html" /><link rel="prev" title="launch" href="../index.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="launch.request_validation" href="../request_validation/index.html" /><link rel="prev" title="launch" href="../index.html" />
 
-    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.06.21"/>
+    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.4.0, furo 2022.04.07"/>
         <title>launch.cli - Launch API Reference</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -191,8 +190,7 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -206,9 +204,9 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-launch.cli">
+          <div class="section" id="module-launch.cli">
 <span id="launch-cli"></span><h1><a class="reference internal" href="#module-launch.cli" title="launch.cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.cli</span></code></a><a class="headerlink" href="#module-launch.cli" title="Permalink to this headline">#</a></h1>
-<section id="scale-launch">
+<div class="section" id="scale-launch">
 <p>This is the command line interface (CLI) package for Scale Launch.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>██╗      █████╗ ██╗   ██╗███╗   ██╗ ██████╗██╗  ██╗
 ██║     ██╔══██╗██║   ██║████╗  ██║██╔════╝██║  ██║
@@ -227,19 +225,16 @@
 <span id="cmdoption-scale-launch-self-hosted"></span><span class="sig-name descname"><span class="pre">-s</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--self-hosted</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-scale-launch-s" title="Permalink to this definition">#</a></dt>
 <dd><p>Use this flag if Scale Launch is self hosted</p>
 </dd></dl>
-
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-scale-launch-e">
 <span id="cmdoption-scale-launch-gateway-endpoint"></span><span class="sig-name descname"><span class="pre">-e</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--gateway-endpoint</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;gateway_endpoint&gt;</span></span><a class="headerlink" href="#cmdoption-scale-launch-e" title="Permalink to this definition">#</a></dt>
 <dd><p>Redefine Scale Launch gateway endpoint. Mandatory parameter when using self-hosted Scale Launch.</p>
 </dd></dl>
-
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-scale-launch-a">
 <span id="cmdoption-scale-launch-api-key"></span><span class="sig-name descname"><span class="pre">-a</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--api-key</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;api_key&gt;</span></span><a class="headerlink" href="#cmdoption-scale-launch-a" title="Permalink to this definition">#</a></dt>
 <dd><p><strong>Required</strong> Scale Launch API key</p>
 </dd></dl>
-
 <p class="rubric">Environment variables</p>
 <span class="target" id="scale-launch-gateway-endpoint-launch-gateway-endpoint"></span><dl class="std envvar">
 <dt class="sig sig-object std">
@@ -248,7 +243,6 @@
 <div><p>Provide a default for <a class="reference internal" href="#cmdoption-scale-launch-e"><code class="xref std std-option docutils literal notranslate"><span class="pre">-e</span></code></a></p>
 </div></blockquote>
 </dd></dl>
-
 <span class="target" id="scale-launch-api-key-launch-api-key"></span><dl class="std envvar">
 <dt class="sig sig-object std">
 <span class="sig-name descname"><span class="pre">LAUNCH_API_KEY</span></span></dt>
@@ -256,14 +250,13 @@
 <div><p>Provide a default for <a class="reference internal" href="#cmdoption-scale-launch-a"><code class="xref std std-option docutils literal notranslate"><span class="pre">-a</span></code></a></p>
 </div></blockquote>
 </dd></dl>
-
-<section id="scale-launch-bundles">
+<div class="section" id="scale-launch-bundles">
 <h3>bundles<a class="headerlink" href="#scale-launch-bundles" title="Permalink to this headline">#</a></h3>
 <p>Bundles is a wrapper around model bundles in Scale Launch</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>scale-launch bundles <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
 </pre></div>
 </div>
-<section id="scale-launch-bundles-delete">
+<div class="section" id="scale-launch-bundles-delete">
 <h4>delete<a class="headerlink" href="#scale-launch-bundles-delete" title="Permalink to this headline">#</a></h4>
 <p>Deletes a model bundle.</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>scale-launch bundles delete <span class="o">[</span>OPTIONS<span class="o">]</span> BUNDLE_NAME
@@ -275,9 +268,8 @@
 <span id="cmdoption-scale-launch-bundles-delete-arg-bundle-name"></span><span class="sig-name descname"><span class="pre">BUNDLE_NAME</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-scale-launch-bundles-delete-arg-BUNDLE_NAME" title="Permalink to this definition">#</a></dt>
 <dd><p>Required argument</p>
 </dd></dl>
-
-</section>
-<section id="scale-launch-bundles-get">
+</div>
+<div class="section" id="scale-launch-bundles-get">
 <h4>get<a class="headerlink" href="#scale-launch-bundles-get" title="Permalink to this headline">#</a></h4>
 <p>Print bundle info</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>scale-launch bundles get <span class="o">[</span>OPTIONS<span class="o">]</span> BUNDLE_NAME
@@ -289,23 +281,22 @@
 <span id="cmdoption-scale-launch-bundles-get-arg-bundle-name"></span><span class="sig-name descname"><span class="pre">BUNDLE_NAME</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-scale-launch-bundles-get-arg-BUNDLE_NAME" title="Permalink to this definition">#</a></dt>
 <dd><p>Required argument</p>
 </dd></dl>
-
-</section>
-<section id="scale-launch-bundles-list">
+</div>
+<div class="section" id="scale-launch-bundles-list">
 <h4>list<a class="headerlink" href="#scale-launch-bundles-list" title="Permalink to this headline">#</a></h4>
 <p>List all of your Bundles</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>scale-launch bundles list <span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="scale-launch-endpoints">
+</div>
+</div>
+<div class="section" id="scale-launch-endpoints">
 <h3>endpoints<a class="headerlink" href="#scale-launch-endpoints" title="Permalink to this headline">#</a></h3>
 <p>Endpoints is a wrapper around model endpoints in Scale Launch</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>scale-launch endpoints <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
 </pre></div>
 </div>
-<section id="scale-launch-endpoints-creation-logs">
+<div class="section" id="scale-launch-endpoints-creation-logs">
 <h4>creation-logs<a class="headerlink" href="#scale-launch-endpoints-creation-logs" title="Permalink to this headline">#</a></h4>
 <p>Reads the creation logs for an endpoint</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>scale-launch endpoints creation-logs <span class="o">[</span>OPTIONS<span class="o">]</span> ENDPOINT_NAME
@@ -317,9 +308,8 @@
 <span id="cmdoption-scale-launch-endpoints-creation-logs-arg-endpoint-name"></span><span class="sig-name descname"><span class="pre">ENDPOINT_NAME</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-scale-launch-endpoints-creation-logs-arg-ENDPOINT_NAME" title="Permalink to this definition">#</a></dt>
 <dd><p>Required argument</p>
 </dd></dl>
-
-</section>
-<section id="scale-launch-endpoints-delete">
+</div>
+<div class="section" id="scale-launch-endpoints-delete">
 <h4>delete<a class="headerlink" href="#scale-launch-endpoints-delete" title="Permalink to this headline">#</a></h4>
 <p>Delete a model endpoint</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>scale-launch endpoints delete <span class="o">[</span>OPTIONS<span class="o">]</span> ENDPOINT_NAME
@@ -331,18 +321,17 @@
 <span id="cmdoption-scale-launch-endpoints-delete-arg-endpoint-name"></span><span class="sig-name descname"><span class="pre">ENDPOINT_NAME</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-scale-launch-endpoints-delete-arg-ENDPOINT_NAME" title="Permalink to this definition">#</a></dt>
 <dd><p>Required argument</p>
 </dd></dl>
-
-</section>
-<section id="scale-launch-endpoints-list">
+</div>
+<div class="section" id="scale-launch-endpoints-list">
 <h4>list<a class="headerlink" href="#scale-launch-endpoints-list" title="Permalink to this headline">#</a></h4>
 <p>List all of your Endpoints</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>scale-launch endpoints list <span class="o">[</span>OPTIONS<span class="o">]</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
+</div>
 
         </article>
       </div>
