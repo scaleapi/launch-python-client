@@ -2,13 +2,12 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.06.21"/>
+    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.4.0, furo 2022.04.07"/>
         <title>launch.client - Launch API Reference</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -191,8 +190,7 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -206,25 +204,23 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-launch.client">
+          <div class="section" id="module-launch.client">
 <span id="launch-client"></span><h1><a class="reference internal" href="#module-launch.client" title="launch.client"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.client</span></code></a><a class="headerlink" href="#module-launch.client" title="Permalink to this headline">#</a></h1>
-<section id="module-contents">
+<div class="section" id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
-<section id="classes">
+<div class="section" id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper longtable docutils container">
-<table class="longtable docutils align-default">
+<div class="table-wrapper"><table class="longtable docutils align-default">
 <colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
+<col style="width: 10%"/>
+<col style="width: 90%"/>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#launch.client.LaunchClient" title="launch.client.LaunchClient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LaunchClient</span></code></a></p></td>
 <td><p>Scale Launch Python Client.</p></td>
 </tr>
 </tbody>
-</table>
-</div>
+</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.client.LaunchClient">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.client.</span></span><span class="sig-name descname"><span class="pre">LaunchClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">self_hosted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient" title="Permalink to this definition">#</a></dt>
@@ -259,7 +255,7 @@ see <code class="docutils literal notranslate"><span class="pre">args</span></co
 <li><p><strong>args</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – <p>A dictionary of arguments to the ModelBundle’s predict function.
 Must be json-serializable, i.e. composed of <code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, etc.
 If your predict function has signature <code class="docutils literal notranslate"><span class="pre">predict(foo,</span> <span class="pre">bar)</span></code>, then args should be a dictionary with
-keys <code class="docutils literal notranslate"><span class="pre">&quot;foo&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;bar&quot;</span></code>.</p>
+keys <code class="docutils literal notranslate"><span class="pre">"foo"</span></code> and <code class="docutils literal notranslate"><span class="pre">"bar"</span></code>.</p>
 <p>Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p>
 </p></li>
 <li><p><strong>return_pickled</strong> (<em>bool</em>) – Whether the python object returned is pickled, or directly written to the file returned.</p></li>
@@ -278,7 +274,6 @@ Example output:</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.batch_async_request">
 <span class="sig-name descname"><span class="pre">batch_async_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">urls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_url_file_location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serialization_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_task_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.batch_async_request" title="Permalink to this definition">#</a></dt>
@@ -307,7 +302,6 @@ job settings, like <code class="docutils literal notranslate"><span class="pre">
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.create_model_bundle">
 <span class="sig-name descname"><span class="pre">create_model_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_params</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_predict_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predict_fn_or_cls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_model_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bundle_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">globals_copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.create_model_bundle" title="Permalink to this definition">#</a></dt>
@@ -351,7 +345,7 @@ to:</p>
 </p></li>
 <li><p><strong>requirements</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – <p>A list of python package requirements, where each list element is of the form
 <code class="docutils literal notranslate"><span class="pre">&lt;package_name&gt;==&lt;package_version&gt;</span></code>, e.g.</p>
-<p><code class="docutils literal notranslate"><span class="pre">[&quot;tensorflow==2.3.0&quot;,</span> <span class="pre">&quot;tensorflow-hub==0.11.0&quot;]</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">["tensorflow==2.3.0",</span> <span class="pre">"tensorflow-hub==0.11.0"]</span></code></p>
 <p>If you do not pass in a value for <code class="docutils literal notranslate"><span class="pre">requirements</span></code>, then you must pass in <code class="docutils literal notranslate"><span class="pre">globals()</span></code> for the
 <code class="docutils literal notranslate"><span class="pre">globals_copy</span></code> argument.</p>
 </p></li>
@@ -371,8 +365,8 @@ Specifically, the dictionary should contain the following keys:</p>
 <li><p>Example:</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;framework_type&quot;</span><span class="p">:</span> <span class="s2">&quot;pytorch&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;pytorch_image_tag&quot;</span><span class="p">:</span> <span class="s2">&quot;1.10.0-cuda11.3-cudnn8-runtime&quot;</span>
+    <span class="s2">"framework_type"</span><span class="p">:</span> <span class="s2">"pytorch"</span><span class="p">,</span>
+    <span class="s2">"pytorch_image_tag"</span><span class="p">:</span> <span class="s2">"1.10.0-cuda11.3-cudnn8-runtime"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -381,7 +375,7 @@ Specifically, the dictionary should contain the following keys:</p>
 </li>
 <li><dl class="simple">
 <dt>Tensorflow fields:</dt><dd><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">tensorflow_version</span></code>: Version of tensorflow, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;2.3.0&quot;</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tensorflow_version</span></code>: Version of tensorflow, e.g. <code class="docutils literal notranslate"><span class="pre">"2.3.0"</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -398,7 +392,6 @@ Overrides any value given by <code class="docutils literal notranslate"><span cl
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.create_model_bundle_from_dirs">
 <span class="sig-name descname"><span class="pre">create_model_bundle_from_dirs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_paths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requirements_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_predict_fn_module_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_model_fn_module_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.create_model_bundle_from_dirs" title="Permalink to this definition">#</a></dt>
@@ -415,7 +408,7 @@ In this mode, a bundle is just local code instead of a serialized object.</p>
         ...files and directories
 </pre></div>
 </div>
-<p>then calling <code class="docutils literal notranslate"><span class="pre">create_model_bundle_from_dirs</span></code> with <code class="docutils literal notranslate"><span class="pre">base_paths=[&quot;my_module1&quot;,</span> <span class="pre">&quot;my_module2&quot;]</span></code> essentially
+<p>then calling <code class="docutils literal notranslate"><span class="pre">create_model_bundle_from_dirs</span></code> with <code class="docutils literal notranslate"><span class="pre">base_paths=["my_module1",</span> <span class="pre">"my_module2"]</span></code> essentially
 creates a zip file without the root directory, e.g.:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>my_module1/
     __init__.py
@@ -452,8 +445,8 @@ Specifically, the dictionary should contain the following keys:</p>
 <li><p>Example:</p></li>
 </ul>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;framework_type&quot;</span><span class="p">:</span> <span class="s2">&quot;pytorch&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;pytorch_image_tag&quot;</span><span class="p">:</span> <span class="s2">&quot;1.10.0-cuda11.3-cudnn8-runtime&quot;</span>
+    <span class="s2">"framework_type"</span><span class="p">:</span> <span class="s2">"pytorch"</span><span class="p">,</span>
+    <span class="s2">"pytorch_image_tag"</span><span class="p">:</span> <span class="s2">"1.10.0-cuda11.3-cudnn8-runtime"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -474,7 +467,6 @@ the function located at load_predict_fn_module_path.</p></li>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.create_model_endpoint">
 <span class="sig-name descname"><span class="pre">create_model_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'8Gi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_worker</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sync'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_inference_hooks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_if_exists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.create_model_endpoint" title="Permalink to this definition">#</a></dt>
@@ -491,29 +483,27 @@ all endpoints that you own.</p></li>
 <li><p><strong>memory</strong> (<em>str</em>) – Amount of memory each worker should get, e.g. “4Gi”, “512Mi”, etc. This must be a positive
 amount of memory.</p></li>
 <li><p><strong>gpus</strong> (<em>int</em>) – Number of gpus each worker should get, e.g. 0, 1, etc.</p></li>
-<li><p><strong>min_workers</strong> (<em>int</em>) – The minimum number of workers. Must be greater than or equal to 0.</p></li>
+<li><p><strong>min_workers</strong> (<em>int</em>) – The minimum number of workers. Must be greater than or equal to 0. This should be determined
+by computing the minimum throughput of your workload and dividing it by the throughput of a single
+worker. This field must be at least <code class="docutils literal notranslate"><span class="pre">1</span></code> for synchronous endpoints.</p></li>
 <li><p><strong>max_workers</strong> (<em>int</em>) – The maximum number of workers. Must be greater than or equal to 0, and as well as
-greater than or equal to <code class="docutils literal notranslate"><span class="pre">min_workers</span></code>.</p></li>
+greater than or equal to <code class="docutils literal notranslate"><span class="pre">min_workers</span></code>. This should be determined by computing the maximum throughput
+of your workload and dividing it by the throughput of a single worker.</p></li>
 <li><p><strong>per_worker</strong> (<em>int</em>) – <p>The maximum number of concurrent requests that an individual worker can service. Launch
 automatically scales the number of workers for the endpoint so that each worker is processing
-<code class="docutils literal notranslate"><span class="pre">per_worker</span></code> requests:</p>
+<code class="docutils literal notranslate"><span class="pre">per_worker</span></code> requests, subject to the limits defined by <code class="docutils literal notranslate"><span class="pre">min_workers</span></code> and <code class="docutils literal notranslate"><span class="pre">max_workers</span></code>.</p>
 <ul>
 <li><p>If the average number of concurrent requests per worker is lower than <code class="docutils literal notranslate"><span class="pre">per_worker</span></code>, then the number
 of workers will be reduced.</p></li>
 <li><p>Otherwise, if the average number of concurrent requests per worker is higher
 than <code class="docutils literal notranslate"><span class="pre">per_worker</span></code>, then the number of workers will be increased to meet the elevated traffic.</p></li>
 </ul>
-<p>Note that there is a duality to the number of workers (which we’ll represent using <code class="docutils literal notranslate"><span class="pre">max_workers</span></code> here)
-and the value of <code class="docutils literal notranslate"><span class="pre">per_worker</span></code>. This can be illustrated by considering two extreme scenarios - in both
-scenarios, let <code class="docutils literal notranslate"><span class="pre">T</span></code> be the target throughput for completing the entire request workload, and let <code class="docutils literal notranslate"><span class="pre">c</span></code>
-be the amount of time needed for a single inference request:</p>
-<p>In the first scenario, your worker can process at most 1 concurrent request, i.e. <code class="docutils literal notranslate"><span class="pre">per_worker</span> <span class="pre">==</span> <span class="pre">1</span></code>.
-Then, you would want to set <code class="docutils literal notranslate"><span class="pre">max_workers</span> <span class="pre">==</span> <span class="pre">T</span> <span class="pre">/</span> <span class="pre">c</span></code>.</p>
-<p>In the second scenario, your worker can process <code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">/</span> <span class="pre">c</span></code> concurrent requests. Then, you only need
-a single worker, i.e. <code class="docutils literal notranslate"><span class="pre">max_workers</span> <span class="pre">==</span> <span class="pre">1</span></code>.</p>
-<p>In reality, your scenario likely falls somewhere between the two. You should determine the
-maximum concurrency for your worker and set <code class="docutils literal notranslate"><span class="pre">per_worker</span></code> to that value,
-and then set <code class="docutils literal notranslate"><span class="pre">max_workers</span></code> to the lowest possible value to satisfy your target throughput <code class="docutils literal notranslate"><span class="pre">T</span></code>.</p>
+<p>Here is our recommendation for computing <code class="docutils literal notranslate"><span class="pre">per_worker</span></code>:</p>
+<ol class="arabic simple">
+<li><p>Compute <code class="docutils literal notranslate"><span class="pre">min_workers</span></code> and <code class="docutils literal notranslate"><span class="pre">max_workers</span></code> per your minimum and maximum throughput requirements.</p></li>
+</ol>
+<p>2. Determine a value for the maximum number of concurrent requests in the workload. Divide this number
+by <code class="docutils literal notranslate"><span class="pre">max_workers</span></code>. Doing this ensures that the number of workers will “climb” to <code class="docutils literal notranslate"><span class="pre">max_workers</span></code>.</p>
 </p></li>
 <li><p><strong>gpu_type</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>If specifying a non-zero number of gpus, this controls the type of gpu requested. Here are the
 supported values:</p>
@@ -522,7 +512,7 @@ supported values:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-ampere-a10</span></code></p></li>
 </ul>
 </p></li>
-<li><p><strong>endpoint_type</strong> (<em>str</em>) – Either <code class="docutils literal notranslate"><span class="pre">&quot;sync&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;async&quot;</span></code>.</p></li>
+<li><p><strong>endpoint_type</strong> (<em>str</em>) – Either <code class="docutils literal notranslate"><span class="pre">"sync"</span></code> or <code class="docutils literal notranslate"><span class="pre">"async"</span></code>.</p></li>
 <li><p><strong>post_inference_hooks</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="../hooks/index.html#launch.hooks.PostInferenceHooks" title="launch.hooks.PostInferenceHooks"><em>launch.hooks.PostInferenceHooks</em></a><em>]</em><em>]</em>) – List of hooks to trigger after inference tasks are served.</p></li>
 <li><p><strong>update_if_exists</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, will attempt to update the endpoint if it exists. Otherwise, will
 unconditionally try to create a new endpoint. Note that endpoint names for a given user must be unique,
@@ -539,7 +529,6 @@ an error.</p></li>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.delete_model_bundle">
 <span class="sig-name descname"><span class="pre">delete_model_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.delete_model_bundle" title="Permalink to this definition">#</a></dt>
@@ -550,7 +539,6 @@ an error.</p></li>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.delete_model_endpoint">
 <span class="sig-name descname"><span class="pre">delete_model_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_endpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.delete_model_endpoint" title="Permalink to this definition">#</a></dt>
@@ -561,7 +549,6 @@ an error.</p></li>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.edit_model_endpoint">
 <span class="sig-name descname"><span class="pre">edit_model_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_worker</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_inference_hooks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.edit_model_endpoint" title="Permalink to this definition">#</a></dt>
@@ -600,7 +587,7 @@ supported values:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">nvidia-ampere-a10</span></code></p></li>
 </ul>
 </p></li>
-<li><p><strong>endpoint_type</strong> – Either <code class="docutils literal notranslate"><span class="pre">&quot;sync&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;async&quot;</span></code>.</p></li>
+<li><p><strong>endpoint_type</strong> – Either <code class="docutils literal notranslate"><span class="pre">"sync"</span></code> or <code class="docutils literal notranslate"><span class="pre">"async"</span></code>.</p></li>
 <li><p><strong>post_inference_hooks</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><a class="reference internal" href="../hooks/index.html#launch.hooks.PostInferenceHooks" title="launch.hooks.PostInferenceHooks"><em>launch.hooks.PostInferenceHooks</em></a><em>]</em><em>]</em>) – List of hooks to trigger after inference tasks are served.</p></li>
 </ul>
 </dd>
@@ -609,7 +596,6 @@ supported values:</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.get_async_response">
 <span class="sig-name descname"><span class="pre">get_async_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">async_task_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.get_async_response" title="Permalink to this definition">#</a></dt>
@@ -631,8 +617,8 @@ Result url or result will be returned if the task has succeeded. Will return a r
 </ul>
 <p>Example output:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-    &#39;state&#39;: &#39;SUCCESS&#39;,
-    &#39;result_url&#39;: &#39;https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy&#39;
+    'state': 'SUCCESS',
+    'result_url': 'https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy'
 }
 </pre></div>
 </div>
@@ -643,7 +629,6 @@ Result url or result will be returned if the task has succeeded. Will return a r
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.get_batch_async_response">
 <span class="sig-name descname"><span class="pre">get_batch_async_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_async_task_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.get_batch_async_response" title="Permalink to this definition">#</a></dt>
@@ -666,7 +651,6 @@ calling <code class="docutils literal notranslate"><span class="pre">batch_async
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.get_model_bundle">
 <span class="sig-name descname"><span class="pre">get_model_bundle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_bundle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.get_model_bundle" title="Permalink to this definition">#</a></dt>
@@ -683,7 +667,6 @@ calling <code class="docutils literal notranslate"><span class="pre">batch_async
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.get_model_endpoint">
 <span class="sig-name descname"><span class="pre">get_model_endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.get_model_endpoint" title="Permalink to this definition">#</a></dt>
@@ -697,7 +680,6 @@ calling <code class="docutils literal notranslate"><span class="pre">batch_async
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.list_model_bundles">
 <span class="sig-name descname"><span class="pre">list_model_bundles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.list_model_bundles" title="Permalink to this definition">#</a></dt>
@@ -711,7 +693,6 @@ calling <code class="docutils literal notranslate"><span class="pre">batch_async
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.list_model_endpoints">
 <span class="sig-name descname"><span class="pre">list_model_endpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.list_model_endpoints" title="Permalink to this definition">#</a></dt>
@@ -725,7 +706,6 @@ calling <code class="docutils literal notranslate"><span class="pre">batch_async
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.read_endpoint_creation_logs">
 <span class="sig-name descname"><span class="pre">read_endpoint_creation_logs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_endpoint</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.read_endpoint_creation_logs" title="Permalink to this definition">#</a></dt>
@@ -736,7 +716,6 @@ calling <code class="docutils literal notranslate"><span class="pre">batch_async
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.register_batch_csv_location_fn">
 <span class="sig-name descname"><span class="pre">register_batch_csv_location_fn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_csv_location_fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.register_batch_csv_location_fn" title="Permalink to this definition">#</a></dt>
@@ -752,7 +731,6 @@ returns a value of type T, then upload_batch_csv_fn() takes in an object of type
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.register_bundle_location_fn">
 <span class="sig-name descname"><span class="pre">register_bundle_location_fn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bundle_location_fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.register_bundle_location_fn" title="Permalink to this definition">#</a></dt>
@@ -768,14 +746,12 @@ as its second argument (i.e. bundle_url).</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.register_endpoint_auth_decorator">
 <span class="sig-name descname"><span class="pre">register_endpoint_auth_decorator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_auth_decorator_fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.register_endpoint_auth_decorator" title="Permalink to this definition">#</a></dt>
 <dd><p>For self-hosted mode only. Registers a function that modifies the endpoint creation payload to include
 required fields for self-hosting.</p>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.register_upload_batch_csv_fn">
 <span class="sig-name descname"><span class="pre">register_upload_batch_csv_fn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_batch_csv_fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.register_upload_batch_csv_fn" title="Permalink to this definition">#</a></dt>
@@ -791,7 +767,6 @@ location. Only needed for self-hosted mode.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.client.LaunchClient.register_upload_bundle_fn">
 <span class="sig-name descname"><span class="pre">register_upload_bundle_fn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_bundle_fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.client.LaunchClient.register_upload_bundle_fn" title="Permalink to this definition">#</a></dt>
@@ -809,12 +784,10 @@ location. Only needed for self-hosted mode.</p>
 </dd>
 </dl>
 </dd></dl>
-
 </dd></dl>
-
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
         </article>
       </div>

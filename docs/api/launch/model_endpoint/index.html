@@ -2,13 +2,12 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.3.2, furo 2022.06.21"/>
+    <link rel="shortcut icon" href="../../../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.4.0, furo 2022.04.07"/>
         <title>launch.model_endpoint - Launch API Reference</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -191,8 +190,7 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -206,17 +204,16 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-launch.model_endpoint">
+          <div class="section" id="module-launch.model_endpoint">
 <span id="launch-model-endpoint"></span><h1><a class="reference internal" href="#module-launch.model_endpoint" title="launch.model_endpoint"><code class="xref py py-mod docutils literal notranslate"><span class="pre">launch.model_endpoint</span></code></a><a class="headerlink" href="#module-launch.model_endpoint" title="Permalink to this headline">#</a></h1>
-<section id="module-contents">
+<div class="section" id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
-<section id="classes">
+<div class="section" id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper longtable docutils container">
-<table class="longtable docutils align-default">
+<div class="table-wrapper"><table class="longtable docutils align-default">
 <colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
+<col style="width: 10%"/>
+<col style="width: 90%"/>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#launch.model_endpoint.AsyncEndpoint" title="launch.model_endpoint.AsyncEndpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AsyncEndpoint</span></code></a></p></td>
@@ -244,8 +241,7 @@
 <td><p>A synchronous model endpoint.</p></td>
 </tr>
 </tbody>
-</table>
-</div>
+</table></div>
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpoint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">AsyncEndpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpoint" title="Permalink to this definition">#</a></dt>
@@ -281,7 +277,6 @@ Example:</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpoint.predict_batch">
 <span class="sig-name descname"><span class="pre">predict_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpoint.predict_batch" title="Permalink to this definition">#</a></dt>
@@ -299,7 +294,6 @@ Runs inference on the data items specified by urls. Returns a AsyncEndpointRespo
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpoint.resource_settings">
 <span class="sig-name descname"><span class="pre">resource_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpoint.resource_settings" title="Permalink to this definition">#</a></dt>
@@ -310,7 +304,6 @@ Runs inference on the data items specified by urls. Returns a AsyncEndpointRespo
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpoint.status">
 <span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpoint.status" title="Permalink to this definition">#</a></dt>
@@ -321,7 +314,6 @@ Runs inference on the data items specified by urls. Returns a AsyncEndpointRespo
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpoint.worker_settings">
 <span class="sig-name descname"><span class="pre">worker_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpoint.worker_settings" title="Permalink to this definition">#</a></dt>
@@ -332,9 +324,7 @@ Runs inference on the data items specified by urls. Returns a AsyncEndpointRespo
 </dd>
 </dl>
 </dd></dl>
-
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpointBatchResponse">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">AsyncEndpointBatchResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpointBatchResponse" title="Permalink to this definition">#</a></dt>
@@ -363,7 +353,6 @@ object at that key is the corresponding EndpointResponse.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpointBatchResponse.is_done">
 <span class="sig-name descname"><span class="pre">is_done</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poll</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpointBatchResponse.is_done" title="Permalink to this definition">#</a></dt>
@@ -380,15 +369,12 @@ object at that key is the corresponding EndpointResponse.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.AsyncEndpointBatchResponse.poll_endpoints">
 <span class="sig-name descname"><span class="pre">poll_endpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.AsyncEndpointBatchResponse.poll_endpoints" title="Permalink to this definition">#</a></dt>
 <dd><p>Runs one round of polling the endpoint for async task results.</p>
 </dd></dl>
-
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.Endpoint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">Endpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.Endpoint" title="Permalink to this definition">#</a></dt>
@@ -408,7 +394,6 @@ object at that key is the corresponding EndpointResponse.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.Endpoint.status">
 <span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.Endpoint.status" title="Permalink to this definition">#</a></dt>
@@ -419,7 +404,6 @@ object at that key is the corresponding EndpointResponse.</p>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.Endpoint.worker_settings">
 <span class="sig-name descname"><span class="pre">worker_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.Endpoint.worker_settings" title="Permalink to this definition">#</a></dt>
@@ -430,9 +414,7 @@ object at that key is the corresponding EndpointResponse.</p>
 </dd>
 </dl>
 </dd></dl>
-
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.EndpointRequest">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">EndpointRequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_pickled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">request_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.EndpointRequest" title="Permalink to this definition">#</a></dt>
@@ -447,7 +429,7 @@ see <code class="docutils literal notranslate"><span class="pre">args</span></co
 <p>Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p>
 </p></li>
 <li><p><strong>args</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>]</em>) – <p>A Dictionary with arguments to a ModelBundle’s predict function. If the predict function has signature
-<code class="docutils literal notranslate"><span class="pre">predict_fn(foo,</span> <span class="pre">bar)</span></code>, then the keys in the dictionary should be <code class="docutils literal notranslate"><span class="pre">&quot;foo&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;bar&quot;</span></code>.
+<code class="docutils literal notranslate"><span class="pre">predict_fn(foo,</span> <span class="pre">bar)</span></code>, then the keys in the dictionary should be <code class="docutils literal notranslate"><span class="pre">"foo"</span></code> and <code class="docutils literal notranslate"><span class="pre">"bar"</span></code>.
 Values must be native Python objects.</p>
 <p>Exactly one of <code class="docutils literal notranslate"><span class="pre">url</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code> must be specified.</p>
 </p></li>
@@ -459,7 +441,6 @@ If one isn’t provided the client will generate its own.</p></li>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.EndpointResponse">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">EndpointResponse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traceback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.EndpointResponse" title="Permalink to this definition">#</a></dt>
@@ -483,7 +464,6 @@ depending on the value of <code class="docutils literal notranslate"><span class
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.EndpointResponseFuture">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">EndpointResponseFuture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoint_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">async_task_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.EndpointResponseFuture" title="Permalink to this definition">#</a></dt>
@@ -509,9 +489,7 @@ then its <code class="docutils literal notranslate"><span class="pre">get</span>
 </dd>
 </dl>
 </dd></dl>
-
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.ModelEndpoint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">ModelEndpoint</span></span><a class="headerlink" href="#launch.model_endpoint.ModelEndpoint" title="Permalink to this definition">#</a></dt>
@@ -521,57 +499,47 @@ then its <code class="docutils literal notranslate"><span class="pre">get</span>
 <span class="sig-name descname"><span class="pre">bundle_name</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[str]</span></em><a class="headerlink" href="#launch.model_endpoint.ModelEndpoint.bundle_name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the bundle for the endpoint. The owner of the bundle must be the same as the owner for the endpoint.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="launch.model_endpoint.ModelEndpoint.configs">
 <span class="sig-name descname"><span class="pre">configs</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[dict]</span></em><a class="headerlink" href="#launch.model_endpoint.ModelEndpoint.configs" title="Permalink to this definition">#</a></dt>
 <dd><p>Config for the endpoint.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="launch.model_endpoint.ModelEndpoint.destination">
 <span class="sig-name descname"><span class="pre">destination</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[str]</span></em><a class="headerlink" href="#launch.model_endpoint.ModelEndpoint.destination" title="Permalink to this definition">#</a></dt>
 <dd><p>Queue identifier for endpoint, use only for debugging.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="launch.model_endpoint.ModelEndpoint.endpoint_type">
 <span class="sig-name descname"><span class="pre">endpoint_type</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[str]</span></em><a class="headerlink" href="#launch.model_endpoint.ModelEndpoint.endpoint_type" title="Permalink to this definition">#</a></dt>
 <dd><p>The type of the endpoint. Must be <code class="docutils literal notranslate"><span class="pre">'async'</span></code> or <code class="docutils literal notranslate"><span class="pre">'sync'</span></code>.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="launch.model_endpoint.ModelEndpoint.metadata">
 <span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[dict]</span></em><a class="headerlink" href="#launch.model_endpoint.ModelEndpoint.metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Metadata for the endpoint.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="launch.model_endpoint.ModelEndpoint.name">
 <span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="pre">:str</span></em><a class="headerlink" href="#launch.model_endpoint.ModelEndpoint.name" title="Permalink to this definition">#</a></dt>
 <dd><p>The name of the endpoint. Must be unique across all endpoints owned by the user.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="launch.model_endpoint.ModelEndpoint.resource_settings">
 <span class="sig-name descname"><span class="pre">resource_settings</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[dict]</span></em><a class="headerlink" href="#launch.model_endpoint.ModelEndpoint.resource_settings" title="Permalink to this definition">#</a></dt>
 <dd><p>Resource settings for the endpoint.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="launch.model_endpoint.ModelEndpoint.status">
 <span class="sig-name descname"><span class="pre">status</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[str]</span></em><a class="headerlink" href="#launch.model_endpoint.ModelEndpoint.status" title="Permalink to this definition">#</a></dt>
 <dd><p>The status of the endpoint.</p>
 </dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="launch.model_endpoint.ModelEndpoint.worker_settings">
 <span class="sig-name descname"><span class="pre">worker_settings</span></span><em class="property"><span class="w"> </span><span class="pre">:Optional[dict]</span></em><a class="headerlink" href="#launch.model_endpoint.ModelEndpoint.worker_settings" title="Permalink to this definition">#</a></dt>
 <dd><p>Worker settings for the endpoint.</p>
 </dd></dl>
-
 </dd></dl>
-
 <dl class="py class">
 <dt class="sig sig-object py" id="launch.model_endpoint.SyncEndpoint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">launch.model_endpoint.</span></span><span class="sig-name descname"><span class="pre">SyncEndpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_endpoint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.SyncEndpoint" title="Permalink to this definition">#</a></dt>
@@ -597,7 +565,6 @@ then its <code class="docutils literal notranslate"><span class="pre">get</span>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.SyncEndpoint.resource_settings">
 <span class="sig-name descname"><span class="pre">resource_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.SyncEndpoint.resource_settings" title="Permalink to this definition">#</a></dt>
@@ -608,7 +575,6 @@ then its <code class="docutils literal notranslate"><span class="pre">get</span>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.SyncEndpoint.status">
 <span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.SyncEndpoint.status" title="Permalink to this definition">#</a></dt>
@@ -619,7 +585,6 @@ then its <code class="docutils literal notranslate"><span class="pre">get</span>
 </dd>
 </dl>
 </dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="launch.model_endpoint.SyncEndpoint.worker_settings">
 <span class="sig-name descname"><span class="pre">worker_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#launch.model_endpoint.SyncEndpoint.worker_settings" title="Permalink to this definition">#</a></dt>
@@ -630,12 +595,10 @@ then its <code class="docutils literal notranslate"><span class="pre">get</span>
 </dd>
 </dl>
 </dd></dl>
-
 </dd></dl>
-
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
         </article>
       </div>

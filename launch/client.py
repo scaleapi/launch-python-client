@@ -563,34 +563,28 @@ class LaunchClient:
 
             gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
 
-            min_workers: The minimum number of workers. Must be greater than or equal to 0.
+            min_workers: The minimum number of workers. Must be greater than or equal to 0. This should be determined
+                by computing the minimum throughput of your workload and dividing it by the throughput of a single
+                worker. This field must be at least ``1`` for synchronous endpoints.
 
             max_workers: The maximum number of workers. Must be greater than or equal to 0, and as well as
-                greater than or equal to ``min_workers``.
+                greater than or equal to ``min_workers``. This should be determined by computing the maximum throughput
+                of your workload and dividing it by the throughput of a single worker.
 
             per_worker: The maximum number of concurrent requests that an individual worker can service. Launch
                 automatically scales the number of workers for the endpoint so that each worker is processing
-                ``per_worker`` requests:
+                ``per_worker`` requests, subject to the limits defined by ``min_workers`` and ``max_workers``.
 
                 - If the average number of concurrent requests per worker is lower than ``per_worker``, then the number
                   of workers will be reduced.
                 - Otherwise, if the average number of concurrent requests per worker is higher
                   than ``per_worker``, then the number of workers will be increased to meet the elevated traffic.
 
-                Note that there is a duality to the number of workers (which we'll represent using ``max_workers`` here)
-                and the value of ``per_worker``. This can be illustrated by considering two extreme scenarios - in both
-                scenarios, let ``T`` be the target throughput for completing the entire request workload, and let ``c``
-                be the amount of time needed for a single inference request:
+                Here is our recommendation for computing ``per_worker``:
 
-                In the first scenario, your worker can process at most 1 concurrent request, i.e. ``per_worker == 1``.
-                Then, you would want to set ``max_workers == T / c``.
-
-                In the second scenario, your worker can process ``T / c`` concurrent requests. Then, you only need
-                a single worker, i.e. ``max_workers == 1``.
-
-                In reality, your scenario likely falls somewhere between the two. You should determine the
-                maximum concurrency for your worker and set ``per_worker`` to that value,
-                and then set ``max_workers`` to the lowest possible value to satisfy your target throughput ``T``.
+                1. Compute ``min_workers`` and ``max_workers`` per your minimum and maximum throughput requirements.
+                2. Determine a value for the maximum number of concurrent requests in the workload. Divide this number
+                by ``max_workers``. Doing this ensures that the number of workers will "climb" to ``max_workers``.
 
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Here are the
                 supported values:
