@@ -33,9 +33,9 @@ def infer_env_params(env_selector: Optional[str]):
                 "framework_type": "pytorch",
                 "pytorch_image_tag": tag,
             }
-        except Exception as e:
+        except:
             raise ValueError(
-                "Failed to parse correct PyTorch version, try setting your own env_params."
+                f"Failed to parse PyTorch version {torch.__version__}, try setting your own env_params."
             )
     elif env_selector == "tensorflow":
         import tensorflow as tf
