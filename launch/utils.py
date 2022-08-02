@@ -17,18 +17,24 @@ def infer_env_params(env_selector: Optional[str]):
     """
     if env_selector == "pytorch":
         import torch
+        import sys
 
         try:
             ver = torch.__version__.split("+")
             torch_version = ver[0]
             cuda_version = ver[1][2:] if len(ver) > 1 else "113"
+            python_minor = sys.version_info.minor
             if (
                 len(cuda_version) < 3
             ):  # we can only parse cuda versions in the double digits
                 raise ValueError(
                     "PyTorch version parsing does not support CUDA versions below 10.0"
                 )
-            tag = f"{torch_version}-cuda{cuda_version[:2]}.{cuda_version[2:]}-cudnn8-runtime"
+            if sys.version_info.major < 3:
+                raise ValueError(
+                    "PyTorch version parsing only supports Python3"
+                )
+            tag = f"{torch_version}-cuda{cuda_version[:2]}.{cuda_version[2:]}-cudnn{python_minor}-runtime"
             return {
                 "framework_type": "pytorch",
                 "pytorch_image_tag": tag,
