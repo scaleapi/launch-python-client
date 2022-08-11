@@ -52,6 +52,12 @@ Please install the pre-commit hooks by running the following command:
 poetry run pre-commit install
 ```
 
+The tests can be run with:
+
+```bash
+poetry run pytest
+```
+
 ### Documentation
 
 **Updating documentation:**
