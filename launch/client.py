@@ -342,6 +342,7 @@ class LaunchClient:
         load_model_fn: Optional[Callable[[], LaunchModel_T]] = None,
         bundle_url: Optional[str] = None,
         app_config: Optional[Union[Dict[str, Any], str]] = None,
+        model_version_id: Optional[str] = None,
         globals_copy: Optional[Dict[str, Any]] = None,
     ) -> ModelBundle:
         """
@@ -394,6 +395,8 @@ class LaunchClient:
                 ``globals_copy`` argument.
 
             app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
+
+            model_version_id: Optional unique ID of model version from the Model Service.
 
             env_params: A dictionary that dictates environment information e.g.
                 the use of pytorch or tensorflow, which base image tag to use, etc.
@@ -517,6 +520,7 @@ class LaunchClient:
             bundle_metadata=bundle_metadata,
             requirements=requirements,
             env_params=env_params,
+            model_version_id=model_version_id,
         )
 
         _add_app_config_to_bundle_create_payload(payload, app_config)

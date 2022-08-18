@@ -51,5 +51,10 @@ class ModelBundle:
     for more information.
     """
 
+    model_version_id: Optional[str] = None
+    """
+    The unique ID associated with the Model Version (from the Scale Model Service).
+    """
+
     def __str__(self):
         return f"ModelBundle(bundle_name={self.name})"
