@@ -812,6 +812,34 @@ class LaunchClient:
         ), f"Bundle with name `{bundle_name}` not found"
         return ModelBundle.from_dict(resp["bundles"][0])  # type: ignore
 
+    def clone_model_bundle_with_changes(
+        self,
+        existing_bundle: Union[ModelBundle, str],
+        new_bundle_name: str,
+        app_config: Dict[str, str],
+    ) -> ModelBundle:
+        """
+        Clones an existing model bundle with changes to its app config. (More fields coming soon)
+
+        Parameters:
+            existing_bundle: The existing bundle or its name.
+            new_bundle_name: The new bundle's name.
+            app_config: The new bundle's app config.
+
+        Returns:
+            A ``ModelBundle`` object
+        """
+        bundle_name = _model_bundle_to_name(existing_bundle)
+        payload = dict(
+            existing_bundle_name=bundle_name,
+            new_bundle_name=new_bundle_name,
+            app_config=app_config,
+        )
+        resp = self.connection.post(
+            payload=payload, route="model_bundle/clone_with_changes"
+        )
+        return ModelBundle.from_dict(resp)  # type: ignore
+
     def list_model_endpoints(self) -> List[Endpoint]:
         """
         Lists all model endpoints that the user owns.
