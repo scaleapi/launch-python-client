@@ -816,7 +816,7 @@ class LaunchClient:
         self,
         existing_bundle: Union[ModelBundle, str],
         new_bundle_name: str,
-        app_config: Dict[str, str],
+        app_config: Optional[Dict] = None,
     ) -> ModelBundle:
         """
         Clones an existing model bundle with changes to its app config. (More fields coming soon)
@@ -824,7 +824,7 @@ class LaunchClient:
         Parameters:
             existing_bundle: The existing bundle or its name.
             new_bundle_name: The new bundle's name.
-            app_config: The new bundle's app config.
+            app_config: The new bundle's app config, if not passed in, the new bundle's ``app_config`` will be set to ``None``
 
         Returns:
             A ``ModelBundle`` object
