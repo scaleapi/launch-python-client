@@ -535,6 +535,7 @@ class LaunchClient:
         model_bundle: Union[ModelBundle, str],
         cpus: int = 3,
         memory: str = "8Gi",
+        storage: Optional[str] = None,
         gpus: int = 0,
         min_workers: int = 1,
         max_workers: int = 1,
@@ -613,6 +614,7 @@ class LaunchClient:
                 model_bundle=model_bundle,
                 cpus=cpus,
                 memory=memory,
+                storage=storage,
                 gpus=gpus,
                 min_workers=min_workers,
                 max_workers=max_workers,
@@ -631,6 +633,7 @@ class LaunchClient:
                 bundle_name=bundle_name,
                 cpus=cpus,
                 memory=memory,
+                storage=storage,
                 gpus=gpus,
                 gpu_type=gpu_type,
                 min_workers=min_workers,
@@ -672,6 +675,7 @@ class LaunchClient:
         model_bundle: Optional[Union[ModelBundle, str]] = None,
         cpus: Optional[float] = None,
         memory: Optional[str] = None,
+        storage: Optional[str] = None,
         gpus: Optional[int] = None,
         min_workers: Optional[int] = None,
         max_workers: Optional[int] = None,
@@ -695,6 +699,9 @@ class LaunchClient:
 
             memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must be a positive
                 amount of memory.
+
+            storage: Amount of local ephemeral storage each worker should get, e.g. "4Gi", "512Mi", etc. This must
+                be a positive amount of storage.
 
             gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
 
@@ -732,6 +739,7 @@ class LaunchClient:
             bundle_name=bundle_name,
             cpus=cpus,
             memory=memory,
+            storage=storage,
             gpus=gpus,
             gpu_type=gpu_type,
             min_workers=min_workers,
@@ -1169,6 +1177,7 @@ class LaunchClient:
         allowed_batch_task_options = {
             "cpus",
             "memory",
+            "storage",
             "gpus",
             "gpu_type",
             "max_workers",
