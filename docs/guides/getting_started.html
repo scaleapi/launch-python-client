@@ -1,13 +1,14 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Registering your code" href="registering_your_code.html" /><link rel="prev" title="How-to guides" href="index.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Registering your code" href="registering_your_code.html" /><link rel="prev" title="How-to guides" href="index.html" />
 
-    <link rel="shortcut icon" href="../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-4.4.0, furo 2022.04.07"/>
+    <link rel="shortcut icon" href="../_static/favicon-32x32.png"/><meta name="generator" content="sphinx-5.0.2, furo 2022.09.29"/>
         <title>Introduction to Scale Launch - Launch API Reference</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
@@ -190,7 +191,9 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -204,8 +207,8 @@
           </label>
         </div>
         <article role="main">
-          <div class="section" id="introduction-to-scale-launch">
-<h1>Introduction to Scale Launch<a class="headerlink" href="#introduction-to-scale-launch" title="Permalink to this headline">#</a></h1>
+          <section id="introduction-to-scale-launch">
+<h1>Introduction to Scale Launch<a class="headerlink" href="#introduction-to-scale-launch" title="Permalink to this heading">#</a></h1>
 <p>Launch has three core concepts:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ModelBundle</span></code></p></li>
@@ -214,8 +217,8 @@
 </ul>
 <p><code class="docutils literal notranslate"><span class="pre">ModelBundle</span></code> represents your model &amp; code, and is what you’re deploying;
 <code class="docutils literal notranslate"><span class="pre">ModelEndpoint</span></code> and <code class="docutils literal notranslate"><span class="pre">BatchJob</span></code> represent the means of how to deploy it.</p>
-<div class="section" id="modelbundle">
-<h2>ModelBundle<a class="headerlink" href="#modelbundle" title="Permalink to this headline">#</a></h2>
+<section id="modelbundle">
+<h2>ModelBundle<a class="headerlink" href="#modelbundle" title="Permalink to this heading">#</a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">ModelBundle</span></code> consists of a trained model as well as the surrounding preprocessing and postprocessing code.
 Specifically, a <code class="docutils literal notranslate"><span class="pre">ModelBundle</span></code> consists of two Python objects, a <code class="docutils literal notranslate"><span class="pre">load_predict_fn</span></code>, and either a <code class="docutils literal notranslate"><span class="pre">model</span></code> or <code class="docutils literal notranslate"><span class="pre">load_model_fn</span></code>; such that</p>
 <blockquote>
@@ -228,30 +231,30 @@ Specifically, a <code class="docutils literal notranslate"><span class="pre">Mod
 <p>returns a function <code class="docutils literal notranslate"><span class="pre">predict_fn</span></code> that takes in one argument representing model input,
 and outputs one argument representing model output.</p>
 <p>Typically, a <code class="docutils literal notranslate"><span class="pre">model</span></code> would be a Pytorch nn.Module or Tensorflow model, but can also be any arbitrary Python code.</p>
-<a class="reference internal image-reference" href="../_images/model_bundle.png"><img alt="../_images/model_bundle.png" src="../_images/model_bundle.png" style="width: 200px;"/></a>
-</div>
-<div class="section" id="modelendpoint">
-<h2>ModelEndpoint<a class="headerlink" href="#modelendpoint" title="Permalink to this headline">#</a></h2>
+<a class="reference internal image-reference" href="../_images/model_bundle.png"><img alt="../_images/model_bundle.png" src="../_images/model_bundle.png" style="width: 200px;" /></a>
+</section>
+<section id="modelendpoint">
+<h2>ModelEndpoint<a class="headerlink" href="#modelendpoint" title="Permalink to this heading">#</a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">ModelEndpoint</span></code> is a deployment of a <code class="docutils literal notranslate"><span class="pre">ModelBundle</span></code> that serves inference requests.
 To create a <code class="docutils literal notranslate"><span class="pre">ModelEndpoint</span></code>, the user must specify various infrastructure-level details,
 such as the min &amp; max workers; and the amount of CPU, memory, and GPU resources per worker. A <code class="docutils literal notranslate"><span class="pre">ModelEndpoint</span></code>
 automatically scales the number of workers based on the amount of traffic.</p>
-<a class="reference internal image-reference" href="../_images/model_endpoint.png"><img alt="../_images/model_endpoint.png" src="../_images/model_endpoint.png" style="width: 400px;"/></a>
+<a class="reference internal image-reference" href="../_images/model_endpoint.png"><img alt="../_images/model_endpoint.png" src="../_images/model_endpoint.png" style="width: 400px;" /></a>
 <p>There are two types of <code class="docutils literal notranslate"><span class="pre">ModelEndpoint</span></code>:</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">SyncEndpoint</span></code> takes in requests and immediately returns the response in a blocking manner.
 A <code class="docutils literal notranslate"><span class="pre">SyncEndpoint</span></code> must always have at least 1 worker.</p>
 <p>An <code class="docutils literal notranslate"><span class="pre">AsyncEndpoint</span></code> takes in requests and returns an asynchronous response token. The user can later query to monitor
 the status of the request. Asynchronous endpoints can scale up from zero,
 which make them a cost effective choice for services that are not latency sensitive.</p>
-</div>
-<div class="section" id="batchjob">
-<h2>BatchJob<a class="headerlink" href="#batchjob" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="batchjob">
+<h2>BatchJob<a class="headerlink" href="#batchjob" title="Permalink to this heading">#</a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">BatchJob</span></code> takes in a <code class="docutils literal notranslate"><span class="pre">ModelBundle</span></code> and a list of inputs
 to predict on. Once a batch job completes, it cannot be restarted or accept additional requests.
 Launch maintains metadata about batch jobs for users to query, even after batch jobs are complete.</p>
-</div>
-<div class="section" id="choosing-the-right-inference-mode">
-<h2>Choosing the right inference mode<a class="headerlink" href="#choosing-the-right-inference-mode" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="choosing-the-right-inference-mode">
+<h2>Choosing the right inference mode<a class="headerlink" href="#choosing-the-right-inference-mode" title="Permalink to this heading">#</a></h2>
 <p>Here are some tips for how to choose between <code class="docutils literal notranslate"><span class="pre">SyncEndpoint</span></code>, <code class="docutils literal notranslate"><span class="pre">AsyncEndpoint</span></code>, and <code class="docutils literal notranslate"><span class="pre">BatchJob</span></code> for deploying your
 <code class="docutils literal notranslate"><span class="pre">ModelBundle</span></code>:</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">SyncEndpoint</span></code> is good if:</p>
@@ -270,9 +273,9 @@ Launch maintains metadata about batch jobs for users to query, even after batch 
 <li><p>You know there is a large batch of inputs ahead of time.</p></li>
 <li><p>You want to optimize for throughput instead of latency.</p></li>
 </ul>
-</div>
-<div class="section" id="overview-of-deployment-steps">
-<h2>Overview of deployment steps<a class="headerlink" href="#overview-of-deployment-steps" title="Permalink to this headline">#</a></h2>
+</section>
+<section id="overview-of-deployment-steps">
+<h2>Overview of deployment steps<a class="headerlink" href="#overview-of-deployment-steps" title="Permalink to this heading">#</a></h2>
 <p>1. Create and upload a <code class="docutils literal notranslate"><span class="pre">ModelBundle</span></code>. Pass your trained model as well as pre-/post-processing code to
 the Scale Launch Python client, and we’ll create a model bundle based on the code and store it in our Bundle Store.</p>
 <p>2. Create a <code class="docutils literal notranslate"><span class="pre">ModelEndpoint</span></code>. Pass a <code class="docutils literal notranslate"><span class="pre">ModelBundle</span></code> as well as infrastructure settings such as #GPUs to our client.
@@ -280,9 +283,9 @@ This provisions resources on Scale’s cluster dedicated to your <code class="do
 <p>3. Make requests to the <code class="docutils literal notranslate"><span class="pre">ModelEndpoint</span></code>. You can make requests through the Python client, or make HTTP requests directly
 to Scale.</p>
 <p>See the Guides section for more detailed instructions.</p>
-<a class="reference internal image-reference" href="../_images/request_lifecycle.png"><img alt="../_images/request_lifecycle.png" src="../_images/request_lifecycle.png" style="width: 400px;"/></a>
-</div>
-</div>
+<a class="reference internal image-reference" href="../_images/request_lifecycle.png"><img alt="../_images/request_lifecycle.png" src="../_images/request_lifecycle.png" style="width: 400px;" /></a>
+</section>
+</section>
 
         </article>
       </div>
@@ -296,10 +299,10 @@ to Scale.</p>
                 </div>
                 <div class="title">Registering your code</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="index.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -335,7 +338,7 @@ to Scale.</p>
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
@@ -361,6 +364,7 @@ to Scale.</p>
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/scripts/furo.js"></script>
     </body>
