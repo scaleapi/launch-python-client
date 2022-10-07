@@ -562,6 +562,9 @@ class LaunchClient:
             memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must be a positive
                 amount of memory.
 
+            storage: Amount of local ephemeral storage each worker should get, e.g. "4Gi", "512Mi", etc. This must
+                be a positive amount of storage.
+
             gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
 
             min_workers: The minimum number of workers. Must be greater than or equal to 0. This should be determined
