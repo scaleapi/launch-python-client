@@ -545,6 +545,7 @@ class LaunchClient:
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
         update_if_exists: bool = False,
         labels: Optional[Dict[str, str]] = None,
+        billing_tags: Optional[Dict[str, str]] = None,
     ) -> Optional[Endpoint]:
         """
         Creates and registers a model endpoint in Scale Launch. The returned object is an instance of type ``Endpoint``,
@@ -645,6 +646,7 @@ class LaunchClient:
                 endpoint_type=endpoint_type,
                 post_inference_hooks=post_inference_hooks,
                 labels=labels or {},
+                billing_tags=billing_tags,
             )
             if gpus == 0:
                 del payload["gpu_type"]
@@ -685,6 +687,7 @@ class LaunchClient:
         per_worker: Optional[int] = None,
         gpu_type: Optional[str] = None,
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
+        billing_tags: Optional[Dict[str, str]] = None,
     ) -> None:
         """
         Edits an existing model endpoint. Here are the fields that **cannot** be edited on an existing endpoint:
@@ -749,6 +752,7 @@ class LaunchClient:
             max_workers=max_workers,
             per_worker=per_worker,
             post_inference_hooks=post_inference_hooks,
+            billing_tags=billing_tags,
         )
         # Allows changing some authorization settings by changing endpoint_auth_decorator_fn
         payload = self.endpoint_auth_decorator_fn(payload)
