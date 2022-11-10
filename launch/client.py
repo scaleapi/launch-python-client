@@ -545,7 +545,7 @@ class LaunchClient:
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
         update_if_exists: bool = False,
         labels: Optional[Dict[str, str]] = None,
-        billing_tags: Optional[Dict[str, str]] = None,
+        billing_tags: Optional[Dict[str, Any]] = None,
     ) -> Optional[Endpoint]:
         """
         Creates and registers a model endpoint in Scale Launch. The returned object is an instance of type ``Endpoint``,
@@ -687,7 +687,7 @@ class LaunchClient:
         per_worker: Optional[int] = None,
         gpu_type: Optional[str] = None,
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
-        billing_tags: Optional[Dict[str, str]] = None,
+        billing_tags: Optional[Dict[str, Any]] = None,
     ) -> None:
         """
         Edits an existing model endpoint. Here are the fields that **cannot** be edited on an existing endpoint:
