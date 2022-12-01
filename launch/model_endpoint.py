@@ -32,7 +32,7 @@ class ModelEndpoint:
 
     id: Optional[str] = None
     """
-    A globally unique identifier for the bundle.
+    A globally unique identifier for the endpoint.
     """
 
     bundle_name: Optional[str] = None
