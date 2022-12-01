@@ -13,10 +13,18 @@ import yaml
 
 from launch.api_client import ApiClient, Configuration
 from launch.api_client.api.default_api import DefaultApi
-from launch.api_client.model.create_model_bundle_request import CreateModelBundleRequest
-from launch.api_client.model.create_model_endpoint_request import CreateModelEndpointRequest
-from launch.api_client.model.endpoint_predict_request import EndpointPredictRequest
-from launch.api_client.model.update_model_endpoint_request import UpdateModelEndpointRequest
+from launch.api_client.model.create_model_bundle_request import (
+    CreateModelBundleRequest,
+)
+from launch.api_client.model.create_model_endpoint_request import (
+    CreateModelEndpointRequest,
+)
+from launch.api_client.model.endpoint_predict_request import (
+    EndpointPredictRequest,
+)
+from launch.api_client.model.update_model_endpoint_request import (
+    UpdateModelEndpointRequest,
+)
 from launch.connection import Connection
 from launch.constants import (
     BATCH_TASK_INPUT_SIGNED_URL_PATH,
@@ -655,7 +663,10 @@ class LaunchClient:
             logger.info("Creating new endpoint")
             with ApiClient(self.configuration) as api_client:
                 api_instance = DefaultApi(api_client)
-                if not isinstance(model_bundle, ModelBundle) or model_bundle.id is None:
+                if (
+                    not isinstance(model_bundle, ModelBundle)
+                    or model_bundle.id is None
+                ):
                     model_bundle = self.get_model_bundle(model_bundle)
                 create_model_endpoint_request = CreateModelEndpointRequest(
                     cpus=cpus,
@@ -760,7 +771,10 @@ class LaunchClient:
 
             if model_bundle is None:
                 model_bundle_id = None
-            elif isinstance(model_bundle, ModelBundle) and model_bundle.id is not None:
+            elif (
+                isinstance(model_bundle, ModelBundle)
+                and model_bundle.id is not None
+            ):
                 model_bundle_id = model_bundle.id
             else:
                 model_bundle = self.get_model_bundle(model_bundle)
@@ -768,11 +782,16 @@ class LaunchClient:
 
             if model_endpoint is None:
                 model_endpoint_id = None
-            elif isinstance(model_endpoint, ModelEndpoint) and model_endpoint.id is not None:
+            elif (
+                isinstance(model_endpoint, ModelEndpoint)
+                and model_endpoint.id is not None
+            ):
                 model_endpoint_id = model_endpoint.id
             else:
                 endpoint_name = _model_endpoint_to_name(model_endpoint)
-                model_endpoint = self.get_model_endpoint(endpoint_name).model_endpoint
+                model_endpoint = self.get_model_endpoint(
+                    endpoint_name
+                ).model_endpoint
                 model_endpoint_id = model_endpoint.id
 
             update_model_endpoint_request = UpdateModelEndpointRequest(
@@ -988,7 +1007,9 @@ class LaunchClient:
         validate_task_request(url=url, args=args)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            request = EndpointPredictRequest(return_pickled=return_pickled, url=url, args=args)
+            request = EndpointPredictRequest(
+                return_pickled=return_pickled, url=url, args=args
+            )
             resp = api_instance.create_sync_inference_task_v1_sync_tasks_post(
                 model_endpoint_id=endpoint_id,
                 endpoint_predict_request=request,
@@ -1033,7 +1054,9 @@ class LaunchClient:
         endpoint = self.get_model_endpoint(endpoint_name)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            request = EndpointPredictRequest(return_pickled=return_pickled, url=url, args=args)
+            request = EndpointPredictRequest(
+                return_pickled=return_pickled, url=url, args=args
+            )
             resp = api_instance.create_sync_inference_task_v1_sync_tasks_post(
                 model_endpoint_id=endpoint.model_endpoint.id,
                 endpoint_predict_request=request,
