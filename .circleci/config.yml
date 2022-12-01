@@ -46,11 +46,11 @@ jobs:
       - run:
           name: Pylint Lint Check # Uses .pylintrc for configuration
           command: |
-            poetry run pylint launch --ignore=clientlib
+            poetry run pylint launch --ignore=clientlib,api_client
       - run :
           name: MyPy typing check
           command: |
-            poetry run mypy --ignore-missing-imports launch --exclude launch/clientlib
+            poetry run mypy --ignore-missing-imports launch --exclude launch/clientlib --exclude launch/api_client
       - run :
           name: Isort Import Formatting Check # Only validation, without re-formatting
           command: |
