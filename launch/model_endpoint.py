@@ -50,9 +50,9 @@ class ModelEndpoint:
     Resource state for the endpoint.
     """
 
-    worker_state: Optional[dict] = None
+    deployment_state: Optional[dict] = None
     """
-    Worker state for the endpoint.
+    Deployment state for the endpoint.
     """
 
     metadata: Optional[dict] = None
@@ -76,7 +76,7 @@ class ModelEndpoint:
     """
 
     def __repr__(self):
-        return f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', status='{self.status}', resource_settings='{json.dumps(self.resource_settings)}', worker_settings='{json.dumps(self.worker_settings)}', endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
+        return f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', status='{self.status}', resource_state='{json.dumps(self.resource_state)}', deployment_state='{json.dumps(self.deployment_state)}', endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
 
 
 class EndpointRequest:
@@ -238,15 +238,15 @@ class Endpoint:
         self._update_model_endpoint_view()
         return self.model_endpoint.status
 
-    def resource_settings(self) -> Optional[dict]:
-        """Gets the resource settings of the Endpoint."""
+    def resource_state(self) -> Optional[dict]:
+        """Gets the resource state of the Endpoint."""
         self._update_model_endpoint_view()
-        return self.model_endpoint.resource_settings
+        return self.model_endpoint.resource_state
 
-    def worker_settings(self) -> Optional[dict]:
+    def deployment_state(self) -> Optional[dict]:
         """Gets the worker settings of the Endpoint."""
         self._update_model_endpoint_view()
-        return self.model_endpoint.worker_settings
+        return self.model_endpoint.deployment_state
 
 
 class SyncEndpoint(Endpoint):
@@ -267,7 +267,7 @@ class SyncEndpoint(Endpoint):
         return f"SyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def __repr__(self):
-        return f"SyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_settings='{json.dumps(self.model_endpoint.resource_settings)}', worker_settings='{json.dumps(self.model_endpoint.worker_settings)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
+        return f"SyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_state='{json.dumps(self.model_endpoint.resource_state)}', deployment_state='{json.dumps(self.model_endpoint.deployment_state)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
 
     def predict(self, request: EndpointRequest) -> EndpointResponse:
         """
@@ -309,7 +309,7 @@ class AsyncEndpoint(Endpoint):
         return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def __repr__(self):
-        return f"AsyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_settings='{json.dumps(self.model_endpoint.resource_settings)}', worker_settings='{json.dumps(self.model_endpoint.worker_settings)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
+        return f"AsyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_state='{json.dumps(self.model_endpoint.resource_state)}', deployment_state='{json.dumps(self.model_endpoint.deployment_state)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
 
     def predict(self, request: EndpointRequest) -> EndpointResponseFuture:
         """
