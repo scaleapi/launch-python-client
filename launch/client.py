@@ -10,21 +10,22 @@ from zipfile import ZipFile
 import cloudpickle
 import requests
 import yaml
-from deprecation import deprecated
 
+from launch.api_client import ApiClient, Configuration
+from launch.api_client.api.default_api import DefaultApi
+from launch.api_client.model.create_model_bundle_request import CreateModelBundleRequest
+from launch.api_client.model.create_model_endpoint_request import CreateModelEndpointRequest
+from launch.api_client.model.endpoint_predict_request import EndpointPredictRequest
+from launch.api_client.model.update_model_endpoint_request import UpdateModelEndpointRequest
 from launch.connection import Connection
 from launch.constants import (
-    ASYNC_TASK_PATH,
-    ASYNC_TASK_RESULT_PATH,
     BATCH_TASK_INPUT_SIGNED_URL_PATH,
     BATCH_TASK_PATH,
     BATCH_TASK_RESULTS_PATH,
     ENDPOINT_PATH,
     MODEL_BUNDLE_SIGNED_URL_PATH,
     SCALE_LAUNCH_ENDPOINT,
-    SYNC_TASK_PATH,
 )
-from launch.errors import APIError
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.hooks import PostInferenceHooks
 from launch.make_batch_file import (
@@ -39,7 +40,6 @@ from launch.model_endpoint import (
     SyncEndpoint,
 )
 from launch.request_validation import validate_task_request
-from launch.utils import trim_kwargs
 
 DEFAULT_NETWORK_TIMEOUT_SEC = 120
 
@@ -110,6 +110,9 @@ class LaunchClient:
         ] = lambda x: x
         self.bundle_location_fn: Optional[Callable[[], str]] = None
         self.batch_csv_location_fn: Optional[Callable[[], str]] = None
+        self.configuration = Configuration(
+            host=endpoint, discard_unknown_keys=True, api_key=api_key
+        )
 
     def __repr__(self):
         return f"LaunchClient(connection='{self.connection}')"
@@ -322,10 +325,20 @@ class LaunchClient:
         )
         _add_app_config_to_bundle_create_payload(payload, app_config)
 
-        self.connection.post(
-            payload=payload,
-            route="model_bundle",
-        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            create_model_bundle_request = CreateModelBundleRequest(
+                env_params=env_params,
+                location=raw_bundle_url,
+                name=model_bundle_name,
+                requirements=requirements,
+                packaging_type="zip",
+                metadata=bundle_metadata,
+                app_config=payload.get("app_config"),
+            )
+            api_instance.create_model_bundle_v1_model_bundles_post(
+                create_model_bundle_request=create_model_bundle_request,
+            )
         return ModelBundle(model_bundle_name)
 
     def create_model_bundle(  # pylint: disable=too-many-statements
@@ -521,11 +534,21 @@ class LaunchClient:
 
         _add_app_config_to_bundle_create_payload(payload, app_config)
 
-        self.connection.post(
-            payload=payload,
-            route="model_bundle",
-        )  # TODO use return value somehow
-        # resp["data"]["bundle_name"] should equal model_bundle_name
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            create_model_bundle_request = CreateModelBundleRequest(
+                env_params=env_params,
+                location=raw_bundle_url,
+                name=model_bundle_name,
+                requirements=requirements,
+                packaging_type="cloudpickle",
+                metadata=bundle_metadata,
+                app_config=payload.get("app_config"),
+            )
+            api_instance.create_model_bundle_v1_model_bundles_post(
+                create_model_bundle_request=create_model_bundle_request,
+            )
+        # resp["data"]["name"] should equal model_bundle_name
         # TODO check that a model bundle was created and no name collisions happened
         return ModelBundle(model_bundle_name)
 
@@ -630,28 +653,28 @@ class LaunchClient:
             # Presumably, the user knows that the endpoint doesn't already exist, and so we can defer
             # to the server to reject any duplicate creations.
             logger.info("Creating new endpoint")
-            bundle_name = _model_bundle_to_name(model_bundle)
-            payload = dict(
-                endpoint_name=endpoint_name,
-                bundle_name=bundle_name,
-                cpus=cpus,
-                memory=memory,
-                storage=storage,
-                gpus=gpus,
-                gpu_type=gpu_type,
-                min_workers=min_workers,
-                max_workers=max_workers,
-                per_worker=per_worker,
-                endpoint_type=endpoint_type,
-                post_inference_hooks=post_inference_hooks,
-                labels=labels or {},
-            )
-            if gpus == 0:
-                del payload["gpu_type"]
-            elif gpus > 0 and gpu_type is None:
-                raise ValueError("If nonzero gpus, must provide gpu_type")
-            payload = self.endpoint_auth_decorator_fn(payload)
-            resp = self.connection.post(payload, ENDPOINT_PATH)
+            with ApiClient(self.configuration) as api_client:
+                api_instance = DefaultApi(api_client)
+                if not isinstance(model_bundle, ModelBundle) or model_bundle.id is None:
+                    model_bundle = self.get_model_bundle(model_bundle)
+                create_model_endpoint_request = CreateModelEndpointRequest(
+                    cpus=cpus,
+                    endpoint_type=endpoint_type,
+                    gpus=gpus,
+                    gpu_type=gpu_type,
+                    labels=labels or {},
+                    max_workers=max_workers,
+                    memory=memory,
+                    min_workers=min_workers,
+                    model_bundle_id=model_bundle.id,
+                    name=endpoint_name,
+                    per_worker=per_worker,
+                    post_inference_hooks=post_inference_hooks,
+                    storage=storage,
+                )
+                resp = api_instance.create_model_endpoint_v1_model_endpoints_post(
+                    create_model_endpoint_request=create_model_endpoint_request,
+                )
             endpoint_creation_task_id = resp.get(
                 "endpoint_creation_task_id", None
             )  # TODO probably throw on None
@@ -659,7 +682,7 @@ class LaunchClient:
                 "Endpoint creation task id is %s", endpoint_creation_task_id
             )
             model_endpoint = ModelEndpoint(
-                name=endpoint_name, bundle_name=bundle_name
+                name=endpoint_name, bundle_name=model_bundle.name
             )
             if endpoint_type == "async":
                 return AsyncEndpoint(
@@ -728,35 +751,46 @@ class LaunchClient:
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
 
-            endpoint_type: Either ``"sync"`` or ``"async"``.
-
             post_inference_hooks: List of hooks to trigger after inference tasks are served.
 
         """
         logger.info("Editing existing endpoint")
-        bundle_name = (
-            _model_bundle_to_name(model_bundle) if model_bundle else None
-        )
-        endpoint_name = _model_endpoint_to_name(model_endpoint)
-        payload = dict(
-            bundle_name=bundle_name,
-            cpus=cpus,
-            memory=memory,
-            storage=storage,
-            gpus=gpus,
-            gpu_type=gpu_type,
-            min_workers=min_workers,
-            max_workers=max_workers,
-            per_worker=per_worker,
-            post_inference_hooks=post_inference_hooks,
-        )
-        # Allows changing some authorization settings by changing endpoint_auth_decorator_fn
-        payload = self.endpoint_auth_decorator_fn(payload)
-        if gpus == 0 and gpu_type is not None:
-            logger.warning("GPU type setting %s will have no effect", gpu_type)
-            payload["gpu_type"] = None
-        payload = trim_kwargs(payload)
-        resp = self.connection.put(payload, f"{ENDPOINT_PATH}/{endpoint_name}")
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+
+            if model_bundle is None:
+                model_bundle_id = None
+            elif isinstance(model_bundle, ModelBundle) and model_bundle.id is not None:
+                model_bundle_id = model_bundle.id
+            else:
+                model_bundle = self.get_model_bundle(model_bundle)
+                model_bundle_id = model_bundle.id
+
+            if model_endpoint is None:
+                model_endpoint_id = None
+            elif isinstance(model_endpoint, ModelEndpoint) and model_endpoint.id is not None:
+                model_endpoint_id = model_endpoint.id
+            else:
+                endpoint_name = _model_endpoint_to_name(model_endpoint)
+                model_endpoint = self.get_model_endpoint(endpoint_name).model_endpoint
+                model_endpoint_id = model_endpoint.id
+
+            update_model_endpoint_request = UpdateModelEndpointRequest(
+                cpus=cpus,
+                gpus=gpus,
+                gpu_type=gpu_type,
+                max_workers=max_workers,
+                memory=memory,
+                min_workers=min_workers,
+                model_bundle_id=model_bundle_id,
+                per_worker=per_worker,
+                post_inference_hooks=post_inference_hooks,
+                storage=storage,
+            )
+            resp = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(
+                model_endpoint_id=model_endpoint_id,
+                update_model_endpoint_request=update_model_endpoint_request,
+            )
         endpoint_creation_task_id = resp.get(
             "endpoint_creation_task_id", None
         )  # Returned from server as "creation"
@@ -771,16 +805,14 @@ class LaunchClient:
         Parameters:
             endpoint_name: The name of the endpoint to retrieve.
         """
-        try:
-            resp = self.connection.get(
-                os.path.join(ENDPOINT_PATH, endpoint_name)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            resp = api_instance.list_model_endpoints_v1_model_endpoints_get(
+                name=endpoint_name,
             )
-        except APIError as e:
-            if e.status_code != 404:
-                logger.exception(
-                    "Got an error when retrieving endpoint %s", endpoint_name
-                )
-            return None
+            if len(resp.model_endpoints) == 0:
+                return None
+            resp = resp.model_endpoints[0]
 
         if resp["endpoint_type"] == "async":
             return AsyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
@@ -798,9 +830,11 @@ class LaunchClient:
         Returns:
             A list of ModelBundle objects
         """
-        resp = self.connection.get("model_bundle")
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            resp = api_instance.list_model_bundles_v1_model_bundles_get()
         model_bundles = [
-            ModelBundle.from_dict(item) for item in resp["bundles"]  # type: ignore
+            ModelBundle.from_dict(item) for item in resp.model_bundles  # type: ignore
         ]
         return model_bundles
 
@@ -817,11 +851,15 @@ class LaunchClient:
             A ``ModelBundle`` object
         """
         bundle_name = _model_bundle_to_name(model_bundle)
-        resp = self.connection.get(f"model_bundle/{bundle_name}")
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            resp = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(
+                model_name=bundle_name
+            )
         assert (
-            len(resp["bundles"]) == 1
+            len(resp.model_bundles) == 1
         ), f"Bundle with name `{bundle_name}` not found"
-        return ModelBundle.from_dict(resp["bundles"][0])  # type: ignore
+        return ModelBundle.from_dict(resp.model_bundles[0])  # type: ignore
 
     def clone_model_bundle_with_changes(
         self,
@@ -858,13 +896,15 @@ class LaunchClient:
         Returns:
             A list of ``ModelEndpoint`` objects.
         """
-        resp = self.connection.get(ENDPOINT_PATH)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            resp = api_instance.list_model_endpoints_v1_model_endpoints_get()
         async_endpoints: List[Endpoint] = [
             AsyncEndpoint(
                 model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
                 client=self,
             )
-            for endpoint in resp["endpoints"]
+            for endpoint in resp.model_endpoints
             if endpoint["endpoint_type"] == "async"
         ]
         sync_endpoints: List[Endpoint] = [
@@ -876,19 +916,6 @@ class LaunchClient:
         ]
         return async_endpoints + sync_endpoints
 
-    def delete_model_bundle(self, model_bundle: Union[ModelBundle, str]):
-        """
-        Deletes the model bundle.
-
-        Parameters:
-            model_bundle: A ``ModelBundle`` object or the name of a model bundle.
-
-        """
-        bundle_name = _model_bundle_to_name(model_bundle)
-        route = f"model_bundle/{bundle_name}"
-        resp = self.connection.delete(route)
-        return resp["deleted"]
-
     def delete_model_endpoint(self, model_endpoint: Union[ModelEndpoint, str]):
         """
         Deletes a model endpoint.
@@ -897,9 +924,13 @@ class LaunchClient:
             model_endpoint: A ``ModelEndpoint`` object.
         """
         endpoint_name = _model_endpoint_to_name(model_endpoint)
-        route = f"{ENDPOINT_PATH}/{endpoint_name}"
-        resp = self.connection.delete(route)
-        return resp["deleted"]
+        endpoint = self.get_model_endpoint(endpoint_name)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            resp = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(
+                model_endpoint_id=endpoint.model_endpoint.id,
+            )
+        return resp.deleted
 
     def read_endpoint_creation_logs(
         self, model_endpoint: Union[ModelEndpoint, str]
@@ -955,61 +986,14 @@ class LaunchClient:
             and the value is the output of the endpoint's ``predict`` function, serialized as json.
         """
         validate_task_request(url=url, args=args)
-        payload: Dict[str, Any] = dict(return_pickled=return_pickled)
-        if url is not None:
-            payload["url"] = url
-        if args is not None:
-            payload["args"] = args
-        resp = self.connection.post(
-            payload=payload,
-            route=f"{SYNC_TASK_PATH}/{endpoint_id}",
-        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            request = EndpointPredictRequest(return_pickled=return_pickled, url=url, args=args)
+            resp = api_instance.create_sync_inference_task_v1_sync_tasks_post(
+                model_endpoint_id=endpoint_id,
+                endpoint_predict_request=request,
+            )
         return resp
-
-    @deprecated(details="Use AsyncEndpoint.predict() instead")
-    def async_request(
-        self,
-        endpoint_name: str,
-        url: Optional[str] = None,
-        args: Optional[Dict] = None,
-        return_pickled: bool = True,
-    ) -> str:
-        """
-        Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
-        Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key that can be used to retrieve
-        the result of inference at a later time.
-
-        Parameters:
-            endpoint_name: The name of the endpoint to make the request to
-
-            url: A url that points to a file containing model input.
-                Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
-                **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
-                to the predict function. If you instead want to pass the url itself as an input to the predict function,
-                see ``args``.
-
-                Exactly one of ``url`` and ``args`` must be specified.
-
-            args: A dictionary of arguments to the ModelBundle's predict function.
-                Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``, etc.
-                If your predict function has signature ``predict(foo, bar)``, then args should be a dictionary with
-                keys ``"foo"`` and ``"bar"``.
-
-                Exactly one of ``url`` and ``args`` must be specified.
-
-            return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
-
-        Returns:
-            An id/key that can be used to fetch inference results at a later time.
-            Example output:
-                `abcabcab-cabc-abca-0123456789ab`
-        """
-        return self._async_request(
-            endpoint_name=endpoint_name,
-            url=url,
-            args=args,
-            return_pickled=return_pickled,
-        )
 
     def _async_request(
         self,
@@ -1046,55 +1030,14 @@ class LaunchClient:
                 `abcabcab-cabc-abca-0123456789ab`
         """
         validate_task_request(url=url, args=args)
-        payload: Dict[str, Any] = dict(return_pickled=return_pickled)
-        if url is not None:
-            payload["url"] = url
-        if args is not None:
-            payload["args"] = args
-
-        resp = self.connection.post(
-            payload=payload,
-            route=f"{ASYNC_TASK_PATH}/{endpoint_name}",
-        )
-        return resp["task_id"]
-
-    @deprecated(
-        details="Use EndpointResponseFuture.get(), where EndpointResponseFuture "
-        "is returned by AsyncEndpoint.predict()"
-    )
-    def get_async_response(self, async_task_id: str) -> Dict[str, Any]:
-        """
-        Not recommended to use this, instead we recommend to use functions provided by ``AsyncEndpoint``.
-        Gets inference results from a previously created task.
-
-        Parameters:
-            async_task_id: The id/key returned from a previous invocation of ``async_request``.
-
-        Returns:
-            A dictionary that contains task status and optionally a result url or result if the task has completed.
-            Result url or result will be returned if the task has succeeded. Will return a result url iff
-            ``return_pickled`` was set to ``True`` on task creation.
-
-            The dictionary's keys are as follows:
-
-            - ``state``: ``'PENDING'`` or ``'SUCCESS'`` or ``'FAILURE'``
-            - ``result_url``: a url pointing to inference results. This url is accessible for 12 hours after the request has been made.
-            - ``result``: the value returned by the endpoint's `predict` function, serialized as json
-
-            Example output:
-
-            .. code-block:: json
-
-                {
-                    'state': 'SUCCESS',
-                    'result_url': 'https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy'
-                }
-
-        """
-        # TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
-        resp = self.connection.get(
-            route=f"{ASYNC_TASK_RESULT_PATH}/{async_task_id}"
-        )
+        endpoint = self.get_model_endpoint(endpoint_name)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            request = EndpointPredictRequest(return_pickled=return_pickled, url=url, args=args)
+            resp = api_instance.create_sync_inference_task_v1_sync_tasks_post(
+                model_endpoint_id=endpoint.model_endpoint.id,
+                endpoint_predict_request=request,
+            )
         return resp
 
     def _get_async_endpoint_response(
@@ -1130,9 +1073,11 @@ class LaunchClient:
 
         """
         # TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
-        resp = self.connection.get(
-            route=f"{ENDPOINT_PATH}/{endpoint_name}/{ASYNC_TASK_PATH}/{async_task_id}"
-        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            resp = api_instance.get_async_inference_task_v1_async_tasks_task_id_get(
+                task_id=async_task_id
+            )
         return resp
 
     def batch_async_request(

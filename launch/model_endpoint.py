@@ -30,6 +30,11 @@ class ModelEndpoint:
     The name of the endpoint. Must be unique across all endpoints owned by the user.
     """
 
+    id: Optional[str] = None
+    """
+    A globally unique identifier for the bundle.
+    """
+
     bundle_name: Optional[str] = None
     """
     The name of the bundle for the endpoint. The owner of the bundle must be the same as the owner for the endpoint.
@@ -40,14 +45,14 @@ class ModelEndpoint:
     The status of the endpoint.
     """
 
-    resource_settings: Optional[dict] = None
+    resource_state: Optional[dict] = None
     """
-    Resource settings for the endpoint.
+    Resource state for the endpoint.
     """
 
-    worker_settings: Optional[dict] = None
+    worker_state: Optional[dict] = None
     """
-    Worker settings for the endpoint.
+    Worker state for the endpoint.
     """
 
     metadata: Optional[dict] = None
