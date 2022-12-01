@@ -789,10 +789,8 @@ class LaunchClient:
                 model_endpoint_id = model_endpoint.id
             else:
                 endpoint_name = _model_endpoint_to_name(model_endpoint)
-                model_endpoint = self.get_model_endpoint(
-                    endpoint_name
-                ).model_endpoint
-                model_endpoint_id = model_endpoint.id
+                model_endpoint_full = self.get_model_endpoint(endpoint_name)
+                model_endpoint_id = model_endpoint_full.model_endpoint.id  # type: ignore
 
             update_model_endpoint_request = UpdateModelEndpointRequest(
                 cpus=cpus,
@@ -946,8 +944,9 @@ class LaunchClient:
         endpoint = self.get_model_endpoint(endpoint_name)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
+            model_endpoint_id = endpoint.model_endpoint.id # type: ignore
             resp = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(
-                model_endpoint_id=endpoint.model_endpoint.id,
+                model_endpoint_id=model_endpoint_id,
             )
         return resp.deleted
 
@@ -1057,8 +1056,9 @@ class LaunchClient:
             request = EndpointPredictRequest(
                 return_pickled=return_pickled, url=url, args=args
             )
+            model_endpoint_id = endpoint.model_endpoint.id # type: ignore
             resp = api_instance.create_sync_inference_task_v1_sync_tasks_post(
-                model_endpoint_id=endpoint.model_endpoint.id,
+                model_endpoint_id=model_endpoint_id,
                 endpoint_predict_request=request,
             )
         return resp
