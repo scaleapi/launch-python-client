@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Flake8 Lint Check # Uses setup.cfg for configuration
           command: |
-            poetry run flake8 launch --count --statistics --exclude launch/clientlib
+            poetry run flake8 launch --count --statistics --exclude launch/clientlib,launch/api_client
       - run:
           name: Pylint Lint Check # Uses .pylintrc for configuration
           command: |
