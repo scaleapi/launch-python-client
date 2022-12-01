@@ -944,7 +944,7 @@ class LaunchClient:
         endpoint = self.get_model_endpoint(endpoint_name)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            model_endpoint_id = endpoint.model_endpoint.id # type: ignore
+            model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
             resp = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(
                 model_endpoint_id=model_endpoint_id,
             )
@@ -1056,7 +1056,7 @@ class LaunchClient:
             request = EndpointPredictRequest(
                 return_pickled=return_pickled, url=url, args=args
             )
-            model_endpoint_id = endpoint.model_endpoint.id # type: ignore
+            model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
             resp = api_instance.create_sync_inference_task_v1_sync_tasks_post(
                 model_endpoint_id=model_endpoint_id,
                 endpoint_predict_request=request,
