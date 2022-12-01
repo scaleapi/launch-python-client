@@ -11,11 +11,13 @@
 import re  # noqa: F401
 import sys  # noqa: F401
 
+from launch.api_client.exceptions import ApiAttributeError
 from launch.api_client.model_utils import (  # noqa: F401
     ApiTypeError,
     ModelComposed,
     ModelNormal,
     ModelSimple,
+    OpenApiModel,
     cached_property,
     change_keys_js_to_python,
     convert_js_args_to_python_args,
@@ -24,9 +26,7 @@ from launch.api_client.model_utils import (  # noqa: F401
     file_type,
     none_type,
     validate_get_composed_info,
-    OpenApiModel,
 )
-from launch.api_client.exceptions import ApiAttributeError
 
 
 class TaskStatus(ModelSimple):

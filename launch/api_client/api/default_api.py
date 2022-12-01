@@ -11,16 +11,8 @@
 import re  # noqa: F401
 import sys  # noqa: F401
 
-from launch.api_client.api_client import ApiClient, Endpoint as _Endpoint
-from launch.api_client.model_utils import (  # noqa: F401
-    check_allowed_values,
-    check_validations,
-    date,
-    datetime,
-    file_type,
-    none_type,
-    validate_and_convert_types,
-)
+from launch.api_client.api_client import ApiClient
+from launch.api_client.api_client import Endpoint as _Endpoint
 from launch.api_client.model.create_async_task_response import (
     CreateAsyncTaskResponse,
 )
@@ -68,6 +60,15 @@ from launch.api_client.model.update_model_endpoint_request import (
 )
 from launch.api_client.model.update_model_endpoint_response import (
     UpdateModelEndpointResponse,
+)
+from launch.api_client.model_utils import (  # noqa: F401
+    check_allowed_values,
+    check_validations,
+    date,
+    datetime,
+    file_type,
+    none_type,
+    validate_and_convert_types,
 )
 
 
