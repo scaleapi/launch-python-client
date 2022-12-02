@@ -86,7 +86,7 @@ class DefaultApi(object):
         self.create_async_inference_task_v1_async_tasks_post_endpoint = _Endpoint(
             settings={
                 "response_type": (CreateAsyncTaskResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/async-tasks",
                 "operation_id": "create_async_inference_task_v1_async_tasks_post",
                 "http_method": "POST",
@@ -134,7 +134,7 @@ class DefaultApi(object):
         self.create_model_bundle_v1_model_bundles_post_endpoint = _Endpoint(
             settings={
                 "response_type": (CreateModelBundleResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/model-bundles",
                 "operation_id": "create_model_bundle_v1_model_bundles_post",
                 "http_method": "POST",
@@ -177,7 +177,7 @@ class DefaultApi(object):
         self.create_model_endpoint_v1_model_endpoints_post_endpoint = _Endpoint(
             settings={
                 "response_type": (CreateModelEndpointResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/model-endpoints",
                 "operation_id": "create_model_endpoint_v1_model_endpoints_post",
                 "http_method": "POST",
@@ -222,7 +222,7 @@ class DefaultApi(object):
         self.create_sync_inference_task_v1_sync_tasks_post_endpoint = _Endpoint(
             settings={
                 "response_type": (SyncEndpointPredictResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/sync-tasks",
                 "operation_id": "create_sync_inference_task_v1_sync_tasks_post",
                 "http_method": "POST",
@@ -270,7 +270,7 @@ class DefaultApi(object):
         self.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete_endpoint = _Endpoint(
             settings={
                 "response_type": (DeleteModelEndpointResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/model-endpoints/{model_endpoint_id}",
                 "operation_id": "delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete",
                 "http_method": "DELETE",
@@ -314,7 +314,7 @@ class DefaultApi(object):
         self.get_async_inference_task_v1_async_tasks_task_id_get_endpoint = _Endpoint(
             settings={
                 "response_type": (GetAsyncTaskResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/async-tasks/{task_id}",
                 "operation_id": "get_async_inference_task_v1_async_tasks_task_id_get",
                 "http_method": "GET",
@@ -358,7 +358,7 @@ class DefaultApi(object):
         self.get_latest_model_bundle_v1_model_bundles_latest_get_endpoint = _Endpoint(
             settings={
                 "response_type": (ModelBundleResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/model-bundles/latest",
                 "operation_id": "get_latest_model_bundle_v1_model_bundles_latest_get",
                 "http_method": "GET",
@@ -402,7 +402,7 @@ class DefaultApi(object):
         self.get_model_bundle_v1_model_bundles_model_bundle_id_get_endpoint = _Endpoint(
             settings={
                 "response_type": (ModelBundleResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/model-bundles/{model_bundle_id}",
                 "operation_id": "get_model_bundle_v1_model_bundles_model_bundle_id_get",
                 "http_method": "GET",
@@ -446,7 +446,7 @@ class DefaultApi(object):
         self.get_model_endpoint_v1_model_endpoints_model_endpoint_id_get_endpoint = _Endpoint(
             settings={
                 "response_type": (GetModelEndpointResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/model-endpoints/{model_endpoint_id}",
                 "operation_id": "get_model_endpoint_v1_model_endpoints_model_endpoint_id_get",
                 "http_method": "GET",
@@ -610,7 +610,7 @@ class DefaultApi(object):
         self.list_model_bundles_v1_model_bundles_get_endpoint = _Endpoint(
             settings={
                 "response_type": (ListModelBundlesResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/model-bundles",
                 "operation_id": "list_model_bundles_v1_model_bundles_get",
                 "http_method": "GET",
@@ -656,7 +656,7 @@ class DefaultApi(object):
         self.list_model_endpoints_v1_model_endpoints_get_endpoint = _Endpoint(
             settings={
                 "response_type": (ListModelEndpointsResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/model-endpoints",
                 "operation_id": "list_model_endpoints_v1_model_endpoints_get",
                 "http_method": "GET",
@@ -702,7 +702,7 @@ class DefaultApi(object):
         self.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put_endpoint = _Endpoint(
             settings={
                 "response_type": (UpdateModelEndpointResponse,),
-                "auth": ["APIKeyHeader"],
+                "auth": ["HTTPBasic"],
                 "endpoint_path": "/model-endpoints/{model_endpoint_id}",
                 "operation_id": "update_model_endpoint_v1_model_endpoints_model_endpoint_id_put",
                 "http_method": "PUT",

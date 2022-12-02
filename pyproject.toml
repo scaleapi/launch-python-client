@@ -21,12 +21,13 @@ exclude = '''
 
 [tool.mypy]
 exclude = [
-    '^launch/clientlib/'
+    '^launch/clientlib/',
+    '^launch/api_client/',
 ]
 
 [tool.poetry]
 name = "scale-launch"
-version = "0.3.3"
+version = "1.0.0"
 description = "The official Python client library for Launch, the Data Platform for AI"
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"

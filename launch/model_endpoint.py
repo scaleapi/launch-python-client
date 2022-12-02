@@ -1,6 +1,5 @@
 import concurrent.futures
 import json
-import os
 import time
 import uuid
 from collections import Counter
@@ -10,7 +9,8 @@ from typing import Dict, Optional, Sequence
 from dataclasses_json import Undefined, dataclass_json
 from deprecation import deprecated
 
-from launch.constants import ENDPOINT_PATH
+from launch.api_client import ApiClient
+from launch.api_client.api.default_api import DefaultApi
 from launch.request_validation import validate_task_request
 
 TASK_PENDING_STATE = "PENDING"
@@ -228,10 +228,17 @@ class Endpoint:
         self.client = client
 
     def _update_model_endpoint_view(self):
-        resp = self.client.connection.get(
-            os.path.join(ENDPOINT_PATH, self.model_endpoint.name)
-        )
-        self.model_endpoint = ModelEndpoint.from_dict(resp)
+        with ApiClient(self.client.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            resp = api_instance.list_model_endpoints_v1_model_endpoints_get(
+                name=self.model_endpoint.name,
+            )
+            if len(resp.model_endpoints) == 0:
+                raise ValueError(
+                    f"Could not update model endpoint view for endpoint {self.model_endpoint.name}"
+                )
+            resp = resp.model_endpoints[0]
+        self.model_endpoint = ModelEndpoint.from_dict(resp.to_dict())
 
     def status(self) -> Optional[str]:
         """Gets the status of the Endpoint."""

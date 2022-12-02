@@ -22,6 +22,13 @@ from launch.api_client.model.create_model_endpoint_request import (
 from launch.api_client.model.endpoint_predict_request import (
     EndpointPredictRequest,
 )
+from launch.api_client.model.model_bundle_environment_params import (
+    ModelBundleEnvironmentParams,
+)
+from launch.api_client.model.model_bundle_framework import ModelBundleFramework
+from launch.api_client.model.model_bundle_packaging_type import (
+    ModelBundlePackagingType,
+)
 from launch.api_client.model.update_model_endpoint_request import (
     UpdateModelEndpointRequest,
 )
@@ -109,7 +116,9 @@ class LaunchClient:
             self_hosted: True iff you are connecting to a self-hosted Scale Launch
         """
         endpoint = endpoint or SCALE_LAUNCH_ENDPOINT
-        self.connection = Connection(api_key, endpoint)
+        self.connection = Connection(
+            api_key, "http://localhost:3000/v1/hosted_inference"
+        )
         self.self_hosted = self_hosted
         self.upload_bundle_fn: Optional[Callable[[str, str], None]] = None
         self.upload_batch_csv_fn: Optional[Callable[[str, str], None]] = None
@@ -119,7 +128,10 @@ class LaunchClient:
         self.bundle_location_fn: Optional[Callable[[], str]] = None
         self.batch_csv_location_fn: Optional[Callable[[], str]] = None
         self.configuration = Configuration(
-            host=endpoint, discard_unknown_keys=True, api_key=api_key
+            host="http://localhost:3000/v1/launch",
+            discard_unknown_keys=True,
+            username=api_key,
+            password="",
         )
 
     def __repr__(self):
@@ -335,14 +347,18 @@ class LaunchClient:
 
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
+            framework = ModelBundleFramework(env_params["framework_type"])
+            env_params_copy = env_params.copy()
+            env_params_copy["framework_type"] = framework  # type: ignore
+            env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)
             create_model_bundle_request = CreateModelBundleRequest(
-                env_params=env_params,
+                env_params=env_params_obj,
                 location=raw_bundle_url,
                 name=model_bundle_name,
                 requirements=requirements,
-                packaging_type="zip",
+                packaging_type=ModelBundlePackagingType("zip"),
                 metadata=bundle_metadata,
-                app_config=payload.get("app_config"),
+                app_config=payload.get("app_config") or {},
             )
             api_instance.create_model_bundle_v1_model_bundles_post(
                 create_model_bundle_request=create_model_bundle_request,
@@ -541,17 +557,21 @@ class LaunchClient:
         )
 
         _add_app_config_to_bundle_create_payload(payload, app_config)
+        framework = ModelBundleFramework(env_params["framework_type"])
+        env_params_copy = env_params.copy()
+        env_params_copy["framework_type"] = framework  # type: ignore
+        env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)
 
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             create_model_bundle_request = CreateModelBundleRequest(
-                env_params=env_params,
+                env_params=env_params_obj,
                 location=raw_bundle_url,
                 name=model_bundle_name,
                 requirements=requirements,
-                packaging_type="cloudpickle",
+                packaging_type=ModelBundlePackagingType("cloudpickle"),
                 metadata=bundle_metadata,
-                app_config=payload.get("app_config"),
+                app_config=payload.get("app_config") or {},
             )
             api_instance.create_model_bundle_v1_model_bundles_post(
                 create_model_bundle_request=create_model_bundle_request,
@@ -676,12 +696,14 @@ class LaunchClient:
                     labels=labels or {},
                     max_workers=max_workers,
                     memory=memory,
+                    metadata={},
                     min_workers=min_workers,
                     model_bundle_id=model_bundle.id,
                     name=endpoint_name,
                     per_worker=per_worker,
                     post_inference_hooks=post_inference_hooks,
                     storage=storage,
+                    _check_type=False,
                 )
                 resp = api_instance.create_model_endpoint_v1_model_endpoints_post(
                     create_model_endpoint_request=create_model_endpoint_request,
@@ -831,10 +853,10 @@ class LaunchClient:
                 return None
             resp = resp.model_endpoints[0]
 
-        if resp["endpoint_type"] == "async":
-            return AsyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
-        elif resp["endpoint_type"] == "sync":
-            return SyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
+        if resp["endpoint_type"].value == "async":
+            return AsyncEndpoint(ModelEndpoint.from_dict(resp.to_dict()), client=self)  # type: ignore
+        elif resp["endpoint_type"].value == "sync":
+            return SyncEndpoint(ModelEndpoint.from_dict(resp.to_dict()), client=self)  # type: ignore
         else:
             raise ValueError(
                 "Endpoint should be one of the types 'sync' or 'async'"
@@ -851,7 +873,7 @@ class LaunchClient:
             api_instance = DefaultApi(api_client)
             resp = api_instance.list_model_bundles_v1_model_bundles_get()
         model_bundles = [
-            ModelBundle.from_dict(item) for item in resp.model_bundles  # type: ignore
+            ModelBundle.from_dict(item.to_dict()) for item in resp.model_bundles  # type: ignore
         ]
         return model_bundles
 
@@ -876,7 +898,7 @@ class LaunchClient:
         assert (
             len(resp.model_bundles) == 1
         ), f"Bundle with name `{bundle_name}` not found"
-        return ModelBundle.from_dict(resp.model_bundles[0])  # type: ignore
+        return ModelBundle.from_dict(resp.model_bundles[0].to_dict())  # type: ignore
 
     def clone_model_bundle_with_changes(
         self,
@@ -904,7 +926,7 @@ class LaunchClient:
         resp = self.connection.post(
             payload=payload, route="model_bundle/clone_with_changes"
         )
-        return ModelBundle.from_dict(resp)  # type: ignore
+        return ModelBundle.from_dict(resp.to_dict())  # type: ignore
 
     def list_model_endpoints(self) -> List[Endpoint]:
         """
@@ -918,18 +940,19 @@ class LaunchClient:
             resp = api_instance.list_model_endpoints_v1_model_endpoints_get()
         async_endpoints: List[Endpoint] = [
             AsyncEndpoint(
-                model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
+                model_endpoint=ModelEndpoint.from_dict(endpoint.to_dict()),  # type: ignore
                 client=self,
             )
             for endpoint in resp.model_endpoints
-            if endpoint["endpoint_type"] == "async"
+            if endpoint["endpoint_type"].value == "async"
         ]
         sync_endpoints: List[Endpoint] = [
             SyncEndpoint(
-                model_endpoint=ModelEndpoint.from_dict(endpoint), client=self  # type: ignore
+                model_endpoint=ModelEndpoint.from_dict(endpoint.to_dict()),  # type: ignore
+                client=self,
             )
-            for endpoint in resp["endpoints"]
-            if endpoint["endpoint_type"] == "sync"
+            for endpoint in resp["model_endpoints"]
+            if endpoint["endpoint_type"].value == "sync"
         ]
         return async_endpoints + sync_endpoints
 
