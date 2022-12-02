@@ -115,10 +115,7 @@ class LaunchClient:
             endpoint: The Scale Launch Endpoint (this should not need to be changed)
             self_hosted: True iff you are connecting to a self-hosted Scale Launch
         """
-        endpoint = endpoint or SCALE_LAUNCH_ENDPOINT
-        self.connection = Connection(
-            api_key, "http://localhost:3000/v1/hosted_inference"
-        )
+        self.connection = Connection(api_key, endpoint or SCALE_LAUNCH_ENDPOINT)
         self.self_hosted = self_hosted
         self.upload_bundle_fn: Optional[Callable[[str, str], None]] = None
         self.upload_batch_csv_fn: Optional[Callable[[str, str], None]] = None
@@ -128,7 +125,7 @@ class LaunchClient:
         self.bundle_location_fn: Optional[Callable[[], str]] = None
         self.batch_csv_location_fn: Optional[Callable[[], str]] = None
         self.configuration = Configuration(
-            host="http://localhost:3000/v1/launch",
+            host=endpoint,
             discard_unknown_keys=True,
             username=api_key,
             password="",
