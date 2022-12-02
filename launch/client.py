@@ -895,10 +895,7 @@ class LaunchClient:
             resp = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(
                 model_name=bundle_name
             )
-        assert (
-            len(resp.model_bundles) == 1
-        ), f"Bundle with name `{bundle_name}` not found"
-        return ModelBundle.from_dict(resp.model_bundles[0].to_dict())  # type: ignore
+        return ModelBundle.from_dict(resp.to_dict())  # type: ignore
 
     def clone_model_bundle_with_changes(
         self,
