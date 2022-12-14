@@ -39,7 +39,7 @@ from launch.model_endpoint import (
     SyncEndpoint,
 )
 from launch.request_validation import validate_task_request
-from launch.utils import trim_kwargs
+from launch.utils import infer_env_params, trim_kwargs
 
 DEFAULT_NETWORK_TIMEOUT_SEC = 120
 
@@ -198,9 +198,10 @@ class LaunchClient:
         model_bundle_name: str,
         base_paths: List[str],
         requirements_path: str,
-        env_params: Dict[str, str],
         load_predict_fn_module_path: str,
         load_model_fn_module_path: str,
+        env_params: Optional[Dict[str, str]],
+        env_selector: Optional[str],
         app_config: Optional[Union[Dict[str, Any], str]] = None,
     ) -> ModelBundle:
         """
@@ -275,6 +276,9 @@ class LaunchClient:
         with open(requirements_path, "r", encoding="utf-8") as req_f:
             requirements = req_f.read().splitlines()
 
+        if env_params is None:
+            env_params = infer_env_params(env_selector)
+
         tmpdir = tempfile.mkdtemp()
         try:
             zip_path = os.path.join(tmpdir, "bundle.zip")
@@ -331,7 +335,8 @@ class LaunchClient:
     def create_model_bundle(  # pylint: disable=too-many-statements
         self,
         model_bundle_name: str,
-        env_params: Dict[str, str],
+        env_params: Optional[Dict[str, str]],
+        env_selector: Optional[str],
         *,
         load_predict_fn: Optional[
             Callable[[LaunchModel_T], Callable[[Any], Any]]
@@ -434,6 +439,9 @@ class LaunchClient:
                 "A model bundle consists of exactly {predict_fn_or_cls}, {load_predict_fn + model}, or {load_predict_fn + load_model_fn}."
             )
         # TODO should we try to catch when people intentionally pass both model and load_model_fn as None?
+
+        if env_params is None:
+            env_params = infer_env_params(env_selector)
 
         if requirements is None:
             # TODO explore: does globals() actually work as expected? Should we use globals_copy instead?
