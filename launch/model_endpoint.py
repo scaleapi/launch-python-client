@@ -336,12 +336,13 @@ class AsyncEndpoint(Endpoint):
                f: EndpointResponseFuture = my_endpoint.predict(EndpointRequest(...))
                result = f.get()  # blocks on completion
         """
-        async_task_id = self.client._async_request(  # pylint: disable=W0212
+        response = self.client._async_request(  # pylint: disable=W0212
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
             return_pickled=request.return_pickled,
         )
+        async_task_id = response.task_id
         return EndpointResponseFuture(
             client=self.client,
             endpoint_name=self.model_endpoint.name,
@@ -471,7 +472,7 @@ class AsyncEndpointBatchResponse:
             if raw_response:
                 response_object = EndpointResponse(
                     client=self.client,
-                    status=raw_response["status"],
+                    status=raw_response["status"].value,
                     result_url=raw_response.get("result_url", None),
                     result=raw_response.get("result", None),
                     traceback=raw_response.get("traceback", None),
