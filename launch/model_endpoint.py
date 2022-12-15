@@ -195,28 +195,29 @@ class EndpointResponseFuture:
             async_response = self.client._get_async_endpoint_response(  # pylint: disable=W0212
                 self.endpoint_name, self.async_task_id
             )
-            if async_response["state"] == "PENDING":
+            status = async_response["status"].value
+            if status == "PENDING":
                 time.sleep(2)
             else:
-                if async_response["state"] == "SUCCESS":
+                if status == "SUCCESS":
                     return EndpointResponse(
                         client=self.client,
-                        status=async_response["state"],
+                        status=status,
                         result_url=async_response.get("result_url", None),
                         result=async_response.get("result", None),
                         traceback=None,
                     )
-                elif async_response["state"] == "FAILURE":
+                elif status == "FAILURE":
                     return EndpointResponse(
                         client=self.client,
-                        status=async_response["state"],
+                        status=status,
                         result_url=None,
                         result=None,
                         traceback=async_response.get("traceback", None),
                     )
                 else:
                     raise ValueError(
-                        f"Unrecognized state: {async_response['state']}"
+                        f"Unrecognized status: {async_response['status']}"
                     )
 
 
@@ -291,7 +292,7 @@ class SyncEndpoint(Endpoint):
         )
         return EndpointResponse(
             client=self.client,
-            status=raw_response.get("state"),
+            status=raw_response.get("status"),
             result_url=raw_response.get("result_url", None),
             result=raw_response.get("result", None),
             traceback=raw_response.get("traceback", None),
@@ -450,7 +451,7 @@ class AsyncEndpointBatchResponse:
             return (
                 inner_url,
                 inner_task_id,
-                inner_response.get("state", None),
+                inner_response.get("status", None),
                 inner_response,
             )
 
@@ -464,13 +465,13 @@ class AsyncEndpointBatchResponse:
         for response in responses:
             if response is None:
                 continue
-            url, _, state, raw_response = response
-            if state:
-                self.statuses[url] = state
+            url, _, status, raw_response = response
+            if status:
+                self.statuses[url] = status
             if raw_response:
                 response_object = EndpointResponse(
                     client=self.client,
-                    status=raw_response["state"],
+                    status=raw_response["status"],
                     result_url=raw_response.get("result_url", None),
                     result=raw_response.get("result", None),
                     traceback=raw_response.get("traceback", None),
@@ -479,10 +480,10 @@ class AsyncEndpointBatchResponse:
 
     def is_done(self, poll=True) -> bool:
         """
-        Checks the client local state to see if all requests are done.
+        Checks the client local status to see if all requests are done.
 
         Parameters:
-            poll: If ``True``, then this will first check the state for a subset
+            poll: If ``True``, then this will first check the status for a subset
             of the remaining incomplete tasks on the Launch server.
         """
         # TODO: make some request to some endpoint

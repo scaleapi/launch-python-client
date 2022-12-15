@@ -115,7 +115,9 @@ class LaunchClient:
             endpoint: The Scale Launch Endpoint (this should not need to be changed)
             self_hosted: True iff you are connecting to a self-hosted Scale Launch
         """
-        self.connection = Connection(api_key, endpoint or SCALE_LAUNCH_ENDPOINT)
+        self.connection = Connection(
+            api_key, endpoint or SCALE_LAUNCH_ENDPOINT
+        )
         self.self_hosted = self_hosted
         self.upload_bundle_fn: Optional[Callable[[str, str], None]] = None
         self.upload_batch_csv_fn: Optional[Callable[[str, str], None]] = None
@@ -125,7 +127,7 @@ class LaunchClient:
         self.bundle_location_fn: Optional[Callable[[], str]] = None
         self.batch_csv_location_fn: Optional[Callable[[], str]] = None
         self.configuration = Configuration(
-            host=endpoint,
+            host=endpoint,  # host="host.docker.internal:3000/v1/launch",
             discard_unknown_keys=True,
             username=api_key,
             password="",
@@ -851,9 +853,13 @@ class LaunchClient:
             resp = resp.model_endpoints[0]
 
         if resp["endpoint_type"].value == "async":
-            return AsyncEndpoint(ModelEndpoint.from_dict(resp.to_dict()), client=self)  # type: ignore
+            return AsyncEndpoint(
+                ModelEndpoint.from_dict(resp.to_dict()), client=self  # type: ignore
+            )
         elif resp["endpoint_type"].value == "sync":
-            return SyncEndpoint(ModelEndpoint.from_dict(resp.to_dict()), client=self)  # type: ignore
+            return SyncEndpoint(
+                ModelEndpoint.from_dict(resp.to_dict()), client=self  # type: ignore
+            )
         else:
             raise ValueError(
                 "Endpoint should be one of the types 'sync' or 'async'"
@@ -1071,12 +1077,17 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             request = EndpointPredictRequest(
-                return_pickled=return_pickled, url=url, args=args
+                return_pickled=return_pickled,
+                url=url,
+                args=args,
+                _check_type=False,
             )
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
-            resp = api_instance.create_sync_inference_task_v1_sync_tasks_post(
-                model_endpoint_id=model_endpoint_id,
-                endpoint_predict_request=request,
+            resp = (
+                api_instance.create_async_inference_task_v1_async_tasks_post(
+                    model_endpoint_id=model_endpoint_id,
+                    endpoint_predict_request=request,
+                )
             )
         return resp
 
@@ -1098,7 +1109,7 @@ class LaunchClient:
 
             The dictionary's keys are as follows:
 
-            - ``state``: ``'PENDING'`` or ``'SUCCESS'`` or ``'FAILURE'``
+            - ``status``: ``'PENDING'`` or ``'SUCCESS'`` or ``'FAILURE'``
             - ``result_url``: a url pointing to inference results. This url is accessible for 12 hours after the request has been made.
             - ``result``: the value returned by the endpoint's `predict` function, serialized as json
 
@@ -1107,7 +1118,7 @@ class LaunchClient:
             .. code-block:: json
 
                 {
-                    'state': 'SUCCESS',
+                    'status': 'SUCCESS',
                     'result_url': 'https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy'
                 }
 
