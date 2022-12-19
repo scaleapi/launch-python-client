@@ -33,7 +33,7 @@ jobs:
             apt-get -y install curl
             pip install --upgrade pip
             pip install poetry
-            poetry install
+            poetry install --no-ansi
 
       - run:
           name: Black Formatting Check # Only validation, without re-formatting
@@ -42,15 +42,15 @@ jobs:
       - run:
           name: Flake8 Lint Check # Uses setup.cfg for configuration
           command: |
-            poetry run flake8 launch --count --statistics --exclude launch/clientlib,launch/api_client
+            poetry run flake8 launch --count --statistics --exclude launch/clientlib
       - run:
           name: Pylint Lint Check # Uses .pylintrc for configuration
           command: |
-            poetry run pylint launch --ignore=clientlib,api_client
+            poetry run pylint launch --ignore=clientlib
       - run :
           name: MyPy typing check
           command: |
-            poetry run mypy --ignore-missing-imports launch --exclude launch/clientlib --exclude launch/api_client
+            poetry run mypy --ignore-missing-imports launch --exclude launch/clientlib
       - run :
           name: Isort Import Formatting Check # Only validation, without re-formatting
           command: |
