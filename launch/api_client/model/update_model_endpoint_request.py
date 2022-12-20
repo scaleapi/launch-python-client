@@ -112,7 +112,6 @@ class UpdateModelEndpointRequest(ModelNormal):
         """
         lazy_import()
         return {
-            "aws_role": (str,),  # noqa: E501
             "billing_tags": (
                 {
                     str: (
@@ -154,7 +153,6 @@ class UpdateModelEndpointRequest(ModelNormal):
             "per_worker": (int,),  # noqa: E501
             "post_inference_hooks": ([str],),  # noqa: E501
             "prewarm": (bool,),  # noqa: E501
-            "results_s3_bucket": (str,),  # noqa: E501
             "storage": (Storage,),  # noqa: E501
         }
 
@@ -163,7 +161,6 @@ class UpdateModelEndpointRequest(ModelNormal):
         return None
 
     attribute_map = {
-        "aws_role": "aws_role",  # noqa: E501
         "billing_tags": "billing_tags",  # noqa: E501
         "cpus": "cpus",  # noqa: E501
         "gpu_type": "gpu_type",  # noqa: E501
@@ -177,7 +174,6 @@ class UpdateModelEndpointRequest(ModelNormal):
         "per_worker": "per_worker",  # noqa: E501
         "post_inference_hooks": "post_inference_hooks",  # noqa: E501
         "prewarm": "prewarm",  # noqa: E501
-        "results_s3_bucket": "results_s3_bucket",  # noqa: E501
         "storage": "storage",  # noqa: E501
     }
 
@@ -221,7 +217,6 @@ class UpdateModelEndpointRequest(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            aws_role (str): [optional]  # noqa: E501
             billing_tags ({str: (bool, date, datetime, dict, float, int, list, str, none_type)}): [optional]  # noqa: E501
             cpus (Cpus): [optional]  # noqa: E501
             gpu_type (GpuType): [optional]  # noqa: E501
@@ -235,7 +230,6 @@ class UpdateModelEndpointRequest(ModelNormal):
             per_worker (int): [optional]  # noqa: E501
             post_inference_hooks ([str]): [optional]  # noqa: E501
             prewarm (bool): [optional]  # noqa: E501
-            results_s3_bucket (str): [optional]  # noqa: E501
             storage (Storage): [optional]  # noqa: E501
         """
 
@@ -329,7 +323,6 @@ class UpdateModelEndpointRequest(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            aws_role (str): [optional]  # noqa: E501
             billing_tags ({str: (bool, date, datetime, dict, float, int, list, str, none_type)}): [optional]  # noqa: E501
             cpus (Cpus): [optional]  # noqa: E501
             gpu_type (GpuType): [optional]  # noqa: E501
@@ -343,7 +336,6 @@ class UpdateModelEndpointRequest(ModelNormal):
             per_worker (int): [optional]  # noqa: E501
             post_inference_hooks ([str]): [optional]  # noqa: E501
             prewarm (bool): [optional]  # noqa: E501
-            results_s3_bucket (str): [optional]  # noqa: E501
             storage (Storage): [optional]  # noqa: E501
         """
 

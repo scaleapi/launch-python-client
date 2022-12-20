@@ -1,9 +1,25 @@
 import json
+from datetime import datetime
+from unittest.mock import MagicMock
 
 import requests
 import requests_mock
 
 import launch
+from launch.api_client.model.get_model_endpoint_response import (
+    GetModelEndpointResponse,
+)
+from launch.api_client.model.list_model_endpoints_response import (
+    ListModelEndpointsResponse,
+)
+from launch.api_client.model.model_endpoint_deployment_state import (
+    ModelEndpointDeploymentState,
+)
+from launch.api_client.model.model_endpoint_resource_state import (
+    ModelEndpointResourceState,
+)
+from launch.api_client.model.model_endpoint_status import ModelEndpointStatus
+from launch.api_client.model.model_endpoint_type import ModelEndpointType
 
 
 def _get_mock_client():
@@ -14,48 +30,51 @@ def _get_mock_client():
 def test_status_returns_updated_value(requests_mock):  # noqa: F811
     client = _get_mock_client()
 
-    json_str = """{
-        "bundle_name": "test-returns-1",
-        "configs": {
-            "app_config": null,
-            "endpoint_config": {
-                "bundle_name": "test-returns-1",
-                "endpoint_name": "test-endpoint",
-                "post_inference_hooks": null
-            }
-        },
-        "destination": "launch.xxx",
-        "endpoint_type": "async",
-        "metadata": null,
-        "name": "test-endpoint",
-        "resource_settings": {
-            "cpus": "2",
-            "gpu_type": null,
-            "gpus": 0,
-            "memory": "4Gi"
-        },
-        "worker_settings": {
-            "available_workers": 1,
-            "max_workers": "1",
-            "min_workers": "1",
-            "per_worker": "1",
-            "unavailable_workers": 0
-        }
-    }"""
-    resp = json.loads(json_str)
-    update_pending_resp = {**resp, "status": "UPDATE_PENDING"}
-    update_in_progress_resp = {**resp, "status": "UPDATE_IN_PROGRESS"}
-    ready_resp = {**resp, "status": "READY"}
-
-    requests_mock.get(
-        "https://api.scale.com/v1/hosted_inference/endpoints/test-endpoint",
-        [
-            {"json": update_pending_resp},
-            {"json": update_in_progress_resp},
-            {"json": ready_resp},
-        ],
+    resp = GetModelEndpointResponse(
+        bundle_name="test-returns-1",
+        configs=dict(
+            app_config=None,
+            endpoint_config=dict(
+                bundle_name="test-returns-1",
+                endpoint_name="test-endpoint",
+                post_inference_hooks=None,
+            ),
+        ),
+        destination="launch.xxx",
+        endpoint_type=ModelEndpointType("async"),
+        metadata={},
+        name="test-endpoint",
+        resource_state=ModelEndpointResourceState(
+            cpus="2",
+            gpu_type=None,
+            gpus=0,
+            memory="4Gi",
+            _check_type=False,
+        ),
+        deployment_state=ModelEndpointDeploymentState(
+            available_workers=1,
+            max_workers=1,
+            min_workers=1,
+            per_worker=1,
+            unavailable_workers=0,
+        ),
+        status=ModelEndpointStatus("UPDATE_PENDING"),
+        created_at=datetime.now(),
+        last_updated_at=datetime.now(),
+        created_by="test",
+        id="test",
     )
 
+    mock_api_client = MagicMock()
+    launch.client.DefaultApi = MagicMock(return_value=mock_api_client)
+    launch.model_endpoint.DefaultApi = MagicMock(return_value=mock_api_client)
+    mock_api_client.list_model_endpoints_v1_model_endpoints_get.return_value = ListModelEndpointsResponse(
+        model_endpoints=[resp],
+    )
     endpoint = client.get_model_endpoint("test-endpoint")  # UPDATE_PENDING
+
+    resp.status = ModelEndpointStatus("UPDATE_IN_PROGRESS")
     assert endpoint.status() == "UPDATE_IN_PROGRESS"
+
+    resp.status = ModelEndpointStatus("READY")
     assert endpoint.status() == "READY"

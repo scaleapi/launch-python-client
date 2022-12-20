@@ -86,24 +86,21 @@ class Configuration(object):
 
         :Example:
 
-        API Key Authentication Example.
+        HTTP Basic Authentication Example.
         Given the following security scheme in the OpenAPI specification:
           components:
             securitySchemes:
-              cookieAuth:         # name for the security scheme
-                type: apiKey
-                in: cookie
-                name: JSESSIONID  # cookie name
+              http_basic_auth:
+                type: http
+                scheme: basic
 
-        You can programmatically set the cookie:
+        Configure API client with HTTP basic authentication:
 
     conf = launch.api_client.Configuration(
-        api_key={'cookieAuth': 'abc123'}
-        api_key_prefix={'cookieAuth': 'JSESSIONID'}
+        username='the-user',
+        password='the-password',
     )
 
-        The following cookie will be added to the HTTP request:
-           Cookie: JSESSIONID abc123
     """
 
     _default = None
@@ -409,14 +406,12 @@ class Configuration(object):
         :return: The Auth Settings information dict.
         """
         auth = {}
-        if "APIKeyHeader" in self.api_key:
-            auth["APIKeyHeader"] = {
-                "type": "api_key",
+        if self.username is not None and self.password is not None:
+            auth["HTTPBasic"] = {
+                "type": "basic",
                 "in": "header",
-                "key": "X-API-Key",
-                "value": self.get_api_key_with_prefix(
-                    "APIKeyHeader",
-                ),
+                "key": "Authorization",
+                "value": self.get_basic_auth_token(),
             }
         return auth
 

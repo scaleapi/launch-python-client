@@ -19,9 +19,9 @@ class ModelBundle:
     The name of the bundle. Must be unique across all bundles that the user owns.
     """
 
-    bundle_id: Optional[str] = None
+    id: Optional[str] = None
     """
-    A globally unique identifier for the bundle. This is not to be used in the API.
+    A globally unique identifier for the bundle.
     """
 
     env_params: Optional[Dict[str, str]] = None
@@ -49,6 +49,11 @@ class ModelBundle:
     """
     A list of Python package requirements for the bundle. See LaunchClient.create_model_bundle
     for more information.
+    """
+
+    app_config: Optional[Dict[Any, Any]] = None
+    """
+    An optional user-specified configuration mapping for the bundle.
     """
 
     def __str__(self):

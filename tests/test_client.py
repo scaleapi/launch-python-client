@@ -2,6 +2,7 @@ import io
 import os
 import shutil
 import tempfile
+from unittest.mock import MagicMock
 from zipfile import ZipFile
 
 import pytest
@@ -9,6 +10,9 @@ import requests
 import requests_mock
 
 import launch
+from launch.api_client.model.list_model_endpoints_response import (
+    ListModelEndpointsResponse,
+)
 
 
 def _get_mock_client():
@@ -69,9 +73,7 @@ def test_create_model_bundle_from_dirs_bundle_contents_correct(
         "s3://my-fake-bucket/path/to/bundle",
         additional_matcher=check_bundle_upload_data,
     )
-    requests_mock.post(
-        "https://api.scale.com/v1/hosted_inference/model_bundle", json={}
-    )
+    launch.client.DefaultApi = MagicMock()
 
     client = _get_mock_client()
     client.create_model_bundle_from_dirs(
@@ -83,7 +85,10 @@ def test_create_model_bundle_from_dirs_bundle_contents_correct(
         requirements_path=os.path.join(
             fake_project_dir, "project_root/my_module1/requirements.txt"
         ),
-        env_params={},
+        env_params={
+            "framework_type": "pytorch",
+            "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime",
+        },
         load_predict_fn_module_path="a.b.c",
         load_model_fn_module_path="a.b.c",
         app_config=None,
@@ -92,10 +97,10 @@ def test_create_model_bundle_from_dirs_bundle_contents_correct(
 
 def test_get_non_existent_model_endpoint(requests_mock):  # noqa: F811
     client = _get_mock_client()
-    requests_mock.get(
-        "https://api.scale.com/v1/hosted_inference/endpoints/non-existent-endpoint",
-        status_code=404,
-        reason="Not Found",
+    mock_api_client = MagicMock()
+    mock_api_client.list_model_endpoints_v1_model_endpoints_get.return_value = ListModelEndpointsResponse(
+        model_endpoints=[]
     )
+    launch.client.DefaultApi = MagicMock(return_value=mock_api_client)
     endpoint = client.get_model_endpoint("non-existent-endpoint")
     assert endpoint is None

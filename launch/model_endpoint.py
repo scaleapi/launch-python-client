@@ -1,6 +1,5 @@
 import concurrent.futures
 import json
-import os
 import time
 import uuid
 from collections import Counter
@@ -10,7 +9,8 @@ from typing import Dict, Optional, Sequence
 from dataclasses_json import Undefined, dataclass_json
 from deprecation import deprecated
 
-from launch.constants import ENDPOINT_PATH
+from launch.api_client import ApiClient
+from launch.api_client.api.default_api import DefaultApi
 from launch.request_validation import validate_task_request
 
 TASK_PENDING_STATE = "PENDING"
@@ -30,6 +30,11 @@ class ModelEndpoint:
     The name of the endpoint. Must be unique across all endpoints owned by the user.
     """
 
+    id: Optional[str] = None
+    """
+    A globally unique identifier for the endpoint.
+    """
+
     bundle_name: Optional[str] = None
     """
     The name of the bundle for the endpoint. The owner of the bundle must be the same as the owner for the endpoint.
@@ -40,14 +45,14 @@ class ModelEndpoint:
     The status of the endpoint.
     """
 
-    resource_settings: Optional[dict] = None
+    resource_state: Optional[dict] = None
     """
-    Resource settings for the endpoint.
+    Resource state for the endpoint.
     """
 
-    worker_settings: Optional[dict] = None
+    deployment_state: Optional[dict] = None
     """
-    Worker settings for the endpoint.
+    Deployment state for the endpoint.
     """
 
     metadata: Optional[dict] = None
@@ -71,7 +76,7 @@ class ModelEndpoint:
     """
 
     def __repr__(self):
-        return f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', status='{self.status}', resource_settings='{json.dumps(self.resource_settings)}', worker_settings='{json.dumps(self.worker_settings)}', endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
+        return f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', status='{self.status}', resource_state='{json.dumps(self.resource_state)}', deployment_state='{json.dumps(self.deployment_state)}', endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
 
 
 class EndpointRequest:
@@ -190,28 +195,29 @@ class EndpointResponseFuture:
             async_response = self.client._get_async_endpoint_response(  # pylint: disable=W0212
                 self.endpoint_name, self.async_task_id
             )
-            if async_response["state"] == "PENDING":
+            status = async_response["status"].value
+            if status == "PENDING":
                 time.sleep(2)
             else:
-                if async_response["state"] == "SUCCESS":
+                if status == "SUCCESS":
                     return EndpointResponse(
                         client=self.client,
-                        status=async_response["state"],
+                        status=status,
                         result_url=async_response.get("result_url", None),
                         result=async_response.get("result", None),
                         traceback=None,
                     )
-                elif async_response["state"] == "FAILURE":
+                elif status == "FAILURE":
                     return EndpointResponse(
                         client=self.client,
-                        status=async_response["state"],
+                        status=status,
                         result_url=None,
                         result=None,
                         traceback=async_response.get("traceback", None),
                     )
                 else:
                     raise ValueError(
-                        f"Unrecognized state: {async_response['state']}"
+                        f"Unrecognized status: {async_response['status']}"
                     )
 
 
@@ -223,25 +229,32 @@ class Endpoint:
         self.client = client
 
     def _update_model_endpoint_view(self):
-        resp = self.client.connection.get(
-            os.path.join(ENDPOINT_PATH, self.model_endpoint.name)
-        )
-        self.model_endpoint = ModelEndpoint.from_dict(resp)
+        with ApiClient(self.client.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            resp = api_instance.list_model_endpoints_v1_model_endpoints_get(
+                name=self.model_endpoint.name,
+            )
+            if len(resp.model_endpoints) == 0:
+                raise ValueError(
+                    f"Could not update model endpoint view for endpoint {self.model_endpoint.name}"
+                )
+            resp = resp.model_endpoints[0]
+        self.model_endpoint = ModelEndpoint.from_dict(resp.to_dict())
 
     def status(self) -> Optional[str]:
         """Gets the status of the Endpoint."""
         self._update_model_endpoint_view()
         return self.model_endpoint.status
 
-    def resource_settings(self) -> Optional[dict]:
-        """Gets the resource settings of the Endpoint."""
+    def resource_state(self) -> Optional[dict]:
+        """Gets the resource state of the Endpoint."""
         self._update_model_endpoint_view()
-        return self.model_endpoint.resource_settings
+        return self.model_endpoint.resource_state
 
-    def worker_settings(self) -> Optional[dict]:
+    def deployment_state(self) -> Optional[dict]:
         """Gets the worker settings of the Endpoint."""
         self._update_model_endpoint_view()
-        return self.model_endpoint.worker_settings
+        return self.model_endpoint.deployment_state
 
 
 class SyncEndpoint(Endpoint):
@@ -262,7 +275,7 @@ class SyncEndpoint(Endpoint):
         return f"SyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def __repr__(self):
-        return f"SyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_settings='{json.dumps(self.model_endpoint.resource_settings)}', worker_settings='{json.dumps(self.model_endpoint.worker_settings)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
+        return f"SyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_state='{json.dumps(self.model_endpoint.resource_state)}', deployment_state='{json.dumps(self.model_endpoint.deployment_state)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
 
     def predict(self, request: EndpointRequest) -> EndpointResponse:
         """
@@ -279,7 +292,7 @@ class SyncEndpoint(Endpoint):
         )
         return EndpointResponse(
             client=self.client,
-            status=raw_response.get("state"),
+            status=raw_response.get("status"),
             result_url=raw_response.get("result_url", None),
             result=raw_response.get("result", None),
             traceback=raw_response.get("traceback", None),
@@ -304,7 +317,7 @@ class AsyncEndpoint(Endpoint):
         return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def __repr__(self):
-        return f"AsyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_settings='{json.dumps(self.model_endpoint.resource_settings)}', worker_settings='{json.dumps(self.model_endpoint.worker_settings)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
+        return f"AsyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_state='{json.dumps(self.model_endpoint.resource_state)}', deployment_state='{json.dumps(self.model_endpoint.deployment_state)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
 
     def predict(self, request: EndpointRequest) -> EndpointResponseFuture:
         """
@@ -323,12 +336,13 @@ class AsyncEndpoint(Endpoint):
                f: EndpointResponseFuture = my_endpoint.predict(EndpointRequest(...))
                result = f.get()  # blocks on completion
         """
-        async_task_id = self.client._async_request(  # pylint: disable=W0212
+        response = self.client._async_request(  # pylint: disable=W0212
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
             return_pickled=request.return_pickled,
         )
+        async_task_id = response.task_id
         return EndpointResponseFuture(
             client=self.client,
             endpoint_name=self.model_endpoint.name,
@@ -438,7 +452,7 @@ class AsyncEndpointBatchResponse:
             return (
                 inner_url,
                 inner_task_id,
-                inner_response.get("state", None),
+                inner_response.get("status", None),
                 inner_response,
             )
 
@@ -452,13 +466,13 @@ class AsyncEndpointBatchResponse:
         for response in responses:
             if response is None:
                 continue
-            url, _, state, raw_response = response
-            if state:
-                self.statuses[url] = state
+            url, _, status, raw_response = response
+            if status:
+                self.statuses[url] = status
             if raw_response:
                 response_object = EndpointResponse(
                     client=self.client,
-                    status=raw_response["state"],
+                    status=raw_response["status"].value,
                     result_url=raw_response.get("result_url", None),
                     result=raw_response.get("result", None),
                     traceback=raw_response.get("traceback", None),
@@ -467,10 +481,10 @@ class AsyncEndpointBatchResponse:
 
     def is_done(self, poll=True) -> bool:
         """
-        Checks the client local state to see if all requests are done.
+        Checks the client local status to see if all requests are done.
 
         Parameters:
-            poll: If ``True``, then this will first check the state for a subset
+            poll: If ``True``, then this will first check the status for a subset
             of the remaining incomplete tasks on the Launch server.
         """
         # TODO: make some request to some endpoint
