@@ -1060,7 +1060,10 @@ def check_validations(
     ):
         err_msg = (
             r"Invalid value for `%s`, must match regular expression `%s`"
-            % (input_variable_path[0], current_validations["regex"]["pattern"])
+            % (
+                input_variable_path[0],
+                current_validations["regex"]["pattern"],
+            )
         )
         if flags != 0:
             # Don't print the regex flags if the flags are not
