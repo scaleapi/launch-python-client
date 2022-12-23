@@ -357,7 +357,7 @@ class LaunchClient:
             env_params_copy = env_params.copy()
             env_params_copy["framework_type"] = framework  # type: ignore
             env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)
-            create_model_bundle_request = CreateModelBundleRequest(
+            payload = dict(
                 env_params=env_params_obj,
                 location=raw_bundle_url,
                 name=model_bundle_name,
@@ -366,6 +366,8 @@ class LaunchClient:
                 metadata=bundle_metadata,
                 app_config=payload.get("app_config") or {},
             )
+            payload = dict([(k, v) for k, v in payload.items() if v is not None])
+            create_model_bundle_request = CreateModelBundleRequest(**payload)
             api_instance.create_model_bundle_v1_model_bundles_post(
                 body=create_model_bundle_request,
                 skip_deserialization=True,
@@ -571,7 +573,7 @@ class LaunchClient:
 
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            create_model_bundle_request = CreateModelBundleRequest(
+            payload = dict(
                 env_params=env_params_obj,
                 location=raw_bundle_url,
                 name=model_bundle_name,
@@ -580,6 +582,8 @@ class LaunchClient:
                 metadata=bundle_metadata,
                 app_config=payload.get("app_config") or {},
             )
+            payload = dict([(k, v) for k, v in payload.items() if v is not None])
+            create_model_bundle_request = CreateModelBundleRequest(**payload)
             api_instance.create_model_bundle_v1_model_bundles_post(
                 body=create_model_bundle_request,
                 skip_deserialization=True,
@@ -696,7 +700,7 @@ class LaunchClient:
                     or model_bundle.id is None
                 ):
                     model_bundle = self.get_model_bundle(model_bundle)
-                create_model_endpoint_request = CreateModelEndpointRequest(
+                payload = dict(
                     cpus=cpus,
                     endpoint_type=ModelEndpointType(endpoint_type),
                     gpus=gpus,
@@ -709,9 +713,11 @@ class LaunchClient:
                     model_bundle_id=model_bundle.id,
                     name=endpoint_name,
                     per_worker=per_worker,
-                    post_inference_hooks=post_inference_hooks,
+                    post_inference_hooks=post_inference_hooks or [],
                     storage=storage,
                 )
+                payload = dict([(k, v) for k, v in payload.items() if v is not None])
+                create_model_endpoint_request = CreateModelEndpointRequest( **payload )
                 response = api_instance.create_model_endpoint_v1_model_endpoints_post(
                     body=create_model_endpoint_request,
                     skip_deserialization=True,
@@ -823,7 +829,7 @@ class LaunchClient:
                 model_endpoint_full = self.get_model_endpoint(endpoint_name)
                 model_endpoint_id = model_endpoint_full.model_endpoint.id  # type: ignore
 
-            update_model_endpoint_request = UpdateModelEndpointRequest(
+            payload = dict(
                 cpus=cpus,
                 gpus=gpus,
                 gpu_type=GpuType(gpu_type),
@@ -832,9 +838,11 @@ class LaunchClient:
                 min_workers=min_workers,
                 model_bundle_id=model_bundle_id,
                 per_worker=per_worker,
-                post_inference_hooks=post_inference_hooks,
+                post_inference_hooks=post_inference_hooks or [],
                 storage=storage,
             )
+            payload = dict([(k, v) for k, v in payload.items() if v is not None])
+            update_model_endpoint_request = UpdateModelEndpointRequest(**payload)
             path_params = {"model_endpoint_id": model_endpoint_id}
             response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(
                 body=update_model_endpoint_request,
@@ -1053,9 +1061,9 @@ class LaunchClient:
         validate_task_request(url=url, args=args)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            request = EndpointPredictRequest(
-                return_pickled=return_pickled, url=url, args=args
-            )
+            payload = dict(return_pickled=return_pickled, url=url, args=args)
+            payload = dict([(k, v) for k, v in payload.items() if v is not None])
+            request = EndpointPredictRequest(**payload)
             query_params = {"model_endpoint_id": endpoint_id}
             response = api_instance.create_sync_inference_task_v1_sync_tasks_post(
                 body=request,
@@ -1103,11 +1111,9 @@ class LaunchClient:
         endpoint = self.get_model_endpoint(endpoint_name)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            request = EndpointPredictRequest(
-                return_pickled=return_pickled,
-                url=url,
-                args=args,
-            )
+            payload = dict(return_pickled=return_pickled, url=url, args=args)
+            payload = dict([(k, v) for k, v in payload.items() if v is not None])
+            request = EndpointPredictRequest(**payload)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
             query_params = {"model_endpoint_id": model_endpoint_id}
             response = api_instance.create_async_inference_task_v1_async_tasks_post(
