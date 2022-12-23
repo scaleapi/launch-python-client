@@ -893,7 +893,7 @@ class LaunchClient:
             response = api_instance.list_model_bundles_v1_model_bundles_get(skip_deserialization=True)
             resp = json.loads(response.response.data)
         model_bundles = [
-            ModelBundle.from_dict(item) for item in resp.model_bundles  # type: ignore
+            ModelBundle.from_dict(item) for item in resp["model_bundles"]  # type: ignore
         ]
         return model_bundles
 
@@ -992,7 +992,7 @@ class LaunchClient:
             path_params = {"model_endpoint_id": model_endpoint_id}
             response = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(
                 path_params=path_params,  # type: ignore
-                skip_deseialization=True,
+                skip_deserialization=True,
             )
             resp = json.loads(response.response.data)
         return resp["deleted"]
