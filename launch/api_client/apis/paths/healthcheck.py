@@ -1,4 +1,4 @@
-from launch.api_client.paths.healthcheck.get import ApiForget
+from launch_client.paths.healthcheck.get import ApiForget
 
 
 class Healthcheck(

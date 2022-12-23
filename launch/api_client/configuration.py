@@ -16,8 +16,7 @@ import sys
 from http import client as http_client
 
 import urllib3
-
-from launch.api_client.exceptions import ApiValueError
+from launch_client.exceptions import ApiValueError
 
 JSON_SCHEMA_VALIDATION_KEYWORDS = {
     "multipleOf",
@@ -98,7 +97,7 @@ class Configuration(object):
 
         Configure API client with HTTP basic authentication:
 
-    conf = launch.api_client.Configuration(
+    conf = launch_client.Configuration(
         username='the-user',
         password='the-password',
     )
@@ -167,7 +166,7 @@ class Configuration(object):
         self.logger = {}
         """Logging Settings
         """
-        self.logger["package_logger"] = logging.getLogger("launch.api_client")
+        self.logger["package_logger"] = logging.getLogger("launch_client")
         self.logger["urllib3_logger"] = logging.getLogger("urllib3")
         self.logger_format = "%(asctime)s %(levelname)s %(message)s"
         """Log format

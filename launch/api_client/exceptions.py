@@ -103,7 +103,7 @@ class ApiException(OpenApiException):
         self,
         status=None,
         reason=None,
-        api_response: "launch.api_client.api_client.ApiResponse" = None,
+        api_response: "launch_client.api_client.ApiResponse" = None,
     ):
         if api_response:
             self.status = api_response.response.status
