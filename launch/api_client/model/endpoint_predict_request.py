@@ -138,7 +138,7 @@ class EndpointPredictRequest(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args: typing.Union[
+        *args_: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -192,7 +192,7 @@ class EndpointPredictRequest(schemas.DictSchema):
     ) -> "EndpointPredictRequest":
         return super().__new__(
             cls,
-            *args,
+            *args_,
             return_pickled=return_pickled,
             args=args,
             cloudpickle=cloudpickle,

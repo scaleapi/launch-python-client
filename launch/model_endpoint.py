@@ -10,7 +10,7 @@ from dataclasses_json import Undefined, dataclass_json
 from deprecation import deprecated
 
 from launch.api_client import ApiClient
-from launch.api_client.api.default_api import DefaultApi
+from launch.api_client.apis.tags.default_api import DefaultApi
 from launch.request_validation import validate_task_request
 
 TASK_PENDING_STATE = "PENDING"
@@ -195,7 +195,7 @@ class EndpointResponseFuture:
             async_response = self.client._get_async_endpoint_response(  # pylint: disable=W0212
                 self.endpoint_name, self.async_task_id
             )
-            status = async_response["status"].value
+            status = async_response["status"]
             if status == "PENDING":
                 time.sleep(2)
             else:
@@ -239,7 +239,7 @@ class Endpoint:
                     f"Could not update model endpoint view for endpoint {self.model_endpoint.name}"
                 )
             resp = resp.model_endpoints[0]
-        self.model_endpoint = ModelEndpoint.from_dict(resp.to_dict())
+        self.model_endpoint = ModelEndpoint.from_dict(resp)
 
     def status(self) -> Optional[str]:
         """Gets the status of the Endpoint."""
@@ -472,7 +472,7 @@ class AsyncEndpointBatchResponse:
             if raw_response:
                 response_object = EndpointResponse(
                     client=self.client,
-                    status=raw_response["status"].value,
+                    status=raw_response["status"],
                     result_url=raw_response.get("result_url", None),
                     result=raw_response.get("result", None),
                     traceback=raw_response.get("traceback", None),

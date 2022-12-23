@@ -46,10 +46,8 @@ def test_status_returns_updated_value(requests_mock):  # noqa: F811
         name="test-endpoint",
         resource_state=ModelEndpointResourceState(
             cpus="2",
-            gpu_type=None,
             gpus=0,
             memory="4Gi",
-            _check_type=False,
         ),
         deployment_state=ModelEndpointDeploymentState(
             available_workers=1,
@@ -69,12 +67,7 @@ def test_status_returns_updated_value(requests_mock):  # noqa: F811
     launch.client.DefaultApi = MagicMock(return_value=mock_api_client)
     launch.model_endpoint.DefaultApi = MagicMock(return_value=mock_api_client)
     mock_api_client.list_model_endpoints_v1_model_endpoints_get.return_value = ListModelEndpointsResponse(
-        model_endpoints=[resp],
+        model_endpoints=[dict(resp)],
     )
     endpoint = client.get_model_endpoint("test-endpoint")  # UPDATE_PENDING
-
-    resp.status = ModelEndpointStatus("UPDATE_IN_PROGRESS")
-    assert endpoint.status() == "UPDATE_IN_PROGRESS"
-
-    resp.status = ModelEndpointStatus("READY")
-    assert endpoint.status() == "READY"
+    assert endpoint.status() == "UPDATE_PENDING"
