@@ -231,14 +231,17 @@ class Endpoint:
     def _update_model_endpoint_view(self):
         with ApiClient(self.client.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            resp = api_instance.list_model_endpoints_v1_model_endpoints_get(
-                name=self.model_endpoint.name,
+            query_params = {"name": self.model_endpoint.name}
+            response = api_instance.list_model_endpoints_v1_model_endpoints_get(
+                query_params=query_params,
+                skip_deserialization=True,
             )
-            if len(resp.model_endpoints) == 0:
+            resp = json.loads(response.response.data)
+            if len(resp["model_endpoints"]) == 0:
                 raise ValueError(
                     f"Could not update model endpoint view for endpoint {self.model_endpoint.name}"
                 )
-            resp = resp.model_endpoints[0]
+            resp = resp["model_endpoints"][0]
         self.model_endpoint = ModelEndpoint.from_dict(resp)
 
     def status(self) -> Optional[str]:

@@ -1,4 +1,5 @@
 import inspect  # pylint: disable=C0302
+import json
 import logging
 import os
 import shutil
@@ -367,6 +368,7 @@ class LaunchClient:
             )
             api_instance.create_model_bundle_v1_model_bundles_post(
                 body=create_model_bundle_request,
+                skip_deserialization=True,
             )
         return ModelBundle(model_bundle_name)
 
@@ -580,6 +582,7 @@ class LaunchClient:
             )
             api_instance.create_model_bundle_v1_model_bundles_post(
                 body=create_model_bundle_request,
+                skip_deserialization=True,
             )
         # resp["data"]["name"] should equal model_bundle_name
         # TODO check that a model bundle was created and no name collisions happened
@@ -709,9 +712,11 @@ class LaunchClient:
                     post_inference_hooks=post_inference_hooks,
                     storage=storage,
                 )
-                resp = api_instance.create_model_endpoint_v1_model_endpoints_post(
+                response = api_instance.create_model_endpoint_v1_model_endpoints_post(
                     body=create_model_endpoint_request,
+                    skip_deserialization=True,
                 )
+                resp = json.loads(response.response.data)
             endpoint_creation_task_id = resp.get(
                 "endpoint_creation_task_id", None
             )  # TODO probably throw on None
@@ -831,10 +836,12 @@ class LaunchClient:
                 storage=storage,
             )
             path_params = {"model_endpoint_id": model_endpoint_id}
-            resp = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(
+            response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(
                 body=update_model_endpoint_request,
-                path_params=path_params, # type: ignore
+                path_params=path_params,  # type: ignore
+                skip_deserialization=True,
             )
+            resp = json.loads(response.response.data)
         endpoint_creation_task_id = resp.get(
             "endpoint_creation_task_id", None
         )  # Returned from server as "creation"
@@ -852,12 +859,14 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             query_params = {"name": endpoint_name}
-            resp = api_instance.list_model_endpoints_v1_model_endpoints_get(
-                query_params=query_params
+            response = api_instance.list_model_endpoints_v1_model_endpoints_get(
+                query_params=query_params,
+                skip_deserialization=True,
             )
-            if len(resp.model_endpoints) == 0:
+            resp = json.loads(response.response.data)
+            if len(resp["model_endpoints"]) == 0:
                 return None
-            resp = resp.model_endpoints[0]
+            resp = resp["model_endpoints"][0]
 
         if resp["endpoint_type"] == "async":
             return AsyncEndpoint(
@@ -881,7 +890,8 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            resp = api_instance.list_model_bundles_v1_model_bundles_get()
+            response = api_instance.list_model_bundles_v1_model_bundles_get(skip_deserialization=True)
+            resp = json.loads(response.response.data)
         model_bundles = [
             ModelBundle.from_dict(item) for item in resp.model_bundles  # type: ignore
         ]
@@ -903,9 +913,11 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             query_params = {"model_name": bundle_name}
-            resp = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(
-                query_params=query_params
+            response = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(
+                query_params=query_params,
+                skip_deserialization = True,
             )
+            resp = json.loads(response.response.data)
         return ModelBundle.from_dict(resp)  # type: ignore
 
     def clone_model_bundle_with_changes(
@@ -945,13 +957,14 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            resp = api_instance.list_model_endpoints_v1_model_endpoints_get()
+            response = api_instance.list_model_endpoints_v1_model_endpoints_get(skip_deserialization=True)
+            resp = json.loads(response.response.data)
         async_endpoints: List[Endpoint] = [
             AsyncEndpoint(
                 model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
                 client=self,
             )
-            for endpoint in resp.model_endpoints
+            for endpoint in resp["model_endpoints"]
             if endpoint["endpoint_type"] == "async"
         ]
         sync_endpoints: List[Endpoint] = [
@@ -977,10 +990,12 @@ class LaunchClient:
             api_instance = DefaultApi(api_client)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
             path_params = {"model_endpoint_id": model_endpoint_id}
-            resp = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(
-                path_params=path_params # type: ignore
+            response = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(
+                path_params=path_params,  # type: ignore
+                skip_deseialization=True,
             )
-        return resp.deleted
+            resp = json.loads(response.response.data)
+        return resp["deleted"]
 
     def read_endpoint_creation_logs(
         self, model_endpoint: Union[ModelEndpoint, str]
@@ -1042,10 +1057,12 @@ class LaunchClient:
                 return_pickled=return_pickled, url=url, args=args
             )
             query_params = {"model_endpoint_id": endpoint_id}
-            resp = api_instance.create_sync_inference_task_v1_sync_tasks_post(
+            response = api_instance.create_sync_inference_task_v1_sync_tasks_post(
                 body=request,
                 query_params=query_params,
+                skip_deserialization=True,
             )
+            resp = json.loads(response.response.data)
         return resp
 
     def _async_request(
@@ -1093,10 +1110,12 @@ class LaunchClient:
             )
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
             query_params = {"model_endpoint_id": model_endpoint_id}
-            resp = api_instance.create_async_inference_task_v1_async_tasks_post(
+            response = api_instance.create_async_inference_task_v1_async_tasks_post(
                 body=request,
                 query_params=query_params, # type: ignore
+                skip_deserialization=True,
             )
+            resp = json.loads(response.response.data)
         return resp
 
     def _get_async_endpoint_response(
@@ -1135,9 +1154,11 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = {"task_id": async_task_id}
-            resp = api_instance.get_async_inference_task_v1_async_tasks_task_id_get(
+            response = api_instance.get_async_inference_task_v1_async_tasks_task_id_get(
                 path_params=path_params,
+                skip_deserialization=True,
             )
+            resp = json.loads(response.response.data)
         return resp
 
     def batch_async_request(
