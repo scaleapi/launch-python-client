@@ -1,10 +1,10 @@
-from launch_client.paths.v1_model_endpoints_model_endpoint_id.delete import (
+from launch.api_client.paths.v1_model_endpoints_model_endpoint_id.delete import (
     ApiFordelete,
 )
-from launch_client.paths.v1_model_endpoints_model_endpoint_id.get import (
+from launch.api_client.paths.v1_model_endpoints_model_endpoint_id.get import (
     ApiForget,
 )
-from launch_client.paths.v1_model_endpoints_model_endpoint_id.put import (
+from launch.api_client.paths.v1_model_endpoints_model_endpoint_id.put import (
     ApiForput,
 )
 

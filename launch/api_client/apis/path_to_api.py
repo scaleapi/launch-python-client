@@ -1,22 +1,25 @@
 import typing_extensions
-from launch_client.apis.paths.healthcheck import Healthcheck
-from launch_client.apis.paths.healthz import Healthz
-from launch_client.apis.paths.readyz import Readyz
-from launch_client.apis.paths.v1_async_tasks import V1AsyncTasks
-from launch_client.apis.paths.v1_async_tasks_task_id import V1AsyncTasksTaskId
-from launch_client.apis.paths.v1_model_bundles import V1ModelBundles
-from launch_client.apis.paths.v1_model_bundles_latest import (
+
+from launch.api_client.apis.paths.healthcheck import Healthcheck
+from launch.api_client.apis.paths.healthz import Healthz
+from launch.api_client.apis.paths.readyz import Readyz
+from launch.api_client.apis.paths.v1_async_tasks import V1AsyncTasks
+from launch.api_client.apis.paths.v1_async_tasks_task_id import (
+    V1AsyncTasksTaskId,
+)
+from launch.api_client.apis.paths.v1_model_bundles import V1ModelBundles
+from launch.api_client.apis.paths.v1_model_bundles_latest import (
     V1ModelBundlesLatest,
 )
-from launch_client.apis.paths.v1_model_bundles_model_bundle_id import (
+from launch.api_client.apis.paths.v1_model_bundles_model_bundle_id import (
     V1ModelBundlesModelBundleId,
 )
-from launch_client.apis.paths.v1_model_endpoints import V1ModelEndpoints
-from launch_client.apis.paths.v1_model_endpoints_model_endpoint_id import (
+from launch.api_client.apis.paths.v1_model_endpoints import V1ModelEndpoints
+from launch.api_client.apis.paths.v1_model_endpoints_model_endpoint_id import (
     V1ModelEndpointsModelEndpointId,
 )
-from launch_client.apis.paths.v1_sync_tasks import V1SyncTasks
-from launch_client.paths import PathValues
+from launch.api_client.apis.paths.v1_sync_tasks import V1SyncTasks
+from launch.api_client.paths import PathValues
 
 PathToApi = typing_extensions.TypedDict(
     "PathToApi",

@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class UpdateModelEndpointRequest(schemas.DictSchema):
@@ -783,4 +784,4 @@ class UpdateModelEndpointRequest(schemas.DictSchema):
         )
 
 
-from launch_client.model.gpu_type import GpuType
+from launch.api_client.model.gpu_type import GpuType
