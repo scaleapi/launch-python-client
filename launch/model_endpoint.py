@@ -345,7 +345,7 @@ class AsyncEndpoint(Endpoint):
             args=request.args,
             return_pickled=request.return_pickled,
         )
-        async_task_id = response.task_id
+        async_task_id = response["task_id"]
         return EndpointResponseFuture(
             client=self.client,
             endpoint_name=self.model_endpoint.name,
