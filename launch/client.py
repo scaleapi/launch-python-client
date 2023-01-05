@@ -40,6 +40,7 @@ from launch.constants import (
     ENDPOINT_PATH,
     MODEL_BUNDLE_SIGNED_URL_PATH,
     SCALE_LAUNCH_ENDPOINT,
+    SCALE_LAUNCH_V1_ENDPOINT,
 )
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.hooks import PostInferenceHooks
@@ -127,7 +128,7 @@ class LaunchClient:
         self.bundle_location_fn: Optional[Callable[[], str]] = None
         self.batch_csv_location_fn: Optional[Callable[[], str]] = None
         self.configuration = Configuration(
-            host=endpoint,  # host="host.docker.internal:3000/v1/launch",
+            host=endpoint or SCALE_LAUNCH_V1_ENDPOINT,
             discard_unknown_keys=True,
             username=api_key,
             password="",
