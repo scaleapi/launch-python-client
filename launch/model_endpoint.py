@@ -203,8 +203,8 @@ class EndpointResponseFuture:
                     return EndpointResponse(
                         client=self.client,
                         status=status,
-                        result_url=async_response.get("result_url", None),
-                        result=async_response.get("result", None),
+                        result_url=async_response.get("result", {}).get("result_url", None),
+                        result=async_response.get("result", {}).get("result", None),
                         traceback=None,
                     )
                 elif status == "FAILURE":
@@ -296,8 +296,8 @@ class SyncEndpoint(Endpoint):
         return EndpointResponse(
             client=self.client,
             status=raw_response.get("status"),
-            result_url=raw_response.get("result_url", None),
-            result=raw_response.get("result", None),
+            result_url=raw_response.get("result", {}).get("result_url", None),
+            result=raw_response.get("result", {}).get("result", None),
             traceback=raw_response.get("traceback", None),
         )
 
