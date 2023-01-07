@@ -5,7 +5,8 @@ import os
 import shutil
 import tempfile
 from io import StringIO
-from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
+from pydantic import BaseModel
+from typing import Any, Callable, Dict, List, Optional, Type, TypeVar, Union
 from zipfile import ZipFile
 
 import cloudpickle
@@ -62,6 +63,7 @@ from launch.model_endpoint import (
     ModelEndpoint,
     SyncEndpoint,
 )
+from launch.pydantic_schemas import get_model_definitions
 from launch.request_validation import validate_task_request
 
 DEFAULT_NETWORK_TIMEOUT_SEC = 120
@@ -227,8 +229,30 @@ class LaunchClient:
         """
         self.endpoint_auth_decorator_fn = endpoint_auth_decorator_fn
 
+    def _upload_data(self, data: Any) -> str:
+        if self.self_hosted:
+            if self.upload_bundle_fn is None:
+                raise ValueError("Upload_bundle_fn should be registered")
+            if self.bundle_location_fn is None:
+                raise ValueError(
+                    "Need either bundle_location_fn to know where to upload bundles"
+                )
+            raw_bundle_url = self.bundle_location_fn()  # type: ignore
+            self.upload_bundle_fn(data, raw_bundle_url)  # type: ignore
+        else:
+            model_bundle_url = self.connection.post(
+                {}, MODEL_BUNDLE_SIGNED_URL_PATH
+            )
+            s3_path = model_bundle_url["signedUrl"]
+            raw_bundle_url = (
+                f"s3://{model_bundle_url['bucket']}/{model_bundle_url['key']}"
+            )
+            requests.put(s3_path, data=data)
+        return raw_bundle_url
+
     def create_model_bundle_from_dirs(
         self,
+        *,
         model_bundle_name: str,
         base_paths: List[str],
         requirements_path: str,
@@ -236,6 +260,8 @@ class LaunchClient:
         load_predict_fn_module_path: str,
         load_model_fn_module_path: str,
         app_config: Optional[Union[Dict[str, Any], str]] = None,
+        request_schema: Optional[Type[BaseModel]] = None,
+        response_schema: Optional[Type[BaseModel]] = None,
     ) -> ModelBundle:
         """
         Packages up code from one or more local filesystem folders and uploads them as a bundle to Scale Launch.
@@ -305,6 +331,13 @@ class LaunchClient:
                 the function located at load_predict_fn_module_path.
 
             app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
+
+            request_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the request body for the model bundle's endpoint.
+
+            response_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the response for the model bundle's endpoint.
+                Note: If request_schema is specified, then response_schema must also be specified.
         """
         with open(requirements_path, "r", encoding="utf-8") as req_f:
             requirements = req_f.read().splitlines()
@@ -318,24 +351,19 @@ class LaunchClient:
         finally:
             shutil.rmtree(tmpdir)
 
-        if self.self_hosted:
-            if self.upload_bundle_fn is None:
-                raise ValueError("Upload_bundle_fn should be registered")
-            if self.bundle_location_fn is None:
-                raise ValueError(
-                    "Need either bundle_location_fn to know where to upload bundles"
-                )
-            raw_bundle_url = self.bundle_location_fn()  # type: ignore
-            self.upload_bundle_fn(data, raw_bundle_url)  # type: ignore
-        else:
-            model_bundle_url = self.connection.post(
-                {}, MODEL_BUNDLE_SIGNED_URL_PATH
+        raw_bundle_url = self._upload_data(data)
+
+        schema_location = None
+        if bool(request_schema) ^ bool(response_schema):
+            raise ValueError(
+                "If request_schema is specified, then response_schema must also be specified."
             )
-            s3_path = model_bundle_url["signedUrl"]
-            raw_bundle_url = (
-                f"s3://{model_bundle_url['bucket']}/{model_bundle_url['key']}"
+        if request_schema is not None and response_schema is not None:
+            model_definitions = get_model_definitions(
+                flat_models={request_schema, response_schema},
+                model_name_map={request_schema: "RequestSchema", response_schema: "ResponseSchema"},
             )
-            requests.put(s3_path, data=data)
+            schema_location = self._upload_data(model_definitions)
 
         bundle_metadata = {
             "load_predict_fn_module_path": load_predict_fn_module_path,
@@ -353,6 +381,7 @@ class LaunchClient:
             bundle_metadata=bundle_metadata,
             requirements=requirements,
             env_params=env_params,
+            schema_location=schema_location,
         )
         _add_app_config_to_bundle_create_payload(payload, app_config)
 
@@ -370,6 +399,7 @@ class LaunchClient:
                 packaging_type=ModelBundlePackagingType("zip"),
                 metadata=bundle_metadata,
                 app_config=payload.get("app_config"),
+                schema_location=schema_location,
             )
             create_model_bundle_request = CreateModelBundleRequest(**payload)
             api_instance.create_model_bundle_v1_model_bundles_post(
@@ -393,6 +423,8 @@ class LaunchClient:
         bundle_url: Optional[str] = None,
         app_config: Optional[Union[Dict[str, Any], str]] = None,
         globals_copy: Optional[Dict[str, Any]] = None,
+        request_schema: Optional[Type[BaseModel]] = None,
+        response_schema: Optional[Type[BaseModel]] = None,
     ) -> ModelBundle:
         """
         Uploads and registers a model bundle to Scale Launch.
@@ -469,6 +501,13 @@ class LaunchClient:
 
             bundle_url: (Only used in self-hosted mode.) The desired location of bundle.
                 Overrides any value given by ``self.bundle_location_fn``
+
+            request_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the request body for the model bundle's endpoint.
+
+            response_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the response for the model bundle's endpoint.
+                Note: If request_schema is specified, then response_schema must also be specified.
         """
         # TODO(ivan): remove `disable=too-many-branches` when get rid of `load_*` functions
         # pylint: disable=too-many-branches
@@ -536,29 +575,19 @@ class LaunchClient:
             )
 
         serialized_bundle = cloudpickle.dumps(bundle)
+        raw_bundle_url = self._upload_data(data=serialized_bundle)
 
-        if self.self_hosted:
-            if self.upload_bundle_fn is None:
-                raise ValueError("Upload_bundle_fn should be registered")
-            if self.bundle_location_fn is None and bundle_url is None:
-                raise ValueError(
-                    "Need either bundle_location_fn or bundle_url to know where to upload bundles"
-                )
-            if bundle_url is None:
-                bundle_url = self.bundle_location_fn()  # type: ignore
-            self.upload_bundle_fn(serialized_bundle, bundle_url)
-            raw_bundle_url = bundle_url
-        else:
-            # Grab a signed url to make upload to
-            model_bundle_s3_url = self.connection.post(
-                {}, MODEL_BUNDLE_SIGNED_URL_PATH
+        schema_location = None
+        if bool(request_schema) ^ bool(response_schema):
+            raise ValueError(
+                "If request_schema is specified, then response_schema must also be specified."
             )
-            s3_path = model_bundle_s3_url["signedUrl"]
-            raw_bundle_url = f"s3://{model_bundle_s3_url['bucket']}/{model_bundle_s3_url['key']}"
-
-            # Make bundle upload
-
-            requests.put(s3_path, data=serialized_bundle)
+        if request_schema is not None and response_schema is not None:
+            model_definitions = get_model_definitions(
+                flat_models={request_schema, response_schema},
+                model_name_map={request_schema: "RequestSchema", response_schema: "ResponseSchema"},
+            )
+            schema_location = self._upload_data(model_definitions)
 
         payload = dict(
             packaging_type="cloudpickle",
@@ -567,6 +596,7 @@ class LaunchClient:
             bundle_metadata=bundle_metadata,
             requirements=requirements,
             env_params=env_params,
+            schema_location=schema_location,
         )
 
         _add_app_config_to_bundle_create_payload(payload, app_config)
@@ -585,6 +615,7 @@ class LaunchClient:
                 packaging_type=ModelBundlePackagingType("cloudpickle"),
                 metadata=bundle_metadata,
                 app_config=payload.get("app_config"),
+                schema_location=schema_location,
             )
             create_model_bundle_request = CreateModelBundleRequest(**payload)
             api_instance.create_model_bundle_v1_model_bundles_post(
