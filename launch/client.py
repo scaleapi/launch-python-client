@@ -229,7 +229,7 @@ class LaunchClient:
         """
         self.endpoint_auth_decorator_fn = endpoint_auth_decorator_fn
 
-    def _upload_data(self, data: Any) -> str:
+    def _upload_data(self, data: bytes) -> str:
         if self.self_hosted:
             if self.upload_bundle_fn is None:
                 raise ValueError("Upload_bundle_fn should be registered")
@@ -363,7 +363,8 @@ class LaunchClient:
                 flat_models={request_schema, response_schema},
                 model_name_map={request_schema: "RequestSchema", response_schema: "ResponseSchema"},
             )
-            schema_location = self._upload_data(model_definitions)
+            model_definitions_encoded = json.dumps(model_definitions).encode()
+            schema_location = self._upload_data(model_definitions_encoded)
 
         bundle_metadata = {
             "load_predict_fn_module_path": load_predict_fn_module_path,
@@ -587,7 +588,8 @@ class LaunchClient:
                 flat_models={request_schema, response_schema},
                 model_name_map={request_schema: "RequestSchema", response_schema: "ResponseSchema"},
             )
-            schema_location = self._upload_data(model_definitions)
+            model_definitions_encoded = json.dumps(model_definitions).encode()
+            schema_location = self._upload_data(model_definitions_encoded)
 
         payload = dict(
             packaging_type="cloudpickle",
