@@ -1,13 +1,31 @@
 from enum import Enum
-from typing import Union, Type, Set, Dict, Any
+from typing import Any, Dict, Sequence, Set, Type, Union
 
-from pydantic.schema import model_process_schema
 from pydantic import BaseModel
+from pydantic.schema import get_flat_models_from_models, model_process_schema
 
 REF_PREFIX = "#/components/schemas/"
 
 
 def get_model_definitions(
+    request_schema: Type[BaseModel], response_schema: Type[BaseModel]
+) -> Dict[str, Any]:
+    """
+    Gets the model schemas in jsonschema format from a sequence of Pydantic BaseModels.
+    """
+    flat_models = get_flat_models_from_models(
+        [request_schema, response_schema]
+    )
+    model_name_map = {model: model.__name__ for model in flat_models}
+    model_name_map.update(
+        {request_schema: "RequestSchema", response_schema: "ResponseSchema"}
+    )
+    return get_model_definitions_from_flat_models(
+        flat_models=flat_models, model_name_map=model_name_map
+    )
+
+
+def get_model_definitions_from_flat_models(
     *,
     flat_models: Set[Union[Type[BaseModel], Type[Enum]]],
     model_name_map: Dict[Union[Type[BaseModel], Type[Enum]], str],

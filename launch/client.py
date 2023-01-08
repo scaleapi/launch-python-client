@@ -360,8 +360,8 @@ class LaunchClient:
             )
         if request_schema is not None and response_schema is not None:
             model_definitions = get_model_definitions(
-                flat_models={request_schema, response_schema},
-                model_name_map={request_schema: "RequestSchema", response_schema: "ResponseSchema"},
+                request_schema=request_schema,
+                response_schema=response_schema,
             )
             model_definitions_encoded = json.dumps(model_definitions).encode()
             schema_location = self._upload_data(model_definitions_encoded)
@@ -585,8 +585,8 @@ class LaunchClient:
             )
         if request_schema is not None and response_schema is not None:
             model_definitions = get_model_definitions(
-                flat_models={request_schema, response_schema},
-                model_name_map={request_schema: "RequestSchema", response_schema: "ResponseSchema"},
+                request_schema=request_schema,
+                response_schema=response_schema,
             )
             model_definitions_encoded = json.dumps(model_definitions).encode()
             schema_location = self._upload_data(model_definitions_encoded)
