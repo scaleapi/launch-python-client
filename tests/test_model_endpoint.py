@@ -1,10 +1,10 @@
 import json
 from datetime import datetime
 from unittest.mock import MagicMock
-from urllib3 import HTTPResponse
 
 import requests
 import requests_mock
+from urllib3 import HTTPResponse
 
 import launch
 from launch.api_client.api_client import ApiResponseWithoutDeserialization

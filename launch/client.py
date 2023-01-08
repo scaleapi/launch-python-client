@@ -5,22 +5,16 @@ import os
 import shutil
 import tempfile
 from io import StringIO
-from pydantic import BaseModel
 from typing import Any, Callable, Dict, List, Optional, Type, TypeVar, Union
 from zipfile import ZipFile
 
 import cloudpickle
 import requests
 import yaml
+from pydantic import BaseModel
 
 from launch.api_client import ApiClient, Configuration
 from launch.api_client.apis.tags.default_api import DefaultApi
-from launch.api_client.model.model_endpoint_type import (
-    ModelEndpointType,
-)
-from launch.api_client.model.gpu_type import (
-    GpuType,
-)
 from launch.api_client.model.create_model_bundle_request import (
     CreateModelBundleRequest,
 )
@@ -30,6 +24,7 @@ from launch.api_client.model.create_model_endpoint_request import (
 from launch.api_client.model.endpoint_predict_request import (
     EndpointPredictRequest,
 )
+from launch.api_client.model.gpu_type import GpuType
 from launch.api_client.model.model_bundle_environment_params import (
     ModelBundleEnvironmentParams,
 )
@@ -37,6 +32,7 @@ from launch.api_client.model.model_bundle_framework import ModelBundleFramework
 from launch.api_client.model.model_bundle_packaging_type import (
     ModelBundlePackagingType,
 )
+from launch.api_client.model.model_endpoint_type import ModelEndpointType
 from launch.api_client.model.update_model_endpoint_request import (
     UpdateModelEndpointRequest,
 )
@@ -740,7 +736,9 @@ class LaunchClient:
                     cpus=cpus,
                     endpoint_type=ModelEndpointType(endpoint_type),
                     gpus=gpus,
-                    gpu_type=GpuType(gpu_type) if gpu_type is not None else None,
+                    gpu_type=GpuType(gpu_type)
+                    if gpu_type is not None
+                    else None,
                     labels=labels or {},
                     max_workers=max_workers,
                     memory=memory,
@@ -752,10 +750,14 @@ class LaunchClient:
                     post_inference_hooks=post_inference_hooks or [],
                     storage=storage,
                 )
-                create_model_endpoint_request = CreateModelEndpointRequest( **payload )
-                response = api_instance.create_model_endpoint_v1_model_endpoints_post(
-                    body=create_model_endpoint_request,
-                    skip_deserialization=True,
+                create_model_endpoint_request = CreateModelEndpointRequest(
+                    **payload
+                )
+                response = (
+                    api_instance.create_model_endpoint_v1_model_endpoints_post(
+                        body=create_model_endpoint_request,
+                        skip_deserialization=True,
+                    )
                 )
                 resp = json.loads(response.response.data)
             endpoint_creation_task_id = resp.get(
@@ -876,7 +878,9 @@ class LaunchClient:
                 post_inference_hooks=post_inference_hooks or [],
                 storage=storage,
             )
-            update_model_endpoint_request = UpdateModelEndpointRequest(**payload)
+            update_model_endpoint_request = UpdateModelEndpointRequest(
+                **payload
+            )
             path_params = {"model_endpoint_id": model_endpoint_id}
             response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(
                 body=update_model_endpoint_request,
@@ -901,9 +905,11 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             query_params = {"name": endpoint_name}
-            response = api_instance.list_model_endpoints_v1_model_endpoints_get(
-                query_params=query_params,
-                skip_deserialization=True,
+            response = (
+                api_instance.list_model_endpoints_v1_model_endpoints_get(
+                    query_params=query_params,
+                    skip_deserialization=True,
+                )
             )
             resp = json.loads(response.response.data)
             if len(resp["model_endpoints"]) == 0:
@@ -932,7 +938,9 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            response = api_instance.list_model_bundles_v1_model_bundles_get(skip_deserialization=True)
+            response = api_instance.list_model_bundles_v1_model_bundles_get(
+                skip_deserialization=True
+            )
             resp = json.loads(response.response.data)
         model_bundles = [
             ModelBundle.from_dict(item) for item in resp["model_bundles"]  # type: ignore
@@ -957,7 +965,7 @@ class LaunchClient:
             query_params = {"model_name": bundle_name}
             response = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(
                 query_params=query_params,
-                skip_deserialization = True,
+                skip_deserialization=True,
             )
             resp = json.loads(response.response.data)
         return ModelBundle.from_dict(resp)  # type: ignore
@@ -999,7 +1007,11 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            response = api_instance.list_model_endpoints_v1_model_endpoints_get(skip_deserialization=True)
+            response = (
+                api_instance.list_model_endpoints_v1_model_endpoints_get(
+                    skip_deserialization=True
+                )
+            )
             resp = json.loads(response.response.data)
         async_endpoints: List[Endpoint] = [
             AsyncEndpoint(
@@ -1095,13 +1107,17 @@ class LaunchClient:
         validate_task_request(url=url, args=args)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            payload = dict_not_none(return_pickled=return_pickled, url=url, args=args)
+            payload = dict_not_none(
+                return_pickled=return_pickled, url=url, args=args
+            )
             request = EndpointPredictRequest(**payload)
             query_params = {"model_endpoint_id": endpoint_id}
-            response = api_instance.create_sync_inference_task_v1_sync_tasks_post(
-                body=request,
-                query_params=query_params,
-                skip_deserialization=True,
+            response = (
+                api_instance.create_sync_inference_task_v1_sync_tasks_post(
+                    body=request,
+                    query_params=query_params,
+                    skip_deserialization=True,
+                )
             )
             resp = json.loads(response.response.data)
         return resp
@@ -1144,14 +1160,18 @@ class LaunchClient:
         endpoint = self.get_model_endpoint(endpoint_name)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            payload = dict_not_none(return_pickled=return_pickled, url=url, args=args)
+            payload = dict_not_none(
+                return_pickled=return_pickled, url=url, args=args
+            )
             request = EndpointPredictRequest(**payload)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
             query_params = {"model_endpoint_id": model_endpoint_id}
-            response = api_instance.create_async_inference_task_v1_async_tasks_post(
-                body=request,
-                query_params=query_params, # type: ignore
-                skip_deserialization=True,
+            response = (
+                api_instance.create_async_inference_task_v1_async_tasks_post(
+                    body=request,
+                    query_params=query_params,  # type: ignore
+                    skip_deserialization=True,
+                )
             )
             resp = json.loads(response.response.data)
         return resp

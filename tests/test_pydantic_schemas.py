@@ -31,19 +31,10 @@ def test_get_model_definitions():
             "title": "MyRequestSubSchemaB",
             "type": "object",
             "properties": {
-                "query": {
-                    "title": "Query",
-                    "type": "string"
-                },
-                "language": {
-                    "title": "Language",
-                    "type": "string"
-                }
+                "query": {"title": "Query", "type": "string"},
+                "language": {"title": "Language", "type": "string"},
             },
-            "required": [
-                "query",
-                "language"
-            ]
+            "required": ["query", "language"],
         },
         "RequestSchema": {
             "title": "MyRequestSchemaB",
@@ -54,16 +45,11 @@ def test_get_model_definitions():
                     "type": "array",
                     "items": {
                         "$ref": "#/components/schemas/MyRequestSubSchemaB"
-                    }
+                    },
                 },
-                "temperature": {
-                    "title": "Temperature",
-                    "type": "number"
-                }
+                "temperature": {"title": "Temperature", "type": "number"},
             },
-            "required": [
-                "queries_and_languages"
-            ]
+            "required": ["queries_and_languages"],
         },
         "ResponseSchema": {
             "title": "MyResponseSchemaB",
@@ -72,25 +58,16 @@ def test_get_model_definitions():
                 "responses": {
                     "title": "Responses",
                     "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "items": {"type": "string"},
                 },
                 "total_num_tokens": {
                     "title": "Total Num Tokens",
-                    "type": "integer"
+                    "type": "integer",
                 },
-                "time_elapsed": {
-                    "title": "Time Elapsed",
-                    "type": "number"
-                }
+                "time_elapsed": {"title": "Time Elapsed", "type": "number"},
             },
-            "required": [
-                "responses",
-                "total_num_tokens",
-                "time_elapsed"
-            ]
-        }
+            "required": ["responses", "total_num_tokens", "time_elapsed"],
+        },
     }
 
     assert result == expected

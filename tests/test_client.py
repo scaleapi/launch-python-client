@@ -4,12 +4,12 @@ import os
 import shutil
 import tempfile
 from unittest.mock import MagicMock
-from urllib3 import HTTPResponse
 from zipfile import ZipFile
 
 import pytest
 import requests
 import requests_mock
+from urllib3 import HTTPResponse
 
 import launch
 from launch.api_client.api_client import ApiResponseWithoutDeserialization
@@ -102,7 +102,9 @@ def test_get_non_existent_model_endpoint(requests_mock):  # noqa: F811
     client = _get_mock_client()
     mock_api_client = MagicMock()
     mock_api_client.list_model_endpoints_v1_model_endpoints_get.return_value = ApiResponseWithoutDeserialization(
-        response=HTTPResponse(body=json.dumps(dict(model_endpoints=[])), status=200)
+        response=HTTPResponse(
+            body=json.dumps(dict(model_endpoints=[])), status=200
+        )
     )
     launch.client.DefaultApi = MagicMock(return_value=mock_api_client)
     endpoint = client.get_model_endpoint("non-existent-endpoint")
