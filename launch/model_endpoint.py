@@ -203,8 +203,12 @@ class EndpointResponseFuture:
                     return EndpointResponse(
                         client=self.client,
                         status=status,
-                        result_url=async_response.get("result", {}).get("result_url", None),
-                        result=async_response.get("result", {}).get("result", None),
+                        result_url=async_response.get("result", {}).get(
+                            "result_url", None
+                        ),
+                        result=async_response.get("result", {}).get(
+                            "result", None
+                        ),
                         traceback=None,
                     )
                 elif status == "FAILURE":
@@ -232,9 +236,11 @@ class Endpoint:
         with ApiClient(self.client.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             query_params = {"name": self.model_endpoint.name}
-            response = api_instance.list_model_endpoints_v1_model_endpoints_get(
-                query_params=query_params,
-                skip_deserialization=True,
+            response = (
+                api_instance.list_model_endpoints_v1_model_endpoints_get(
+                    query_params=query_params,
+                    skip_deserialization=True,
+                )
             )
             resp = json.loads(response.response.data)
             if len(resp["model_endpoints"]) == 0:
