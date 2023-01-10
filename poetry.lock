@@ -786,14 +786,14 @@ setuptools = "*"
 
 [[package]]
 name = "packaging"
-version = "22.0"
+version = "23.0"
 description = "Core utilities for Python packages"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "packaging-22.0-py3-none-any.whl", hash = "sha256:957e2148ba0e1a3b282772e791ef1d8083648bc131c8ab0c1feba110ce1146c3"},
-    {file = "packaging-22.0.tar.gz", hash = "sha256:2198ec20bd4c017b8f9717e00f0c8714076fc2fd93816750ab48e2c41de2cfd3"},
+    {file = "packaging-23.0-py3-none-any.whl", hash = "sha256:714ac14496c3e68c99c29b00845f7a2b85f3bb6f1078fd9f72fd20f0570002b2"},
+    {file = "packaging-23.0.tar.gz", hash = "sha256:b6ad297f8907de0fa2fe1ccbd26fdaf387f5f47c7275fedf8cce89f99446cf97"},
 ]
 
 [[package]]
@@ -1478,6 +1478,18 @@ files = [
 ]
 
 [[package]]
+name = "types-frozendict"
+version = "2.0.9"
+description = "Typing stubs for frozendict"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-frozendict-2.0.9.tar.gz", hash = "sha256:446b5f33125566c9885c31363e065d6416f8da6c81252af1e459a4e67a15487b"},
+    {file = "types_frozendict-2.0.9-py3-none-any.whl", hash = "sha256:d4292ef14f87ddec575ab1d968102dcba2c8f1e490acc67945eee1fc7de24d08"},
+]
+
+[[package]]
 name = "types-pyyaml"
 version = "6.0.12.2"
 description = "Typing stubs for PyYAML"
@@ -1700,4 +1712,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "d17c466a3a4a1cfb27ba7ce11c78bbe4c22bdea2e5925399454db06eea8cbe56"
+content-hash = "5321d7b785b15301a4dbabeb856c2887f8bc0e56d455f9956fb8f23781499ac7"

@@ -11,6 +11,7 @@ from zipfile import ZipFile
 import cloudpickle
 import requests
 import yaml
+from frozendict import frozendict
 from pydantic import BaseModel
 
 from launch.api_client import ApiClient, Configuration
@@ -387,7 +388,7 @@ class LaunchClient:
             framework = ModelBundleFramework(env_params["framework_type"])
             env_params_copy = env_params.copy()
             env_params_copy["framework_type"] = framework  # type: ignore
-            env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)
+            env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)  # type: ignore
             payload = dict_not_none(
                 env_params=env_params_obj,
                 location=raw_bundle_url,
@@ -398,7 +399,7 @@ class LaunchClient:
                 app_config=payload.get("app_config"),
                 schema_location=schema_location,
             )
-            create_model_bundle_request = CreateModelBundleRequest(**payload)
+            create_model_bundle_request = CreateModelBundleRequest(**payload)  # type: ignore
             api_instance.create_model_bundle_v1_model_bundles_post(
                 body=create_model_bundle_request,
                 skip_deserialization=True,
@@ -601,7 +602,7 @@ class LaunchClient:
         framework = ModelBundleFramework(env_params["framework_type"])
         env_params_copy = env_params.copy()
         env_params_copy["framework_type"] = framework  # type: ignore
-        env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)
+        env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)  # type: ignore
 
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
@@ -612,10 +613,10 @@ class LaunchClient:
                 requirements=requirements,
                 packaging_type=ModelBundlePackagingType("cloudpickle"),
                 metadata=bundle_metadata,
-                app_config=payload.get("app_config"),
+                app_config=app_config,
                 schema_location=schema_location,
             )
-            create_model_bundle_request = CreateModelBundleRequest(**payload)
+            create_model_bundle_request = CreateModelBundleRequest(**payload)  # type: ignore
             api_instance.create_model_bundle_v1_model_bundles_post(
                 body=create_model_bundle_request,
                 skip_deserialization=True,
@@ -881,8 +882,8 @@ class LaunchClient:
             update_model_endpoint_request = UpdateModelEndpointRequest(
                 **payload
             )
-            path_params = {"model_endpoint_id": model_endpoint_id}
-            response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(
+            path_params = frozendict({"model_endpoint_id": model_endpoint_id})
+            response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(  # type: ignore
                 body=update_model_endpoint_request,
                 path_params=path_params,  # type: ignore
                 skip_deserialization=True,
@@ -904,12 +905,10 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            query_params = {"name": endpoint_name}
-            response = (
-                api_instance.list_model_endpoints_v1_model_endpoints_get(
-                    query_params=query_params,
-                    skip_deserialization=True,
-                )
+            query_params = frozendict({"name": endpoint_name})
+            response = api_instance.list_model_endpoints_v1_model_endpoints_get(  # type: ignore
+                query_params=query_params,
+                skip_deserialization=True,
             )
             resp = json.loads(response.response.data)
             if len(resp["model_endpoints"]) == 0:
@@ -962,8 +961,8 @@ class LaunchClient:
         bundle_name = _model_bundle_to_name(model_bundle)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            query_params = {"model_name": bundle_name}
-            response = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(
+            query_params = frozendict({"model_name": bundle_name})
+            response = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(  # type: ignore
                 query_params=query_params,
                 skip_deserialization=True,
             )
@@ -1043,8 +1042,8 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
-            path_params = {"model_endpoint_id": model_endpoint_id}
-            response = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(
+            path_params = frozendict({"model_endpoint_id": model_endpoint_id})
+            response = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(  # type: ignore
                 path_params=path_params,  # type: ignore
                 skip_deserialization=True,
             )
@@ -1111,13 +1110,11 @@ class LaunchClient:
                 return_pickled=return_pickled, url=url, args=args
             )
             request = EndpointPredictRequest(**payload)
-            query_params = {"model_endpoint_id": endpoint_id}
-            response = (
-                api_instance.create_sync_inference_task_v1_sync_tasks_post(
-                    body=request,
-                    query_params=query_params,
-                    skip_deserialization=True,
-                )
+            query_params = frozendict({"model_endpoint_id": endpoint_id})
+            response = api_instance.create_sync_inference_task_v1_sync_tasks_post(  # type: ignore
+                body=request,
+                query_params=query_params,
+                skip_deserialization=True,
             )
             resp = json.loads(response.response.data)
         return resp
@@ -1165,13 +1162,11 @@ class LaunchClient:
             )
             request = EndpointPredictRequest(**payload)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
-            query_params = {"model_endpoint_id": model_endpoint_id}
-            response = (
-                api_instance.create_async_inference_task_v1_async_tasks_post(
-                    body=request,
-                    query_params=query_params,  # type: ignore
-                    skip_deserialization=True,
-                )
+            query_params = frozendict({"model_endpoint_id": model_endpoint_id})
+            response = api_instance.create_async_inference_task_v1_async_tasks_post(  # type: ignore
+                body=request,
+                query_params=query_params,  # type: ignore
+                skip_deserialization=True,
             )
             resp = json.loads(response.response.data)
         return resp
@@ -1211,8 +1206,8 @@ class LaunchClient:
         # TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            path_params = {"task_id": async_task_id}
-            response = api_instance.get_async_inference_task_v1_async_tasks_task_id_get(
+            path_params = frozendict({"task_id": async_task_id})
+            response = api_instance.get_async_inference_task_v1_async_tasks_task_id_get(  # type: ignore
                 path_params=path_params,
                 skip_deserialization=True,
             )

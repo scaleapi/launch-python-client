@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict, Sequence, Set, Type, Union
+from typing import Any, Dict, Set, Type, Union
 
 from pydantic import BaseModel
 from pydantic.schema import get_flat_models_from_models, model_process_schema
@@ -43,7 +43,7 @@ def get_model_definitions_from_flat_models(
     """
     definitions: Dict[str, Dict[str, Any]] = {}
     for model in flat_models:
-        m_schema, m_definitions, m_nested_models = model_process_schema(
+        m_schema, m_definitions, _ = model_process_schema(
             model, model_name_map=model_name_map, ref_prefix=REF_PREFIX
         )
         definitions.update(m_definitions)

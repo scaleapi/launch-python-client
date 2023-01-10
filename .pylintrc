@@ -28,3 +28,4 @@ max-line-length=79
 [MASTER]
 # Ignore anything inside launch/clientlib (since it's documentation)
 ignore=clientlib,api_client
+extension-pkg-whitelist=pydantic
