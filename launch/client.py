@@ -850,7 +850,7 @@ class LaunchClient:
                 **payload
             )
             path_params = frozendict({"model_endpoint_id": model_endpoint_id})
-            response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(
+            response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(  # type: ignore
                 body=update_model_endpoint_request,
                 path_params=path_params,  # type: ignore
                 skip_deserialization=True,
@@ -1010,7 +1010,7 @@ class LaunchClient:
             api_instance = DefaultApi(api_client)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
             path_params = frozendict({"model_endpoint_id": model_endpoint_id})
-            response = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(
+            response = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(  # type: ignore
                 path_params=path_params,  # type: ignore
                 skip_deserialization=True,
             )
@@ -1130,12 +1130,10 @@ class LaunchClient:
             request = EndpointPredictRequest(**payload)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
             query_params = frozendict({"model_endpoint_id": model_endpoint_id})
-            response = (
-                api_instance.create_async_inference_task_v1_async_tasks_post(
-                    body=request,
-                    query_params=query_params,  # type: ignore
-                    skip_deserialization=True,
-                )
+            response = api_instance.create_async_inference_task_v1_async_tasks_post(  # type: ignore
+                body=request,
+                query_params=query_params,  # type: ignore
+                skip_deserialization=True,
             )
             resp = json.loads(response.response.data)
         return resp
