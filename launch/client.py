@@ -1,4 +1,5 @@
 import inspect  # pylint: disable=C0302
+import json
 import logging
 import os
 import shutil
@@ -10,9 +11,10 @@ from zipfile import ZipFile
 import cloudpickle
 import requests
 import yaml
+from frozendict import frozendict
 
 from launch.api_client import ApiClient, Configuration
-from launch.api_client.api.default_api import DefaultApi
+from launch.api_client.apis.tags.default_api import DefaultApi
 from launch.api_client.model.create_model_bundle_request import (
     CreateModelBundleRequest,
 )
@@ -22,6 +24,7 @@ from launch.api_client.model.create_model_endpoint_request import (
 from launch.api_client.model.endpoint_predict_request import (
     EndpointPredictRequest,
 )
+from launch.api_client.model.gpu_type import GpuType
 from launch.api_client.model.model_bundle_environment_params import (
     ModelBundleEnvironmentParams,
 )
@@ -29,6 +32,7 @@ from launch.api_client.model.model_bundle_framework import ModelBundleFramework
 from launch.api_client.model.model_bundle_packaging_type import (
     ModelBundlePackagingType,
 )
+from launch.api_client.model.model_endpoint_type import ModelEndpointType
 from launch.api_client.model.update_model_endpoint_request import (
     UpdateModelEndpointRequest,
 )
@@ -97,6 +101,10 @@ def _add_app_config_to_bundle_create_payload(
         ) as f:
             app_config_dict = yaml.safe_load(f)
             payload["app_config"] = app_config_dict
+
+
+def dict_not_none(**kwargs):
+    return {k: v for k, v in kwargs.items() if v is not None}
 
 
 class LaunchClient:
@@ -350,18 +358,20 @@ class LaunchClient:
             framework = ModelBundleFramework(env_params["framework_type"])
             env_params_copy = env_params.copy()
             env_params_copy["framework_type"] = framework  # type: ignore
-            env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)
-            create_model_bundle_request = CreateModelBundleRequest(
+            env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)  # type: ignore
+            payload = dict_not_none(
                 env_params=env_params_obj,
                 location=raw_bundle_url,
                 name=model_bundle_name,
                 requirements=requirements,
                 packaging_type=ModelBundlePackagingType("zip"),
                 metadata=bundle_metadata,
-                app_config=payload.get("app_config") or {},
+                app_config=payload.get("app_config"),
             )
+            create_model_bundle_request = CreateModelBundleRequest(**payload)  # type: ignore
             api_instance.create_model_bundle_v1_model_bundles_post(
-                create_model_bundle_request=create_model_bundle_request,
+                body=create_model_bundle_request,
+                skip_deserialization=True,
             )
         return ModelBundle(model_bundle_name)
 
@@ -560,21 +570,23 @@ class LaunchClient:
         framework = ModelBundleFramework(env_params["framework_type"])
         env_params_copy = env_params.copy()
         env_params_copy["framework_type"] = framework  # type: ignore
-        env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)
+        env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)  # type: ignore
 
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            create_model_bundle_request = CreateModelBundleRequest(
+            payload = dict_not_none(
                 env_params=env_params_obj,
                 location=raw_bundle_url,
                 name=model_bundle_name,
                 requirements=requirements,
                 packaging_type=ModelBundlePackagingType("cloudpickle"),
                 metadata=bundle_metadata,
-                app_config=payload.get("app_config") or {},
+                app_config=payload.get("app_config"),
             )
+            create_model_bundle_request = CreateModelBundleRequest(**payload)  # type: ignore
             api_instance.create_model_bundle_v1_model_bundles_post(
-                create_model_bundle_request=create_model_bundle_request,
+                body=create_model_bundle_request,
+                skip_deserialization=True,
             )
         # resp["data"]["name"] should equal model_bundle_name
         # TODO check that a model bundle was created and no name collisions happened
@@ -688,11 +700,13 @@ class LaunchClient:
                     or model_bundle.id is None
                 ):
                     model_bundle = self.get_model_bundle(model_bundle)
-                create_model_endpoint_request = CreateModelEndpointRequest(
+                payload = dict_not_none(
                     cpus=cpus,
-                    endpoint_type=endpoint_type,
+                    endpoint_type=ModelEndpointType(endpoint_type),
                     gpus=gpus,
-                    gpu_type=gpu_type,
+                    gpu_type=GpuType(gpu_type)
+                    if gpu_type is not None
+                    else None,
                     labels=labels or {},
                     max_workers=max_workers,
                     memory=memory,
@@ -701,13 +715,19 @@ class LaunchClient:
                     model_bundle_id=model_bundle.id,
                     name=endpoint_name,
                     per_worker=per_worker,
-                    post_inference_hooks=post_inference_hooks,
+                    post_inference_hooks=post_inference_hooks or [],
                     storage=storage,
-                    _check_type=False,
                 )
-                resp = api_instance.create_model_endpoint_v1_model_endpoints_post(
-                    create_model_endpoint_request=create_model_endpoint_request,
+                create_model_endpoint_request = CreateModelEndpointRequest(
+                    **payload
                 )
+                response = (
+                    api_instance.create_model_endpoint_v1_model_endpoints_post(
+                        body=create_model_endpoint_request,
+                        skip_deserialization=True,
+                    )
+                )
+                resp = json.loads(response.response.data)
             endpoint_creation_task_id = resp.get(
                 "endpoint_creation_task_id", None
             )  # TODO probably throw on None
@@ -814,22 +834,28 @@ class LaunchClient:
                 model_endpoint_full = self.get_model_endpoint(endpoint_name)
                 model_endpoint_id = model_endpoint_full.model_endpoint.id  # type: ignore
 
-            update_model_endpoint_request = UpdateModelEndpointRequest(
+            payload = dict_not_none(
                 cpus=cpus,
                 gpus=gpus,
-                gpu_type=gpu_type,
+                gpu_type=GpuType(gpu_type) if gpu_type is not None else None,
                 max_workers=max_workers,
                 memory=memory,
                 min_workers=min_workers,
                 model_bundle_id=model_bundle_id,
                 per_worker=per_worker,
-                post_inference_hooks=post_inference_hooks,
+                post_inference_hooks=post_inference_hooks or [],
                 storage=storage,
             )
-            resp = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(
-                model_endpoint_id=model_endpoint_id,
-                update_model_endpoint_request=update_model_endpoint_request,
+            update_model_endpoint_request = UpdateModelEndpointRequest(
+                **payload
             )
+            path_params = frozendict({"model_endpoint_id": model_endpoint_id})
+            response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(  # type: ignore
+                body=update_model_endpoint_request,
+                path_params=path_params,  # type: ignore
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
         endpoint_creation_task_id = resp.get(
             "endpoint_creation_task_id", None
         )  # Returned from server as "creation"
@@ -846,20 +872,23 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            resp = api_instance.list_model_endpoints_v1_model_endpoints_get(
-                name=endpoint_name,
+            query_params = frozendict({"name": endpoint_name})
+            response = api_instance.list_model_endpoints_v1_model_endpoints_get(  # type: ignore
+                query_params=query_params,
+                skip_deserialization=True,
             )
-            if len(resp.model_endpoints) == 0:
+            resp = json.loads(response.response.data)
+            if len(resp["model_endpoints"]) == 0:
                 return None
-            resp = resp.model_endpoints[0]
+            resp = resp["model_endpoints"][0]
 
-        if resp["endpoint_type"].value == "async":
+        if resp["endpoint_type"] == "async":
             return AsyncEndpoint(
-                ModelEndpoint.from_dict(resp.to_dict()), client=self  # type: ignore
+                ModelEndpoint.from_dict(resp), client=self  # type: ignore
             )
-        elif resp["endpoint_type"].value == "sync":
+        elif resp["endpoint_type"] == "sync":
             return SyncEndpoint(
-                ModelEndpoint.from_dict(resp.to_dict()), client=self  # type: ignore
+                ModelEndpoint.from_dict(resp), client=self  # type: ignore
             )
         else:
             raise ValueError(
@@ -875,9 +904,12 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            resp = api_instance.list_model_bundles_v1_model_bundles_get()
+            response = api_instance.list_model_bundles_v1_model_bundles_get(
+                skip_deserialization=True
+            )
+            resp = json.loads(response.response.data)
         model_bundles = [
-            ModelBundle.from_dict(item.to_dict()) for item in resp.model_bundles  # type: ignore
+            ModelBundle.from_dict(item) for item in resp["model_bundles"]  # type: ignore
         ]
         return model_bundles
 
@@ -896,10 +928,13 @@ class LaunchClient:
         bundle_name = _model_bundle_to_name(model_bundle)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            resp = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(
-                model_name=bundle_name
+            query_params = frozendict({"model_name": bundle_name})
+            response = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(  # type: ignore
+                query_params=query_params,
+                skip_deserialization=True,
             )
-        return ModelBundle.from_dict(resp.to_dict())  # type: ignore
+            resp = json.loads(response.response.data)
+        return ModelBundle.from_dict(resp)  # type: ignore
 
     def clone_model_bundle_with_changes(
         self,
@@ -927,7 +962,7 @@ class LaunchClient:
         resp = self.connection.post(
             payload=payload, route="model_bundle/clone_with_changes"
         )
-        return ModelBundle.from_dict(resp.to_dict())  # type: ignore
+        return ModelBundle.from_dict(resp)  # type: ignore
 
     def list_model_endpoints(self) -> List[Endpoint]:
         """
@@ -938,22 +973,27 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            resp = api_instance.list_model_endpoints_v1_model_endpoints_get()
+            response = (
+                api_instance.list_model_endpoints_v1_model_endpoints_get(
+                    skip_deserialization=True
+                )
+            )
+            resp = json.loads(response.response.data)
         async_endpoints: List[Endpoint] = [
             AsyncEndpoint(
-                model_endpoint=ModelEndpoint.from_dict(endpoint.to_dict()),  # type: ignore
-                client=self,
-            )
-            for endpoint in resp.model_endpoints
-            if endpoint["endpoint_type"].value == "async"
-        ]
-        sync_endpoints: List[Endpoint] = [
-            SyncEndpoint(
-                model_endpoint=ModelEndpoint.from_dict(endpoint.to_dict()),  # type: ignore
+                model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
                 client=self,
             )
             for endpoint in resp["model_endpoints"]
-            if endpoint["endpoint_type"].value == "sync"
+            if endpoint["endpoint_type"] == "async"
+        ]
+        sync_endpoints: List[Endpoint] = [
+            SyncEndpoint(
+                model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
+                client=self,
+            )
+            for endpoint in resp["model_endpoints"]
+            if endpoint["endpoint_type"] == "sync"
         ]
         return async_endpoints + sync_endpoints
 
@@ -969,10 +1009,13 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
-            resp = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(
-                model_endpoint_id=model_endpoint_id,
+            path_params = frozendict({"model_endpoint_id": model_endpoint_id})
+            response = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(  # type: ignore
+                path_params=path_params,  # type: ignore
+                skip_deserialization=True,
             )
-        return resp.deleted
+            resp = json.loads(response.response.data)
+        return resp["deleted"]
 
     def read_endpoint_creation_logs(
         self, model_endpoint: Union[ModelEndpoint, str]
@@ -1030,13 +1073,17 @@ class LaunchClient:
         validate_task_request(url=url, args=args)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            request = EndpointPredictRequest(
+            payload = dict_not_none(
                 return_pickled=return_pickled, url=url, args=args
             )
-            resp = api_instance.create_sync_inference_task_v1_sync_tasks_post(
-                model_endpoint_id=endpoint_id,
-                endpoint_predict_request=request,
+            request = EndpointPredictRequest(**payload)
+            query_params = frozendict({"model_endpoint_id": endpoint_id})
+            response = api_instance.create_sync_inference_task_v1_sync_tasks_post(  # type: ignore
+                body=request,
+                query_params=query_params,
+                skip_deserialization=True,
             )
+            resp = json.loads(response.response.data)
         return resp
 
     def _async_request(
@@ -1077,19 +1124,18 @@ class LaunchClient:
         endpoint = self.get_model_endpoint(endpoint_name)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            request = EndpointPredictRequest(
-                return_pickled=return_pickled,
-                url=url,
-                args=args,
-                _check_type=False,
+            payload = dict_not_none(
+                return_pickled=return_pickled, url=url, args=args
             )
+            request = EndpointPredictRequest(**payload)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
-            resp = (
-                api_instance.create_async_inference_task_v1_async_tasks_post(
-                    model_endpoint_id=model_endpoint_id,
-                    endpoint_predict_request=request,
-                )
+            query_params = frozendict({"model_endpoint_id": model_endpoint_id})
+            response = api_instance.create_async_inference_task_v1_async_tasks_post(  # type: ignore
+                body=request,
+                query_params=query_params,  # type: ignore
+                skip_deserialization=True,
             )
+            resp = json.loads(response.response.data)
         return resp
 
     def _get_async_endpoint_response(
@@ -1127,9 +1173,12 @@ class LaunchClient:
         # TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            resp = api_instance.get_async_inference_task_v1_async_tasks_task_id_get(
-                task_id=async_task_id
+            path_params = frozendict({"task_id": async_task_id})
+            response = api_instance.get_async_inference_task_v1_async_tasks_task_id_get(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
             )
+            resp = json.loads(response.response.data)
         return resp
 
     def batch_async_request(

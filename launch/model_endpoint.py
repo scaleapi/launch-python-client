@@ -10,7 +10,7 @@ from dataclasses_json import Undefined, dataclass_json
 from deprecation import deprecated
 
 from launch.api_client import ApiClient
-from launch.api_client.api.default_api import DefaultApi
+from launch.api_client.apis.tags.default_api import DefaultApi
 from launch.request_validation import validate_task_request
 
 TASK_PENDING_STATE = "PENDING"
@@ -195,7 +195,7 @@ class EndpointResponseFuture:
             async_response = self.client._get_async_endpoint_response(  # pylint: disable=W0212
                 self.endpoint_name, self.async_task_id
             )
-            status = async_response["status"].value
+            status = async_response["status"]
             if status == "PENDING":
                 time.sleep(2)
             else:
@@ -203,8 +203,12 @@ class EndpointResponseFuture:
                     return EndpointResponse(
                         client=self.client,
                         status=status,
-                        result_url=async_response.get("result_url", None),
-                        result=async_response.get("result", None),
+                        result_url=async_response.get("result", {}).get(
+                            "result_url", None
+                        ),
+                        result=async_response.get("result", {}).get(
+                            "result", None
+                        ),
                         traceback=None,
                     )
                 elif status == "FAILURE":
@@ -231,15 +235,20 @@ class Endpoint:
     def _update_model_endpoint_view(self):
         with ApiClient(self.client.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            resp = api_instance.list_model_endpoints_v1_model_endpoints_get(
-                name=self.model_endpoint.name,
+            query_params = {"name": self.model_endpoint.name}
+            response = (
+                api_instance.list_model_endpoints_v1_model_endpoints_get(
+                    query_params=query_params,
+                    skip_deserialization=True,
+                )
             )
-            if len(resp.model_endpoints) == 0:
+            resp = json.loads(response.response.data)
+            if len(resp["model_endpoints"]) == 0:
                 raise ValueError(
                     f"Could not update model endpoint view for endpoint {self.model_endpoint.name}"
                 )
-            resp = resp.model_endpoints[0]
-        self.model_endpoint = ModelEndpoint.from_dict(resp.to_dict())
+            resp = resp["model_endpoints"][0]
+        self.model_endpoint = ModelEndpoint.from_dict(resp)
 
     def status(self) -> Optional[str]:
         """Gets the status of the Endpoint."""
@@ -293,8 +302,8 @@ class SyncEndpoint(Endpoint):
         return EndpointResponse(
             client=self.client,
             status=raw_response.get("status"),
-            result_url=raw_response.get("result_url", None),
-            result=raw_response.get("result", None),
+            result_url=raw_response.get("result", {}).get("result_url", None),
+            result=raw_response.get("result", {}).get("result", None),
             traceback=raw_response.get("traceback", None),
         )
 
@@ -342,7 +351,7 @@ class AsyncEndpoint(Endpoint):
             args=request.args,
             return_pickled=request.return_pickled,
         )
-        async_task_id = response.task_id
+        async_task_id = response["task_id"]
         return EndpointResponseFuture(
             client=self.client,
             endpoint_name=self.model_endpoint.name,
@@ -472,7 +481,7 @@ class AsyncEndpointBatchResponse:
             if raw_response:
                 response_object = EndpointResponse(
                     client=self.client,
-                    status=raw_response["status"].value,
+                    status=raw_response["status"],
                     result_url=raw_response.get("result_url", None),
                     result=raw_response.get("result", None),
                     traceback=raw_response.get("traceback", None),
