@@ -16,6 +16,9 @@ from pydantic import BaseModel
 
 from launch.api_client import ApiClient, Configuration
 from launch.api_client.apis.tags.default_api import DefaultApi
+from launch.api_client.model.create_batch_job_request import (
+    CreateBatchJobRequest,
+)
 from launch.api_client.model.create_model_bundle_request import (
     CreateModelBundleRequest,
 )
@@ -40,8 +43,6 @@ from launch.api_client.model.update_model_endpoint_request import (
 from launch.connection import Connection
 from launch.constants import (
     BATCH_TASK_INPUT_SIGNED_URL_PATH,
-    BATCH_TASK_PATH,
-    BATCH_TASK_RESULTS_PATH,
     ENDPOINT_PATH,
     MODEL_BUNDLE_SIGNED_URL_PATH,
     SCALE_LAUNCH_ENDPOINT,
@@ -132,9 +133,6 @@ class LaunchClient:
         self.self_hosted = self_hosted
         self.upload_bundle_fn: Optional[Callable[[str, str], None]] = None
         self.upload_batch_csv_fn: Optional[Callable[[str, str], None]] = None
-        self.endpoint_auth_decorator_fn: Callable[
-            [Dict[str, Any]], Dict[str, Any]
-        ] = lambda x: x
         self.bundle_location_fn: Optional[Callable[[], str]] = None
         self.batch_csv_location_fn: Optional[Callable[[], str]] = None
         self.configuration = Configuration(
@@ -218,13 +216,6 @@ class LaunchClient:
             batch_csv_location_fn: Function that generates batch_csv_urls for upload_batch_csv_fn.
         """
         self.batch_csv_location_fn = batch_csv_location_fn
-
-    def register_endpoint_auth_decorator(self, endpoint_auth_decorator_fn):
-        """
-        For self-hosted mode only. Registers a function that modifies the endpoint creation payload to include
-        required fields for self-hosting.
-        """
-        self.endpoint_auth_decorator_fn = endpoint_auth_decorator_fn
 
     def _upload_data(self, data: bytes) -> str:
         if self.self_hosted:
@@ -627,6 +618,7 @@ class LaunchClient:
 
     def create_model_endpoint(
         self,
+        *,
         endpoint_name: str,
         model_bundle: Union[ModelBundle, str],
         cpus: int = 3,
@@ -639,6 +631,7 @@ class LaunchClient:
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
+        default_callback_url: Optional[str] = None,
         update_if_exists: bool = False,
         labels: Optional[Dict[str, str]] = None,
     ) -> Optional[Endpoint]:
@@ -696,6 +689,10 @@ class LaunchClient:
 
             post_inference_hooks: List of hooks to trigger after inference tasks are served.
 
+            default_callback_url: The default callback url to use for async endpoints.
+                This can be overridden in the task parameters for each individual task.
+                post_inference_hooks must contain "callback" for the callback to be triggered.
+
             update_if_exists: If ``True``, will attempt to update the endpoint if it exists. Otherwise, will
                 unconditionally try to create a new endpoint. Note that endpoint names for a given user must be unique,
                 so attempting to call this function with ``update_if_exists=False`` for an existing endpoint will raise
@@ -719,6 +716,7 @@ class LaunchClient:
                 max_workers=max_workers,
                 per_worker=per_worker,
                 gpu_type=gpu_type,
+                default_callback_url=default_callback_url,
             )
             # R1710: Either all return statements in a function should return an expression, or none of them should.
             return None
@@ -749,6 +747,7 @@ class LaunchClient:
                     name=endpoint_name,
                     per_worker=per_worker,
                     post_inference_hooks=post_inference_hooks or [],
+                    default_callback_url=default_callback_url,
                     storage=storage,
                 )
                 create_model_endpoint_request = CreateModelEndpointRequest(
@@ -783,6 +782,7 @@ class LaunchClient:
 
     def edit_model_endpoint(
         self,
+        *,
         model_endpoint: Union[ModelEndpoint, str],
         model_bundle: Optional[Union[ModelBundle, str]] = None,
         cpus: Optional[float] = None,
@@ -794,6 +794,7 @@ class LaunchClient:
         per_worker: Optional[int] = None,
         gpu_type: Optional[str] = None,
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
+        default_callback_url: Optional[str] = None,
     ) -> None:
         """
         Edits an existing model endpoint. Here are the fields that **cannot** be edited on an existing endpoint:
@@ -839,6 +840,10 @@ class LaunchClient:
 
             post_inference_hooks: List of hooks to trigger after inference tasks are served.
 
+            default_callback_url: The default callback url to use for async endpoints.
+                This can be overridden in the task parameters for each individual task.
+                post_inference_hooks must contain "callback" for the callback to be triggered.
+
         """
         logger.info("Editing existing endpoint")
         with ApiClient(self.configuration) as api_client:
@@ -877,6 +882,7 @@ class LaunchClient:
                 model_bundle_id=model_bundle_id,
                 per_worker=per_worker,
                 post_inference_hooks=post_inference_hooks or [],
+                default_callback_url=default_callback_url,
                 storage=storage,
             )
             update_model_endpoint_request = UpdateModelEndpointRequest(
@@ -1069,7 +1075,7 @@ class LaunchClient:
         endpoint_id: str,
         url: Optional[str] = None,
         args: Optional[Dict] = None,
-        return_pickled: bool = True,
+        return_pickled: bool = False,
     ) -> Dict[str, Any]:
         """
         Not recommended for use, instead use functions provided by SyncEndpoint
@@ -1122,9 +1128,11 @@ class LaunchClient:
     def _async_request(
         self,
         endpoint_name: str,
+        *,
         url: Optional[str] = None,
         args: Optional[Dict] = None,
-        return_pickled: bool = True,
+        callback_url: Optional[str] = None,
+        return_pickled: bool = False,
     ) -> str:
         """
         Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key that can be used to retrieve
@@ -1146,6 +1154,10 @@ class LaunchClient:
 
                 Exactly one of ``url`` and ``args`` must be specified.
 
+            callback_url: The callback url to use for this task. If None, then the
+                default_callback_url of the endpoint is used. The endpoint must specify
+                "callback" as a post-inference hook for the callback to be triggered.
+
             return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
 
         Returns:
@@ -1158,7 +1170,10 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             payload = dict_not_none(
-                return_pickled=return_pickled, url=url, args=args
+                return_pickled=return_pickled,
+                url=url,
+                args=args,
+                callback_url=callback_url,
             )
             request = EndpointPredictRequest(**payload)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
@@ -1216,14 +1231,21 @@ class LaunchClient:
 
     def batch_async_request(
         self,
+        *,
         model_bundle: Union[ModelBundle, str],
         urls: List[str] = None,
         inputs: Optional[List[Dict[str, Any]]] = None,
         batch_url_file_location: Optional[str] = None,
         serialization_format: str = "json",
-        batch_task_options: Optional[Dict[str, Any]] = None,
         labels: Optional[Dict[str, str]] = None,
-    ):
+        cpus: Optional[int] = None,
+        memory: Optional[str] = None,
+        gpus: Optional[int] = None,
+        gpu_type: Optional[str] = None,
+        storage: Optional[str] = None,
+        max_workers: Optional[int] = None,
+        per_worker: Optional[int] = None,
+    ) -> Dict[str, Any]:
         """
         Sends a batch inference request using a given bundle. Returns a key that can be used to retrieve
         the results of inference at a later time.
@@ -1244,35 +1266,43 @@ class LaunchClient:
             serialization_format: Serialization format of output, either 'pickle' or 'json'.
                 'pickle' corresponds to pickling results + returning
 
-            batch_task_options: A Dict of optional endpoint/batch task settings, i.e. certain endpoint settings
-                like ``cpus``, ``memory``, ``gpus``, ``gpu_type``, ``max_workers``, as well as under-the-hood batch
-                job settings, like ``pyspark_partition_size``, ``pyspark_max_executors``.
+            labels: An optional dictionary of key/value pairs to associate with this endpoint.
+
+            cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater than
+                or equal to 1.
+
+            memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must be
+                a positive amount of memory.
+
+            storage: Amount of local ephemeral storage each worker should get, e.g. "4Gi", "512Mi",
+                etc. This must be a positive amount of storage.
+
+            gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
+
+            min_workers: The minimum number of workers. Must be greater than or equal to 0.
+
+            max_workers: The maximum number of workers. Must be greater than or equal to 0, and as
+                well as greater than or equal to ``min_workers``.
+
+            per_worker: The maximum number of concurrent requests that an individual worker can
+                service. Launch automatically scales the number of workers for the endpoint so that
+                each worker is processing ``per_worker`` requests:
+
+                - If the average number of concurrent requests per worker is lower than
+                  ``per_worker``, then the number of workers will be reduced.
+                - Otherwise, if the average number of concurrent requests per worker is higher
+                  than ``per_worker``, then the number of workers will be increased to meet the
+                  elevated traffic.
+
+            gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu
+                requested. Here are the supported values:
+
+                - ``nvidia-tesla-t4``
+                - ``nvidia-ampere-a10``
 
         Returns:
-            An id/key that can be used to fetch inference results at a later time
+            A dictionary that contains `job_id` as a key, and the ID as the value.
         """
-
-        bundle_name = _model_bundle_to_name(model_bundle)
-
-        if batch_task_options is None:
-            batch_task_options = {}
-        allowed_batch_task_options = {
-            "cpus",
-            "memory",
-            "storage",
-            "gpus",
-            "gpu_type",
-            "max_workers",
-            "pyspark_partition_size",
-            "pyspark_max_executors",
-        }
-        if (
-            len(set(batch_task_options.keys()) - allowed_batch_task_options)
-            > 0
-        ):
-            raise ValueError(
-                f"Disallowed options {set(batch_task_options.keys()) - allowed_batch_task_options} for batch task"
-            )
 
         if not bool(inputs) ^ bool(urls):
             raise ValueError(
@@ -1307,27 +1337,44 @@ class LaunchClient:
 
         logger.info("Writing batch task csv to %s", file_location)
 
-        payload = dict(
+        if (
+            not isinstance(model_bundle, ModelBundle)
+            or model_bundle.id is None
+        ):
+            model_bundle = self.get_model_bundle(model_bundle)
+
+        resource_requests = dict_not_none(
+            cpus=cpus,
+            memory=memory,
+            gpus=gpus,
+            gpu_type=gpu_type,
+            storage=storage,
+            max_workers=max_workers,
+            per_worker=per_worker,
+        )
+        payload = dict_not_none(
+            model_bundle_id=model_bundle.id,
             input_path=file_location,
             serialization_format=serialization_format,
             labels=labels,
+            resource_requests=resource_requests,
         )
-        payload.update(batch_task_options)
-        payload = self.endpoint_auth_decorator_fn(payload)
-        resp = self.connection.post(
-            route=f"{BATCH_TASK_PATH}/{bundle_name}",
-            payload=payload,
-        )
-        return resp["job_id"]
+        request = CreateBatchJobRequest(**payload)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.create_batch_job_v1_batch_jobs_post(  # type: ignore
+                body=request,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+        return resp
 
-    def get_batch_async_response(
-        self, batch_async_task_id: str
-    ) -> Dict[str, Any]:
+    def get_batch_async_response(self, batch_job_id: str) -> Dict[str, Any]:
         """
         Gets inference results from a previously created batch job.
 
         Parameters:
-            batch_async_task_id: An id representing the batch task job. This id is the in the response from
+            batch_job_id: An id representing the batch task job. This id is the in the response from
                 calling ``batch_async_request``.
 
         Returns:
@@ -1335,11 +1382,19 @@ class LaunchClient:
 
             - ``status``: The status of the job.
             - ``result``: The url where the result is stored.
-            - ``duration``: A string representation of how long the job took to finish.
+            - ``duration``: A string representation of how long the job took to finish
+                    or how long it has been running, for a job current in progress.
+            - ``num_tasks_pending``: The number of tasks that are still pending.
+            - ``num_tasks_completed``: The number of tasks that have completed.
         """
-        resp = self.connection.get(
-            route=f"{BATCH_TASK_RESULTS_PATH}/{batch_async_task_id}"
-        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"batch_job_id": batch_job_id})
+            response = api_instance.get_batch_job_v1_batch_jobs_batch_job_id_get(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
         return resp
 
 
