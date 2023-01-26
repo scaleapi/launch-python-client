@@ -1236,7 +1236,7 @@ class LaunchClient:
         urls: List[str] = None,
         inputs: Optional[List[Dict[str, Any]]] = None,
         batch_url_file_location: Optional[str] = None,
-        serialization_format: str = "json",
+        serialization_format: str = "JSON",
         labels: Optional[Dict[str, str]] = None,
         cpus: Optional[int] = None,
         memory: Optional[str] = None,
@@ -1263,7 +1263,7 @@ class LaunchClient:
             batch_url_file_location: In self-hosted mode, the input to the batch job will be uploaded
                 to this location if provided. Otherwise, one will be determined from bundle_location_fn()
 
-            serialization_format: Serialization format of output, either 'pickle' or 'json'.
+            serialization_format: Serialization format of output, either 'PICKLE' or 'JSON'.
                 'pickle' corresponds to pickling results + returning
 
             labels: An optional dictionary of key/value pairs to associate with this endpoint.
