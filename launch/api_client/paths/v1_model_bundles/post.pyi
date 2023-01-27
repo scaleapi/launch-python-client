@@ -18,17 +18,16 @@ from datetime import date, datetime  # noqa: F401
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
 import urllib3
-from urllib3._collections import HTTPHeaderDict
-
-from launch.api_client import schemas  # noqa: F401
-from launch.api_client import api_client, exceptions
-from launch.api_client.model.create_model_bundle_request import (
+from launch_client import schemas  # noqa: F401
+from launch_client import api_client, exceptions
+from launch_client.model.create_model_bundle_request import (
     CreateModelBundleRequest,
 )
-from launch.api_client.model.create_model_bundle_response import (
+from launch_client.model.create_model_bundle_response import (
     CreateModelBundleResponse,
 )
-from launch.api_client.model.http_validation_error import HTTPValidationError
+from launch_client.model.http_validation_error import HTTPValidationError
+from urllib3._collections import HTTPHeaderDict
 
 # body param
 SchemaForRequestBodyApplicationJson = CreateModelBundleRequest

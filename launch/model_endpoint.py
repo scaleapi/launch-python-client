@@ -108,7 +108,8 @@ class EndpointRequest:
         self,
         url: Optional[str] = None,
         args: Optional[Dict] = None,
-        return_pickled: Optional[bool] = True,
+        callback_url: Optional[str] = None,
+        return_pickled: Optional[bool] = False,
         request_id: Optional[str] = None,
     ):
         # TODO: request_id is pretty much here only to support the clientside AsyncEndpointBatchResponse
@@ -118,6 +119,7 @@ class EndpointRequest:
             request_id = str(uuid.uuid4())
         self.url = url
         self.args = args
+        self.callback_url = callback_url
         self.return_pickled = return_pickled
         self.request_id: str = request_id
 
@@ -349,6 +351,7 @@ class AsyncEndpoint(Endpoint):
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
+            callback_url=request.callback_url,
             return_pickled=request.return_pickled,
         )
         async_task_id = response["task_id"]
@@ -389,6 +392,7 @@ class AsyncEndpoint(Endpoint):
                     endpoint_name=self.model_endpoint.name,
                     url=request.url,
                     args=request.args,
+                    callback_url=request.callback_url,
                     return_pickled=request.return_pickled,
                 )
             )
