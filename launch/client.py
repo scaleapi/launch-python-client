@@ -16,6 +16,9 @@ from pydantic import BaseModel
 
 from launch.api_client import ApiClient, Configuration
 from launch.api_client.apis.tags.default_api import DefaultApi
+from launch.api_client.model.clone_model_bundle_request import (
+    CloneModelBundleRequest,
+)
 from launch.api_client.model.create_batch_job_request import (
     CreateBatchJobRequest,
 )
@@ -75,6 +78,20 @@ LaunchModel_T = TypeVar("LaunchModel_T")
 def _model_bundle_to_name(model_bundle: Union[ModelBundle, str]) -> str:
     if isinstance(model_bundle, ModelBundle):
         return model_bundle.name
+    elif isinstance(model_bundle, str):
+        return model_bundle
+    else:
+        raise TypeError("model_bundle should be type ModelBundle or str")
+
+
+def _model_bundle_to_id(model_bundle: Union[ModelBundle, str]) -> str:
+    if isinstance(model_bundle, ModelBundle):
+        if model_bundle.id is None:
+            raise ValueError(
+                "You need to pass in a ModelBundle that has an id, "
+                "i.e. one that has already been registered on the server"
+            )
+        return model_bundle.id
     elif isinstance(model_bundle, str):
         return model_bundle
     else:
@@ -977,31 +994,33 @@ class LaunchClient:
 
     def clone_model_bundle_with_changes(
         self,
-        existing_bundle: Union[ModelBundle, str],
-        new_bundle_name: str,
+        model_bundle: Union[ModelBundle, str],
         app_config: Optional[Dict] = None,
     ) -> ModelBundle:
         """
         Clones an existing model bundle with changes to its app config. (More fields coming soon)
 
         Parameters:
-            existing_bundle: The existing bundle or its name.
-            new_bundle_name: The new bundle's name.
+            model_bundle: The existing bundle or its ID.
             app_config: The new bundle's app config, if not passed in, the new bundle's ``app_config`` will be set to ``None``
 
         Returns:
             A ``ModelBundle`` object
         """
-        bundle_name = _model_bundle_to_name(existing_bundle)
-        payload = dict(
-            existing_bundle_name=bundle_name,
-            new_bundle_name=new_bundle_name,
-            app_config=app_config,
-        )
-        resp = self.connection.post(
-            payload=payload, route="model_bundle/clone_with_changes"
-        )
-        return ModelBundle.from_dict(resp)  # type: ignore
+
+        bundle_id = _model_bundle_to_id(model_bundle)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            payload = dict_not_none(
+                original_model_bundle_id=bundle_id,
+                app_config=app_config,
+            )
+            clone_model_bundle_request = CloneModelBundleRequest(**payload)
+            response = api_instance.clone_model_bundle_with_changes_v1_model_bundles_clone_with_changes_post(
+                body=clone_model_bundle_request,
+                skip_deserialization=True,
+            )
+        return json.loads(response.response.data)
 
     def list_model_endpoints(self) -> List[Endpoint]:
         """
