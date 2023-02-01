@@ -87,8 +87,10 @@ def _model_bundle_to_name(model_bundle: Union[ModelBundle, str]) -> str:
 def _model_bundle_to_id(model_bundle: Union[ModelBundle, str]) -> str:
     if isinstance(model_bundle, ModelBundle):
         if model_bundle.id is None:
-            raise ValueError("You need to pass in a ModelBundle that has an id, "
-                             "i.e. one that has already been registered on the server")
+            raise ValueError(
+                "You need to pass in a ModelBundle that has an id, "
+                "i.e. one that has already been registered on the server"
+            )
         return model_bundle.id
     elif isinstance(model_bundle, str):
         return model_bundle
