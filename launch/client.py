@@ -611,7 +611,7 @@ class LaunchClient:
                 schema_location=schema_location,
             )
             create_model_bundle_request = CreateModelBundleRequest(**payload)  # type: ignore
-            resp = api_instance.create_model_bundle_v1_model_bundles_post(
+            api_instance.create_model_bundle_v1_model_bundles_post(
                 body=create_model_bundle_request,
                 skip_deserialization=True,
             )
