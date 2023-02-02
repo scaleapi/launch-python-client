@@ -40,22 +40,22 @@ def list_endpoints(ctx: click.Context):
             servable_endpoint.model_endpoint.status,
             servable_endpoint.model_endpoint.endpoint_type,
             str(
-                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                (servable_endpoint.model_endpoint.deployment_state or {}).get(
                     "min_workers", ""
                 )
             ),
             str(
-                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                (servable_endpoint.model_endpoint.deployment_state or {}).get(
                     "max_workers", ""
                 )
             ),
             str(
-                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                (servable_endpoint.model_endpoint.deployment_state or {}).get(
                     "available_workers", ""
                 )
             ),
             str(
-                (servable_endpoint.model_endpoint.worker_settings or {}).get(
+                (servable_endpoint.model_endpoint.deployment_state or {}).get(
                     "unavailable_workers", ""
                 )
             ),
