@@ -20,6 +20,7 @@ def list_endpoints(ctx: click.Context):
     client = init_client(ctx)
 
     table = Table(
+        "Endpoint ID",
         "Endpoint name",
         "Bundle name",
         "Status",
@@ -35,6 +36,7 @@ def list_endpoints(ctx: click.Context):
 
     for servable_endpoint in client.list_model_endpoints():
         table.add_row(
+            servable_endpoint.model_endpoint.id,
             servable_endpoint.model_endpoint.name,
             servable_endpoint.model_endpoint.bundle_name,
             servable_endpoint.model_endpoint.status,
@@ -88,3 +90,25 @@ def read_endpoint_creation_logs(ctx: click.Context, endpoint_name: str):
     res = client.read_endpoint_creation_logs(endpoint_name)
     # rich fails to render the text because it's already formatted
     print(res)
+
+
+@endpoints.command("get")
+@click.argument("endpoint_name")
+@click.pass_context
+def get_endpoint(ctx: click.Context, endpoint_name: str):
+    """Print bundle info"""
+    client = init_client(ctx)
+
+    model_endpoint = client.get_model_endpoint(endpoint_name).model_endpoint
+
+    console = Console()
+    console.print(f"endpoint_id: {model_endpoint.id}")
+    console.print(f"endpoint_name: {model_endpoint.name}")
+    console.print(f"bundle_name: {model_endpoint.bundle_name}")
+    console.print(f"status: {model_endpoint.status}")
+    console.print(f"resource_state: {model_endpoint.resource_state}")
+    console.print(f"deployment_state: {model_endpoint.deployment_state}")
+    console.print(f"metadata: {model_endpoint.metadata}")
+    console.print(f"endpoint_type: {model_endpoint.endpoint_type}")
+    console.print(f"configs: {model_endpoint.configs}")
+    console.print(f"destination: {model_endpoint.destination}")
