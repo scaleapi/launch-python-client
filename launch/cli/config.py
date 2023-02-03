@@ -24,7 +24,7 @@ class ContextObject:
 
     def load(self):
         try:
-            with open(self.config_path(), "rt") as f:
+            with open(self.config_path(), "r", encoding="utf-8") as f:
                 new_items = json.load(f)
                 for key, value in new_items.items():
                     if hasattr(self, key):
@@ -35,7 +35,7 @@ class ContextObject:
         return self
 
     def save(self):
-        with open(self.config_path(), "wt") as f:
+        with open(self.config_path(), "w", encoding="utf-8") as f:
             json.dump(asdict(self), f, indent=4)
 
 
