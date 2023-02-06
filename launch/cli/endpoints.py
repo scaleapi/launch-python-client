@@ -1,8 +1,8 @@
 import click
-from rich.console import Console
 from rich.table import Table
 
 from launch.cli.client import init_client
+from launch.cli.console import pretty_print, spinner
 from launch.model_endpoint import ModelEndpoint
 
 
@@ -34,37 +34,39 @@ def list_endpoints(ctx: click.Context):
         title_justify="left",
     )
 
-    for servable_endpoint in client.list_model_endpoints():
-        table.add_row(
-            servable_endpoint.model_endpoint.id,
-            servable_endpoint.model_endpoint.name,
-            servable_endpoint.model_endpoint.bundle_name,
-            servable_endpoint.model_endpoint.status,
-            servable_endpoint.model_endpoint.endpoint_type,
-            str(
-                (servable_endpoint.model_endpoint.deployment_state or {}).get(
-                    "min_workers", ""
-                )
-            ),
-            str(
-                (servable_endpoint.model_endpoint.deployment_state or {}).get(
-                    "max_workers", ""
-                )
-            ),
-            str(
-                (servable_endpoint.model_endpoint.deployment_state or {}).get(
-                    "available_workers", ""
-                )
-            ),
-            str(
-                (servable_endpoint.model_endpoint.deployment_state or {}).get(
-                    "unavailable_workers", ""
-                )
-            ),
-            servable_endpoint.model_endpoint.metadata or "{}",
-        )
-    console = Console()
-    console.print(table)
+    with spinner("Fetching model endpoints"):
+        model_endpoints = client.list_model_endpoints()
+        for servable_endpoint in model_endpoints:
+            table.add_row(
+                servable_endpoint.model_endpoint.id,
+                servable_endpoint.model_endpoint.name,
+                servable_endpoint.model_endpoint.bundle_name,
+                servable_endpoint.model_endpoint.status,
+                servable_endpoint.model_endpoint.endpoint_type,
+                str(
+                    (
+                        servable_endpoint.model_endpoint.deployment_state or {}
+                    ).get("min_workers", "")
+                ),
+                str(
+                    (
+                        servable_endpoint.model_endpoint.deployment_state or {}
+                    ).get("max_workers", "")
+                ),
+                str(
+                    (
+                        servable_endpoint.model_endpoint.deployment_state or {}
+                    ).get("available_workers", "")
+                ),
+                str(
+                    (
+                        servable_endpoint.model_endpoint.deployment_state or {}
+                    ).get("unavailable_workers", "")
+                ),
+                servable_endpoint.model_endpoint.metadata or "{}",
+            )
+
+    pretty_print(table)
 
 
 @endpoints.command("delete")
@@ -74,10 +76,11 @@ def delete_endpoint(ctx: click.Context, endpoint_name: str):
     """Delete a model endpoint"""
     client = init_client(ctx)
 
-    console = Console()
-    endpoint = ModelEndpoint(name=endpoint_name)
-    res = client.delete_model_endpoint(endpoint)
-    console.print(res)
+    with spinner(f"Deleting model endpoint '{endpoint_name}'"):
+        endpoint = ModelEndpoint(name=endpoint_name)
+        res = client.delete_model_endpoint(endpoint)
+
+    pretty_print(res)
 
 
 @endpoints.command("creation-logs")
@@ -87,7 +90,9 @@ def read_endpoint_creation_logs(ctx: click.Context, endpoint_name: str):
     """Reads the creation logs for an endpoint"""
     client = init_client(ctx)
 
-    res = client.read_endpoint_creation_logs(endpoint_name)
+    with spinner(f"Fetching creation logs for endpoint '{endpoint_name}'"):
+        res = client.read_endpoint_creation_logs(endpoint_name)
+
     # rich fails to render the text because it's already formatted
     print(res)
 
@@ -99,16 +104,18 @@ def get_endpoint(ctx: click.Context, endpoint_name: str):
     """Print bundle info"""
     client = init_client(ctx)
 
-    model_endpoint = client.get_model_endpoint(endpoint_name).model_endpoint
+    with spinner(f"Fetching endpoint '{endpoint_name}'"):
+        model_endpoint = client.get_model_endpoint(
+            endpoint_name
+        ).model_endpoint
 
-    console = Console()
-    console.print(f"endpoint_id: {model_endpoint.id}")
-    console.print(f"endpoint_name: {model_endpoint.name}")
-    console.print(f"bundle_name: {model_endpoint.bundle_name}")
-    console.print(f"status: {model_endpoint.status}")
-    console.print(f"resource_state: {model_endpoint.resource_state}")
-    console.print(f"deployment_state: {model_endpoint.deployment_state}")
-    console.print(f"metadata: {model_endpoint.metadata}")
-    console.print(f"endpoint_type: {model_endpoint.endpoint_type}")
-    console.print(f"configs: {model_endpoint.configs}")
-    console.print(f"destination: {model_endpoint.destination}")
+    pretty_print(f"endpoint_id: {model_endpoint.id}")
+    pretty_print(f"endpoint_name: {model_endpoint.name}")
+    pretty_print(f"bundle_name: {model_endpoint.bundle_name}")
+    pretty_print(f"status: {model_endpoint.status}")
+    pretty_print(f"resource_state: {model_endpoint.resource_state}")
+    pretty_print(f"deployment_state: {model_endpoint.deployment_state}")
+    pretty_print(f"metadata: {model_endpoint.metadata}")
+    pretty_print(f"endpoint_type: {model_endpoint.endpoint_type}")
+    pretty_print(f"configs: {model_endpoint.configs}")
+    pretty_print(f"destination: {model_endpoint.destination}")
