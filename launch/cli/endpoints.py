@@ -248,4 +248,6 @@ def edit_endpoint(ctx: click.Context, endpoint_name: str):
     )
 
     with spinner(f"Editing endpoint '{endpoint_name}'"):
+        # TODO: Print out a nice error message if the user passes in arguments
+        # that fail server-side validation.
         client.edit_model_endpoint(model_endpoint=model_endpoint, **kwargs)
