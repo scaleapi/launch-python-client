@@ -4,7 +4,7 @@ import time
 import uuid
 from collections import Counter
 from dataclasses import dataclass
-from typing import Dict, Optional, Sequence
+from typing import Dict, List, Optional, Sequence
 
 from dataclasses_json import Undefined, dataclass_json
 from deprecation import deprecated
@@ -73,6 +73,16 @@ class ModelEndpoint:
     destination: Optional[str] = None
     """
     Queue identifier for endpoint, use only for debugging.
+    """
+
+    post_inference_hooks: Optional[List[str]] = None
+    """
+    List of post inference hooks for the endpoint.
+    """
+
+    default_callback_url: Optional[str] = None
+    """
+    Default callback url for the endpoint.
     """
 
     def __repr__(self):

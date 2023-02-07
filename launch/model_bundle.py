@@ -56,5 +56,7 @@ class ModelBundle:
     An optional user-specified configuration mapping for the bundle.
     """
 
+    created_at: Optional[str] = None
+
     def __str__(self):
         return f"ModelBundle(bundle_name={self.name})"
