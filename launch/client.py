@@ -808,6 +808,11 @@ class LaunchClient:
                 "Endpoint should be one of the types 'sync' or 'async'"
             )
 
+    """
+    XXX: Returns a 500
+    
+    Also need to pass in optional query params
+    """
     def list_model_bundles(self) -> List[ModelBundle]:
         """
         Returns a list of model bundles that the user owns.
@@ -817,7 +822,9 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
+            query_params = {"name": self.model_endpoint.name}
             response = api_instance.list_model_bundles_v1_model_bundles_get(
+                query_params=query_params,
                 skip_deserialization=True
             )
             resp = json.loads(response.response.data)
@@ -848,8 +855,6 @@ class LaunchClient:
             )
             resp = json.loads(response.response.data)
         return ModelBundle.from_dict(resp)  # type: ignore
-
-
 
     def clone_model_bundle_with_changes(
         self,
@@ -1921,6 +1926,22 @@ class LaunchClient:
             )
             return json.loads(response.response.data)
 
+    def list_model_endpoints_v1(self) -> List[Dict[str, Any]]:
+        """
+        Lists all model endpoints that the user owns.
+
+        Returns:
+            A list of ``ModelEndpoint`` objects.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = (
+                api_instance.list_model_endpoints_v1_model_endpoints_get(
+                    skip_deserialization=True
+                )
+            )
+            return json.loads(response.response.data)
+
     def get_model_endpoint_by_id_v1(
         self, model_endpoint_id: str
     ) -> Dict[str, Any]:
@@ -1928,7 +1949,7 @@ class LaunchClient:
         Gets a model endpoint for a given ID.
 
         Parameters:
-            endpoint_id: The name of the endpoint to retrieve.
+            model_endpoint_id: The name of the endpoint to retrieve.
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
