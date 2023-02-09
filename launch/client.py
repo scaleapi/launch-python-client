@@ -519,8 +519,6 @@ class LaunchClient:
             model_bundle: (deprecated) The ``ModelBundle`` that the endpoint should serve. Deprecated in favor of
                 model_bundle_id.
             
-            model_bundle_id: The ID of the ``ModelBundle`` that the endpoint should serve.
-
             cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater than or equal to 1.
 
             memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must be a positive
@@ -583,7 +581,6 @@ class LaunchClient:
             self.edit_model_endpoint(
                 model_endpoint=endpoint_name,
                 model_bundle=model_bundle,
-                model_bundle_id=model_bundle_id,
                 cpus=cpus,
                 memory=memory,
                 storage=storage,
@@ -602,23 +599,13 @@ class LaunchClient:
             logger.info("Creating new endpoint")
             with ApiClient(self.configuration) as api_client:
                 api_instance = DefaultApi(api_client)
-                if bool(model_bundle) ^ bool(model_bundle_id):
-                    raise ValueError("Can only specify one of 'model_bundle' and 'model_bundle_id'")
 
-                if model_bundle_id:
-                    # Need to fetch the ModelBundle object so that we can use it later in this function,
-                    # so as to not break existing things.
-                else:
-                    if (
-                        not isinstance(model_bundle, ModelBundle)
-                        or model_bundle.id is None
-                    ):
-                        model_bundle = self.get_model_bundle(model_bundle)
+                if (
+                    not isinstance(model_bundle, ModelBundle)
+                    or model_bundle.id is None
+                ):
+                    model_bundle = self.get_model_bundle(model_bundle)
 
-                    # By here, we have a ModelBundle regardless, so we can get its .id
-                    model_bundle_id = model_bundle.id
-
-                assert model_bundle_id is not None
                 payload = dict_not_none(
                     cpus=cpus,
                     endpoint_type=ModelEndpointType(endpoint_type),
@@ -631,7 +618,6 @@ class LaunchClient:
                     memory=memory,
                     metadata={},
                     min_workers=min_workers,
-                    model_bundle_id=model_bundle_id,
                     name=endpoint_name,
                     per_worker=per_worker,
                     post_inference_hooks=post_inference_hooks or [],
@@ -863,28 +849,6 @@ class LaunchClient:
             resp = json.loads(response.response.data)
         return ModelBundle.from_dict(resp)  # type: ignore
 
-    def get_model_bundle_by_id(
-        self, model_bundle_id: str
-    ) -> ModelBundle:
-        """
-        Returns a model bundle specified by ``model_bundle_id`` that the user owns.
-
-        Parameters:
-            model_bundle_id: The bundle ID.
-
-        Returns:
-            A ``ModelBundle`` object
-
-        """
-        with ApiClient(self.configuration) as api_client:
-            api_instance = DefaultApi(api_client)
-            query_params = frozendict({"model_name": bundle_name})
-            response = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(  # type: ignore
-                query_params=query_params,
-                skip_deserialization=True,
-            )
-            resp = json.loads(response.response.data)
-        return ModelBundle.from_dict(resp)  # type: ignore
 
 
     def clone_model_bundle_with_changes(
@@ -1684,7 +1648,8 @@ class LaunchClient:
                 skip_deserialization=True,
             )
             return json.loads(response.response.data)
-            def list_model_bundles_v1(self) -> List[Dict[str, Any]]:
+
+    def list_model_bundles_v1(self) -> List[Dict[str, Any]]:
         """
         Returns a list of model bundles that the user owns.
 
@@ -1707,7 +1672,16 @@ class LaunchClient:
                 skip_deserialization=True,
             )
             return json.loads(response.response.data)
-        pass
+
+    def get_latest_model_bundle_v1(self, model_bundle_name: str) -> Dict[str, Any]:
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"model_name": model_bundle_name})
+            response = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(  # type: ignore
+                path_params=path_params,  # type: ignore
+                skip_deserialization=True,
+            )
+            return json.loads(response.response.data)
 
     def create_model_endpoint_v1(
         self,
@@ -1940,7 +1914,7 @@ class LaunchClient:
                 **payload
             )
             path_params = frozendict({"model_endpoint_id": model_endpoint_id})
-            response =  api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(  # type: ignore
+            response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(  # type: ignore
                 body=update_model_endpoint_request,
                 path_params=path_params,  # type: ignore
                 skip_deserialization=True,
