@@ -1955,7 +1955,6 @@ class LaunchClient:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"model_endpoint_id": model_endpoint_id})
             response = api_instance.get_model_endpoints_api_v1_model_endpoints_api_get(  # type: ignore
-                # TODO: how to pass ID?
                 path_params=path_params,
                 skip_deserialization=True,
             )
@@ -1994,10 +1993,14 @@ class LaunchClient:
         model_endpoint_id: str,
         url: Optional[str] = None,
         args: Optional[Dict[str, Any]] = None,
-        callback_url: Optional[str] = None,
         return_pickled: Optional[bool] = False,
-    ) -> SyncEndpointPredictResponse:
-        pass
+    ) -> Dict[str, Any]:
+        return self._sync_request(
+            endpoint_id=model_endpoint_id,
+            url=url,
+            args=args,
+            return_pickled=return_pickled,
+        )
 
     def create_async_inference_task_v1(
         self,
@@ -2006,14 +2009,37 @@ class LaunchClient:
         args: Optional[Dict[str, Any]] = None,
         callback_url: Optional[str] = None,
         return_pickled: Optional[bool] = False,
-    ) -> CreateAsyncTaskResponse:
-        pass
+    ) -> Dict[str, Any]:
+        validate_task_request(url=url, args=args)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            payload = dict_not_none(
+                return_pickled=return_pickled,
+                url=url,
+                args=args,
+                callback_url=callback_url,
+            )
+            request = EndpointPredictRequest(**payload)
+            query_params = frozendict({"model_endpoint_id": model_endpoint_id})
+            response = api_instance.create_async_inference_task_v1_async_tasks_post(  # type: ignore
+                body=request,
+                query_params=query_params,  # type: ignore
+                skip_deserialization=True,
+            )
+            return json.loads(response.response.data)
 
     def get_async_inference_task_v1(
         self,
         task_id: str,
-    ) -> GetAsyncTaskResponse:
-        pass
+    ) -> Dict[str, Any]:
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"task_id": task_id})
+            response = api_instance.get_async_inference_task_v1_async_tasks_task_id_get(
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            return json.loads(response.response.data)
 
 
 def _zip_directory(zipf: ZipFile, path: str) -> None:
