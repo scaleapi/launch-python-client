@@ -1013,7 +1013,7 @@ class LaunchClient:
             api_instance = DefaultApi(api_client)
             payload = dict_not_none(
                 original_model_bundle_id=bundle_id,
-                app_config=app_config,
+                new_app_config=app_config,
             )
             clone_model_bundle_request = CloneModelBundleRequest(**payload)
             response = api_instance.clone_model_bundle_with_changes_v1_model_bundles_clone_with_changes_post(
