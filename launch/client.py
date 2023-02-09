@@ -19,6 +19,7 @@ from launch.api_client.apis.tags.default_api import DefaultApi
 from launch.api_client.model.clone_model_bundle_request import (
     CloneModelBundleRequest,
 )
+from launch.api_client.model.create_async_task_response import CreateAsyncTaskResponse
 from launch.api_client.model.create_batch_job_request import (
     CreateBatchJobRequest,
 )
@@ -34,6 +35,7 @@ from launch.api_client.model.delete_model_endpoint_response import DeleteModelEn
 from launch.api_client.model.endpoint_predict_request import (
     EndpointPredictRequest,
 )
+from launch.api_client.model.get_async_task_response import GetAsyncTaskResponse
 from launch.api_client.model.get_model_endpoint_response import GetModelEndpointResponse
 from launch.api_client.model.gpu_type import GpuType
 from launch.api_client.model.model_bundle_environment_params import (
@@ -44,6 +46,7 @@ from launch.api_client.model.model_bundle_packaging_type import (
     ModelBundlePackagingType,
 )
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
+from launch.api_client.model.sync_endpoint_predict_response import SyncEndpointPredictResponse
 from launch.api_client.model.update_model_endpoint_request import (
     UpdateModelEndpointRequest,
 )
@@ -1874,10 +1877,10 @@ class LaunchClient:
         - The endpoint's type (i.e. you cannot go from a ``SyncEnpdoint`` to an ``AsyncEndpoint`` or vice versa.
 
         Parameters:
-            model_endpoint: The model endpoint (or its name) you want to edit. The name must be unique across
+            model_endpoint_id: The model endpoint (or its name) you want to edit. The name must be unique across
                 all endpoints that you own.
 
-            model_bundle: The ``ModelBundle`` that the endpoint should serve.
+            model_bundle_id: The ``ModelBundle`` that the endpoint should serve.
 
             cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater than or equal to 1.
 
@@ -1990,6 +1993,32 @@ class LaunchClient:
                 skip_deserialization=True,
             )
             return json.loads(response.response.data)
+
+    def create_sync_inference_task_v1(
+        self,
+        model_endpoint_id: str,
+        url: Optional[str] = None,
+        args: Optional[Dict[str, Any]] = None,
+        callback_url: Optional[str] = None,
+        return_pickled: Optional[bool] = False,
+    ) -> SyncEndpointPredictResponse:
+        pass
+
+    def create_async_inference_task_v1(
+        self,
+        model_endpoint_id: str,
+        url: Optional[str] = None,
+        args: Optional[Dict[str, Any]] = None,
+        callback_url: Optional[str] = None,
+        return_pickled: Optional[bool] = False,
+    ) -> CreateAsyncTaskResponse:
+        pass
+
+    def get_async_inference_task_v1(
+        self,
+        task_id: str,
+    ) -> GetAsyncTaskResponse:
+        pass
 
 
 def _zip_directory(zipf: ZipFile, path: str) -> None:
