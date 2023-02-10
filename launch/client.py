@@ -19,24 +19,18 @@ from launch.api_client.apis.tags.default_api import DefaultApi
 from launch.api_client.model.clone_model_bundle_request import (
     CloneModelBundleRequest,
 )
-from launch.api_client.model.create_async_task_response import CreateAsyncTaskResponse
 from launch.api_client.model.create_batch_job_request import (
     CreateBatchJobRequest,
 )
 from launch.api_client.model.create_model_bundle_request import (
     CreateModelBundleRequest,
 )
-from launch.api_client.model.create_model_bundle_response import CreateModelBundleResponse
 from launch.api_client.model.create_model_endpoint_request import (
     CreateModelEndpointRequest,
 )
-from launch.api_client.model.create_model_endpoint_response import CreateModelEndpointResponse
-from launch.api_client.model.delete_model_endpoint_response import DeleteModelEndpointResponse
 from launch.api_client.model.endpoint_predict_request import (
     EndpointPredictRequest,
 )
-from launch.api_client.model.get_async_task_response import GetAsyncTaskResponse
-from launch.api_client.model.get_model_endpoint_response import GetModelEndpointResponse
 from launch.api_client.model.gpu_type import GpuType
 from launch.api_client.model.model_bundle_environment_params import (
     ModelBundleEnvironmentParams,
@@ -46,11 +40,9 @@ from launch.api_client.model.model_bundle_packaging_type import (
     ModelBundlePackagingType,
 )
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
-from launch.api_client.model.sync_endpoint_predict_response import SyncEndpointPredictResponse
 from launch.api_client.model.update_model_endpoint_request import (
     UpdateModelEndpointRequest,
 )
-from launch.api_client.model.update_model_endpoint_response import UpdateModelEndpointResponse
 from launch.connection import Connection
 from launch.constants import (
     BATCH_TASK_INPUT_SIGNED_URL_PATH,
@@ -865,7 +857,7 @@ class LaunchClient:
         Clones an existing model bundle with changes to its app config. (More fields coming soon)
 
         Parameters:
-            model_bundle: The existing bundle or its ID.
+            model_bundle_id: The existing bundle or its ID.
             app_config: The new bundle's app config, if not passed in, the new bundle's ``app_config`` will be set to ``None``
 
         Returns:
@@ -876,7 +868,8 @@ class LaunchClient:
             api_instance = DefaultApi(api_client)
             payload = dict_not_none(
                 original_model_bundle_id=model_bundle_id,
-                app_config=app_config,
+                new_app_config=app_config,
+
             )
             clone_model_bundle_request = CloneModelBundleRequest(**payload)
             response = api_instance.clone_model_bundle_with_changes_v1_model_bundles_clone_with_changes_post(
@@ -1452,7 +1445,6 @@ class LaunchClient:
         requirements: Optional[List[str]] = None,
         model: Optional[LaunchModel_T] = None,
         load_model_fn: Optional[Callable[[], LaunchModel_T]] = None,
-        bundle_url: Optional[str] = None,
         app_config: Optional[Union[Dict[str, Any], str]] = None,
         globals_copy: Optional[Dict[str, Any]] = None,
         request_schema: Optional[Type[BaseModel]] = None,
@@ -1669,6 +1661,15 @@ class LaunchClient:
             return json.loads(response.response.data)
 
     def get_model_bundle_by_id_v1(self, model_bundle_id: str) -> Dict[str, Any]:
+        """
+        Gets the details of a model bundle given its id.
+
+        Parameters:
+            model_bundle_id: The ID of the model bundle to get.
+
+        Returns:
+            A JSON representation of the bundle details.
+        """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"model_bundle_id": model_bundle_id})
@@ -1679,6 +1680,15 @@ class LaunchClient:
             return json.loads(response.response.data)
 
     def get_latest_model_bundle_v1(self, model_bundle_name: str) -> Dict[str, Any]:
+        """
+        Gets the details of the latest model bundle that has a certain name.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle.
+
+        Returns:
+            A JSON representation of the bundle details.
+        """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"model_name": model_bundle_name})
@@ -1773,17 +1783,18 @@ class LaunchClient:
             labels: An optional dictionary of key/value pairs to associate with this endpoint.
 
         Returns:
-             A Endpoint object that can be used to make requests to the endpoint.
+             A JSON representation of the endpoint.
 
         """
         if update_if_exists:
-            try:
-                endpoint_response = self.get_model_endpoint_v1()
-            except:
-                raise Exception("TODO: ")
+            # Maybe we want a server route for updating by name at some point.
+
+            # If we're trying to do an update but no such endpoint exists, then this will blow up.
+            #
+            endpoint_response = self.get_model_endpoint_by_name_v1(model_endpoint_name=endpoint_name)
 
             response = self.update_model_endpoint_v1(
-                model_endpoint_id=endpoint_response.id,
+                model_endpoint_id=endpoint_response["id"],
                 model_bundle_id=model_bundle_id,
                 cpus=cpus,
                 memory=memory,
@@ -1795,7 +1806,7 @@ class LaunchClient:
                 gpu_type=gpu_type,
                 default_callback_url=default_callback_url,
             )
-            return json.loads(response.resopnse.data)
+            return response
         else:
             # Presumably, the user knows that the endpoint doesn't already exist, and so we can defer
             # to the server to reject any duplicate creations.
@@ -1979,6 +1990,12 @@ class LaunchClient:
             return response
 
     def delete_model_endpoint_v1(self, model_endpoint_id: str) -> Dict[str, Any]:
+        """
+        Deletes a model endpoint.
+
+        Parameters:
+            model_endpoint_id: The model endpoint's ID.
+        """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"model_endpoint_id": model_endpoint_id})
@@ -1995,6 +2012,16 @@ class LaunchClient:
         args: Optional[Dict[str, Any]] = None,
         return_pickled: Optional[bool] = False,
     ) -> Dict[str, Any]:
+        """
+        Creates an inference request against a synchronous endpoint.
+
+        Parameters:
+            model_endpoint_id: The id of the endpoint that should receive the inference request.
+            url: The url to the inference payload. The contents in the file are sent as bytes to the bundle.
+                Exactly one of ``url`` and ``args`` must be specified.
+            args: A dictionary that is passed to the bundle. Exactly one of ``url`` and ``args`` must be specified.
+            return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
+        """
         return self._sync_request(
             endpoint_id=model_endpoint_id,
             url=url,
@@ -2010,6 +2037,19 @@ class LaunchClient:
         callback_url: Optional[str] = None,
         return_pickled: Optional[bool] = False,
     ) -> Dict[str, Any]:
+        """
+        Creates an inference request against a synchronous endpoint.
+
+        Parameters:
+            model_endpoint_id: The id of the endpoint that should receive the inference request.
+            url: The url to the inference payload. The contents in the file are sent as bytes to the bundle.
+                Exactly one of ``url`` and ``args`` must be specified.
+            args: A dictionary that is passed to the bundle. Exactly one of ``url`` and ``args`` must be specified.
+            callback_url: The callback url to use for this task. If None, then the
+                default_callback_url of the endpoint is used. The endpoint must specify
+                "callback" as a post-inference hook for the callback to be triggered.
+            return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
+        """
         validate_task_request(url=url, args=args)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
@@ -2032,6 +2072,12 @@ class LaunchClient:
         self,
         task_id: str,
     ) -> Dict[str, Any]:
+        """
+        Gets the current result of an async inference task id.
+
+        Parameters:
+            task_id: The ID returned from create_async_inference_task_v1.
+        """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"task_id": task_id})
