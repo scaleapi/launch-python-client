@@ -15,9 +15,12 @@ def make_batch_input_dict_file(inputs: List[Dict[str, Any]], file: IO[str]):
     writer = csv.DictWriter(file, fieldnames=["id", "args"])
     writer.writeheader()
     for i, args in enumerate(inputs):
+        args_encoded = base64.b64encode(
+            json.dumps(args).encode("utf-8")
+        ).decode("utf-8")
         writer.writerow(
             {
                 "id": i,
-                "args": base64.b64encode(json.dumps(args).encode("utf-8")),
+                "args": args_encoded,
             }
         )
