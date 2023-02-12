@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import click
 
 from launch.cli.client import init_client
@@ -24,6 +26,6 @@ def get_bundle(ctx: click.Context, job_id: str):
 
     pretty_print(f"status: {batch_job['status']}")
     pretty_print(f"result: {batch_job['result']}")
-    pretty_print(f"duration: {batch_job['duration']}")
+    pretty_print(f"duration: {timedelta(seconds=batch_job['duration'])}")
     pretty_print(f"# tasks pending: {batch_job['num_tasks_pending']}")
     pretty_print(f"# tasks completed: {batch_job['num_tasks_completed']}")
