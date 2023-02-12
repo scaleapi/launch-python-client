@@ -1,5 +1,6 @@
 import click
 
+from launch.cli.batch_jobs import batch_jobs
 from launch.cli.bundles import bundles
 from launch.cli.config import ContextObject, config, set_config
 from launch.cli.endpoints import endpoints
@@ -26,6 +27,7 @@ def entry_point(ctx, **kwargs):
         ctx.invoke(set_config)
 
 
+entry_point.add_command(batch_jobs)  # type: ignore
 entry_point.add_command(bundles)  # type: ignore
 entry_point.add_command(config)  # type: ignore
 entry_point.add_command(endpoints)  # type: ignore
