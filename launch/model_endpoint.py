@@ -311,6 +311,7 @@ class SyncEndpoint(Endpoint):
             args=request.args,
             return_pickled=request.return_pickled,
         )
+        raw_response = {k: v for k, v in raw_response.items() if v is not None}
         return EndpointResponse(
             client=self.client,
             status=raw_response.get("status"),
