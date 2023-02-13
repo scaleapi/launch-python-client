@@ -1091,7 +1091,7 @@ class LaunchClient:
 
     def _sync_request(
         self,
-        endpoint_id: str,
+        endpoint_name: str,
         url: Optional[str] = None,
         args: Optional[Dict] = None,
         return_pickled: bool = False,
@@ -1102,7 +1102,7 @@ class LaunchClient:
         Endpoint at endpoint_id must be a SyncEndpoint, otherwise this request will fail.
 
         Parameters:
-            endpoint_id: The id of the endpoint to make the request to
+            endpoint_name: The name of the endpoint to make the request to
 
             url: A url that points to a file containing model input.
                 Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
@@ -1129,6 +1129,8 @@ class LaunchClient:
             and the value is the output of the endpoint's ``predict`` function, serialized as json.
         """
         validate_task_request(url=url, args=args)
+        endpoint = self.get_model_endpoint(endpoint_name)
+        endpoint_id = endpoint.model_endpoint.id  # type: ignore
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             payload = dict_not_none(
