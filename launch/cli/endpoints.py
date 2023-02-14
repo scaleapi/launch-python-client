@@ -1,4 +1,6 @@
+import json
 from pprint import pformat
+from typing import Optional
 
 import click
 import questionary as q
@@ -7,7 +9,7 @@ from rich.table import Table
 from launch.cli.client import init_client
 from launch.cli.console import pretty_print, spinner
 from launch.hooks import PostInferenceHooks
-from launch.model_endpoint import ModelEndpoint
+from launch.model_endpoint import ModelEndpoint, EndpointRequest
 
 
 @click.group("endpoints")
@@ -251,3 +253,41 @@ def edit_endpoint(ctx: click.Context, endpoint_name: str):
         # TODO: Print out a nice error message if the user passes in arguments
         # that fail server-side validation.
         client.edit_model_endpoint(model_endpoint=model_endpoint, **kwargs)
+
+
+
+
+
+@endpoints.command("send")
+@click.argument("endpoint_name")
+@click.option("-i", "--input", help="input request as a json string")
+@click.option("--json-file", help="json file containing request")
+@click.pass_context
+def send(ctx: click.Context, endpoint_name: str, input: Optional[str], json_file: Optional[str]):
+    """Sends request to launch endpoint"""
+
+    # Only allowed one kind of input
+    assert (input is not None) ^ (
+        json_file is not None
+    ), "Please supply EITHER --input OR --json-file"
+
+    if input is not None:
+        json_input = json.loads(input)
+    else:
+        with open(json_file, "rb") as f:
+            json_input = json.load(f)
+
+    client = init_client(ctx)
+
+    model_endpoint = client.get_model_endpoint(
+        endpoint_name
+    )
+    print(f"Sending request to {endpoint_name=} at {ctx.obj.gateway_endpoint}")
+    if model_endpoint.status() is None:
+        raise ValueError(f"Unable to find endpoint {endpoint_name}")
+    elif model_endpoint.status() != "READY":
+        print(f"Warning: endpoint is not ready get: {model_endpoint.status()}")
+    else:
+        future = model_endpoint.predict(request=EndpointRequest(args=json_input, return_pickled=False))
+        response = future.get()  # blocks until completion
+        print(response)
