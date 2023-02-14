@@ -199,11 +199,18 @@ class EndpointResponseFuture:
         self.endpoint_name = endpoint_name
         self.async_task_id = async_task_id
 
-    def get(self) -> EndpointResponse:
+    def get(self, timeout: Optional[float] = None) -> EndpointResponse:
         """
         Retrieves the ``EndpointResponse`` for the prediction request after it completes. This method blocks.
+
+        Parameters:
+            timeout: The maximum number of seconds to wait for the response. If None, then
+                the method will block indefinitely until the response is ready.
         """
-        while True:
+        if timeout is not None and timeout <= 0:
+            raise ValueError("Timeout must be greater than 0.")
+        start_time = time.time()
+        while timeout is None or time.time() - start_time < timeout:
             async_response = self.client._get_async_endpoint_response(  # pylint: disable=W0212
                 self.endpoint_name, self.async_task_id
             )
@@ -235,6 +242,7 @@ class EndpointResponseFuture:
                     raise ValueError(
                         f"Unrecognized status: {async_response['status']}"
                     )
+        raise TimeoutError
 
 
 class Endpoint:
