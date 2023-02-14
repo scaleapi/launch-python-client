@@ -289,8 +289,13 @@ def send(
     if model_endpoint.status() != "READY":
         print(f"Warning: endpoint is not ready get: {model_endpoint.status()}")
     else:
-        future = model_endpoint.predict(
-            request=EndpointRequest(args=json_input, return_pickled=False)
-        )
-        response = future.get()  # blocks until completion
+        kwargs = {
+            "request": EndpointRequest(args=json_input, return_pickled=False)
+        }
+        if model_endpoint.model_endpoint.endpoint_type == "async":
+            future = model_endpoint.predict(**kwargs)
+            response = future.get()  # blocks until completion
+        else:
+            response = model_endpoint.predict(**kwargs)
+
         print(response)
