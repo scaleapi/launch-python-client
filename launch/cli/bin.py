@@ -4,6 +4,7 @@ from launch.cli.batch_jobs import batch_jobs
 from launch.cli.bundles import bundles
 from launch.cli.config import ContextObject, config, set_config
 from launch.cli.endpoints import endpoints
+from launch.cli.tasks import tasks
 
 
 @click.group("cli")
@@ -31,6 +32,7 @@ entry_point.add_command(batch_jobs)  # type: ignore
 entry_point.add_command(bundles)  # type: ignore
 entry_point.add_command(config)  # type: ignore
 entry_point.add_command(endpoints)  # type: ignore
+entry_point.add_command(tasks)  # type: ignore
 
 if __name__ == "__main__":
     entry_point()  # pylint: disable=no-value-for-parameter
