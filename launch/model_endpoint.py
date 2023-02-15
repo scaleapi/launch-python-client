@@ -314,7 +314,7 @@ class SyncEndpoint(Endpoint):
             request: The ``EndpointRequest`` object that contains the payload.
         """
         raw_response = self.client._sync_request(  # pylint: disable=W0212
-            self.model_endpoint.name,
+            self.model_endpoint.id,
             url=request.url,
             args=request.args,
             return_pickled=request.return_pickled,
@@ -367,7 +367,7 @@ class AsyncEndpoint(Endpoint):
                result = f.get()  # blocks on completion
         """
         response = self.client._async_request(  # pylint: disable=W0212
-            self.model_endpoint.name,
+            self.model_endpoint.id,
             url=request.url,
             args=request.args,
             callback_url=request.callback_url,
