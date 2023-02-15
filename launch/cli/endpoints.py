@@ -123,6 +123,12 @@ def get_endpoint(ctx: click.Context, endpoint_name: str):
     pretty_print(f"endpoint_type: {model_endpoint.endpoint_type}")
     pretty_print(f"configs: {model_endpoint.configs}")
     pretty_print(f"destination: {model_endpoint.destination}")
+    pretty_print(
+        f"post-inference hooks: {model_endpoint.post_inference_hooks}"
+    )
+    pretty_print(
+        f"default callback url: {model_endpoint.default_callback_url}"
+    )
 
 
 def _validate_int(val: str) -> int:
