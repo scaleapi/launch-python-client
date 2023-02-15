@@ -10,7 +10,7 @@ from launch.model_endpoint import EndpointRequest
 @click.group("tasks")
 @click.pass_context
 def tasks(ctx: click.Context):
-    """Endpoints is a wrapper around model endpoints in Scale Launch"""
+    """Tasks is a wrapper around sending requests to endpoints"""
 
 
 @tasks.command("send")
@@ -40,7 +40,7 @@ def send(
     client = init_client(ctx)
 
     model_endpoint = client.get_model_endpoint(endpoint_name)
-    print(f"Sending request to {endpoint_name=} at {ctx.obj.gateway_endpoint}")
+    print(f"Sending request to {endpoint_name} at {ctx.obj.gateway_endpoint}")
     if model_endpoint.status() is None:
         raise ValueError(f"Unable to find endpoint {endpoint_name}")
 
