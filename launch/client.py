@@ -856,8 +856,7 @@ class LaunchClient:
             )
             update_model_endpoint_request = UpdateModelEndpointRequest(**payload)
             path_params = frozendict({"model_endpoint_id": model_endpoint_id})
-            # type: ignore
-            response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(
+            response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(  # type: ignore
                 body=update_model_endpoint_request,
                 path_params=path_params,  # type: ignore
                 skip_deserialization=True,
@@ -920,8 +919,8 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             query_params = frozendict({"model_name": bundle_name})
-            response = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(
-                query_params=query_params,  # type: ignore
+            response = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(  # type: ignore
+                query_params=query_params,
                 skip_deserialization=True,
             )
             resp = json.loads(response.response.data)
@@ -1000,8 +999,8 @@ class LaunchClient:
             api_instance = DefaultApi(api_client)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
             path_params = frozendict({"model_endpoint_id": model_endpoint_id})
-            response = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(  # noqa: E501
-                path_params=path_params,  # type: ignore
+            response = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(  # type: ignore
+                path_params=path_params,
                 skip_deserialization=True,
             )
             resp = json.loads(response.response.data)
@@ -1173,7 +1172,7 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"task_id": async_task_id})
-            response = api_instance.get_async_inference_task_v1_async_tasks_task_id_get(
+            response = api_instance.get_async_inference_task_v1_async_tasks_task_id_get(  # type: ignore
                 path_params=path_params,  # type: ignore
                 skip_deserialization=True,
             )
