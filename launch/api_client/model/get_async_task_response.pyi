@@ -51,21 +51,13 @@ class GetAsyncTaskResponse(schemas.DictSchema):
     status: "TaskStatus"
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["status"]
-    ) -> "TaskStatus": ...
+    def __getitem__(self, name: typing_extensions.Literal["status"]) -> "TaskStatus": ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["task_id"]
-    ) -> MetaOapg.properties.task_id: ...
+    def __getitem__(self, name: typing_extensions.Literal["task_id"]) -> MetaOapg.properties.task_id: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["result"]
-    ) -> MetaOapg.properties.result: ...
+    def __getitem__(self, name: typing_extensions.Literal["result"]) -> MetaOapg.properties.result: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["traceback"]
-    ) -> MetaOapg.properties.traceback: ...
+    def __getitem__(self, name: typing_extensions.Literal["traceback"]) -> MetaOapg.properties.traceback: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -83,13 +75,9 @@ class GetAsyncTaskResponse(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["status"]
-    ) -> "TaskStatus": ...
+    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "TaskStatus": ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["task_id"]
-    ) -> MetaOapg.properties.task_id: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["task_id"]) -> MetaOapg.properties.task_id: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["result"]
@@ -99,9 +87,7 @@ class GetAsyncTaskResponse(schemas.DictSchema):
         self, name: typing_extensions.Literal["traceback"]
     ) -> typing.Union[MetaOapg.properties.traceback, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -146,9 +132,7 @@ class GetAsyncTaskResponse(schemas.DictSchema):
             io.BufferedReader,
             schemas.Unset,
         ] = schemas.unset,
-        traceback: typing.Union[
-            MetaOapg.properties.traceback, str, schemas.Unset
-        ] = schemas.unset,
+        traceback: typing.Union[MetaOapg.properties.traceback, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

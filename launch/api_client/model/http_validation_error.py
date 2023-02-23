@@ -44,9 +44,7 @@ class HTTPValidationError(schemas.DictSchema):
                         typing.Tuple["ValidationError"],
                         typing.List["ValidationError"],
                     ],
-                    _configuration: typing.Optional[
-                        schemas.Configuration
-                    ] = None,
+                    _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "detail":
                     return super().__new__(
                         cls,
@@ -62,9 +60,7 @@ class HTTPValidationError(schemas.DictSchema):
             }
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["detail"]
-    ) -> MetaOapg.properties.detail:
+    def __getitem__(self, name: typing_extensions.Literal["detail"]) -> MetaOapg.properties.detail:
         ...
 
     @typing.overload
@@ -74,9 +70,7 @@ class HTTPValidationError(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "detail",
-            ],
+            typing_extensions.Literal["detail",],
             str,
         ],
     ):
@@ -90,17 +84,13 @@ class HTTPValidationError(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "detail",
-            ],
+            typing_extensions.Literal["detail",],
             str,
         ],
     ):
@@ -112,9 +102,7 @@ class HTTPValidationError(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        detail: typing.Union[
-            MetaOapg.properties.detail, list, tuple, schemas.Unset
-        ] = schemas.unset,
+        detail: typing.Union[MetaOapg.properties.detail, list, tuple, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

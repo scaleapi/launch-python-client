@@ -22,9 +22,7 @@ def test_get_model_definitions():
         total_num_tokens: int
         time_elapsed: float
 
-    result = get_model_definitions(
-        request_schema=MyRequestSchemaB, response_schema=MyResponseSchemaB
-    )
+    result = get_model_definitions(request_schema=MyRequestSchemaB, response_schema=MyResponseSchemaB)
 
     expected = {
         "MyRequestSubSchemaB": {
@@ -43,9 +41,7 @@ def test_get_model_definitions():
                 "queries_and_languages": {
                     "title": "Queries And Languages",
                     "type": "array",
-                    "items": {
-                        "$ref": "#/components/schemas/MyRequestSubSchemaB"
-                    },
+                    "items": {"$ref": "#/components/schemas/MyRequestSubSchemaB"},
                 },
                 "temperature": {"title": "Temperature", "type": "number"},
             },
@@ -87,9 +83,7 @@ def test_get_model_definitions_from_flat_models():
         MyResponseSchema: "ResponseSchema",
     }
 
-    result = get_model_definitions_from_flat_models(
-        flat_models=flat_models, model_name_map=model_name_map
-    )
+    result = get_model_definitions_from_flat_models(flat_models=flat_models, model_name_map=model_name_map)
     expected = {
         "RequestSchema": {
             "title": "MyRequestSchema",

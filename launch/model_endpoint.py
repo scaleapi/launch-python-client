@@ -86,7 +86,12 @@ class ModelEndpoint:
     """
 
     def __repr__(self):
-        return f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', status='{self.status}', resource_state='{json.dumps(self.resource_state)}', deployment_state='{json.dumps(self.deployment_state)}', endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
+        return (
+            f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', "
+            f"status='{self.status}', resource_state='{json.dumps(self.resource_state)}', "
+            f"deployment_state='{json.dumps(self.deployment_state)}', "
+            f"endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
+        )
 
 
 class EndpointRequest:
@@ -154,7 +159,8 @@ class EndpointResponse:
 
             status: A string representing the status of the request, i.e. ``SUCCESS``, ``FAILURE``, or ``PENDING``
 
-            result_url: A string that is a url containing the pickled python object from the Endpoint's predict function.
+            result_url: A string that is a url containing the pickled python object from the
+                Endpoint's predict function.
 
                 Exactly one of ``result_url`` or ``result`` will be populated,
                 depending on the value of ``return_pickled`` in the request.
@@ -175,7 +181,10 @@ class EndpointResponse:
         self.traceback = traceback
 
     def __str__(self) -> str:
-        return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}, traceback: {self.traceback}"
+        return (
+            f"status: {self.status}, result: {self.result}, result_url: {self.result_url}, "
+            f"traceback: {self.traceback}"
+        )
 
 
 class EndpointResponseFuture:
@@ -222,12 +231,8 @@ class EndpointResponseFuture:
                     return EndpointResponse(
                         client=self.client,
                         status=status,
-                        result_url=async_response.get("result", {}).get(
-                            "result_url", None
-                        ),
-                        result=async_response.get("result", {}).get(
-                            "result", None
-                        ),
+                        result_url=async_response.get("result", {}).get("result_url", None),
+                        result=async_response.get("result", {}).get("result", None),
                         traceback=None,
                     )
                 elif status == "FAILURE":
@@ -239,9 +244,7 @@ class EndpointResponseFuture:
                         traceback=async_response.get("traceback", None),
                     )
                 else:
-                    raise ValueError(
-                        f"Unrecognized status: {async_response['status']}"
-                    )
+                    raise ValueError(f"Unrecognized status: {async_response['status']}")
         raise TimeoutError
 
 
@@ -256,17 +259,13 @@ class Endpoint:
         with ApiClient(self.client.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             query_params = {"name": self.model_endpoint.name}
-            response = (
-                api_instance.list_model_endpoints_v1_model_endpoints_get(
-                    query_params=query_params,
-                    skip_deserialization=True,
-                )
+            response = api_instance.list_model_endpoints_v1_model_endpoints_get(
+                query_params=query_params,
+                skip_deserialization=True,
             )
             resp = json.loads(response.response.data)
             if len(resp["model_endpoints"]) == 0:
-                raise ValueError(
-                    f"Could not update model endpoint view for endpoint {self.model_endpoint.name}"
-                )
+                raise ValueError(f"Could not update model endpoint view for endpoint {self.model_endpoint.name}")
             resp = resp["model_endpoints"][0]
         self.model_endpoint = ModelEndpoint.from_dict(resp)
 
@@ -304,7 +303,15 @@ class SyncEndpoint(Endpoint):
         return f"SyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def __repr__(self):
-        return f"SyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_state='{json.dumps(self.model_endpoint.resource_state)}', deployment_state='{json.dumps(self.model_endpoint.deployment_state)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
+        return (
+            f"SyncEndpoint(name='{self.model_endpoint.name}', "
+            f"bundle_name='{self.model_endpoint.bundle_name}', "
+            f"status='{self.model_endpoint.status}', "
+            f"resource_state='{json.dumps(self.model_endpoint.resource_state)}', "
+            f"deployment_state='{json.dumps(self.model_endpoint.deployment_state)}', "
+            f"endpoint_type='{self.model_endpoint.endpoint_type}', "
+            f"metadata='{self.model_endpoint.metadata}')"
+        )
 
     def predict(self, request: EndpointRequest) -> EndpointResponse:
         """
@@ -347,7 +354,15 @@ class AsyncEndpoint(Endpoint):
         return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def __repr__(self):
-        return f"AsyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_state='{json.dumps(self.model_endpoint.resource_state)}', deployment_state='{json.dumps(self.model_endpoint.deployment_state)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
+        return (
+            f"AsyncEndpoint(name='{self.model_endpoint.name}', "
+            f"bundle_name='{self.model_endpoint.bundle_name}', "
+            f"status='{self.model_endpoint.status}', "
+            f"resource_state='{json.dumps(self.model_endpoint.resource_state)}', "
+            f"deployment_state='{json.dumps(self.model_endpoint.deployment_state)}', "
+            f"endpoint_type='{self.model_endpoint.endpoint_type}', "
+            f"metadata='{self.model_endpoint.metadata}')"
+        )
 
     def predict(self, request: EndpointRequest) -> EndpointResponseFuture:
         """
@@ -381,9 +396,7 @@ class AsyncEndpoint(Endpoint):
         )
 
     @deprecated
-    def predict_batch(
-        self, requests: Sequence[EndpointRequest]
-    ) -> "AsyncEndpointBatchResponse":
+    def predict_batch(self, requests: Sequence[EndpointRequest]) -> "AsyncEndpointBatchResponse":
         """
         (deprecated)
         Runs inference on the data items specified by urls. Returns a AsyncEndpointResponse.
@@ -398,22 +411,18 @@ class AsyncEndpoint(Endpoint):
         # if batches are possible make this aware you can pass batches
         # TODO add batch support once those are out
 
-        if len(requests) != len(
-            set(request.request_id for request in requests)
-        ):
+        if len(requests) != len(set(request.request_id for request in requests)):
             raise ValueError("Request_ids in a batch must be unique")
 
         def single_request(request):
             # request has keys url and args
 
-            inner_inference_request = (
-                self.client._async_request(  # pylint: disable=W0212
-                    endpoint_name=self.model_endpoint.name,
-                    url=request.url,
-                    args=request.args,
-                    callback_url=request.callback_url,
-                    return_pickled=request.return_pickled,
-                )
+            inner_inference_request = self.client._async_request(  # pylint: disable=W0212
+                endpoint_name=self.model_endpoint.name,
+                url=request.url,
+                args=request.args,
+                callback_url=request.callback_url,
+                return_pickled=request.return_pickled,
             )
             request_key = request.request_id
             return request_key, inner_inference_request
@@ -451,19 +460,12 @@ class AsyncEndpointBatchResponse:
         endpoint_name: str,
         request_ids: Dict[str, str],
     ):
-
         self.client = client
         self.endpoint_name = endpoint_name
-        self.request_ids = (
-            request_ids.copy()
-        )  # custom request_id (clientside) -> task_id (serverside)
-        self.responses: Dict[str, Optional[EndpointResponse]] = {
-            req_id: None for req_id in request_ids.keys()
-        }
+        self.request_ids = request_ids.copy()  # custom request_id (clientside) -> task_id (serverside)
+        self.responses: Dict[str, Optional[EndpointResponse]] = {req_id: None for req_id in request_ids.keys()}
         # celery task statuses
-        self.statuses: Dict[str, Optional[str]] = {
-            req_id: TASK_PENDING_STATE for req_id in request_ids.keys()
-        }
+        self.statuses: Dict[str, Optional[str]] = {req_id: TASK_PENDING_STATE for req_id in request_ids.keys()}
 
     def poll_endpoints(self):
         """
@@ -522,9 +524,7 @@ class AsyncEndpointBatchResponse:
         # TODO: make some request to some endpoint
         if poll:
             self.poll_endpoints()
-        return all(
-            resp != TASK_PENDING_STATE for resp in self.statuses.values()
-        )
+        return all(resp != TASK_PENDING_STATE for resp in self.statuses.values())
 
     def get_responses(self) -> Dict[str, Optional[EndpointResponse]]:
         """

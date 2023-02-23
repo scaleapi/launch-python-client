@@ -58,21 +58,15 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
     framework_type: "ModelBundleFramework"
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["framework_type"]
-    ) -> "ModelBundleFramework":
+    def __getitem__(self, name: typing_extensions.Literal["framework_type"]) -> "ModelBundleFramework":
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["ecr_repo"]
-    ) -> MetaOapg.properties.ecr_repo:
+    def __getitem__(self, name: typing_extensions.Literal["ecr_repo"]) -> MetaOapg.properties.ecr_repo:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["image_tag"]
-    ) -> MetaOapg.properties.image_tag:
+    def __getitem__(self, name: typing_extensions.Literal["image_tag"]) -> MetaOapg.properties.image_tag:
         ...
 
     @typing.overload
@@ -108,9 +102,7 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["framework_type"]
-    ) -> "ModelBundleFramework":
+    def get_item_oapg(self, name: typing_extensions.Literal["framework_type"]) -> "ModelBundleFramework":
         ...
 
     @typing.overload
@@ -138,9 +130,7 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
     def get_item_oapg(
@@ -165,18 +155,10 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
             frozendict.frozendict,
         ],
         framework_type: "ModelBundleFramework",
-        ecr_repo: typing.Union[
-            MetaOapg.properties.ecr_repo, str, schemas.Unset
-        ] = schemas.unset,
-        image_tag: typing.Union[
-            MetaOapg.properties.image_tag, str, schemas.Unset
-        ] = schemas.unset,
-        pytorch_image_tag: typing.Union[
-            MetaOapg.properties.pytorch_image_tag, str, schemas.Unset
-        ] = schemas.unset,
-        tensorflow_version: typing.Union[
-            MetaOapg.properties.tensorflow_version, str, schemas.Unset
-        ] = schemas.unset,
+        ecr_repo: typing.Union[MetaOapg.properties.ecr_repo, str, schemas.Unset] = schemas.unset,
+        image_tag: typing.Union[MetaOapg.properties.image_tag, str, schemas.Unset] = schemas.unset,
+        pytorch_image_tag: typing.Union[MetaOapg.properties.pytorch_image_tag, str, schemas.Unset] = schemas.unset,
+        tensorflow_version: typing.Union[MetaOapg.properties.tensorflow_version, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

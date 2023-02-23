@@ -82,9 +82,7 @@ class ValidationError(schemas.DictSchema):
                                 io.FileIO,
                                 io.BufferedReader,
                             ],
-                            _configuration: typing.Optional[
-                                schemas.Configuration
-                            ] = None,
+                            _configuration: typing.Optional[schemas.Configuration] = None,
                             **kwargs: typing.Union[
                                 schemas.AnyTypeSchema,
                                 dict,
@@ -155,9 +153,7 @@ class ValidationError(schemas.DictSchema):
                             ]
                         ],
                     ],
-                    _configuration: typing.Optional[
-                        schemas.Configuration
-                    ] = None,
+                    _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "loc":
                     return super().__new__(
                         cls,
@@ -181,21 +177,15 @@ class ValidationError(schemas.DictSchema):
     type: MetaOapg.properties.type
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["loc"]
-    ) -> MetaOapg.properties.loc:
+    def __getitem__(self, name: typing_extensions.Literal["loc"]) -> MetaOapg.properties.loc:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["msg"]
-    ) -> MetaOapg.properties.msg:
+    def __getitem__(self, name: typing_extensions.Literal["msg"]) -> MetaOapg.properties.msg:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["type"]
-    ) -> MetaOapg.properties.type:
+    def __getitem__(self, name: typing_extensions.Literal["type"]) -> MetaOapg.properties.type:
         ...
 
     @typing.overload
@@ -217,27 +207,19 @@ class ValidationError(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["loc"]
-    ) -> MetaOapg.properties.loc:
+    def get_item_oapg(self, name: typing_extensions.Literal["loc"]) -> MetaOapg.properties.loc:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["msg"]
-    ) -> MetaOapg.properties.msg:
+    def get_item_oapg(self, name: typing_extensions.Literal["msg"]) -> MetaOapg.properties.msg:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["type"]
-    ) -> MetaOapg.properties.type:
+    def get_item_oapg(self, name: typing_extensions.Literal["type"]) -> MetaOapg.properties.type:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
     def get_item_oapg(

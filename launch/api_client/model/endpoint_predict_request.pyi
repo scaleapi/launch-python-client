@@ -43,25 +43,15 @@ class EndpointPredictRequest(schemas.DictSchema):
                 "url": url,
             }
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["args"]
-    ) -> MetaOapg.properties.args: ...
+    def __getitem__(self, name: typing_extensions.Literal["args"]) -> MetaOapg.properties.args: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["callback_url"]
-    ) -> MetaOapg.properties.callback_url: ...
+    def __getitem__(self, name: typing_extensions.Literal["callback_url"]) -> MetaOapg.properties.callback_url: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["cloudpickle"]
-    ) -> MetaOapg.properties.cloudpickle: ...
+    def __getitem__(self, name: typing_extensions.Literal["cloudpickle"]) -> MetaOapg.properties.cloudpickle: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["return_pickled"]
-    ) -> MetaOapg.properties.return_pickled: ...
+    def __getitem__(self, name: typing_extensions.Literal["return_pickled"]) -> MetaOapg.properties.return_pickled: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["url"]
-    ) -> MetaOapg.properties.url: ...
+    def __getitem__(self, name: typing_extensions.Literal["url"]) -> MetaOapg.properties.url: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -100,9 +90,7 @@ class EndpointPredictRequest(schemas.DictSchema):
         self, name: typing_extensions.Literal["url"]
     ) -> typing.Union[MetaOapg.properties.url, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -143,18 +131,10 @@ class EndpointPredictRequest(schemas.DictSchema):
             io.BufferedReader,
             schemas.Unset,
         ] = schemas.unset,
-        callback_url: typing.Union[
-            MetaOapg.properties.callback_url, str, schemas.Unset
-        ] = schemas.unset,
-        cloudpickle: typing.Union[
-            MetaOapg.properties.cloudpickle, str, schemas.Unset
-        ] = schemas.unset,
-        return_pickled: typing.Union[
-            MetaOapg.properties.return_pickled, bool, schemas.Unset
-        ] = schemas.unset,
-        url: typing.Union[
-            MetaOapg.properties.url, str, schemas.Unset
-        ] = schemas.unset,
+        callback_url: typing.Union[MetaOapg.properties.callback_url, str, schemas.Unset] = schemas.unset,
+        cloudpickle: typing.Union[MetaOapg.properties.cloudpickle, str, schemas.Unset] = schemas.unset,
+        return_pickled: typing.Union[MetaOapg.properties.return_pickled, bool, schemas.Unset] = schemas.unset,
+        url: typing.Union[MetaOapg.properties.url, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

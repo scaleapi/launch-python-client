@@ -50,9 +50,7 @@ class ListModelBundlesResponse(schemas.DictSchema):
                         typing.Tuple["ModelBundleResponse"],
                         typing.List["ModelBundleResponse"],
                     ],
-                    _configuration: typing.Optional[
-                        schemas.Configuration
-                    ] = None,
+                    _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "model_bundles":
                     return super().__new__(
                         cls,
@@ -70,9 +68,7 @@ class ListModelBundlesResponse(schemas.DictSchema):
     model_bundles: MetaOapg.properties.model_bundles
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_bundles"]
-    ) -> MetaOapg.properties.model_bundles:
+    def __getitem__(self, name: typing_extensions.Literal["model_bundles"]) -> MetaOapg.properties.model_bundles:
         ...
 
     @typing.overload
@@ -82,9 +78,7 @@ class ListModelBundlesResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_bundles",
-            ],
+            typing_extensions.Literal["model_bundles",],
             str,
         ],
     ):
@@ -92,23 +86,17 @@ class ListModelBundlesResponse(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["model_bundles"]
-    ) -> MetaOapg.properties.model_bundles:
+    def get_item_oapg(self, name: typing_extensions.Literal["model_bundles"]) -> MetaOapg.properties.model_bundles:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_bundles",
-            ],
+            typing_extensions.Literal["model_bundles",],
             str,
         ],
     ):

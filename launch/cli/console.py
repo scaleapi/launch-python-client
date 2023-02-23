@@ -13,9 +13,7 @@ def spinner(message: str):
     return rich_console.status(f"[bold green]{message}")
 
 
-def pretty_print(
-    message: Any, style: Optional[str] = None, markup: Optional[bool] = None
-) -> None:
+def pretty_print(message: Any, style: Optional[str] = None, markup: Optional[bool] = None) -> None:
     """
     Pretty prints to the console.
     """

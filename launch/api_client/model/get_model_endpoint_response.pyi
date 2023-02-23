@@ -64,9 +64,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
             deployment_name = schemas.StrSchema
 
             @staticmethod
-            def deployment_state() -> typing.Type[
-                "ModelEndpointDeploymentState"
-            ]:
+            def deployment_state() -> typing.Type["ModelEndpointDeploymentState"]:
                 return ModelEndpointDeploymentState
 
             class labels(schemas.DictSchema):
@@ -74,17 +72,13 @@ class GetModelEndpointResponse(schemas.DictSchema):
                     additional_properties = schemas.StrSchema
                 def __getitem__(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
                 def get_item_oapg(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
                 def __new__(
@@ -93,9 +87,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
                         dict,
                         frozendict.frozendict,
                     ],
-                    _configuration: typing.Optional[
-                        schemas.Configuration
-                    ] = None,
+                    _configuration: typing.Optional[schemas.Configuration] = None,
                     **kwargs: typing.Union[
                         MetaOapg.additional_properties,
                         str,
@@ -128,9 +120,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
                             ]
                         ],
                     ],
-                    _configuration: typing.Optional[
-                        schemas.Configuration
-                    ] = None,
+                    _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "post_inference_hooks":
                     return super().__new__(
                         cls,
@@ -174,45 +164,27 @@ class GetModelEndpointResponse(schemas.DictSchema):
     status: "ModelEndpointStatus"
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["bundle_name"]
-    ) -> MetaOapg.properties.bundle_name: ...
+    def __getitem__(self, name: typing_extensions.Literal["bundle_name"]) -> MetaOapg.properties.bundle_name: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at: ...
+    def __getitem__(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["created_by"]
-    ) -> MetaOapg.properties.created_by: ...
+    def __getitem__(self, name: typing_extensions.Literal["created_by"]) -> MetaOapg.properties.created_by: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["destination"]
-    ) -> MetaOapg.properties.destination: ...
+    def __getitem__(self, name: typing_extensions.Literal["destination"]) -> MetaOapg.properties.destination: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["endpoint_type"]
-    ) -> "ModelEndpointType": ...
+    def __getitem__(self, name: typing_extensions.Literal["endpoint_type"]) -> "ModelEndpointType": ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["id"]
-    ) -> MetaOapg.properties.id: ...
+    def __getitem__(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["last_updated_at"]
     ) -> MetaOapg.properties.last_updated_at: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["name"]
-    ) -> MetaOapg.properties.name: ...
+    def __getitem__(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["status"]
-    ) -> "ModelEndpointStatus": ...
+    def __getitem__(self, name: typing_extensions.Literal["status"]) -> "ModelEndpointStatus": ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["aws_role"]
-    ) -> MetaOapg.properties.aws_role: ...
+    def __getitem__(self, name: typing_extensions.Literal["aws_role"]) -> MetaOapg.properties.aws_role: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["default_callback_url"]
@@ -222,25 +194,17 @@ class GetModelEndpointResponse(schemas.DictSchema):
         self, name: typing_extensions.Literal["deployment_name"]
     ) -> MetaOapg.properties.deployment_name: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["deployment_state"]
-    ) -> "ModelEndpointDeploymentState": ...
+    def __getitem__(self, name: typing_extensions.Literal["deployment_state"]) -> "ModelEndpointDeploymentState": ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["labels"]
-    ) -> MetaOapg.properties.labels: ...
+    def __getitem__(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["metadata"]
-    ) -> MetaOapg.properties.metadata: ...
+    def __getitem__(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["post_inference_hooks"]
     ) -> MetaOapg.properties.post_inference_hooks: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["resource_state"]
-    ) -> "ModelEndpointResourceState": ...
+    def __getitem__(self, name: typing_extensions.Literal["resource_state"]) -> "ModelEndpointResourceState": ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["results_s3_bucket"]
@@ -276,41 +240,25 @@ class GetModelEndpointResponse(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["bundle_name"]
-    ) -> MetaOapg.properties.bundle_name: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["bundle_name"]) -> MetaOapg.properties.bundle_name: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["created_by"]
-    ) -> MetaOapg.properties.created_by: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["created_by"]) -> MetaOapg.properties.created_by: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["destination"]
-    ) -> MetaOapg.properties.destination: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["destination"]) -> MetaOapg.properties.destination: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["endpoint_type"]
-    ) -> "ModelEndpointType": ...
+    def get_item_oapg(self, name: typing_extensions.Literal["endpoint_type"]) -> "ModelEndpointType": ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["id"]
-    ) -> MetaOapg.properties.id: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["last_updated_at"]
     ) -> MetaOapg.properties.last_updated_at: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["name"]
-    ) -> MetaOapg.properties.name: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["status"]
-    ) -> "ModelEndpointStatus": ...
+    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "ModelEndpointStatus": ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["aws_role"]
@@ -318,9 +266,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["default_callback_url"]
-    ) -> typing.Union[
-        MetaOapg.properties.default_callback_url, schemas.Unset
-    ]: ...
+    ) -> typing.Union[MetaOapg.properties.default_callback_url, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["deployment_name"]
@@ -340,9 +286,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["post_inference_hooks"]
-    ) -> typing.Union[
-        MetaOapg.properties.post_inference_hooks, schemas.Unset
-    ]: ...
+    ) -> typing.Union[MetaOapg.properties.post_inference_hooks, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["resource_state"]
@@ -350,13 +294,9 @@ class GetModelEndpointResponse(schemas.DictSchema):
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["results_s3_bucket"]
-    ) -> typing.Union[
-        MetaOapg.properties.results_s3_bucket, schemas.Unset
-    ]: ...
+    ) -> typing.Union[MetaOapg.properties.results_s3_bucket, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -422,18 +362,12 @@ class GetModelEndpointResponse(schemas.DictSchema):
             str,
         ],
         status: "ModelEndpointStatus",
-        aws_role: typing.Union[
-            MetaOapg.properties.aws_role, str, schemas.Unset
-        ] = schemas.unset,
+        aws_role: typing.Union[MetaOapg.properties.aws_role, str, schemas.Unset] = schemas.unset,
         default_callback_url: typing.Union[
             MetaOapg.properties.default_callback_url, str, schemas.Unset
         ] = schemas.unset,
-        deployment_name: typing.Union[
-            MetaOapg.properties.deployment_name, str, schemas.Unset
-        ] = schemas.unset,
-        deployment_state: typing.Union[
-            "ModelEndpointDeploymentState", schemas.Unset
-        ] = schemas.unset,
+        deployment_name: typing.Union[MetaOapg.properties.deployment_name, str, schemas.Unset] = schemas.unset,
+        deployment_state: typing.Union["ModelEndpointDeploymentState", schemas.Unset] = schemas.unset,
         labels: typing.Union[
             MetaOapg.properties.labels,
             dict,
@@ -452,12 +386,8 @@ class GetModelEndpointResponse(schemas.DictSchema):
             tuple,
             schemas.Unset,
         ] = schemas.unset,
-        resource_state: typing.Union[
-            "ModelEndpointResourceState", schemas.Unset
-        ] = schemas.unset,
-        results_s3_bucket: typing.Union[
-            MetaOapg.properties.results_s3_bucket, str, schemas.Unset
-        ] = schemas.unset,
+        resource_state: typing.Union["ModelEndpointResourceState", schemas.Unset] = schemas.unset,
+        results_s3_bucket: typing.Union[MetaOapg.properties.results_s3_bucket, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

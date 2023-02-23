@@ -35,9 +35,7 @@ RequestRequiredPathParams = typing_extensions.TypedDict(
         ],
     },
 )
-RequestOptionalPathParams = typing_extensions.TypedDict(
-    "RequestOptionalPathParams", {}, total=False
-)
+RequestOptionalPathParams = typing_extensions.TypedDict("RequestOptionalPathParams", {}, total=False)
 
 class RequestPathParams(RequestRequiredPathParams, RequestOptionalPathParams):
     pass
@@ -53,17 +51,13 @@ SchemaFor200ResponseBodyApplicationJson = ModelBundleResponse
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor200ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
 
 _response_for_200 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor200,
     content={
-        "application/json": api_client.MediaType(
-            schema=SchemaFor200ResponseBodyApplicationJson
-        ),
+        "application/json": api_client.MediaType(schema=SchemaFor200ResponseBodyApplicationJson),
     },
 )
 SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
@@ -71,17 +65,13 @@ SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor422ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
 
 _response_for_422 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor422,
     content={
-        "application/json": api_client.MediaType(
-            schema=SchemaFor422ResponseBodyApplicationJson
-        ),
+        "application/json": api_client.MediaType(schema=SchemaFor422ResponseBodyApplicationJson),
     },
 )
 _all_accept_content_types = ("application/json",)
@@ -113,10 +103,7 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def _get_model_bundle_v1_model_bundles_model_bundle_id_get_oapg(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -161,21 +148,13 @@ class BaseApi(api_client.Api):
         )
 
         if skip_deserialization:
-            api_response = api_client.ApiResponseWithoutDeserialization(
-                response=response
-            )
+            api_response = api_client.ApiResponseWithoutDeserialization(response=response)
         else:
-            response_for_status = _status_code_to_response.get(
-                str(response.status)
-            )
+            response_for_status = _status_code_to_response.get(str(response.status))
             if response_for_status:
-                api_response = response_for_status.deserialize(
-                    response, self.api_client.configuration
-                )
+                api_response = response_for_status.deserialize(response, self.api_client.configuration)
             else:
-                api_response = api_client.ApiResponseWithoutDeserialization(
-                    response=response
-                )
+                api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
             raise exceptions.ApiException(api_response=api_response)
@@ -211,10 +190,7 @@ class GetModelBundleV1ModelBundlesModelBundleIdGet(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def get_model_bundle_v1_model_bundles_model_bundle_id_get(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -223,14 +199,12 @@ class GetModelBundleV1ModelBundlesModelBundleIdGet(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return (
-            self._get_model_bundle_v1_model_bundles_model_bundle_id_get_oapg(
-                path_params=path_params,
-                accept_content_types=accept_content_types,
-                stream=stream,
-                timeout=timeout,
-                skip_deserialization=skip_deserialization,
-            )
+        return self._get_model_bundle_v1_model_bundles_model_bundle_id_get_oapg(
+            path_params=path_params,
+            accept_content_types=accept_content_types,
+            stream=stream,
+            timeout=timeout,
+            skip_deserialization=skip_deserialization,
         )
 
 class ApiForget(BaseApi):
@@ -262,10 +236,7 @@ class ApiForget(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def get(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -274,12 +245,10 @@ class ApiForget(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return (
-            self._get_model_bundle_v1_model_bundles_model_bundle_id_get_oapg(
-                path_params=path_params,
-                accept_content_types=accept_content_types,
-                stream=stream,
-                timeout=timeout,
-                skip_deserialization=skip_deserialization,
-            )
+        return self._get_model_bundle_v1_model_bundles_model_bundle_id_get_oapg(
+            path_params=path_params,
+            accept_content_types=accept_content_types,
+            stream=stream,
+            timeout=timeout,
+            skip_deserialization=skip_deserialization,
         )

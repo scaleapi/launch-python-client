@@ -1,5 +1,5 @@
 [tool.black]
-line-length = 79
+line-length = 120
 target-version = ['py37']
 include = '\.pyi?$'
 exclude = '''
@@ -45,16 +45,18 @@ deprecation = "^2.1.0"
 python-dateutil = "^2.8.2"
 pyyaml = ">=5.3.1,<7.0.0"
 typing-extensions = "^4.1.1"
-click = "^8.0.0"
 frozendict = "^2.3.4"
 pydantic = "^1.8.2"
 types-frozendict = "^2.0.9"
 click-config-file = "^0.6.0"
 questionary = "^1.10.0"
+click = ">=7.1.2"
 
-[tool.poetry.dev-dependencies]
-black = "^22.1.0"
-flake8 = "^4.0.1"
+[tool.poetry.scripts]
+scale-launch = 'launch.cli.bin:entry_point'
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
 mypy = "^0.941"
 isort = "^5.10.1"
 pylint = "^2.12.2"
@@ -69,10 +71,7 @@ sphinx-autobuild = "^2021.3.14"
 sphinx-autoapi = "^1.8.4"
 sphinx-click = "4.2.0"
 furo = "^2022.4.7"
-
-
-[tool.poetry.scripts]
-scale-launch = 'launch.cli.bin:entry_point'
+ruff = "^0.0.252"
 
 [tool.pytest.ini_options]
 log_cli = true
@@ -81,3 +80,11 @@ log_cli_level = "INFO"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+extend-select = ['Q']
+flake8-quotes = {inline-quotes = 'double', multiline-quotes = 'double'}
+exclude = [
+    "launch/api_client",
+]

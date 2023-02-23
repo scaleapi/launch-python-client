@@ -7,22 +7,14 @@ from pydantic.schema import get_flat_models_from_models, model_process_schema
 REF_PREFIX = "#/components/schemas/"
 
 
-def get_model_definitions(
-    request_schema: Type[BaseModel], response_schema: Type[BaseModel]
-) -> Dict[str, Any]:
+def get_model_definitions(request_schema: Type[BaseModel], response_schema: Type[BaseModel]) -> Dict[str, Any]:
     """
     Gets the model schemas in jsonschema format from a sequence of Pydantic BaseModels.
     """
-    flat_models = get_flat_models_from_models(
-        [request_schema, response_schema]
-    )
+    flat_models = get_flat_models_from_models([request_schema, response_schema])
     model_name_map = {model: model.__name__ for model in flat_models}
-    model_name_map.update(
-        {request_schema: "RequestSchema", response_schema: "ResponseSchema"}
-    )
-    return get_model_definitions_from_flat_models(
-        flat_models=flat_models, model_name_map=model_name_map
-    )
+    model_name_map.update({request_schema: "RequestSchema", response_schema: "ResponseSchema"})
+    return get_model_definitions_from_flat_models(flat_models=flat_models, model_name_map=model_name_map)
 
 
 def get_model_definitions_from_flat_models(
@@ -43,9 +35,7 @@ def get_model_definitions_from_flat_models(
     """
     definitions: Dict[str, Dict[str, Any]] = {}
     for model in flat_models:
-        m_schema, m_definitions, _ = model_process_schema(
-            model, model_name_map=model_name_map, ref_prefix=REF_PREFIX
-        )
+        m_schema, m_definitions, _ = model_process_schema(model, model_name_map=model_name_map, ref_prefix=REF_PREFIX)
         definitions.update(m_definitions)
         model_name = model_name_map[model]
         if "description" in m_schema:
