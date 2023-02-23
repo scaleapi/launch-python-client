@@ -81,9 +81,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
                         io.FileIO,
                         io.BufferedReader,
                     ],
-                    _configuration: typing.Optional[
-                        schemas.Configuration
-                    ] = None,
+                    _configuration: typing.Optional[schemas.Configuration] = None,
                     **kwargs: typing.Union[
                         schemas.AnyTypeSchema,
                         dict,
@@ -154,9 +152,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
                         io.FileIO,
                         io.BufferedReader,
                     ],
-                    _configuration: typing.Optional[
-                        schemas.Configuration
-                    ] = None,
+                    _configuration: typing.Optional[schemas.Configuration] = None,
                     **kwargs: typing.Union[
                         schemas.AnyTypeSchema,
                         dict,
@@ -228,9 +224,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
                         io.FileIO,
                         io.BufferedReader,
                     ],
-                    _configuration: typing.Optional[
-                        schemas.Configuration
-                    ] = None,
+                    _configuration: typing.Optional[schemas.Configuration] = None,
                     **kwargs: typing.Union[
                         schemas.AnyTypeSchema,
                         dict,
@@ -267,29 +261,17 @@ class ModelEndpointResourceState(schemas.DictSchema):
     gpus: MetaOapg.properties.gpus
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["cpus"]
-    ) -> MetaOapg.properties.cpus: ...
+    def __getitem__(self, name: typing_extensions.Literal["cpus"]) -> MetaOapg.properties.cpus: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["gpus"]
-    ) -> MetaOapg.properties.gpus: ...
+    def __getitem__(self, name: typing_extensions.Literal["gpus"]) -> MetaOapg.properties.gpus: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["memory"]
-    ) -> MetaOapg.properties.memory: ...
+    def __getitem__(self, name: typing_extensions.Literal["memory"]) -> MetaOapg.properties.memory: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["gpu_type"]
-    ) -> "GpuType": ...
+    def __getitem__(self, name: typing_extensions.Literal["gpu_type"]) -> "GpuType": ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["optimize_costs"]
-    ) -> MetaOapg.properties.optimize_costs: ...
+    def __getitem__(self, name: typing_extensions.Literal["optimize_costs"]) -> MetaOapg.properties.optimize_costs: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["storage"]
-    ) -> MetaOapg.properties.storage: ...
+    def __getitem__(self, name: typing_extensions.Literal["storage"]) -> MetaOapg.properties.storage: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -309,21 +291,13 @@ class ModelEndpointResourceState(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["cpus"]
-    ) -> MetaOapg.properties.cpus: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["cpus"]) -> MetaOapg.properties.cpus: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["gpus"]
-    ) -> MetaOapg.properties.gpus: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["gpus"]) -> MetaOapg.properties.gpus: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["memory"]
-    ) -> MetaOapg.properties.memory: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["memory"]) -> MetaOapg.properties.memory: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["gpu_type"]
-    ) -> typing.Union["GpuType", schemas.Unset]: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["gpu_type"]) -> typing.Union["GpuType", schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["optimize_costs"]
@@ -333,9 +307,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
         self, name: typing_extensions.Literal["storage"]
     ) -> typing.Union[MetaOapg.properties.storage, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -401,9 +373,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
             int,
         ],
         gpu_type: typing.Union["GpuType", schemas.Unset] = schemas.unset,
-        optimize_costs: typing.Union[
-            MetaOapg.properties.optimize_costs, bool, schemas.Unset
-        ] = schemas.unset,
+        optimize_costs: typing.Union[MetaOapg.properties.optimize_costs, bool, schemas.Unset] = schemas.unset,
         storage: typing.Union[
             MetaOapg.properties.storage,
             dict,

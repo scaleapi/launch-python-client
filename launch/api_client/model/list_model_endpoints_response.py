@@ -48,9 +48,7 @@ class ListModelEndpointsResponse(schemas.DictSchema):
                         typing.Tuple["GetModelEndpointResponse"],
                         typing.List["GetModelEndpointResponse"],
                     ],
-                    _configuration: typing.Optional[
-                        schemas.Configuration
-                    ] = None,
+                    _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "model_endpoints":
                     return super().__new__(
                         cls,
@@ -68,9 +66,7 @@ class ListModelEndpointsResponse(schemas.DictSchema):
     model_endpoints: MetaOapg.properties.model_endpoints
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_endpoints"]
-    ) -> MetaOapg.properties.model_endpoints:
+    def __getitem__(self, name: typing_extensions.Literal["model_endpoints"]) -> MetaOapg.properties.model_endpoints:
         ...
 
     @typing.overload
@@ -80,9 +76,7 @@ class ListModelEndpointsResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_endpoints",
-            ],
+            typing_extensions.Literal["model_endpoints",],
             str,
         ],
     ):
@@ -90,23 +84,17 @@ class ListModelEndpointsResponse(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["model_endpoints"]
-    ) -> MetaOapg.properties.model_endpoints:
+    def get_item_oapg(self, name: typing_extensions.Literal["model_endpoints"]) -> MetaOapg.properties.model_endpoints:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_endpoints",
-            ],
+            typing_extensions.Literal["model_endpoints",],
             str,
         ],
     ):

@@ -47,26 +47,10 @@ def list_endpoints(ctx: click.Context):
                 servable_endpoint.model_endpoint.bundle_name,
                 servable_endpoint.model_endpoint.status,
                 servable_endpoint.model_endpoint.endpoint_type,
-                str(
-                    (
-                        servable_endpoint.model_endpoint.deployment_state or {}
-                    ).get("min_workers", "")
-                ),
-                str(
-                    (
-                        servable_endpoint.model_endpoint.deployment_state or {}
-                    ).get("max_workers", "")
-                ),
-                str(
-                    (
-                        servable_endpoint.model_endpoint.deployment_state or {}
-                    ).get("available_workers", "")
-                ),
-                str(
-                    (
-                        servable_endpoint.model_endpoint.deployment_state or {}
-                    ).get("unavailable_workers", "")
-                ),
+                str((servable_endpoint.model_endpoint.deployment_state or {}).get("min_workers", "")),
+                str((servable_endpoint.model_endpoint.deployment_state or {}).get("max_workers", "")),
+                str((servable_endpoint.model_endpoint.deployment_state or {}).get("available_workers", "")),
+                str((servable_endpoint.model_endpoint.deployment_state or {}).get("unavailable_workers", "")),
                 servable_endpoint.model_endpoint.metadata or "{}",
             )
 
@@ -109,9 +93,7 @@ def get_endpoint(ctx: click.Context, endpoint_name: str):
     client = init_client(ctx)
 
     with spinner(f"Fetching endpoint '{endpoint_name}'"):
-        model_endpoint = client.get_model_endpoint(
-            endpoint_name
-        ).model_endpoint
+        model_endpoint = client.get_model_endpoint(endpoint_name).model_endpoint
 
     pretty_print(f"endpoint_id: {model_endpoint.id}")
     pretty_print(f"endpoint_name: {model_endpoint.name}")
@@ -123,12 +105,8 @@ def get_endpoint(ctx: click.Context, endpoint_name: str):
     pretty_print(f"endpoint_type: {model_endpoint.endpoint_type}")
     pretty_print(f"configs: {model_endpoint.configs}")
     pretty_print(f"destination: {model_endpoint.destination}")
-    pretty_print(
-        f"post-inference hooks: {model_endpoint.post_inference_hooks}"
-    )
-    pretty_print(
-        f"default callback url: {model_endpoint.default_callback_url}"
-    )
+    pretty_print(f"post-inference hooks: {model_endpoint.post_inference_hooks}")
+    pretty_print(f"default callback url: {model_endpoint.default_callback_url}")
 
 
 def _validate_int(val: str) -> int:
@@ -141,11 +119,7 @@ def _validate_int(val: str) -> int:
 
 
 def _dict_not_none_or_empty(**kwargs) -> dict:
-    return {
-        k: v
-        for k, v in kwargs.items()
-        if v is not None and v != "" and v != []
-    }
+    return {k: v for k, v in kwargs.items() if v is not None and v != "" and v != []}
 
 
 @endpoints.command("edit")
@@ -156,9 +130,7 @@ def edit_endpoint(ctx: click.Context, endpoint_name: str):
     client = init_client(ctx)
 
     with spinner(f"Fetching endpoint '{endpoint_name}'"):
-        model_endpoint = client.get_model_endpoint(
-            endpoint_name
-        ).model_endpoint
+        model_endpoint = client.get_model_endpoint(endpoint_name).model_endpoint
 
         model_bundles = client.list_model_bundles()
         model_bundle_choices = [
@@ -169,34 +141,21 @@ def edit_endpoint(ctx: click.Context, endpoint_name: str):
             )
         ]
         for bundle in model_bundles:
-            model_bundle_choices.append(
-                q.Choice(title=pformat(bundle), value=bundle)
-            )
+            model_bundle_choices.append(q.Choice(title=pformat(bundle), value=bundle))
 
         post_inference_hooks_choices = []
         post_inference_hooks = model_endpoint.post_inference_hooks or []
         for hook in PostInferenceHooks:
             value = hook.value  # type: ignore
-            post_inference_hooks_choices.append(
-                q.Choice(title=value, checked=(value in post_inference_hooks))
-            )
+            post_inference_hooks_choices.append(q.Choice(title=value, checked=(value in post_inference_hooks)))
 
     if model_endpoint.status != "READY":
-        pretty_print(
-            f"Endpoint '{endpoint_name}' is not ready. Please wait for it to be ready "
-            "before editing."
-        )
+        pretty_print(f"Endpoint '{endpoint_name}' is not ready. Please wait for it to be ready " "before editing.")
         return
 
-    model_bundle = q.select(
-        "Model bundle: ", choices=model_bundle_choices
-    ).ask()
-    resource_state = _dict_not_none_or_empty(
-        **(model_endpoint.resource_state or {})
-    )
-    deployment_state = _dict_not_none_or_empty(
-        **(model_endpoint.deployment_state or {})
-    )
+    model_bundle = q.select("Model bundle: ", choices=model_bundle_choices).ask()
+    resource_state = _dict_not_none_or_empty(**(model_endpoint.resource_state or {}))
+    deployment_state = _dict_not_none_or_empty(**(model_endpoint.deployment_state or {}))
     cpus = q.text("Cpus: ", default=resource_state.get("cpus", "")).ask()
     gpu_raw = q.text(
         "Gpus: ",
@@ -205,9 +164,7 @@ def edit_endpoint(ctx: click.Context, endpoint_name: str):
     ).ask()
     gpus = int(gpu_raw)
     memory = q.text("Memory: ", default=resource_state.get("memory", "")).ask()
-    storage = q.text(
-        "Storage (optional): ", default=resource_state.get("storage", "")
-    ).ask()
+    storage = q.text("Storage (optional): ", default=resource_state.get("storage", "")).ask()
     gpu_type_prompt = "Gpu type (optional): " if gpus == 0 else "Gpu type: "
     gpu_type = q.select(
         gpu_type_prompt,
@@ -231,9 +188,7 @@ def edit_endpoint(ctx: click.Context, endpoint_name: str):
         validate=_validate_int,
     ).ask()
     per_worker = int(per_worker)
-    post_inference_hooks = q.checkbox(
-        "Post-inference hooks: ", choices=post_inference_hooks_choices
-    ).ask()
+    post_inference_hooks = q.checkbox("Post-inference hooks: ", choices=post_inference_hooks_choices).ask()
     default_callback_url = q.text(
         "Default callback url (optional): ",
         default=model_endpoint.default_callback_url or "",

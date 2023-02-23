@@ -27,9 +27,7 @@ def send(
     """Sends request to launch endpoint"""
 
     # Only allowed one kind of input
-    assert (request is not None) ^ (
-        json_file is not None
-    ), "Please supply EITHER --request OR --json-file"
+    assert (request is not None) ^ (json_file is not None), "Please supply EITHER --request OR --json-file"
 
     if request is not None:
         json_input = json.loads(request)
@@ -47,9 +45,7 @@ def send(
     if model_endpoint.status() != "READY":
         print(f"Warning: endpoint is not ready get: {model_endpoint.status()}")
     else:
-        kwargs = {
-            "request": EndpointRequest(args=json_input, return_pickled=False)
-        }
+        kwargs = {"request": EndpointRequest(args=json_input, return_pickled=False)}
         if model_endpoint.model_endpoint.endpoint_type == "async":
             future = model_endpoint.predict(**kwargs)
             response = future.get()  # blocks until completion

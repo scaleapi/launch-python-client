@@ -16,14 +16,10 @@ class Connection:
         self.endpoint = endpoint
 
     def __repr__(self):
-        return (
-            f"Connection(api_key='{self.api_key}', endpoint='{self.endpoint}')"
-        )
+        return f"Connection(api_key='{self.api_key}', endpoint='{self.endpoint}')"
 
     def __eq__(self, other):
-        return (
-            self.api_key == other.api_key and self.endpoint == other.endpoint
-        )
+        return self.api_key == other.api_key and self.endpoint == other.endpoint
 
     def delete(self, route: str):
         return self.make_request(
@@ -80,9 +76,7 @@ class Connection:
                 auth=(self.api_key, ""),
                 timeout=DEFAULT_NETWORK_TIMEOUT_SEC,
             )
-            logger.info(
-                "API request has response code %s", response.status_code
-            )
+            logger.info("API request has response code %s", response.status_code)
             if response.status_code not in RetryStrategy.statuses:
                 break
             time.sleep(retry_wait_time)
@@ -99,6 +93,4 @@ class Connection:
         requests_response=None,
         aiohttp_response=None,
     ):
-        raise APIError(
-            endpoint, requests_command, requests_response, aiohttp_response
-        )
+        raise APIError(endpoint, requests_command, requests_response, aiohttp_response)

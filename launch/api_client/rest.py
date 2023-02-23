@@ -46,9 +46,7 @@ class RESTClientObject(object):
 
         addition_pool_args = {}
         if configuration.assert_hostname is not None:
-            addition_pool_args[
-                "assert_hostname"
-            ] = configuration.assert_hostname  # noqa: E501
+            addition_pool_args["assert_hostname"] = configuration.assert_hostname  # noqa: E501
 
         if configuration.retries is not None:
             addition_pool_args["retries"] = configuration.retries
@@ -91,9 +89,7 @@ class RESTClientObject(object):
         method: str,
         url: str,
         headers: typing.Optional[HTTPHeaderDict] = None,
-        fields: typing.Optional[
-            typing.Tuple[typing.Tuple[str, typing.Any], ...]
-        ] = None,
+        fields: typing.Optional[typing.Tuple[typing.Tuple[str, typing.Any], ...]] = None,
         body: typing.Optional[typing.Union[str, bytes]] = None,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
@@ -127,9 +123,7 @@ class RESTClientObject(object):
         ]
 
         if fields and body:
-            raise ApiValueError(
-                "body parameter cannot be used with fields parameter."
-            )
+            raise ApiValueError("body parameter cannot be used with fields parameter.")
 
         fields = fields or {}
         headers = headers or {}
@@ -151,10 +145,7 @@ class RESTClientObject(object):
                         timeout=timeout,
                         headers=headers,
                     )
-                elif (
-                    headers["Content-Type"]
-                    == "application/x-www-form-urlencoded"
-                ):  # noqa: E501
+                elif headers["Content-Type"] == "application/x-www-form-urlencoded":  # noqa: E501
                     r = self.pool_manager.request(
                         method,
                         url,
@@ -217,9 +208,7 @@ class RESTClientObject(object):
 
         return r
 
-    def GET(
-        self, url, headers=None, stream=False, timeout=None, fields=None
-    ) -> urllib3.HTTPResponse:
+    def GET(self, url, headers=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
         return self.request(
             "GET",
             url,
@@ -229,9 +218,7 @@ class RESTClientObject(object):
             fields=fields,
         )
 
-    def HEAD(
-        self, url, headers=None, stream=False, timeout=None, fields=None
-    ) -> urllib3.HTTPResponse:
+    def HEAD(self, url, headers=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
         return self.request(
             "HEAD",
             url,

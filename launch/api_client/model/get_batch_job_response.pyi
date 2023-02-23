@@ -51,13 +51,9 @@ class GetBatchJobResponse(schemas.DictSchema):
     status: "BatchJobStatus"
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["status"]
-    ) -> "BatchJobStatus": ...
+    def __getitem__(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus": ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["duration"]
-    ) -> MetaOapg.properties.duration: ...
+    def __getitem__(self, name: typing_extensions.Literal["duration"]) -> MetaOapg.properties.duration: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["num_tasks_completed"]
@@ -67,9 +63,7 @@ class GetBatchJobResponse(schemas.DictSchema):
         self, name: typing_extensions.Literal["num_tasks_pending"]
     ) -> MetaOapg.properties.num_tasks_pending: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["result"]
-    ) -> MetaOapg.properties.result: ...
+    def __getitem__(self, name: typing_extensions.Literal["result"]) -> MetaOapg.properties.result: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -88,9 +82,7 @@ class GetBatchJobResponse(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["status"]
-    ) -> "BatchJobStatus": ...
+    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus": ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["duration"]
@@ -98,23 +90,17 @@ class GetBatchJobResponse(schemas.DictSchema):
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["num_tasks_completed"]
-    ) -> typing.Union[
-        MetaOapg.properties.num_tasks_completed, schemas.Unset
-    ]: ...
+    ) -> typing.Union[MetaOapg.properties.num_tasks_completed, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["num_tasks_pending"]
-    ) -> typing.Union[
-        MetaOapg.properties.num_tasks_pending, schemas.Unset
-    ]: ...
+    ) -> typing.Union[MetaOapg.properties.num_tasks_pending, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["result"]
     ) -> typing.Union[MetaOapg.properties.result, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -155,9 +141,7 @@ class GetBatchJobResponse(schemas.DictSchema):
             int,
             schemas.Unset,
         ] = schemas.unset,
-        result: typing.Union[
-            MetaOapg.properties.result, str, schemas.Unset
-        ] = schemas.unset,
+        result: typing.Union[MetaOapg.properties.result, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

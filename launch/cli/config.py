@@ -56,9 +56,7 @@ def get_config(ctx: click.Context):
         "Gateway Endpoint",
     )
 
-    table.add_row(
-        str(ctx.obj.self_hosted), ctx.obj.api_key, ctx.obj.gateway_endpoint
-    )
+    table.add_row(str(ctx.obj.self_hosted), ctx.obj.api_key, ctx.obj.gateway_endpoint)
     console = Console()
     console.print(table)
 
@@ -69,8 +67,7 @@ def set_config(ctx: click.Context):
     ctx.obj.api_key = q.text(
         message="Your Scale API Key?",
         default=ctx.obj.api_key or "",
-        validate=lambda x: isinstance(x, str)
-        and len(x) > 16,  # Arbitrary length right now
+        validate=lambda x: isinstance(x, str) and len(x) > 16,  # Arbitrary length right now
     ).ask()
     ctx.obj.self_hosted = q.confirm(
         message="Is your installation of Launch self-hosted?",
