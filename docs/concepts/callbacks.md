@@ -10,7 +10,7 @@ field to include
 [`launch.PostInferenceHooks.CALLBACK`](/api/hooks/#launch.hooks.PostInferenceHooks).
 A callback URL also needs to be specified, and it can be configured as a default
 using the `default_callback_url` argument to
-[`launch.LaunchClient.create_model_endpoint`](/api/client/#launch.LaunchClient.create_model_endpoint).
+[`launch.LaunchClient.create_model_endpoint`](/api/client/#launch.LaunchClient.create_model_endpoint)
 or as a per-task override using the `callback_url` field of
 [`launch.EndpointRequest`](/api/model_endpoints/#launch.model_predictions.EndpointRequest).
 
