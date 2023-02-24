@@ -20,7 +20,7 @@ or as a per-task override using the `callback_url` field of
     creation method or if the prediction request has a `callback_url` override.
 
 
-```py title="Creating an Async Model Endpoint with a Callback URL"
+```py title="Creating an Async Model Endpoint with a Callback URL"  hl_lines="16-17 32"
 import os
 from launch import EndpointRequest, LaunchClient, PostInferenceHooks
 

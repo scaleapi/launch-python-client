@@ -131,7 +131,7 @@ module path to the `load_predict_fn`.
     }
 
     client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
-    client.create_model_bundle(**BUNDLE_PARAMS)
+    client.create_model_bundle_from_dirs(**BUNDLE_PARAMS)
 
     # Clean up files from demo
     os.remove(model_filename)
@@ -222,7 +222,7 @@ BUNDLE_PARAMS_BATCHED = {
     "requirements": [],
     "request_schema": MyRequestSchema,
     "response_schema": MyResponseSchema,
-    "app_config": {"mode": "single"},
+    "app_config": {"mode": "batched"},
 }
 
 client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
