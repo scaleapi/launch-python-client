@@ -35,6 +35,7 @@ nav:
   - Introduction: index.md
   - CLI: cli.md
   - Concepts:
+      - concepts/overview.md
       - concepts/model_bundles.md
       - concepts/model_endpoints.md
       - concepts/endpoint_predictions.md
