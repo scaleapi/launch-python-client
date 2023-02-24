@@ -10,20 +10,20 @@
       
       
       
-        <link rel="canonical" href="https://scaleapi.github.io/launch-python-client/api/model_endpoints/">
+        <link rel="canonical" href="https://scaleapi.github.io/launch-python-client/api/endpoint_predictions/">
       
       
-        <link rel="prev" href="../model_bundles/">
+        <link rel="prev" href="../model_endpoints/">
       
       
-        <link rel="next" href="../endpoint_predictions/">
+        <link rel="next" href="../hooks/">
       
       <link rel="icon" href="../../_static/favicon-32x32.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.14">
     
     
       
-        <title>Model Endpoints - Launch</title>
+        <title>Endpoint Predictions - Launch</title>
       
     
     
@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#model-endpoints" class="md-skip">
+        <a href="#endpoint-predictions" class="md-skip">
           Skip to content
         </a>
       
@@ -109,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Model Endpoints
+              Endpoint Predictions
             
           </span>
         </div>
@@ -444,6 +444,20 @@
               
   
   
+  
+    <li class="md-nav__item">
+      <a href="../model_endpoints/" class="md-nav__link">
+        Model Endpoints
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
     
   
   
@@ -456,12 +470,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Model Endpoints
+          Endpoint Predictions
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Model Endpoints
+        Endpoint Predictions
       </a>
       
         
@@ -480,43 +494,30 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#launch.model_endpoint.AsyncEndpoint" class="md-nav__link">
-    AsyncEndpoint
+  <a href="#launch.model_endpoint.EndpointRequest" class="md-nav__link">
+    EndpointRequest
   </a>
-  
-    <nav class="md-nav" aria-label="AsyncEndpoint">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#launch.model_endpoint.AsyncEndpoint.predict" class="md-nav__link">
-    predict()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#launch.model_endpoint.AsyncEndpoint.predict_batch" class="md-nav__link">
-    predict_batch()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#launch.model_endpoint.SyncEndpoint" class="md-nav__link">
-    SyncEndpoint
+  <a href="#launch.model_endpoint.EndpointResponse" class="md-nav__link">
+    EndpointResponse
   </a>
   
-    <nav class="md-nav" aria-label="SyncEndpoint">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseFuture" class="md-nav__link">
+    EndpointResponseFuture
+  </a>
+  
+    <nav class="md-nav" aria-label="EndpointResponseFuture">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#launch.model_endpoint.SyncEndpoint.predict" class="md-nav__link">
-    predict()
+  <a href="#launch.model_endpoint.EndpointResponseFuture.get" class="md-nav__link">
+    get()
   </a>
   
 </li>
@@ -530,20 +531,6 @@
   
 </nav>
       
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../endpoint_predictions/" class="md-nav__link">
-        Endpoint Predictions
-      </a>
     </li>
   
 
@@ -596,43 +583,30 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#launch.model_endpoint.AsyncEndpoint" class="md-nav__link">
-    AsyncEndpoint
+  <a href="#launch.model_endpoint.EndpointRequest" class="md-nav__link">
+    EndpointRequest
   </a>
-  
-    <nav class="md-nav" aria-label="AsyncEndpoint">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#launch.model_endpoint.AsyncEndpoint.predict" class="md-nav__link">
-    predict()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#launch.model_endpoint.AsyncEndpoint.predict_batch" class="md-nav__link">
-    predict_batch()
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#launch.model_endpoint.SyncEndpoint" class="md-nav__link">
-    SyncEndpoint
+  <a href="#launch.model_endpoint.EndpointResponse" class="md-nav__link">
+    EndpointResponse
   </a>
   
-    <nav class="md-nav" aria-label="SyncEndpoint">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseFuture" class="md-nav__link">
+    EndpointResponseFuture
+  </a>
+  
+    <nav class="md-nav" aria-label="EndpointResponseFuture">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#launch.model_endpoint.SyncEndpoint.predict" class="md-nav__link">
-    predict()
+  <a href="#launch.model_endpoint.EndpointResponseFuture.get" class="md-nav__link">
+    get()
   </a>
   
 </li>
@@ -657,30 +631,139 @@
                   
 
 
-<h1 id="model-endpoints">Model Endpoints<a class="headerlink" href="#model-endpoints" title="Permanent link">&para;</a></h1>
-<p>All classes here are returned by the 
-<a href="/api/client/#launch.client.LaunchClient.get_model_endpoint"><code>get_model_endpoint</code></a>
-method and provide a <code>predict</code> function.</p>
+<h1 id="endpoint-predictions">Endpoint Predictions<a class="headerlink" href="#endpoint-predictions" title="Permanent link">&para;</a></h1>
 
 
 <div class="doc doc-object doc-class">
 
 
 
-<h2 id="launch.model_endpoint.AsyncEndpoint" class="doc doc-heading">
-        <span class="doc doc-object-name doc-class-name">AsyncEndpoint</span>
+<h2 id="launch.model_endpoint.EndpointRequest" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">EndpointRequest</span>
 
 
-<a href="#launch.model_endpoint.AsyncEndpoint" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">AsyncEndpoint</span><span class="p">(</span><span class="n">model_endpoint</span><span class="p">:</span> <span class="n">ModelEndpoint</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+<a href="#launch.model_endpoint.EndpointRequest" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">EndpointRequest</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">callback_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">return_pickled</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">request_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
 </code></pre></div>
 
   <div class="doc doc-contents first">
-      <p class="doc doc-class-bases">
-        Bases: <code><span title="launch.model_endpoint.Endpoint">Endpoint</span></code></p>
 
   
-      <p>An asynchronous model endpoint.</p>
+      <p>Represents a single request to either a <code>SyncEndpoint</code> or <code>AsyncEndpoint</code>.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>url</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>A url to some file that can be read in to a ModelBundle's predict function. Can be an image, raw text, etc.
+<strong>Note</strong>: the contents of the file located at <code>url</code> are opened as a sequence of <code>bytes</code> and passed
+to the predict function. If you instead want to pass the url itself as an input to the predict function,
+see <code>args</code>.</p>
+<p>Exactly one of <code>url</code> and <code>args</code> must be specified.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>args</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Dict">Dict</span>]</code>
+          </td>
+          <td><p>A Dictionary with arguments to a ModelBundle's predict function. If the predict function has signature
+<code>predict_fn(foo, bar)</code>, then the keys in the dictionary should be <code>"foo"</code> and <code>"bar"</code>.
+Values must be native Python objects.</p>
+<p>Exactly one of <code>url</code> and <code>args</code> must be specified.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>return_pickled</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[bool]</code>
+          </td>
+          <td><p>Whether the output should be a pickled python object, or directly returned serialized json.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>request_id</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>(deprecated) A user-specifiable id for requests.
+Should be unique among EndpointRequests made in the same batch call.
+If one isn't provided the client will generate its own.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="launch.model_endpoint.EndpointResponse" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">EndpointResponse</span>
+
+
+<a href="#launch.model_endpoint.EndpointResponse" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">EndpointResponse</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">client</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">status</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">result_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">result</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">traceback</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents first">
+
+  
+      <p>Represents a response received from a Endpoint.</p>
 
   
 
@@ -696,20 +779,143 @@ method and provide a <code>predict</code> function.</p>
     </thead>
     <tbody>
         <tr>
-          <td><code>model_endpoint</code></td>
+          <td><code>client</code></td>
           <td>
-                <code><span title="launch.model_endpoint.ModelEndpoint">ModelEndpoint</span></code>
           </td>
-          <td><p>ModelEndpoint object.</p></td>
+          <td><p>An instance of <code>LaunchClient</code>.</p></td>
           <td>
               <em>required</em>
           </td>
         </tr>
         <tr>
+          <td><code>status</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>A string representing the status of the request, i.e. <code>SUCCESS</code>, <code>FAILURE</code>, or <code>PENDING</code></p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>result_url</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>A string that is a url containing the pickled python object from the
+Endpoint's predict function.</p>
+<p>Exactly one of <code>result_url</code> or <code>result</code> will be populated,
+depending on the value of <code>return_pickled</code> in the request.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>result</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>A string that is the serialized return value (in json form) of the Endpoint's predict function.
+Specifically, one can <code>json.loads()</code> the value of result to get the original python object back.</p>
+<p>Exactly one of <code>result_url</code> or <code>result</code> will be populated,
+depending on the value of <code>return_pickled</code> in the request.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>traceback</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>The stack trace if the inference endpoint raised an error. Can be used for debugging</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="launch.model_endpoint.EndpointResponseFuture" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">EndpointResponseFuture</span>
+
+
+<a href="#launch.model_endpoint.EndpointResponseFuture" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">EndpointResponseFuture</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">client</span><span class="p">,</span> <span class="n">endpoint_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">async_task_id</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents first">
+
+  
+      <p>Represents a future response from an Endpoint. Specifically, when the <code>EndpointResponseFuture</code> is ready,
+then its <code>get</code> method will return an actual instance of <code>EndpointResponse</code>.</p>
+<p>This object should not be directly instantiated by the user.</p>
+
+  
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
           <td><code>client</code></td>
           <td>
           </td>
-          <td><p>A LaunchClient object</p></td>
+          <td><p>An instance of <code>LaunchClient</code>.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>endpoint_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The name of the endpoint.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>async_task_id</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>An async task id.</p></td>
           <td>
               <em>required</em>
           </td>
@@ -734,17 +940,17 @@ method and provide a <code>predict</code> function.</p>
 
 
 
-<h3 id="launch.model_endpoint.AsyncEndpoint.predict" class="doc doc-heading">
-        <span class="doc doc-object-name doc-function-name">predict</span>
+<h3 id="launch.model_endpoint.EndpointResponseFuture.get" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">get</span>
 
 
-<a href="#launch.model_endpoint.AsyncEndpoint.predict" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">predict</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">EndpointRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EndpointResponseFuture</span>
+<a href="#launch.model_endpoint.EndpointResponseFuture.get" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EndpointResponse</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
   
-      <p>Runs an asynchronous prediction request.</p>
+      <p>Retrieves the <code>EndpointResponse</code> for the prediction request after it completes. This method blocks.</p>
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -758,230 +964,14 @@ method and provide a <code>predict</code> function.</p>
     </thead>
     <tbody>
         <tr>
-          <td><code>request</code></td>
+          <td><code>timeout</code></td>
           <td>
-                <code><a class="autorefs autorefs-internal" title="launch.model_endpoint.EndpointRequest" href="../../concepts/endpoint_predictions/#launch.model_endpoint.EndpointRequest">EndpointRequest</a></code>
+                <code><span title="typing.Optional">Optional</span>[float]</code>
           </td>
-          <td><p>The <code>EndpointRequest</code> object that contains the payload.</p></td>
+          <td><p>The maximum number of seconds to wait for the response. If None, then
+the method will block indefinitely until the response is ready.</p></td>
           <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-<th>Name</th>        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-<td></td>          <td>
-                <code><a class="autorefs autorefs-internal" title="launch.model_endpoint.EndpointResponseFuture" href="../../concepts/endpoint_predictions/#launch.model_endpoint.EndpointResponseFuture">EndpointResponseFuture</a></code>
-          </td>
-          <td><p>An <code>EndpointResponseFuture</code> such the user can use to query the status of the request.</p></td>
-        </tr>
-        <tr>
-<td><code>Example</code></td>          <td>
-                <code><a class="autorefs autorefs-internal" title="launch.model_endpoint.EndpointResponseFuture" href="../../concepts/endpoint_predictions/#launch.model_endpoint.EndpointResponseFuture">EndpointResponseFuture</a></code>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-<td></td>          <td>
-                <code><a class="autorefs autorefs-internal" title="launch.model_endpoint.EndpointResponseFuture" href="../../concepts/endpoint_predictions/#launch.model_endpoint.EndpointResponseFuture">EndpointResponseFuture</a></code>
-          </td>
-          <td><p>.. code-block:: python</p>
-<p>my_endpoint = AsyncEndpoint(...)
-f: EndpointResponseFuture = my_endpoint.predict(EndpointRequest(...))
-result = f.get()  # blocks on completion</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="launch.model_endpoint.AsyncEndpoint.predict_batch" class="doc doc-heading">
-        <span class="doc doc-object-name doc-function-name">predict_batch</span>
-
-
-<a href="#launch.model_endpoint.AsyncEndpoint.predict_batch" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">predict_batch</span><span class="p">(</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">requests</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">EndpointRequest</span><span class="p">],</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncEndpointBatchResponse</span>
-</code></pre></div>
-
-  <div class="doc doc-contents ">
-  
-      <p>(deprecated)
-Runs inference on the data items specified by urls. Returns a AsyncEndpointResponse.</p>
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>requests</code></td>
-          <td>
-                <code><span title="typing.Sequence">Sequence</span>[<a class="autorefs autorefs-internal" title="launch.model_endpoint.EndpointRequest" href="../../concepts/endpoint_predictions/#launch.model_endpoint.EndpointRequest">EndpointRequest</a>]</code>
-          </td>
-          <td><p>List of EndpointRequests. Request_ids must all be distinct.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><span title="launch.model_endpoint.AsyncEndpointBatchResponse">AsyncEndpointBatchResponse</span></code>
-          </td>
-          <td><p>an AsyncEndpointResponse keeping track of the inference requests made</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-  </div>
-
-</div>
-
-
-
-  </div>
-
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-class">
-
-
-
-<h2 id="launch.model_endpoint.SyncEndpoint" class="doc doc-heading">
-        <span class="doc doc-object-name doc-class-name">SyncEndpoint</span>
-
-
-<a href="#launch.model_endpoint.SyncEndpoint" class="headerlink" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">SyncEndpoint</span><span class="p">(</span><span class="n">model_endpoint</span><span class="p">:</span> <span class="n">ModelEndpoint</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
-</code></pre></div>
-
-  <div class="doc doc-contents first">
-      <p class="doc doc-class-bases">
-        Bases: <code><span title="launch.model_endpoint.Endpoint">Endpoint</span></code></p>
-
-  
-      <p>A synchronous model endpoint.</p>
-
-  
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>model_endpoint</code></td>
-          <td>
-                <code><span title="launch.model_endpoint.ModelEndpoint">ModelEndpoint</span></code>
-          </td>
-          <td><p>ModelEndpoint object.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr>
-          <td><code>client</code></td>
-          <td>
-          </td>
-          <td><p>A LaunchClient object</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-  
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="launch.model_endpoint.SyncEndpoint.predict" class="doc doc-heading">
-        <span class="doc doc-object-name doc-function-name">predict</span>
-
-
-<a href="#launch.model_endpoint.SyncEndpoint.predict" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">predict</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">EndpointRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EndpointResponse</span>
-</code></pre></div>
-
-  <div class="doc doc-contents ">
-  
-      <p>Runs a synchronous prediction request.</p>
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>request</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="launch.model_endpoint.EndpointRequest" href="../../concepts/endpoint_predictions/#launch.model_endpoint.EndpointRequest">EndpointRequest</a></code>
-          </td>
-          <td><p>The <code>EndpointRequest</code> object that contains the payload.</p></td>
-          <td>
-              <em>required</em>
+                <code>None</code>
           </td>
         </tr>
     </tbody>

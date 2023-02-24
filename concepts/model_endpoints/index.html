@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://example.com/concepts/model_endpoints/">
+        <link rel="canonical" href="https://scaleapi.github.io/launch-python-client/concepts/model_endpoints/">
       
       
         <link rel="prev" href="../model_bundles/">
@@ -299,6 +299,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../model_bundles/" class="md-nav__link">
         Model Bundles
       </a>
@@ -397,7 +411,21 @@
   
     <li class="md-nav__item">
       <a href="../batch_jobs/" class="md-nav__link">
-        Batch jobs
+        Batch Jobs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../callbacks/" class="md-nav__link">
+        Callbacks
       </a>
     </li>
   
@@ -475,6 +503,34 @@
     <li class="md-nav__item">
       <a href="../../api/model_endpoints/" class="md-nav__link">
         Model Endpoints
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/endpoint_predictions/" class="md-nav__link">
+        Endpoint Predictions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/hooks/" class="md-nav__link">
+        Hooks
       </a>
     </li>
   
@@ -582,8 +638,11 @@ tasks that are less latency-sensitive.</p>
 </code></pre></div>
 <h2 id="creating-sync-model-endpoints">Creating Sync Model Endpoints<a class="headerlink" href="#creating-sync-model-endpoints" title="Permanent link">&para;</a></h2>
 <p>Sync model endpoints are useful for latency-sensitive tasks, such as real-time
-inference. Sync endpoints are more expensive than async endpoints, and they
-require at least 1 <code>min_worker</code>.</p>
+inference. Sync endpoints are more expensive than async endpoints.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sync model endpoints require at least 1 <code>min_worker</code>.</p>
+</div>
 <div class="highlight"><span class="filename">Creating a Sync Model Endpoint</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span> <span class="nn">os</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span> <span class="nn">launch</span> <span class="kn">import</span> <span class="n">LaunchClient</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
