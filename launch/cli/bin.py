@@ -9,6 +9,7 @@ from launch.cli.tasks import tasks
 
 class RichGroup(click.Group):
     def format_help(self, ctx, formatter):
+        formatter.width = 118
         formatter.write(
             """
     This is the command line interface (CLI) package for Scale Launch.
