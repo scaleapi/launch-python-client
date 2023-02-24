@@ -1,6 +1,6 @@
 site_name: Launch
 site_description: Simple, modern and high performance machine learning deployment in python.
-site_url: https://example.com
+site_url: https://scaleapi.github.io/launch-python-client/
 
 theme:
   name: material
