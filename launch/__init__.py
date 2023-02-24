@@ -12,6 +12,7 @@ import pkg_resources
 
 from .client import LaunchClient
 from .connection import Connection
+from .hooks import PostInferenceHooks
 from .model_bundle import ModelBundle
 from .model_endpoint import (
     AsyncEndpoint,
@@ -32,5 +33,6 @@ __all__: Sequence[str] = [
     "EndpointResponseFuture",
     "LaunchClient",
     "ModelBundle",
+    "PostInferenceHooks",
     "SyncEndpoint",
 ]

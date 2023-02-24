@@ -5,3 +5,4 @@ All classes here are returned by the
 method and provide a `predict` function.
 
 ::: launch.model_endpoint.AsyncEndpoint
+::: launch.model_endpoint.SyncEndpoint

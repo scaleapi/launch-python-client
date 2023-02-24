@@ -39,10 +39,13 @@ nav:
       - concepts/model_endpoints.md
       - concepts/endpoint_predictions.md
       - concepts/batch_jobs.md
+      - concepts/callbacks.md
   - 'API Documentation':
     - api/client.md
     - api/model_bundles.md
     - api/model_endpoints.md
+    - api/endpoint_predictions.md
+    - api/hooks.md
 
 markdown_extensions:
   - toc:

@@ -1,4 +1,4 @@
-## Batch Jobs
+# Batch Jobs
 
 For predicting over a larger set of tasks (> 50) at once, it is recommended to
 use batch jobs. Batch jobs are a way to send a large number of tasks to a model

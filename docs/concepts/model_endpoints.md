@@ -39,8 +39,9 @@ endpoint = client.create_model_endpoint(
 ## Creating Sync Model Endpoints
 
 Sync model endpoints are useful for latency-sensitive tasks, such as real-time
-inference. Sync endpoints are more expensive than async endpoints, and they
-require at least 1 `min_worker`.
+inference. Sync endpoints are more expensive than async endpoints.
+!!! Note
+    Sync model endpoints require at least 1 `min_worker`.
 
 ```py title="Creating a Sync Model Endpoint"
 import os
