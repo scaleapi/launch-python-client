@@ -541,7 +541,7 @@ field to include
 <a href="/api/hooks/#launch.hooks.PostInferenceHooks"><code>launch.PostInferenceHooks.CALLBACK</code></a>.
 A callback URL also needs to be specified, and it can be configured as a default
 using the <code>default_callback_url</code> argument to
-<a href="/api/client/#launch.LaunchClient.create_model_endpoint"><code>launch.LaunchClient.create_model_endpoint</code></a>.
+<a href="/api/client/#launch.LaunchClient.create_model_endpoint"><code>launch.LaunchClient.create_model_endpoint</code></a>
 or as a per-task override using the <code>callback_url</code> field of
 <a href="/api/model_endpoints/#launch.model_predictions.EndpointRequest"><code>launch.EndpointRequest</code></a>.</p>
 <div class="admonition note">
@@ -565,9 +565,9 @@ creation method or if the prediction request has a <code>callback_url</code> ove
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="s2">&quot;team&quot;</span><span class="p">:</span> <span class="s2">&quot;MY_TEAM&quot;</span><span class="p">,</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="s2">&quot;MY_PRODUCT&quot;</span>
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="p">},</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="n">post_inference_hooks</span><span class="o">=</span><span class="p">[</span><span class="n">PostInferenceHooks</span><span class="o">.</span><span class="n">CALLBACK</span><span class="p">],</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">default_callback_url</span><span class="o">=</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">)</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="hll">    <span class="n">post_inference_hooks</span><span class="o">=</span><span class="p">[</span><span class="n">PostInferenceHooks</span><span class="o">.</span><span class="n">CALLBACK</span><span class="p">],</span>
+</span><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="hll">    <span class="n">default_callback_url</span><span class="o">=</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">,</span>
+</span><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">)</span>
 <a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
 <a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="n">future_default</span> <span class="o">=</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">EndpointRequest</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;hello&quot;</span><span class="p">}))</span>
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="sd">&quot;&quot;&quot;</span>
@@ -581,8 +581,8 @@ creation method or if the prediction request has a <code>callback_url</code> ove
 <a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>
 <a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="n">future_custom_callback_url</span> <span class="o">=</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
 <a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>    <span class="n">request</span><span class="o">=</span><span class="n">EndpointRequest</span><span class="p">(</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;hello&quot;</span><span class="p">},</span> <span class="n">callback_url</span><span class="o">=</span><span class="s2">&quot;https://example.com/custom&quot;</span>
-<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>    <span class="p">),</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="hll">        <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;hello&quot;</span><span class="p">},</span> <span class="n">callback_url</span><span class="o">=</span><span class="s2">&quot;https://example.com/custom&quot;</span>
+</span><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>    <span class="p">),</span>
 <a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="p">)</span>
 <a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>
 <a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="sd">&quot;&quot;&quot;</span>
