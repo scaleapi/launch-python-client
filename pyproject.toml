@@ -72,6 +72,11 @@ sphinx-autoapi = "^1.8.4"
 sphinx-click = "4.2.0"
 furo = "^2022.4.7"
 ruff = "^0.0.252"
+mkdocs = "^1.4.2"
+mkdocs-material = "^9.0.14"
+mkdocs-simple-hooks = "^0.1.5"
+mkdocstrings = {extras = ["python"], version = "^0.20.0"}
+mdx-include = "^1.4.2"
 
 [tool.pytest.ini_options]
 log_cli = true

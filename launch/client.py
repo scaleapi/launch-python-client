@@ -172,8 +172,9 @@ class LaunchClient:
 
         See ``register_bundle_location_fn`` for more notes on the signature of ``upload_bundle_fn``
 
-        Parameters: upload_bundle_fn: Function that takes in a serialized bundle (bytes type),
-        and uploads that bundle to an appropriate location. Only needed for self-hosted mode.
+        Parameters:
+            upload_bundle_fn: Function that takes in a serialized bundle (bytes type),
+                and uploads that bundle to an appropriate location. Only needed for self-hosted mode.
         """
         self.upload_bundle_fn = upload_bundle_fn
 
@@ -187,8 +188,9 @@ class LaunchClient:
         This function should directly write the contents of ``csv_text`` as a text string into
         ``csv_url``.
 
-        Parameters: upload_batch_csv_fn: Function that takes in a csv text (string type),
-        and uploads that bundle to an appropriate location. Only needed for self-hosted mode.
+        Parameters:
+            upload_batch_csv_fn: Function that takes in a csv text (string type),
+                and uploads that bundle to an appropriate location. Only needed for self-hosted mode.
         """
         self.upload_batch_csv_fn = upload_batch_csv_fn
 
@@ -290,13 +292,14 @@ class LaunchClient:
         then the `load_predict_fn_module_path` argument should be `my_module1.my_inference_file.f`.
 
 
-        Parameters: model_bundle_name: The name of the model bundle you want to create. The name
-        must be unique across all bundles that you own.
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to create. The name
+                must be unique across all bundles that you own.
 
             base_paths: The paths on the local filesystem where the bundle code lives.
 
             requirements_path: A path on the local filesystem where a ``requirements.txt`` file
-            lives.
+                lives.
 
             env_params: A dictionary that dictates environment information e.g.
                 the use of pytorch or tensorflow, which base image tag to use, etc.
@@ -315,14 +318,14 @@ class LaunchClient:
                        }
 
             load_predict_fn_module_path: A python module path for a function that, when called
-            with the output of load_model_fn_module_path, returns a function that carries out
-            inference.
+                with the output of load_model_fn_module_path, returns a function that carries out
+                inference.
 
             load_model_fn_module_path: A python module path for a function that returns a model.
-            The output feeds into the function located at load_predict_fn_module_path.
+                The output feeds into the function located at load_predict_fn_module_path.
 
             app_config: Either a Dictionary that represents a YAML file contents or a local path
-            to a YAML file.
+                to a YAML file.
 
             request_schema: A pydantic model that represents the request schema for the model
                 bundle. This is used to validate the request body for the model bundle's endpoint.
@@ -426,24 +429,25 @@ class LaunchClient:
         Pre/post-processing code can be included inside load_predict_fn/model or in
         predict_fn_or_cls call.
 
-        Parameters: model_bundle_name: The name of the model bundle you want to create. The name
-        must be unique across all bundles that you own.
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to create. The name
+                must be unique across all bundles that you own.
 
-            predict_fn_or_cls: ``Function`` or a ``Callable`` class that runs end-to-end (
-            pre/post processing and model inference) on the call. i.e. ``predict_fn_or_cls(
-            REQUEST) -> RESPONSE``.
+            predict_fn_or_cls: `Function` or a ``Callable`` class that runs end-to-end
+                (pre/post processing and model inference) on the call. i.e.
+                ``predict_fn_or_cls(REQUEST) -> RESPONSE``.
 
             model: Typically a trained Neural Network, e.g. a Pytorch module.
 
                 Exactly one of ``model`` and ``load_model_fn`` must be provided.
 
             load_model_fn: A function that, when run, loads a model. This function is essentially
-            a deferred wrapper around the ``model`` argument.
+                a deferred wrapper around the ``model`` argument.
 
                 Exactly one of ``model`` and ``load_model_fn`` must be provided.
 
             load_predict_fn: Function that, when called with a model, returns a function that
-            carries out inference.
+                carries out inference.
 
                 If ``model`` is specified, then this is equivalent
                 to:
@@ -457,7 +461,7 @@ class LaunchClient:
 
 
             requirements: A list of python package requirements, where each list element is of
-            the form ``<package_name>==<package_version>``, e.g.
+                the form ``<package_name>==<package_version>``, e.g.
 
                 ``["tensorflow==2.3.0", "tensorflow-hub==0.11.0"]``
 
@@ -465,7 +469,7 @@ class LaunchClient:
                 ``globals()`` for the ``globals_copy`` argument.
 
             app_config: Either a Dictionary that represents a YAML file contents or a local path
-            to a YAML file.
+                to a YAML file.
 
             env_params: A dictionary that dictates environment information e.g.
                 the use of pytorch or tensorflow, which base image tag to use, etc.
@@ -486,8 +490,8 @@ class LaunchClient:
                 - Tensorflow fields:
                     - ``tensorflow_version``: Version of tensorflow, e.g. ``"2.3.0"``.
 
-            globals_copy: Dictionary of the global symbol table. Normally provided by ``globals(
-            )`` built-in function.
+            globals_copy: Dictionary of the global symbol table. Normally provided by
+                ``globals()`` built-in function.
 
             request_schema: A pydantic model that represents the request schema for the model
                 bundle. This is used to validate the request body for the model bundle's endpoint.
@@ -626,36 +630,37 @@ class LaunchClient:
         instance of type ``Endpoint``, which is a base class of either ``SyncEndpoint`` or
         ``AsyncEndpoint``. This is the object to which you sent inference requests.
 
-        Parameters: endpoint_name: The name of the model endpoint you want to create. The name
-        must be unique across all endpoints that you own.
+        Parameters:
+            endpoint_name: The name of the model endpoint you want to create. The name
+                must be unique across all endpoints that you own.
 
             model_bundle: The ``ModelBundle`` that the endpoint should serve.
 
             cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater
-            than or equal to 1.
+                than or equal to 1.
 
             memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must
-            be a positive amount of memory.
+                be a positive amount of memory.
 
             storage: Amount of local ephemeral storage each worker should get, e.g. "4Gi",
-            "512Mi", etc. This must be a positive amount of storage.
+                "512Mi", etc. This must be a positive amount of storage.
 
             gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
 
             min_workers: The minimum number of workers. Must be greater than or equal to 0. This
-            should be determined by computing the minimum throughput of your workload and
-            dividing it by the throughput of a single worker. This field must be at least ``1``
-            for synchronous endpoints.
+                should be determined by computing the minimum throughput of your workload and
+                dividing it by the throughput of a single worker. This field must be at least ``1``
+                for synchronous endpoints.
 
             max_workers: The maximum number of workers. Must be greater than or equal to 0,
-            and as well as greater than or equal to ``min_workers``. This should be determined by
-            computing the maximum throughput of your workload and dividing it by the throughput
-            of a single worker.
+                and as well as greater than or equal to ``min_workers``. This should be determined by
+                computing the maximum throughput of your workload and dividing it by the throughput
+                of a single worker.
 
             per_worker: The maximum number of concurrent requests that an individual worker can
-            service. Launch automatically scales the number of workers for the endpoint so that
-            each worker is processing ``per_worker`` requests, subject to the limits defined by
-            ``min_workers`` and ``max_workers``.
+                service. Launch automatically scales the number of workers for the endpoint so that
+                each worker is processing ``per_worker`` requests, subject to the limits defined by
+                ``min_workers`` and ``max_workers``.
 
                 - If the average number of concurrent requests per worker is lower than
                 ``per_worker``, then the number of workers will be reduced. - Otherwise,
@@ -671,7 +676,7 @@ class LaunchClient:
                 this ensures that the number of workers will "climb" to ``max_workers``.
 
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu
-            requested. Here are the supported values:
+                requested. Here are the supported values:
 
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
@@ -685,9 +690,9 @@ class LaunchClient:
                 post_inference_hooks must contain "callback" for the callback to be triggered.
 
             update_if_exists: If ``True``, will attempt to update the endpoint if it exists.
-            Otherwise, will unconditionally try to create a new endpoint. Note that endpoint
-            names for a given user must be unique, so attempting to call this function with
-            ``update_if_exists=False`` for an existing endpoint will raise an error.
+                Otherwise, will unconditionally try to create a new endpoint. Note that endpoint
+                names for a given user must be unique, so attempting to call this function with
+                ``update_if_exists=False`` for an existing endpoint will raise an error.
 
             labels: An optional dictionary of key/value pairs to associate with this endpoint.
 
@@ -776,30 +781,31 @@ class LaunchClient:
         - The endpoint's name. - The endpoint's type (i.e. you cannot go from a ``SyncEnpdoint``
         to an ``AsyncEndpoint`` or vice versa.
 
-        Parameters: model_endpoint: The model endpoint (or its name) you want to edit. The name
-        must be unique across all endpoints that you own.
+        Parameters:
+            model_endpoint: The model endpoint (or its name) you want to edit. The name
+                must be unique across all endpoints that you own.
 
             model_bundle: The ``ModelBundle`` that the endpoint should serve.
 
             cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater
-            than or equal to 1.
+                than or equal to 1.
 
             memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must
-            be a positive amount of memory.
+                be a positive amount of memory.
 
             storage: Amount of local ephemeral storage each worker should get, e.g. "4Gi",
-            "512Mi", etc. This must be a positive amount of storage.
+                "512Mi", etc. This must be a positive amount of storage.
 
             gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
 
             min_workers: The minimum number of workers. Must be greater than or equal to 0.
 
             max_workers: The maximum number of workers. Must be greater than or equal to 0,
-            and as well as greater than or equal to ``min_workers``.
+                and as well as greater than or equal to ``min_workers``.
 
             per_worker: The maximum number of concurrent requests that an individual worker can
-            service. Launch automatically scales the number of workers for the endpoint so that
-            each worker is processing ``per_worker`` requests:
+                service. Launch automatically scales the number of workers for the endpoint so that
+                each worker is processing ``per_worker`` requests:
 
                 - If the average number of concurrent requests per worker is lower than
                 ``per_worker``, then the number of workers will be reduced. - Otherwise,
@@ -808,7 +814,7 @@ class LaunchClient:
                 traffic.
 
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu
-            requested. Here are the supported values:
+                requested. Here are the supported values:
 
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
@@ -934,8 +940,10 @@ class LaunchClient:
         """
         Clones an existing model bundle with changes to its app config. (More fields coming soon)
 
-        Parameters: model_bundle: The existing bundle or its ID. app_config: The new bundle's app
-        config, if not passed in, the new bundle's ``app_config`` will be set to ``None``
+        Parameters:
+            model_bundle: The existing bundle or its ID.
+            app_config: The new bundle's app config, if not passed in, the new
+                bundle's ``app_config`` will be set to ``None``
 
         Returns:
             A ``ModelBundle`` object
@@ -1206,7 +1214,7 @@ class LaunchClient:
             model_bundle: The bundle or the name of a the bundle to use for inference.
 
             urls: A list of urls, each pointing to a file containing model input. Must be
-            accessible by Scale Launch, hence urls need to either be public or signedURLs.
+                accessible by Scale Launch, hence urls need to either be public or signedURLs.
 
             inputs: A list of model inputs, if exists, we will upload the inputs and pass it in
                 to Launch.
@@ -1230,8 +1238,6 @@ class LaunchClient:
                 etc. This must be a positive amount of storage.
 
             gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
-
-            min_workers: The minimum number of workers. Must be greater than or equal to 0.
 
             max_workers: The maximum number of workers. Must be greater than or equal to 0, and as
                 well as greater than or equal to ``min_workers``.

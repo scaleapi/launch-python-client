@@ -7,13 +7,11 @@ from launch.cli.endpoints import endpoints
 from launch.cli.tasks import tasks
 
 
-@click.group("cli")
-@click.pass_context
-def entry_point(ctx, **kwargs):
-    """
+class RichGroup(click.Group):
+    def format_help(self, ctx, formatter):
+        formatter.write(
+            """
     This is the command line interface (CLI) package for Scale Launch.
-
-    .. code-block:: text
 
        ██╗      █████╗ ██╗   ██╗███╗   ██╗ ██████╗██╗  ██╗
        ██║     ██╔══██╗██║   ██║████╗  ██║██╔════╝██║  ██║
@@ -22,7 +20,14 @@ def entry_point(ctx, **kwargs):
        ███████╗██║  ██║╚██████╔╝██║ ╚████║╚██████╗██║  ██║
        ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝
 
-    """
+"""
+        )
+        super().format_help(ctx, formatter)
+
+
+@click.group("cli", cls=RichGroup)
+@click.pass_context
+def entry_point(ctx, **kwargs):
     ctx.obj = ContextObject().load()
     if ctx.obj.api_key is None:
         ctx.invoke(set_config)

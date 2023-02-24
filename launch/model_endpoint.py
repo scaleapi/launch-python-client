@@ -2,6 +2,7 @@ import concurrent.futures
 import json
 import time
 import uuid
+from abc import ABC, abstractmethod
 from collections import Counter
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Sequence
@@ -248,7 +249,7 @@ class EndpointResponseFuture:
         raise TimeoutError
 
 
-class Endpoint:
+class Endpoint(ABC):
     """An abstract class that represent any kind of endpoints in Scale Launch"""
 
     def __init__(self, model_endpoint: ModelEndpoint, client):
@@ -283,6 +284,10 @@ class Endpoint:
         """Gets the worker settings of the Endpoint."""
         self._update_model_endpoint_view()
         return self.model_endpoint.deployment_state
+
+    @abstractmethod
+    def predict(self, request: EndpointRequest):
+        """Runs a prediction request."""
 
 
 class SyncEndpoint(Endpoint):
@@ -377,9 +382,9 @@ class AsyncEndpoint(Endpoint):
 
             .. code-block:: python
 
-               my_endpoint = AsyncEndpoint(...)
-               f: EndpointResponseFuture = my_endpoint.predict(EndpointRequest(...))
-               result = f.get()  # blocks on completion
+                my_endpoint = AsyncEndpoint(...)
+                f: EndpointResponseFuture = my_endpoint.predict(EndpointRequest(...))
+                result = f.get()  # blocks on completion
         """
         response = self.client._async_request(  # pylint: disable=W0212
             self.model_endpoint.name,
