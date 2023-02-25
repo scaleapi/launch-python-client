@@ -70,9 +70,7 @@ class HTTPValidationError(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "detail",
-            ],
+            typing_extensions.Literal["detail",],
             str,
         ],
     ):
@@ -92,9 +90,7 @@ class HTTPValidationError(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "detail",
-            ],
+            typing_extensions.Literal["detail",],
             str,
         ],
     ):

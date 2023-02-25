@@ -63,9 +63,7 @@ SchemaFor200ResponseBodyApplicationJson = UpdateBatchJobResponse
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor200ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
 
 _response_for_200 = api_client.OpenApiResponse(
@@ -79,9 +77,7 @@ SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor422ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
 
 _response_for_422 = api_client.OpenApiResponse(
@@ -96,9 +92,7 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _update_batch_job_v1_batch_jobs_batch_job_id_put_oapg(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: typing_extensions.Literal["application/json"] = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -109,9 +103,7 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _update_batch_job_v1_batch_jobs_batch_job_id_put_oapg(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -122,9 +114,7 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _update_batch_job_v1_batch_jobs_batch_job_id_put_oapg(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -135,9 +125,7 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _update_batch_job_v1_batch_jobs_batch_job_id_put_oapg(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -147,9 +135,7 @@ class BaseApi(api_client.Api):
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def _update_batch_job_v1_batch_jobs_batch_job_id_put_oapg(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = "application/json",
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -226,9 +212,7 @@ class UpdateBatchJobV1BatchJobsBatchJobIdPut(BaseApi):
     @typing.overload
     def update_batch_job_v1_batch_jobs_batch_job_id_put(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: typing_extensions.Literal["application/json"] = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -239,9 +223,7 @@ class UpdateBatchJobV1BatchJobsBatchJobIdPut(BaseApi):
     @typing.overload
     def update_batch_job_v1_batch_jobs_batch_job_id_put(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -252,9 +234,7 @@ class UpdateBatchJobV1BatchJobsBatchJobIdPut(BaseApi):
     @typing.overload
     def update_batch_job_v1_batch_jobs_batch_job_id_put(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -265,9 +245,7 @@ class UpdateBatchJobV1BatchJobsBatchJobIdPut(BaseApi):
     @typing.overload
     def update_batch_job_v1_batch_jobs_batch_job_id_put(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -277,9 +255,7 @@ class UpdateBatchJobV1BatchJobsBatchJobIdPut(BaseApi):
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def update_batch_job_v1_batch_jobs_batch_job_id_put(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = "application/json",
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -303,9 +279,7 @@ class ApiForput(BaseApi):
     @typing.overload
     def put(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: typing_extensions.Literal["application/json"] = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -316,9 +290,7 @@ class ApiForput(BaseApi):
     @typing.overload
     def put(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -329,9 +301,7 @@ class ApiForput(BaseApi):
     @typing.overload
     def put(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -342,9 +312,7 @@ class ApiForput(BaseApi):
     @typing.overload
     def put(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = ...,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -354,9 +322,7 @@ class ApiForput(BaseApi):
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def put(
         self,
-        body: typing.Union[
-            SchemaForRequestBodyApplicationJson,
-        ],
+        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = "application/json",
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
