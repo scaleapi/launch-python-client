@@ -54,7 +54,9 @@ class UpdateBatchJobResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["success",],
+            typing_extensions.Literal[
+                "success",
+            ],
             str,
         ],
     ):
@@ -72,7 +74,9 @@ class UpdateBatchJobResponse(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["success",],
+            typing_extensions.Literal[
+                "success",
+            ],
             str,
         ],
     ):

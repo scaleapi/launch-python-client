@@ -1,4 +1,5 @@
 from pprint import pformat
+from typing import Literal, NamedTuple
 
 import click
 import questionary as q
@@ -16,10 +17,34 @@ def endpoints(ctx: click.Context):
     """Endpoints is a wrapper around model endpoints in Scale Launch"""
 
 
+class EndpointRow(NamedTuple):
+    id: str
+    endpoint_name: str
+    bundle_name: str
+    status: Literal["READY", "UPDATE_PENDING", "UPDATE_IN_PROGRESS", "UPDATE_FAILED", "DELETE_IN_PROGRESS"]
+    endpoint_type: Literal["async", "sync"]
+    min_workers: str  # rich.table requires all strings
+    max_workers: str
+    available_workers: str
+    unavailable_workers: str
+    num_gpus: str
+    metadata: str
+
+
 @click.pass_context
 @endpoints.command("list")
+@click.option("-o", "--orderby", required=False, type=click.Choice(EndpointRow._fields), help="How to order the table")
+@click.option(
+    "-d",
+    "--descending",
+    required=False,
+    is_flag=True,
+    type=bool,
+    default=False,
+    help="Whether to sort in descending order",
+)
 @click.pass_context
-def list_endpoints(ctx: click.Context):
+def list_endpoints(ctx: click.Context, orderby, descending):
     """List all of your Endpoints"""
     client = init_client(ctx)
 
@@ -28,11 +53,12 @@ def list_endpoints(ctx: click.Context):
         "Endpoint name",
         "Bundle name",
         "Status",
-        "Endpoint type",
-        "Min Workers",
-        "Max Workers",
-        "Available Workers",
-        "Unavailable Workers",
+        "Endpoint\ntype",
+        "Min\nWorkers",
+        "Max\nWorkers",
+        "Available\nWorkers",
+        "Unavailable\nWorkers",
+        "Num\nGPUs",
         "Metadata",
         title="Endpoints",
         title_justify="left",
@@ -40,8 +66,9 @@ def list_endpoints(ctx: click.Context):
 
     with spinner("Fetching model endpoints"):
         model_endpoints = client.list_model_endpoints()
+        endpoint_rows = []
         for servable_endpoint in model_endpoints:
-            table.add_row(
+            row = EndpointRow(
                 servable_endpoint.model_endpoint.id,
                 servable_endpoint.model_endpoint.name,
                 servable_endpoint.model_endpoint.bundle_name,
@@ -51,8 +78,18 @@ def list_endpoints(ctx: click.Context):
                 str((servable_endpoint.model_endpoint.deployment_state or {}).get("max_workers", "")),
                 str((servable_endpoint.model_endpoint.deployment_state or {}).get("available_workers", "")),
                 str((servable_endpoint.model_endpoint.deployment_state or {}).get("unavailable_workers", "")),
+                str((servable_endpoint.model_endpoint.resource_state or {}).get("gpus", "0")),
                 servable_endpoint.model_endpoint.metadata or "{}",
             )
+            endpoint_rows.append(row)
+
+        if orderby is not None:
+            endpoint_rows = sorted(endpoint_rows, key=lambda x: getattr(x, orderby), reverse=descending)
+
+        for row in endpoint_rows:
+            table.add_row(*row)
+
+        pretty_print(table)
 
     pretty_print(table)
 

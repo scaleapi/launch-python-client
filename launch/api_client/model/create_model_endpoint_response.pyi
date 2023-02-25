@@ -49,7 +49,9 @@ class CreateModelEndpointResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["endpoint_creation_task_id",],
+            typing_extensions.Literal[
+                "endpoint_creation_task_id",
+            ],
             str,
         ],
     ):
@@ -64,7 +66,9 @@ class CreateModelEndpointResponse(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["endpoint_creation_task_id",],
+            typing_extensions.Literal[
+                "endpoint_creation_task_id",
+            ],
             str,
         ],
     ):
