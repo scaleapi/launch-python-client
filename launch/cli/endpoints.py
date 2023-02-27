@@ -1,9 +1,10 @@
 from pprint import pformat
-from typing import Literal, NamedTuple
+from typing import NamedTuple
 
 import click
 import questionary as q
 from rich.table import Table
+from typing_extensions import Literal
 
 from launch.cli.client import init_client
 from launch.cli.console import pretty_print, spinner
