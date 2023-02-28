@@ -73,6 +73,7 @@ mkdocs-material = "^9.0.14"
 mkdocs-simple-hooks = "^0.1.5"
 mkdocstrings = {extras = ["python"], version = "^0.20.0"}
 mdx-include = "^1.4.2"
+pytest-mock = "^3.10.0"
 
 [tool.pytest.ini_options]
 log_cli = true

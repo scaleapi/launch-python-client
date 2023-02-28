@@ -49,7 +49,6 @@ A callback is sent to https://example.com with the following JSON body:
 }
 """
 
-
 future_custom_callback_url = endpoint.predict(
     request=EndpointRequest(
         args={"x": 3, "y": "hello"}, callback_url="https://example.com/custom"

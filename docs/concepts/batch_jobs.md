@@ -22,6 +22,10 @@ batch_job = client.batch_async_request(
         {"x": 2, "y": "hello"},
         {"x": 3, "y": "world"},
     ],
+    labels={
+        "team": "infra",
+        "product": "MY_PRODUCT",
+    }
 )
 
 status = "PENDING"
