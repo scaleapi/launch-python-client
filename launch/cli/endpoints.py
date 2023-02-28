@@ -90,8 +90,6 @@ def list_endpoints(ctx: click.Context, orderby, descending):
         for row in endpoint_rows:
             table.add_row(*row)
 
-        pretty_print(table)
-
     pretty_print(table)
 
 
