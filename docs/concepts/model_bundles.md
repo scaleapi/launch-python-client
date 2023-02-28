@@ -151,7 +151,8 @@ tasks.
 import os
 from launch import LaunchClient
 from pydantic import BaseModel
-from typing import List, Literal, Union
+from typing import List, Union
+from typing_extensions import Literal
 
 
 class MyRequestSchemaSingle(BaseModel):
