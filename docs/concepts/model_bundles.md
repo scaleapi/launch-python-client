@@ -51,7 +51,7 @@ module path to the `load_predict_fn`.
         "model": my_model,
         "load_predict_fn": my_load_predict_fn,
         "env_params": ENV_PARAMS,
-        "requirements": [],
+        "requirements": ["pytest==7.2.1", "numpy"],  # list your requirements here
         "request_schema": MyRequestSchema,
         "response_schema": MyResponseSchema,
     }
@@ -92,8 +92,8 @@ module path to the `load_predict_fn`.
     requirements_filename = os.path.join(directory, "requirements.txt")
     with open(predict_filename, "w") as f:
         f.write("""
+    pytest==7.2.1
     numpy
-    sklearn
     """
         )
      
@@ -210,7 +210,7 @@ BUNDLE_PARAMS_SINGLE = {
     "load_predict_fn": my_load_predict_fn,
     "load_model_fn": my_load_model_fn,
     "env_params": ENV_PARAMS,
-    "requirements": [],
+    "requirements": ["pytest==7.2.1", "numpy"],
     "request_schema": MyRequestSchema,
     "response_schema": MyResponseSchema,
     "app_config": {"mode": "single"},
@@ -220,7 +220,7 @@ BUNDLE_PARAMS_BATCHED = {
     "load_predict_fn": my_load_predict_fn,
     "load_model_fn": my_load_model_fn,
     "env_params": ENV_PARAMS,
-    "requirements": [],
+    "requirements": ["pytest==7.2.1", "numpy"],
     "request_schema": MyRequestSchema,
     "response_schema": MyResponseSchema,
     "app_config": {"mode": "batched"},

@@ -46,7 +46,7 @@ BUNDLE_PARAMS = {
     "model": my_model,
     "load_predict_fn": my_load_predict_fn,
     "env_params": ENV_PARAMS,
-    "requirements": [],
+    "requirements": ["pytest==7.2.1", "numpy"],  # list your requirements here
     "request_schema": MyRequestSchema,
     "response_schema": MyResponseSchema,
 }
