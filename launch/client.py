@@ -700,7 +700,8 @@ class LaunchClient:
              A Endpoint object that can be used to make requests to the endpoint.
 
         """
-        if update_if_exists and self.get_model_endpoint(endpoint_name):
+        existing_endpoint = self.get_model_endpoint(endpoint_name)
+        if update_if_exists and existing_endpoint:
             self.edit_model_endpoint(
                 model_endpoint=endpoint_name,
                 model_bundle=model_bundle,
@@ -714,9 +715,7 @@ class LaunchClient:
                 gpu_type=gpu_type,
                 default_callback_url=default_callback_url,
             )
-            # R1710: Either all return statements in a function should return an expression,
-            # or none of them should.
-            return None
+            return existing_endpoint
         else:
             # Presumably, the user knows that the endpoint doesn't already exist, and so we can
             # defer to the server to reject any duplicate creations.

@@ -31,7 +31,7 @@ endpoint = client.create_model_endpoint(
     update_if_exists=True,
     labels={
         "team": "infra",
-        "product": "MY_PRODUCT"
+        "product": "MY_PRODUCT",
     },
 )
 ```
@@ -57,7 +57,7 @@ endpoint = client.create_model_endpoint(
     update_if_exists=True,
     labels={
         "team": "infra",
-        "product": "MY_PRODUCT"
+        "product": "MY_PRODUCT",
     },
 )
 ```
@@ -99,7 +99,7 @@ endpoint = client.create_model_endpoint(
     update_if_exists=True,
     labels={
         "team": "infra",
-        "product": "MY_PRODUCT"
+        "product": "MY_PRODUCT",
     },
 )
 client.delete_model_endpoint(model_endpoint="demo-endpoint-tmp")

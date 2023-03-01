@@ -35,7 +35,7 @@ endpoint = client.create_model_endpoint(
     update_if_exists=True,
     labels={
         "team": "infra",
-        "product": "MY_PRODUCT"
+        "product": "MY_PRODUCT",
     },
     post_inference_hooks=[PostInferenceHooks.CALLBACK],
     default_callback_url="https://example.com",
