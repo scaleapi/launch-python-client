@@ -725,6 +725,15 @@ class LaunchClient:
                 api_instance = DefaultApi(api_client)
                 if not isinstance(model_bundle, ModelBundle) or model_bundle.id is None:
                     model_bundle = self.get_model_bundle(model_bundle)
+                post_inference_hooks_strs = None
+                if post_inference_hooks is not None:
+                    post_inference_hooks_strs = []
+                    for hook in post_inference_hooks:
+                        if isinstance(hook, PostInferenceHooks):
+                            post_inference_hooks_strs.append(hook.value)
+                        else:
+                            post_inference_hooks_strs.append(hook)
+
                 payload = dict_not_none(
                     cpus=cpus,
                     endpoint_type=ModelEndpointType(endpoint_type),
@@ -738,7 +747,7 @@ class LaunchClient:
                     model_bundle_id=model_bundle.id,
                     name=endpoint_name,
                     per_worker=per_worker,
-                    post_inference_hooks=post_inference_hooks or [],
+                    post_inference_hooks=post_inference_hooks_strs,
                     default_callback_url=default_callback_url,
                     storage=storage,
                 )
@@ -847,6 +856,15 @@ class LaunchClient:
                 model_endpoint_full = self.get_model_endpoint(endpoint_name)
                 model_endpoint_id = model_endpoint_full.model_endpoint.id  # type: ignore
 
+            post_inference_hooks_strs = None
+            if post_inference_hooks is not None:
+                post_inference_hooks_strs = []
+                for hook in post_inference_hooks:
+                    if isinstance(hook, PostInferenceHooks):
+                        post_inference_hooks_strs.append(hook.value)
+                    else:
+                        post_inference_hooks_strs.append(hook)
+
             payload = dict_not_none(
                 cpus=cpus,
                 gpus=gpus,
@@ -856,7 +874,7 @@ class LaunchClient:
                 min_workers=min_workers,
                 model_bundle_id=model_bundle_id,
                 per_worker=per_worker,
-                post_inference_hooks=post_inference_hooks or [],
+                post_inference_hooks=post_inference_hooks_strs,
                 default_callback_url=default_callback_url,
                 storage=storage,
             )
