@@ -22,6 +22,7 @@ or as a per-task override using the `callback_url` field of
 
 ```py title="Creating an Async Model Endpoint with a Callback URL"  hl_lines="16-17 32"
 import os
+import time
 from launch import EndpointRequest, LaunchClient, PostInferenceHooks
 
 client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
@@ -39,6 +40,9 @@ endpoint = client.create_model_endpoint(
     post_inference_hooks=[PostInferenceHooks.CALLBACK],
     default_callback_url="https://example.com",
 )
+
+while endpoint.status() != "READY":
+    time.sleep(10)
 
 future_default = endpoint.predict(request=EndpointRequest(args={"x": 2, "y": "hello"}))
 """
