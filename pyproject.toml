@@ -48,7 +48,6 @@ typing-extensions = "^4.1.1"
 frozendict = "^2.3.4"
 pydantic = "^1.8.2"
 types-frozendict = "^2.0.9"
-click-config-file = "^0.6.0"
 questionary = "^1.10.0"
 click = ">=7.1.2"  # type:
 
