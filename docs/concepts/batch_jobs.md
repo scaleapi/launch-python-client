@@ -23,7 +23,7 @@ batch_job = client.batch_async_request(
         {"x": 3, "y": "world"},
     ],
     labels={
-        "team": "infra",
+        "team": "MY_TEAM",
         "product": "MY_PRODUCT",
     }
 )

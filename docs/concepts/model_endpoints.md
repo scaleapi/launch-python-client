@@ -12,6 +12,27 @@ a future immediately after receiving a request, and the future can be used to
 retrieve the prediction once it is ready. Synchronous endpoints return the
 prediction directly after receiving a request.
 
+!!! info
+    # Choosing the right inference mode
+
+    Here are some tips for how to choose between SyncEndpoint, AsyncEndpoint, and BatchJob for deploying your ModelBundle:
+
+    A SyncEndpoint is good if:
+
+    * You have strict latency requirements (e.g. on the order of seconds or less).
+    * You are willing to have resources continually allocated.
+
+    An AsyncEndpoint is good if:
+
+    * You want to save on compute costs.
+    * Your inference code takes a long time to run.
+    * Your latency requirements are on the order of minutes.
+
+    A BatchJob is good if:
+
+    * You know there is a large batch of inputs ahead of time.
+    * You want to optimize for throughput instead of latency.
+
 ## Creating Async Model Endpoints
 
 Async model endpoints are the most cost-efficient way to perform inference on
@@ -30,7 +51,7 @@ endpoint = client.create_model_endpoint(
     endpoint_type="async",
     update_if_exists=True,
     labels={
-        "team": "infra",
+        "team": "MY_TEAM",
         "product": "MY_PRODUCT",
     },
 )
@@ -56,7 +77,7 @@ endpoint = client.create_model_endpoint(
     endpoint_type="sync",
     update_if_exists=True,
     labels={
-        "team": "infra",
+        "team": "MY_TEAM",
         "product": "MY_PRODUCT",
     },
 )
@@ -98,7 +119,7 @@ endpoint = client.create_model_endpoint(
     endpoint_type="async",
     update_if_exists=True,
     labels={
-        "team": "infra",
+        "team": "MY_TEAM",
         "product": "MY_PRODUCT",
     },
 )

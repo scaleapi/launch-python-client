@@ -34,7 +34,7 @@ endpoint = client.create_model_endpoint(
     endpoint_type="async",
     update_if_exists=True,
     labels={
-        "team": "infra",
+        "team": "MY_TEAM",
         "product": "MY_PRODUCT",
     },
     post_inference_hooks=[PostInferenceHooks.CALLBACK],

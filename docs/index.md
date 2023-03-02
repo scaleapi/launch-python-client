@@ -59,7 +59,7 @@ ENDPOINT_PARAMS = {
     "endpoint_type": "async",
     "update_if_exists": True,
     "labels": {
-        "team": "infra",
+        "team": "MY_TEAM",
         "product": "launch",
     }
 }
