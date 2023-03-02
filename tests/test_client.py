@@ -12,8 +12,8 @@ import requests_mock
 from urllib3 import HTTPResponse
 
 import launch
-from launch.api_client.api_client import ApiResponseWithoutDeserialization
-from launch.api_client.model.list_model_endpoints_response import (
+from launch.openapi_client.api_client import ApiResponseWithoutDeserialization
+from launch.openapi_client.model.list_model_endpoints_response import (
     ListModelEndpointsResponse,
 )
 
