@@ -1,5 +1,6 @@
+import re
 from pprint import pformat
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 
 import click
 import questionary as q
@@ -34,6 +35,7 @@ class EndpointRow(NamedTuple):
 
 @click.pass_context
 @endpoints.command("list")
+@click.option("--name", "-n", help="Regex to use to filter by name", default=None)
 @click.option("-o", "--orderby", required=False, type=click.Choice(EndpointRow._fields), help="How to order the table")
 @click.option(
     "-d",
@@ -45,7 +47,7 @@ class EndpointRow(NamedTuple):
     help="Whether to sort in descending order",
 )
 @click.pass_context
-def list_endpoints(ctx: click.Context, orderby, descending):
+def list_endpoints(ctx: click.Context, name: Optional[str], orderby, descending: bool):
     """List all of your Endpoints"""
     client = init_client(ctx)
 
@@ -69,20 +71,21 @@ def list_endpoints(ctx: click.Context, orderby, descending):
         model_endpoints = client.list_model_endpoints()
         endpoint_rows = []
         for servable_endpoint in model_endpoints:
-            row = EndpointRow(
-                servable_endpoint.model_endpoint.id,
-                servable_endpoint.model_endpoint.name,
-                servable_endpoint.model_endpoint.bundle_name,
-                servable_endpoint.model_endpoint.status,
-                servable_endpoint.model_endpoint.endpoint_type,
-                str((servable_endpoint.model_endpoint.deployment_state or {}).get("min_workers", "")),
-                str((servable_endpoint.model_endpoint.deployment_state or {}).get("max_workers", "")),
-                str((servable_endpoint.model_endpoint.deployment_state or {}).get("available_workers", "")),
-                str((servable_endpoint.model_endpoint.deployment_state or {}).get("unavailable_workers", "")),
-                str((servable_endpoint.model_endpoint.resource_state or {}).get("gpus", "0")),
-                servable_endpoint.model_endpoint.metadata or "{}",
-            )
-            endpoint_rows.append(row)
+            if name is None or re.match(name, servable_endpoint.model_endpoint.name):
+                row = EndpointRow(
+                    servable_endpoint.model_endpoint.id,
+                    servable_endpoint.model_endpoint.name,
+                    servable_endpoint.model_endpoint.bundle_name,
+                    servable_endpoint.model_endpoint.status,
+                    servable_endpoint.model_endpoint.endpoint_type,
+                    str((servable_endpoint.model_endpoint.deployment_state or {}).get("min_workers", "")),
+                    str((servable_endpoint.model_endpoint.deployment_state or {}).get("max_workers", "")),
+                    str((servable_endpoint.model_endpoint.deployment_state or {}).get("available_workers", "")),
+                    str((servable_endpoint.model_endpoint.deployment_state or {}).get("unavailable_workers", "")),
+                    str((servable_endpoint.model_endpoint.resource_state or {}).get("gpus", "0")),
+                    servable_endpoint.model_endpoint.metadata or "{}",
+                )
+                endpoint_rows.append(row)
 
         if orderby is not None:
             endpoint_rows = sorted(endpoint_rows, key=lambda x: getattr(x, orderby), reverse=descending)

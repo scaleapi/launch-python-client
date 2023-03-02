@@ -1,3 +1,6 @@
+import re
+from typing import Optional
+
 import click
 from rich.syntax import Syntax
 from rich.table import Column, Table
@@ -15,8 +18,9 @@ def bundles(ctx: click.Context):
 
 
 @bundles.command("list")
+@click.option("--name", "-n", help="Regex to use to filter by name", default=None)
 @click.pass_context
-def list_bundles(ctx: click.Context):
+def list_bundles(ctx: click.Context, name: Optional[str]):
     """
     List all of your Bundles
     """
@@ -31,13 +35,15 @@ def list_bundles(ctx: click.Context):
         title_justify="left",
     )
     with spinner("Fetching bundles"):
-        for model_bundle in client.list_model_bundles():
-            table.add_row(
-                model_bundle.id,
-                model_bundle.name,
-                model_bundle.location,
-                model_bundle.packaging_type,
-            )
+        model_bundles = client.list_model_bundles()
+        for model_bundle in model_bundles:
+            if name is None or re.match(name, model_bundle.name):
+                table.add_row(
+                    model_bundle.id,
+                    model_bundle.name,
+                    model_bundle.location,
+                    model_bundle.packaging_type,
+                )
     pretty_print(table)
 
 
