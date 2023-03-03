@@ -43,7 +43,7 @@ class ContextObject:
 @click.pass_context
 def config(ctx: click.Context):
     """
-    Config is a wrapper around getting and setting your Scale Launch configuration
+    Config is a wrapper around getting and setting your API key and other configuration options
     """
 
 
