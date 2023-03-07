@@ -10,8 +10,8 @@ from typing import Dict, List, Optional, Sequence
 from dataclasses_json import Undefined, dataclass_json
 from deprecation import deprecated
 
-from launch.api_client import ApiClient
-from launch.api_client.apis.tags.default_api import DefaultApi
+from launch.openapi_client import ApiClient
+from launch.openapi_client.apis.tags.default_api import DefaultApi
 from launch.request_validation import validate_task_request
 
 TASK_PENDING_STATE = "PENDING"

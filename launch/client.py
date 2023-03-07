@@ -14,35 +14,6 @@ import yaml
 from frozendict import frozendict
 from pydantic import BaseModel
 
-from launch.api_client import ApiClient, Configuration
-from launch.api_client.apis.tags.default_api import DefaultApi
-from launch.api_client.model.clone_model_bundle_request import (
-    CloneModelBundleRequest,
-)
-from launch.api_client.model.create_batch_job_request import (
-    CreateBatchJobRequest,
-)
-from launch.api_client.model.create_model_bundle_request import (
-    CreateModelBundleRequest,
-)
-from launch.api_client.model.create_model_endpoint_request import (
-    CreateModelEndpointRequest,
-)
-from launch.api_client.model.endpoint_predict_request import (
-    EndpointPredictRequest,
-)
-from launch.api_client.model.gpu_type import GpuType
-from launch.api_client.model.model_bundle_environment_params import (
-    ModelBundleEnvironmentParams,
-)
-from launch.api_client.model.model_bundle_framework import ModelBundleFramework
-from launch.api_client.model.model_bundle_packaging_type import (
-    ModelBundlePackagingType,
-)
-from launch.api_client.model.model_endpoint_type import ModelEndpointType
-from launch.api_client.model.update_model_endpoint_request import (
-    UpdateModelEndpointRequest,
-)
 from launch.connection import Connection
 from launch.constants import (
     BATCH_TASK_INPUT_SIGNED_URL_PATH,
@@ -63,6 +34,37 @@ from launch.model_endpoint import (
     Endpoint,
     ModelEndpoint,
     SyncEndpoint,
+)
+from launch.openapi_client import ApiClient, Configuration
+from launch.openapi_client.apis.tags.default_api import DefaultApi
+from launch.openapi_client.model.clone_model_bundle_request import (
+    CloneModelBundleRequest,
+)
+from launch.openapi_client.model.create_batch_job_request import (
+    CreateBatchJobRequest,
+)
+from launch.openapi_client.model.create_model_bundle_request import (
+    CreateModelBundleRequest,
+)
+from launch.openapi_client.model.create_model_endpoint_request import (
+    CreateModelEndpointRequest,
+)
+from launch.openapi_client.model.endpoint_predict_request import (
+    EndpointPredictRequest,
+)
+from launch.openapi_client.model.gpu_type import GpuType
+from launch.openapi_client.model.model_bundle_environment_params import (
+    ModelBundleEnvironmentParams,
+)
+from launch.openapi_client.model.model_bundle_framework import (
+    ModelBundleFramework,
+)
+from launch.openapi_client.model.model_bundle_packaging_type import (
+    ModelBundlePackagingType,
+)
+from launch.openapi_client.model.model_endpoint_type import ModelEndpointType
+from launch.openapi_client.model.update_model_endpoint_request import (
+    UpdateModelEndpointRequest,
 )
 from launch.pydantic_schemas import get_model_definitions
 from launch.request_validation import validate_task_request

@@ -22,7 +22,8 @@ exclude = '''
 [tool.mypy]
 exclude = [
     '^launch/clientlib/',
-    '^launch/api_client/'
+    '^launch/api_client/',
+    '^launch/openapi_client/',
 ]
 
 [tool.poetry]
@@ -88,4 +89,5 @@ extend-select = ['Q']
 flake8-quotes = {inline-quotes = 'double', multiline-quotes = 'double'}
 exclude = [
     "launch/api_client",
+    "launch/openapi_client",
 ]
