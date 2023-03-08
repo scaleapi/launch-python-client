@@ -33,12 +33,18 @@ class EndpointPredictRequest(schemas.DictSchema):
     class MetaOapg:
         class properties:
             args = schemas.AnyTypeSchema
+
+            @staticmethod
+            def callback_auth() -> typing.Type["CallbackAuth"]:
+                return CallbackAuth
+
             callback_url = schemas.StrSchema
             cloudpickle = schemas.StrSchema
             return_pickled = schemas.BoolSchema
             url = schemas.StrSchema
             __annotations__ = {
                 "args": args,
+                "callback_auth": callback_auth,
                 "callback_url": callback_url,
                 "cloudpickle": cloudpickle,
                 "return_pickled": return_pickled,
@@ -47,6 +53,10 @@ class EndpointPredictRequest(schemas.DictSchema):
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["args"]) -> MetaOapg.properties.args:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["callback_auth"]) -> "CallbackAuth":
         ...
 
     @typing.overload
@@ -74,6 +84,7 @@ class EndpointPredictRequest(schemas.DictSchema):
         name: typing.Union[
             typing_extensions.Literal[
                 "args",
+                "callback_auth",
                 "callback_url",
                 "cloudpickle",
                 "return_pickled",
@@ -89,6 +100,12 @@ class EndpointPredictRequest(schemas.DictSchema):
     def get_item_oapg(
         self, name: typing_extensions.Literal["args"]
     ) -> typing.Union[MetaOapg.properties.args, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["callback_auth"]
+    ) -> typing.Union["CallbackAuth", schemas.Unset]:
         ...
 
     @typing.overload
@@ -124,6 +141,7 @@ class EndpointPredictRequest(schemas.DictSchema):
         name: typing.Union[
             typing_extensions.Literal[
                 "args",
+                "callback_auth",
                 "callback_url",
                 "cloudpickle",
                 "return_pickled",
@@ -136,7 +154,7 @@ class EndpointPredictRequest(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args_: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -160,6 +178,7 @@ class EndpointPredictRequest(schemas.DictSchema):
             io.BufferedReader,
             schemas.Unset,
         ] = schemas.unset,
+        callback_auth: typing.Union["CallbackAuth", schemas.Unset] = schemas.unset,
         callback_url: typing.Union[MetaOapg.properties.callback_url, str, schemas.Unset] = schemas.unset,
         cloudpickle: typing.Union[MetaOapg.properties.cloudpickle, str, schemas.Unset] = schemas.unset,
         return_pickled: typing.Union[MetaOapg.properties.return_pickled, bool, schemas.Unset] = schemas.unset,
@@ -184,8 +203,9 @@ class EndpointPredictRequest(schemas.DictSchema):
     ) -> "EndpointPredictRequest":
         return super().__new__(
             cls,
-            *args_,
+            *_args,
             args=args,
+            callback_auth=callback_auth,
             callback_url=callback_url,
             cloudpickle=cloudpickle,
             return_pickled=return_pickled,
@@ -193,3 +213,6 @@ class EndpointPredictRequest(schemas.DictSchema):
             _configuration=_configuration,
             **kwargs,
         )
+
+
+from launch.api_client.model.callback_auth import CallbackAuth

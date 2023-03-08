@@ -66,7 +66,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                         str,
@@ -104,7 +104,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
                 ) -> "cpus":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
@@ -139,7 +139,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                         str,
@@ -177,7 +177,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
                 ) -> "memory":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
@@ -214,7 +214,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                         str,
@@ -252,7 +252,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
                 ) -> "storage":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
@@ -365,7 +365,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -454,7 +454,7 @@ class ModelEndpointResourceState(schemas.DictSchema):
     ) -> "ModelEndpointResourceState":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             memory=memory,
             cpus=cpus,
             gpus=gpus,

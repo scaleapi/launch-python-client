@@ -58,7 +58,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                         str,
@@ -96,7 +96,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
                 ) -> "cpus":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
@@ -134,7 +134,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                         str,
@@ -172,7 +172,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
                 ) -> "memory":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
@@ -205,7 +205,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                         str,
@@ -243,7 +243,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
                 ) -> "storage":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
@@ -371,7 +371,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -397,12 +397,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
         ] = schemas.unset,
         gpu_type: typing.Union["GpuType", schemas.Unset] = schemas.unset,
         gpus: typing.Union[MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset] = schemas.unset,
-        max_workers: typing.Union[
-            MetaOapg.properties.max_workers,
-            decimal.Decimal,
-            int,
-            schemas.Unset,
-        ] = schemas.unset,
+        max_workers: typing.Union[MetaOapg.properties.max_workers, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         memory: typing.Union[
             MetaOapg.properties.memory,
             dict,
@@ -464,7 +459,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
     ) -> "CreateBatchJobResourceRequests":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             cpus=cpus,
             gpu_type=gpu_type,
             gpus=gpus,

@@ -54,7 +54,7 @@ class CreateModelBundleRequest(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    arg: typing.Union[
+                    _arg: typing.Union[
                         typing.Tuple[
                             typing.Union[
                                 MetaOapg.items,
@@ -72,7 +72,7 @@ class CreateModelBundleRequest(schemas.DictSchema):
                 ) -> "requirements":
                     return super().__new__(
                         cls,
-                        arg,
+                        _arg,
                         _configuration=_configuration,
                     )
 
@@ -222,7 +222,7 @@ class CreateModelBundleRequest(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -241,16 +241,10 @@ class CreateModelBundleRequest(schemas.DictSchema):
         ],
         env_params: "ModelBundleEnvironmentParams",
         app_config: typing.Union[
-            MetaOapg.properties.app_config,
-            dict,
-            frozendict.frozendict,
-            schemas.Unset,
+            MetaOapg.properties.app_config, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         metadata: typing.Union[
-            MetaOapg.properties.metadata,
-            dict,
-            frozendict.frozendict,
-            schemas.Unset,
+            MetaOapg.properties.metadata, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         packaging_type: typing.Union["ModelBundlePackagingType", schemas.Unset] = schemas.unset,
         schema_location: typing.Union[MetaOapg.properties.schema_location, str, schemas.Unset] = schemas.unset,
@@ -274,7 +268,7 @@ class CreateModelBundleRequest(schemas.DictSchema):
     ) -> "CreateModelBundleRequest":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             requirements=requirements,
             name=name,
             location=location,

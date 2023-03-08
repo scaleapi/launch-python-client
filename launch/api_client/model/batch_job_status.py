@@ -35,8 +35,7 @@ class BatchJobStatus(schemas.EnumBase, schemas.StrSchema):
     class MetaOapg:
         enum_value_to_name = {
             "PENDING": "PENDING",
-            "CREATING_ENDPOINT": "CREATING_ENDPOINT",
-            "STARTED": "STARTED",
+            "RUNNING": "RUNNING",
             "SUCCESS": "SUCCESS",
             "FAILURE": "FAILURE",
             "CANCELLED": "CANCELLED",
@@ -48,12 +47,8 @@ class BatchJobStatus(schemas.EnumBase, schemas.StrSchema):
         return cls("PENDING")
 
     @schemas.classproperty
-    def CREATING_ENDPOINT(cls):
-        return cls("CREATING_ENDPOINT")
-
-    @schemas.classproperty
-    def STARTED(cls):
-        return cls("STARTED")
+    def RUNNING(cls):
+        return cls("RUNNING")
 
     @schemas.classproperty
     def SUCCESS(cls):

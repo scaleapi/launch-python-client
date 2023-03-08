@@ -104,7 +104,7 @@ class CloneModelBundleRequest(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -113,10 +113,7 @@ class CloneModelBundleRequest(schemas.DictSchema):
             str,
         ],
         new_app_config: typing.Union[
-            MetaOapg.properties.new_app_config,
-            dict,
-            frozendict.frozendict,
-            schemas.Unset,
+            MetaOapg.properties.new_app_config, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
@@ -138,7 +135,7 @@ class CloneModelBundleRequest(schemas.DictSchema):
     ) -> "CloneModelBundleRequest":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             original_model_bundle_id=original_model_bundle_id,
             new_app_config=new_app_config,
             _configuration=_configuration,

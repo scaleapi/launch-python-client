@@ -59,6 +59,10 @@ class GetModelEndpointResponse(schemas.DictSchema):
                 return ModelEndpointStatus
             aws_role = schemas.StrSchema
 
+            @staticmethod
+            def default_callback_auth() -> typing.Type["CallbackAuth"]:
+                return CallbackAuth
+
             class default_callback_url(schemas.StrSchema):
                 pass
             deployment_name = schemas.StrSchema
@@ -70,20 +74,14 @@ class GetModelEndpointResponse(schemas.DictSchema):
             class labels(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
-                def __getitem__(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
-                def get_item_oapg(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                     ],
@@ -95,18 +93,19 @@ class GetModelEndpointResponse(schemas.DictSchema):
                 ) -> "labels":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
             metadata = schemas.DictSchema
+            num_queued_items = schemas.IntSchema
 
             class post_inference_hooks(schemas.ListSchema):
                 class MetaOapg:
                     items = schemas.StrSchema
                 def __new__(
                     cls,
-                    arg: typing.Union[
+                    _arg: typing.Union[
                         typing.Tuple[
                             typing.Union[
                                 MetaOapg.items,
@@ -124,7 +123,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
                 ) -> "post_inference_hooks":
                     return super().__new__(
                         cls,
-                        arg,
+                        _arg,
                         _configuration=_configuration,
                     )
                 def __getitem__(self, i: int) -> MetaOapg.items:
@@ -144,11 +143,13 @@ class GetModelEndpointResponse(schemas.DictSchema):
                 "name": name,
                 "status": status,
                 "aws_role": aws_role,
+                "default_callback_auth": default_callback_auth,
                 "default_callback_url": default_callback_url,
                 "deployment_name": deployment_name,
                 "deployment_state": deployment_state,
                 "labels": labels,
                 "metadata": metadata,
+                "num_queued_items": num_queued_items,
                 "post_inference_hooks": post_inference_hooks,
                 "resource_state": resource_state,
                 "results_s3_bucket": results_s3_bucket,
@@ -186,6 +187,8 @@ class GetModelEndpointResponse(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["aws_role"]) -> MetaOapg.properties.aws_role: ...
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["default_callback_auth"]) -> "CallbackAuth": ...
+    @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["default_callback_url"]
     ) -> MetaOapg.properties.default_callback_url: ...
@@ -199,6 +202,10 @@ class GetModelEndpointResponse(schemas.DictSchema):
     def __getitem__(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata: ...
+    @typing.overload
+    def __getitem__(
+        self, name: typing_extensions.Literal["num_queued_items"]
+    ) -> MetaOapg.properties.num_queued_items: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["post_inference_hooks"]
@@ -225,11 +232,13 @@ class GetModelEndpointResponse(schemas.DictSchema):
                 "name",
                 "status",
                 "aws_role",
+                "default_callback_auth",
                 "default_callback_url",
                 "deployment_name",
                 "deployment_state",
                 "labels",
                 "metadata",
+                "num_queued_items",
                 "post_inference_hooks",
                 "resource_state",
                 "results_s3_bucket",
@@ -265,6 +274,10 @@ class GetModelEndpointResponse(schemas.DictSchema):
     ) -> typing.Union[MetaOapg.properties.aws_role, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["default_callback_auth"]
+    ) -> typing.Union["CallbackAuth", schemas.Unset]: ...
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["default_callback_url"]
     ) -> typing.Union[MetaOapg.properties.default_callback_url, schemas.Unset]: ...
     @typing.overload
@@ -283,6 +296,10 @@ class GetModelEndpointResponse(schemas.DictSchema):
     def get_item_oapg(
         self, name: typing_extensions.Literal["metadata"]
     ) -> typing.Union[MetaOapg.properties.metadata, schemas.Unset]: ...
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["num_queued_items"]
+    ) -> typing.Union[MetaOapg.properties.num_queued_items, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["post_inference_hooks"]
@@ -311,11 +328,13 @@ class GetModelEndpointResponse(schemas.DictSchema):
                 "name",
                 "status",
                 "aws_role",
+                "default_callback_auth",
                 "default_callback_url",
                 "deployment_name",
                 "deployment_state",
                 "labels",
                 "metadata",
+                "num_queued_items",
                 "post_inference_hooks",
                 "resource_state",
                 "results_s3_bucket",
@@ -326,7 +345,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
         return super().get_item_oapg(name)
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -363,28 +382,21 @@ class GetModelEndpointResponse(schemas.DictSchema):
         ],
         status: "ModelEndpointStatus",
         aws_role: typing.Union[MetaOapg.properties.aws_role, str, schemas.Unset] = schemas.unset,
+        default_callback_auth: typing.Union["CallbackAuth", schemas.Unset] = schemas.unset,
         default_callback_url: typing.Union[
             MetaOapg.properties.default_callback_url, str, schemas.Unset
         ] = schemas.unset,
         deployment_name: typing.Union[MetaOapg.properties.deployment_name, str, schemas.Unset] = schemas.unset,
         deployment_state: typing.Union["ModelEndpointDeploymentState", schemas.Unset] = schemas.unset,
-        labels: typing.Union[
-            MetaOapg.properties.labels,
-            dict,
-            frozendict.frozendict,
-            schemas.Unset,
-        ] = schemas.unset,
+        labels: typing.Union[MetaOapg.properties.labels, dict, frozendict.frozendict, schemas.Unset] = schemas.unset,
         metadata: typing.Union[
-            MetaOapg.properties.metadata,
-            dict,
-            frozendict.frozendict,
-            schemas.Unset,
+            MetaOapg.properties.metadata, dict, frozendict.frozendict, schemas.Unset
+        ] = schemas.unset,
+        num_queued_items: typing.Union[
+            MetaOapg.properties.num_queued_items, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
         post_inference_hooks: typing.Union[
-            MetaOapg.properties.post_inference_hooks,
-            list,
-            tuple,
-            schemas.Unset,
+            MetaOapg.properties.post_inference_hooks, list, tuple, schemas.Unset
         ] = schemas.unset,
         resource_state: typing.Union["ModelEndpointResourceState", schemas.Unset] = schemas.unset,
         results_s3_bucket: typing.Union[MetaOapg.properties.results_s3_bucket, str, schemas.Unset] = schemas.unset,
@@ -408,7 +420,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
     ) -> "GetModelEndpointResponse":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             endpoint_type=endpoint_type,
             last_updated_at=last_updated_at,
             destination=destination,
@@ -419,11 +431,13 @@ class GetModelEndpointResponse(schemas.DictSchema):
             created_by=created_by,
             status=status,
             aws_role=aws_role,
+            default_callback_auth=default_callback_auth,
             default_callback_url=default_callback_url,
             deployment_name=deployment_name,
             deployment_state=deployment_state,
             labels=labels,
             metadata=metadata,
+            num_queued_items=num_queued_items,
             post_inference_hooks=post_inference_hooks,
             resource_state=resource_state,
             results_s3_bucket=results_s3_bucket,
@@ -431,6 +445,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
             **kwargs,
         )
 
+from launch_client.model.callback_auth import CallbackAuth
 from launch_client.model.model_endpoint_deployment_state import (
     ModelEndpointDeploymentState,
 )

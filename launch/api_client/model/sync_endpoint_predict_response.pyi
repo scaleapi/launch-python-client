@@ -93,7 +93,7 @@ class SyncEndpointPredictResponse(schemas.DictSchema):
         return super().get_item_oapg(name)
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -139,7 +139,7 @@ class SyncEndpointPredictResponse(schemas.DictSchema):
     ) -> "SyncEndpointPredictResponse":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             status=status,
             result=result,
             traceback=traceback,

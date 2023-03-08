@@ -58,7 +58,7 @@ class ModelBundleResponse(schemas.DictSchema):
                     items = schemas.StrSchema
                 def __new__(
                     cls,
-                    arg: typing.Union[
+                    _arg: typing.Union[
                         typing.Tuple[
                             typing.Union[
                                 MetaOapg.items,
@@ -76,7 +76,7 @@ class ModelBundleResponse(schemas.DictSchema):
                 ) -> "model_artifact_ids":
                     return super().__new__(
                         cls,
-                        arg,
+                        _arg,
                         _configuration=_configuration,
                     )
                 def __getitem__(self, i: int) -> MetaOapg.items:
@@ -92,7 +92,7 @@ class ModelBundleResponse(schemas.DictSchema):
                     items = schemas.StrSchema
                 def __new__(
                     cls,
-                    arg: typing.Union[
+                    _arg: typing.Union[
                         typing.Tuple[
                             typing.Union[
                                 MetaOapg.items,
@@ -110,7 +110,7 @@ class ModelBundleResponse(schemas.DictSchema):
                 ) -> "requirements":
                     return super().__new__(
                         cls,
-                        arg,
+                        _arg,
                         _configuration=_configuration,
                     )
                 def __getitem__(self, i: int) -> MetaOapg.items:
@@ -241,7 +241,7 @@ class ModelBundleResponse(schemas.DictSchema):
         return super().get_item_oapg(name)
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -280,10 +280,7 @@ class ModelBundleResponse(schemas.DictSchema):
         ],
         env_params: "ModelBundleEnvironmentParams",
         app_config: typing.Union[
-            MetaOapg.properties.app_config,
-            dict,
-            frozendict.frozendict,
-            schemas.Unset,
+            MetaOapg.properties.app_config, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         schema_location: typing.Union[MetaOapg.properties.schema_location, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
@@ -306,7 +303,7 @@ class ModelBundleResponse(schemas.DictSchema):
     ) -> "ModelBundleResponse":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             metadata=metadata,
             requirements=requirements,
             model_artifact_ids=model_artifact_ids,

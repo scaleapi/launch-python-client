@@ -27,7 +27,9 @@ class ModelBundlePackagingType(schemas.EnumBase, schemas.StrSchema):
 
     Do not edit the class manually.
 
+
     The canonical list of possible packaging types for Model Bundles.
+
     """
 
     @schemas.classproperty

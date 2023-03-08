@@ -242,10 +242,7 @@ class ParameterSerializerBase:
         """
         Separator is for separate variables like dict with explode true, not for array item separation
         """
-        named_parameter_expansion = prefix_separator_iterator.separator in {
-            "&",
-            ";",
-        }
+        named_parameter_expansion = prefix_separator_iterator.separator in {"&", ";"}
         var_name_piece = variable_name if named_parameter_expansion else ""
         if type(in_data) in {str, float, int}:
             return cls.__ref6570_str_float_int_expansion(
@@ -419,9 +416,7 @@ class ParameterBase(JSONDetector):
         self.content = content
 
     def _serialize_json(
-        self,
-        in_data: typing.Union[None, int, float, str, bool, dict, list],
-        eliminate_whitespace: bool = False,
+        self, in_data: typing.Union[None, int, float, str, bool, dict, list], eliminate_whitespace: bool = False
     ) -> str:
         if eliminate_whitespace:
             return json.dumps(in_data, separators=self._json_encoder.compact_separators)
@@ -480,30 +475,13 @@ class PathParameter(ParameterBase, StyleSimpleSerializer):
         self,
         in_data: typing.Union[None, int, float, str, bool, dict, list],
     ) -> typing.Dict[str, str]:
-        value = self._serialize_simple(
-            in_data=in_data,
-            name=self.name,
-            explode=self.explode,
-            percent_encode=True,
-        )
+        value = self._serialize_simple(in_data=in_data, name=self.name, explode=self.explode, percent_encode=True)
         return self._to_dict(self.name, value)
 
     def serialize(
         self,
         in_data: typing.Union[
-            Schema,
-            Decimal,
-            int,
-            float,
-            str,
-            date,
-            datetime,
-            None,
-            bool,
-            list,
-            tuple,
-            dict,
-            frozendict.frozendict,
+            Schema, Decimal, int, float, str, date, datetime, None, bool, list, tuple, dict, frozendict.frozendict
         ],
     ) -> typing.Dict[str, str]:
         if self.schema:
@@ -608,9 +586,7 @@ class QueryParameter(ParameterBase, StyleFormSerializer):
         )
         return self._to_dict(self.name, value)
 
-    def get_prefix_separator_iterator(
-        self,
-    ) -> typing.Optional[PrefixSeparatorIterator]:
+    def get_prefix_separator_iterator(self) -> typing.Optional[PrefixSeparatorIterator]:
         if self.style is ParameterStyle.FORM:
             return PrefixSeparatorIterator("?", "&")
         elif self.style is ParameterStyle.SPACE_DELIMITED:
@@ -621,19 +597,7 @@ class QueryParameter(ParameterBase, StyleFormSerializer):
     def serialize(
         self,
         in_data: typing.Union[
-            Schema,
-            Decimal,
-            int,
-            float,
-            str,
-            date,
-            datetime,
-            None,
-            bool,
-            list,
-            tuple,
-            dict,
-            frozendict.frozendict,
+            Schema, Decimal, int, float, str, date, datetime, None, bool, list, tuple, dict, frozendict.frozendict
         ],
         prefix_separator_iterator: typing.Optional[PrefixSeparatorIterator] = None,
     ) -> typing.Dict[str, str]:
@@ -669,10 +633,7 @@ class QueryParameter(ParameterBase, StyleFormSerializer):
             cast_in_data = self._json_encoder.default(cast_in_data)
             if self._content_type_is_json(content_type):
                 value = self._serialize_json(cast_in_data, eliminate_whitespace=True)
-                return self._to_dict(
-                    self.name,
-                    next(prefix_separator_iterator) + self.name + "=" + quote(value),
-                )
+                return self._to_dict(self.name, next(prefix_separator_iterator) + self.name + "=" + quote(value))
             raise NotImplementedError("Serialization of {} has not yet been implemented".format(content_type))
 
 
@@ -704,19 +665,7 @@ class CookieParameter(ParameterBase, StyleFormSerializer):
     def serialize(
         self,
         in_data: typing.Union[
-            Schema,
-            Decimal,
-            int,
-            float,
-            str,
-            date,
-            datetime,
-            None,
-            bool,
-            list,
-            tuple,
-            dict,
-            frozendict.frozendict,
+            Schema, Decimal, int, float, str, date, datetime, None, bool, list, tuple, dict, frozendict.frozendict
         ],
     ) -> typing.Dict[str, str]:
         if self.schema:
@@ -783,19 +732,7 @@ class HeaderParameter(ParameterBase, StyleSimpleSerializer):
     def serialize(
         self,
         in_data: typing.Union[
-            Schema,
-            Decimal,
-            int,
-            float,
-            str,
-            date,
-            datetime,
-            None,
-            bool,
-            list,
-            tuple,
-            dict,
-            frozendict.frozendict,
+            Schema, Decimal, int, float, str, date, datetime, None, bool, list, tuple, dict, frozendict.frozendict
         ],
     ) -> HTTPHeaderDict:
         if self.schema:
@@ -853,14 +790,14 @@ class MediaType:
 @dataclass
 class ApiResponse:
     response: urllib3.HTTPResponse
-    body: typing.Union[Unset, Schema]
-    headers: typing.Union[Unset, typing.List[HeaderParameter]]
+    body: typing.Union[Unset, Schema] = unset
+    headers: typing.Union[Unset, typing.Dict[str, Schema]] = unset
 
     def __init__(
         self,
         response: urllib3.HTTPResponse,
-        body: typing.Union[Unset, typing.Type[Schema]],
-        headers: typing.Union[Unset, typing.List[HeaderParameter]],
+        body: typing.Union[Unset, Schema] = unset,
+        headers: typing.Union[Unset, typing.Dict[str, Schema]] = unset,
     ):
         """
         pycharm needs this to prevent 'Unexpected argument' warnings
@@ -898,9 +835,7 @@ class OpenApiResponse(JSONDetector):
         return json.loads(response.data)
 
     @staticmethod
-    def __file_name_from_response_url(
-        response_url: typing.Optional[str],
-    ) -> typing.Optional[str]:
+    def __file_name_from_response_url(response_url: typing.Optional[str]) -> typing.Optional[str]:
         if response_url is None:
             return None
         url_path = urlparse(response_url).path
@@ -955,9 +890,7 @@ class OpenApiResponse(JSONDetector):
             return response.data
 
     @staticmethod
-    def __deserialize_multipart_form_data(
-        response: urllib3.HTTPResponse,
-    ) -> typing.Dict[str, typing.Any]:
+    def __deserialize_multipart_form_data(response: urllib3.HTTPResponse) -> typing.Dict[str, typing.Any]:
         msg = email.message_from_bytes(response.data)
         return {
             part.get_param("name", header="Content-Disposition"): part.get_payload(decode=True).decode(
@@ -1002,11 +935,7 @@ class OpenApiResponse(JSONDetector):
         elif streamed:
             response.release_conn()
 
-        return self.response_cls(
-            response=response,
-            headers=deserialized_headers,
-            body=deserialized_body,
-        )
+        return self.response_cls(response=response, headers=deserialized_headers, body=deserialized_body)
 
 
 class ApiClient:
@@ -1226,39 +1155,15 @@ class ApiClient:
             return self.rest_client.HEAD(url, stream=stream, timeout=timeout, headers=headers)
         elif method == "OPTIONS":
             return self.rest_client.OPTIONS(
-                url,
-                headers=headers,
-                fields=fields,
-                stream=stream,
-                timeout=timeout,
-                body=body,
+                url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body
             )
         elif method == "POST":
-            return self.rest_client.POST(
-                url,
-                headers=headers,
-                fields=fields,
-                stream=stream,
-                timeout=timeout,
-                body=body,
-            )
+            return self.rest_client.POST(url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body)
         elif method == "PUT":
-            return self.rest_client.PUT(
-                url,
-                headers=headers,
-                fields=fields,
-                stream=stream,
-                timeout=timeout,
-                body=body,
-            )
+            return self.rest_client.PUT(url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body)
         elif method == "PATCH":
             return self.rest_client.PATCH(
-                url,
-                headers=headers,
-                fields=fields,
-                stream=stream,
-                timeout=timeout,
-                body=body,
+                url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body
             )
         elif method == "DELETE":
             return self.rest_client.DELETE(url, headers=headers, stream=stream, timeout=timeout, body=body)
@@ -1311,8 +1216,7 @@ class Api:
 
     @staticmethod
     def _verify_typed_dict_inputs_oapg(
-        cls: typing.Type[typing_extensions.TypedDict],
-        data: typing.Dict[str, typing.Any],
+        cls: typing.Type[typing_extensions.TypedDict], data: typing.Dict[str, typing.Any]
     ):
         """
         Ensures that:
@@ -1333,17 +1237,13 @@ class Api:
         if missing_required_keys:
             raise ApiTypeError(
                 "{} missing {} required arguments: {}".format(
-                    cls.__name__,
-                    len(missing_required_keys),
-                    missing_required_keys,
+                    cls.__name__, len(missing_required_keys), missing_required_keys
                 )
             )
         if required_keys_with_unset_values:
             raise ApiValueError(
                 "{} contains invalid unset values for {} required keys: {}".format(
-                    cls.__name__,
-                    len(required_keys_with_unset_values),
-                    required_keys_with_unset_values,
+                    cls.__name__, len(required_keys_with_unset_values), required_keys_with_unset_values
                 )
             )
 
@@ -1355,9 +1255,7 @@ class Api:
         if disallowed_additional_keys:
             raise ApiTypeError(
                 "{} got {} unexpected keyword arguments: {}".format(
-                    cls.__name__,
-                    len(disallowed_additional_keys),
-                    disallowed_additional_keys,
+                    cls.__name__, len(disallowed_additional_keys), disallowed_additional_keys
                 )
             )
 
@@ -1426,36 +1324,24 @@ class RequestBody(StyleFormSerializer, JSONDetector):
 
     def __multipart_json_item(self, key: str, value: Schema) -> RequestField:
         json_value = self.__json_encoder.default(value)
-        return RequestField(
-            name=key,
-            data=json.dumps(json_value),
-            headers={"Content-Type": "application/json"},
-        )
+        request_field = RequestField(name=key, data=json.dumps(json_value))
+        request_field.make_multipart(content_type="application/json")
+        return request_field
 
     def __multipart_form_item(self, key: str, value: Schema) -> RequestField:
         if isinstance(value, str):
-            return RequestField(
-                name=key,
-                data=str(value),
-                headers={"Content-Type": "text/plain"},
-            )
+            request_field = RequestField(name=key, data=str(value))
+            request_field.make_multipart(content_type="text/plain")
         elif isinstance(value, bytes):
-            return RequestField(
-                name=key,
-                data=value,
-                headers={"Content-Type": "application/octet-stream"},
-            )
+            request_field = RequestField(name=key, data=value)
+            request_field.make_multipart(content_type="application/octet-stream")
         elif isinstance(value, FileIO):
-            request_field = RequestField(
-                name=key,
-                data=value.read(),
-                filename=os.path.basename(value.name),
-                headers={"Content-Type": "application/octet-stream"},
-            )
+            # TODO use content.encoding to limit allowed content types if they are present
+            request_field = RequestField.from_tuples(key, (os.path.basename(value.name), value.read()))
             value.close()
-            return request_field
         else:
-            return self.__multipart_json_item(key=key, value=value)
+            request_field = self.__multipart_json_item(key=key, value=value)
+        return request_field
 
     def __serialize_multipart_form_data(self, in_data: Schema) -> typing.Dict[str, typing.Tuple[RequestField, ...]]:
         if not isinstance(in_data, frozendict.frozendict):

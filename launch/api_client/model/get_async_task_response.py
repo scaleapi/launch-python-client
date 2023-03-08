@@ -129,7 +129,7 @@ class GetAsyncTaskResponse(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -179,7 +179,7 @@ class GetAsyncTaskResponse(schemas.DictSchema):
     ) -> "GetAsyncTaskResponse":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             task_id=task_id,
             status=status,
             result=result,

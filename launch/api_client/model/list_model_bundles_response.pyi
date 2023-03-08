@@ -43,15 +43,12 @@ class ListModelBundlesResponse(schemas.DictSchema):
                         return ModelBundleResponse
                 def __new__(
                     cls,
-                    arg: typing.Union[
-                        typing.Tuple["ModelBundleResponse"],
-                        typing.List["ModelBundleResponse"],
-                    ],
+                    _arg: typing.Union[typing.Tuple["ModelBundleResponse"], typing.List["ModelBundleResponse"]],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "model_bundles":
                     return super().__new__(
                         cls,
-                        arg,
+                        _arg,
                         _configuration=_configuration,
                     )
                 def __getitem__(self, i: int) -> "ModelBundleResponse":
@@ -65,30 +62,18 @@ class ListModelBundlesResponse(schemas.DictSchema):
     def __getitem__(self, name: typing_extensions.Literal["model_bundles"]) -> MetaOapg.properties.model_bundles: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
-    def __getitem__(
-        self,
-        name: typing.Union[
-            typing_extensions.Literal["model_bundles",],
-            str,
-        ],
-    ):
+    def __getitem__(self, name: typing.Union[typing_extensions.Literal["model_bundles",], str]):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["model_bundles"]) -> MetaOapg.properties.model_bundles: ...
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
-    def get_item_oapg(
-        self,
-        name: typing.Union[
-            typing_extensions.Literal["model_bundles",],
-            str,
-        ],
-    ):
+    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["model_bundles",], str]):
         return super().get_item_oapg(name)
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -117,7 +102,7 @@ class ListModelBundlesResponse(schemas.DictSchema):
     ) -> "ListModelBundlesResponse":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             model_bundles=model_bundles,
             _configuration=_configuration,
             **kwargs,
