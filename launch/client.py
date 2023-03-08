@@ -13,9 +13,11 @@ import requests
 import yaml
 from frozendict import frozendict
 from pydantic import BaseModel
+from typing_extensions import Literal
 
 from launch.api_client import ApiClient, Configuration
 from launch.api_client.apis.tags.default_api import DefaultApi
+from launch.api_client.model.callback_auth import CallbackAuth
 from launch.api_client.model.clone_model_bundle_request import (
     CloneModelBundleRequest,
 )
@@ -622,6 +624,11 @@ class LaunchClient:
         endpoint_type: str = "sync",
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
         default_callback_url: Optional[str] = None,
+        default_callback_auth_kind: Optional[Literal["basic", "mtls"]] = None,
+        default_callback_auth_username: Optional[str] = None,
+        default_callback_auth_password: Optional[str] = None,
+        default_callback_auth_cert: Optional[str] = None,
+        default_callback_auth_key: Optional[str] = None,
         update_if_exists: bool = False,
         labels: Optional[Dict[str, str]] = None,
     ) -> Optional[Endpoint]:
@@ -689,6 +696,26 @@ class LaunchClient:
                 This can be overridden in the task parameters for each individual task.
                 post_inference_hooks must contain "callback" for the callback to be triggered.
 
+            default_callback_auth_kind: The default callback auth kind to use for async endpoints.
+                Either "basic" or "mtls". This can be overridden in the task parameters for each
+                individual task.
+
+            default_callback_auth_username: The default callback auth username to use. This only
+                applies if default_callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_password: The default callback auth password to use. This only
+                applies if default_callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_cert: The default callback auth cert to use. This only applies
+                if default_callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_key: The default callback auth key to use. This only applies
+                if default_callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
             update_if_exists: If ``True``, will attempt to update the endpoint if it exists.
                 Otherwise, will unconditionally try to create a new endpoint. Note that endpoint
                 names for a given user must be unique, so attempting to call this function with
@@ -714,6 +741,11 @@ class LaunchClient:
                 per_worker=per_worker,
                 gpu_type=gpu_type,
                 default_callback_url=default_callback_url,
+                default_callback_auth_kind=default_callback_auth_kind,
+                default_callback_auth_username=default_callback_auth_username,
+                default_callback_auth_password=default_callback_auth_password,
+                default_callback_auth_cert=default_callback_auth_cert,
+                default_callback_auth_key=default_callback_auth_key,
             )
             return existing_endpoint
         else:
@@ -733,6 +765,19 @@ class LaunchClient:
                         else:
                             post_inference_hooks_strs.append(hook)
 
+                if default_callback_auth_kind is not None:
+                    default_callback_auth = CallbackAuth(
+                        **dict_not_none(
+                            kind=default_callback_auth_kind,
+                            username=default_callback_auth_username,
+                            password=default_callback_auth_password,
+                            cert=default_callback_auth_cert,
+                            key=default_callback_auth_key,
+                        )
+                    )
+                else:
+                    default_callback_auth = None
+
                 payload = dict_not_none(
                     cpus=cpus,
                     endpoint_type=ModelEndpointType(endpoint_type),
@@ -748,6 +793,7 @@ class LaunchClient:
                     per_worker=per_worker,
                     post_inference_hooks=post_inference_hooks_strs,
                     default_callback_url=default_callback_url,
+                    default_callback_auth=default_callback_auth,
                     storage=storage,
                 )
                 create_model_endpoint_request = CreateModelEndpointRequest(**payload)
@@ -781,6 +827,11 @@ class LaunchClient:
         gpu_type: Optional[str] = None,
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
         default_callback_url: Optional[str] = None,
+        default_callback_auth_kind: Optional[Literal["basic", "mtls"]] = None,
+        default_callback_auth_username: Optional[str] = None,
+        default_callback_auth_password: Optional[str] = None,
+        default_callback_auth_cert: Optional[str] = None,
+        default_callback_auth_key: Optional[str] = None,
     ) -> None:
         """
         Edits an existing model endpoint. Here are the fields that **cannot** be edited on an
@@ -833,6 +884,25 @@ class LaunchClient:
                 This can be overridden in the task parameters for each individual task.
                 post_inference_hooks must contain "callback" for the callback to be triggered.
 
+            default_callback_auth_kind: The default callback auth kind to use for async endpoints.
+                Either "basic" or "mtls". This can be overridden in the task parameters for each
+                individual task.
+
+            default_callback_auth_username: The default callback auth username to use. This only
+                applies if default_callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_password: The default callback auth password to use. This only
+                applies if default_callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_cert: The default callback auth cert to use. This only applies
+                if default_callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_key: The default callback auth key to use. This only applies
+                if default_callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
         """
         logger.info("Editing existing endpoint")
         with ApiClient(self.configuration) as api_client:
@@ -864,6 +934,19 @@ class LaunchClient:
                     else:
                         post_inference_hooks_strs.append(hook)
 
+            if default_callback_auth_kind is not None:
+                default_callback_auth = CallbackAuth(
+                    **dict_not_none(
+                        kind=default_callback_auth_kind,
+                        username=default_callback_auth_username,
+                        password=default_callback_auth_password,
+                        cert=default_callback_auth_cert,
+                        key=default_callback_auth_key,
+                    )
+                )
+            else:
+                default_callback_auth = None
+
             payload = dict_not_none(
                 cpus=cpus,
                 gpus=gpus,
@@ -875,6 +958,7 @@ class LaunchClient:
                 per_worker=per_worker,
                 post_inference_hooks=post_inference_hooks_strs,
                 default_callback_url=default_callback_url,
+                default_callback_auth=default_callback_auth,
                 storage=storage,
             )
             update_model_endpoint_request = UpdateModelEndpointRequest(**payload)
@@ -1107,6 +1191,11 @@ class LaunchClient:
         url: Optional[str] = None,
         args: Optional[Dict] = None,
         callback_url: Optional[str] = None,
+        callback_auth_kind: Optional[Literal["basic", "mtls"]] = None,
+        callback_auth_username: Optional[str] = None,
+        callback_auth_password: Optional[str] = None,
+        callback_auth_cert: Optional[str] = None,
+        callback_auth_key: Optional[str] = None,
         return_pickled: bool = False,
     ) -> str:
         """
@@ -1133,6 +1222,26 @@ class LaunchClient:
                 default_callback_url of the endpoint is used. The endpoint must specify
                 "callback" as a post-inference hook for the callback to be triggered.
 
+            callback_auth_kind: The default callback auth kind to use for async endpoints.
+                Either "basic" or "mtls". This can be overridden in the task parameters for each
+                individual task.
+
+            callback_auth_username: The default callback auth username to use. This only
+                applies if callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            callback_auth_password: The default callback auth password to use. This only
+                applies if callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            callback_auth_cert: The default callback auth cert to use. This only applies
+                if callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
+            callback_auth_key: The default callback auth key to use. This only applies
+                if callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
             return_pickled: Whether the python object returned is pickled, or directly written to
             the file returned.
 
@@ -1145,11 +1254,25 @@ class LaunchClient:
         endpoint = self.get_model_endpoint(endpoint_name)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
+            if callback_auth_kind is not None:
+                callback_auth = CallbackAuth(
+                    **dict_not_none(
+                        kind=callback_auth_kind,
+                        username=callback_auth_username,
+                        password=callback_auth_password,
+                        cert=callback_auth_cert,
+                        key=callback_auth_key,
+                    )
+                )
+            else:
+                callback_auth = None
+
             payload = dict_not_none(
                 return_pickled=return_pickled,
                 url=url,
                 args=args,
                 callback_url=callback_url,
+                callback_auth=callback_auth,
             )
             request = EndpointPredictRequest(**payload)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore

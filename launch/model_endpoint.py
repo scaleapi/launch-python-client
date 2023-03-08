@@ -9,6 +9,7 @@ from typing import Dict, List, Optional, Sequence
 
 from dataclasses_json import Undefined, dataclass_json
 from deprecation import deprecated
+from typing_extensions import Literal
 
 from launch.api_client import ApiClient
 from launch.api_client.apis.tags.default_api import DefaultApi
@@ -115,6 +116,30 @@ class EndpointRequest:
 
         return_pickled: Whether the output should be a pickled python object, or directly returned serialized json.
 
+        callback_url: The callback url to use for this task. If None, then the
+            default_callback_url of the endpoint is used. The endpoint must specify
+            "callback" as a post-inference hook for the callback to be triggered.
+
+        callback_auth_kind: The default callback auth kind to use for async endpoints.
+            Either "basic" or "mtls". This can be overridden in the task parameters for each
+            individual task.
+
+        callback_auth_username: The default callback auth username to use. This only
+            applies if callback_auth_kind is "basic". This can be overridden in the task
+            parameters for each individual task.
+
+        callback_auth_password: The default callback auth password to use. This only
+            applies if callback_auth_kind is "basic". This can be overridden in the task
+            parameters for each individual task.
+
+        callback_auth_cert: The default callback auth cert to use. This only applies
+            if callback_auth_kind is "mtls". This can be overridden in the task
+            parameters for each individual task.
+
+        callback_auth_key: The default callback auth key to use. This only applies
+            if callback_auth_kind is "mtls". This can be overridden in the task
+            parameters for each individual task.
+
         request_id: (deprecated) A user-specifiable id for requests.
             Should be unique among EndpointRequests made in the same batch call.
             If one isn't provided the client will generate its own.
@@ -125,6 +150,11 @@ class EndpointRequest:
         url: Optional[str] = None,
         args: Optional[Dict] = None,
         callback_url: Optional[str] = None,
+        callback_auth_kind: Optional[Literal["basic", "mtls"]] = None,
+        callback_auth_username: Optional[str] = None,
+        callback_auth_password: Optional[str] = None,
+        callback_auth_cert: Optional[str] = None,
+        callback_auth_key: Optional[str] = None,
         return_pickled: Optional[bool] = False,
         request_id: Optional[str] = None,
     ):
@@ -136,6 +166,11 @@ class EndpointRequest:
         self.url = url
         self.args = args
         self.callback_url = callback_url
+        self.callback_auth_kind = callback_auth_kind
+        self.callback_auth_username = callback_auth_username
+        self.callback_auth_password = callback_auth_password
+        self.callback_auth_cert = callback_auth_cert
+        self.callback_auth_key = callback_auth_key
         self.return_pickled = return_pickled
         self.request_id: str = request_id
 
@@ -391,6 +426,11 @@ class AsyncEndpoint(Endpoint):
             url=request.url,
             args=request.args,
             callback_url=request.callback_url,
+            callback_auth_kind=request.callback_auth_kind,
+            callback_auth_username=request.callback_auth_username,
+            callback_auth_password=request.callback_auth_password,
+            callback_auth_cert=request.callback_auth_cert,
+            callback_auth_key=request.callback_auth_key,
             return_pickled=request.return_pickled,
         )
         async_task_id = response["task_id"]
@@ -427,6 +467,11 @@ class AsyncEndpoint(Endpoint):
                 url=request.url,
                 args=request.args,
                 callback_url=request.callback_url,
+                callback_auth_kind=request.callback_auth_kind,
+                callback_auth_username=request.callback_auth_username,
+                callback_auth_password=request.callback_auth_password,
+                callback_auth_cert=request.callback_auth_cert,
+                callback_auth_key=request.callback_auth_key,
                 return_pickled=request.return_pickled,
             )
             request_key = request.request_id
