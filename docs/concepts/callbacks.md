@@ -86,7 +86,7 @@ fields must be specified when making a prediction request. If `mtls` is used, th
 same is true for the `default_callback_auth_cert` and `default_callback_auth_key` fields,
 or the `callback_auth_cert` and `callback_auth_key` fields.
 
-```py title="Creating an Async Model Endpoint with custom Callback auth"  hl_lines="18-21 37-39"
+```py title="Creating an Async Model Endpoint with custom Callback auth"  hl_lines="18-21 37-39 48-50 66-68"
 import os
 import time
 from launch import EndpointRequest, LaunchClient, PostInferenceHooks
@@ -128,8 +128,36 @@ future_custom_callback_auth = endpoint.predict(
         callback_auth_key="key",
     ),
 )
-
 """
 A callback is sent with mTLS authentication.
+"""
+
+client.edit_model_endpoint(
+    model_endpoint=endpoint.model_endpoint,
+    default_callback_auth_kind="mtls",
+    default_callback_auth_cert="cert",
+    default_callback_auth_key="key",
+)
+
+while endpoint.status() != "READY":
+    time.sleep(10)
+
+future_default = endpoint.predict(
+    request=EndpointRequest(args={"x": 2, "y": "hello"})
+)
+"""
+A callback is sent with mTLS auth.
+"""
+
+future_custom_callback_auth = endpoint.predict(
+    request=EndpointRequest(
+        args={"x": 3, "y": "hello"},
+        callback_auth_kind="basic",
+        callback_auth_username="user",
+        callback_auth_password="pass",
+    ),
+)
+"""
+A callback is sent with ("user", "pass") as the basic auth.
 """
 ```
