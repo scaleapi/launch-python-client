@@ -6,7 +6,7 @@
 # if you have many models here with many references from one model to another this may
 # raise a RecursionError
 # to avoid this, import only the models that you directly need like:
-# from from launch.api_client.model.pet import Pet
+# from launch.api_client.model.pet import Pet
 # or import this package, but before doing it, use:
 # import sys
 # sys.setrecursionlimit(n)
@@ -15,6 +15,9 @@ from launch.api_client.model.batch_job_serialization_format import (
     BatchJobSerializationFormat,
 )
 from launch.api_client.model.batch_job_status import BatchJobStatus
+from launch.api_client.model.callback_auth import CallbackAuth
+from launch.api_client.model.callback_basic_auth import CallbackBasicAuth
+from launch.api_client.model.callbackm_tls_auth import CallbackmTLSAuth
 from launch.api_client.model.clone_model_bundle_request import (
     CloneModelBundleRequest,
 )

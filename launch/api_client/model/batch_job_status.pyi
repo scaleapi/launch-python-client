@@ -34,11 +34,8 @@ class BatchJobStatus(schemas.EnumBase, schemas.StrSchema):
     def PENDING(cls):
         return cls("PENDING")
     @schemas.classproperty
-    def CREATING_ENDPOINT(cls):
-        return cls("CREATING_ENDPOINT")
-    @schemas.classproperty
-    def STARTED(cls):
-        return cls("STARTED")
+    def RUNNING(cls):
+        return cls("RUNNING")
     @schemas.classproperty
     def SUCCESS(cls):
         return cls("SUCCESS")

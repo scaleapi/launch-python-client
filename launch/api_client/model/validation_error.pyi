@@ -61,7 +61,7 @@ class ValidationError(schemas.DictSchema):
                                 ]
                         def __new__(
                             cls,
-                            *args: typing.Union[
+                            *_args: typing.Union[
                                 dict,
                                 frozendict.frozendict,
                                 str,
@@ -99,13 +99,13 @@ class ValidationError(schemas.DictSchema):
                         ) -> "items":
                             return super().__new__(
                                 cls,
-                                *args,
+                                *_args,
                                 _configuration=_configuration,
                                 **kwargs,
                             )
                 def __new__(
                     cls,
-                    arg: typing.Union[
+                    _arg: typing.Union[
                         typing.Tuple[
                             typing.Union[
                                 MetaOapg.items,
@@ -153,7 +153,7 @@ class ValidationError(schemas.DictSchema):
                 ) -> "loc":
                     return super().__new__(
                         cls,
-                        arg,
+                        _arg,
                         _configuration=_configuration,
                     )
                 def __getitem__(self, i: int) -> MetaOapg.items:
@@ -212,7 +212,7 @@ class ValidationError(schemas.DictSchema):
         return super().get_item_oapg(name)
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -249,7 +249,7 @@ class ValidationError(schemas.DictSchema):
     ) -> "ValidationError":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             msg=msg,
             loc=loc,
             type=type,

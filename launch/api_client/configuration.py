@@ -110,8 +110,6 @@ class Configuration(object):
     def __init__(
         self,
         host=None,
-        api_key=None,
-        api_key_prefix=None,
         username=None,
         password=None,
         discard_unknown_keys=False,
@@ -137,19 +135,6 @@ class Configuration(object):
         """Temp file folder for downloading files
         """
         # Authentication Settings
-        self.api_key = {}
-        if api_key:
-            self.api_key = api_key
-        """dict to store API key(s)
-        """
-        self.api_key_prefix = {}
-        if api_key_prefix:
-            self.api_key_prefix = api_key_prefix
-        """dict to store API prefix (e.g. Bearer)
-        """
-        self.refresh_api_key_hook = None
-        """function hook to refresh API key if expired
-        """
         self.username = username
         """Username for HTTP basic authentication
         """
@@ -456,11 +441,7 @@ class Configuration(object):
             if "enum_values" in variable and used_value not in variable["enum_values"]:
                 raise ValueError(
                     "The variable `{0}` in the host URL has invalid value "
-                    "{1}. Must be {2}.".format(
-                        variable_name,
-                        variables[variable_name],
-                        variable["enum_values"],
-                    )
+                    "{1}. Must be {2}.".format(variable_name, variables[variable_name], variable["enum_values"])
                 )
 
             url = url.replace("{" + variable_name + "}", used_value)

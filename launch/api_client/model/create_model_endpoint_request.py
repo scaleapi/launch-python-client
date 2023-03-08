@@ -72,7 +72,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                         str,
@@ -110,7 +110,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
                 ) -> "cpus":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
@@ -127,22 +127,16 @@ class CreateModelEndpointRequest(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
 
-                def __getitem__(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
-                def get_item_oapg(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                     ],
@@ -154,7 +148,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
                 ) -> "labels":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
@@ -189,7 +183,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                         str,
@@ -227,7 +221,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
                 ) -> "memory":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
@@ -239,9 +233,17 @@ class CreateModelEndpointRequest(schemas.DictSchema):
                     inclusive_minimum = 0
 
             model_bundle_id = schemas.StrSchema
-            name = schemas.StrSchema
+
+            class name(schemas.StrSchema):
+                class MetaOapg:
+                    max_length = 63
+
             per_worker = schemas.IntSchema
             billing_tags = schemas.DictSchema
+
+            @staticmethod
+            def default_callback_auth() -> typing.Type["CallbackAuth"]:
+                return CallbackAuth
 
             class default_callback_url(schemas.StrSchema):
                 class MetaOapg:
@@ -261,7 +263,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    arg: typing.Union[
+                    _arg: typing.Union[
                         typing.Tuple[
                             typing.Union[
                                 MetaOapg.items,
@@ -279,7 +281,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
                 ) -> "post_inference_hooks":
                     return super().__new__(
                         cls,
-                        arg,
+                        _arg,
                         _configuration=_configuration,
                     )
 
@@ -314,7 +316,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                         str,
@@ -352,7 +354,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
                 ) -> "storage":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
@@ -370,6 +372,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
                 "name": name,
                 "per_worker": per_worker,
                 "billing_tags": billing_tags,
+                "default_callback_auth": default_callback_auth,
                 "default_callback_url": default_callback_url,
                 "gpu_type": gpu_type,
                 "optimize_costs": optimize_costs,
@@ -439,6 +442,10 @@ class CreateModelEndpointRequest(schemas.DictSchema):
         ...
 
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["default_callback_auth"]) -> "CallbackAuth":
+        ...
+
+    @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["default_callback_url"]
     ) -> MetaOapg.properties.default_callback_url:
@@ -486,6 +493,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
                 "name",
                 "per_worker",
                 "billing_tags",
+                "default_callback_auth",
                 "default_callback_url",
                 "gpu_type",
                 "optimize_costs",
@@ -551,6 +559,12 @@ class CreateModelEndpointRequest(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["default_callback_auth"]
+    ) -> typing.Union["CallbackAuth", schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["default_callback_url"]
     ) -> typing.Union[MetaOapg.properties.default_callback_url, schemas.Unset]:
         ...
@@ -603,6 +617,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
                 "name",
                 "per_worker",
                 "billing_tags",
+                "default_callback_auth",
                 "default_callback_url",
                 "gpu_type",
                 "optimize_costs",
@@ -617,7 +632,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -699,21 +714,16 @@ class CreateModelEndpointRequest(schemas.DictSchema):
             frozendict.frozendict,
         ],
         billing_tags: typing.Union[
-            MetaOapg.properties.billing_tags,
-            dict,
-            frozendict.frozendict,
-            schemas.Unset,
+            MetaOapg.properties.billing_tags, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
+        default_callback_auth: typing.Union["CallbackAuth", schemas.Unset] = schemas.unset,
         default_callback_url: typing.Union[
             MetaOapg.properties.default_callback_url, str, schemas.Unset
         ] = schemas.unset,
         gpu_type: typing.Union["GpuType", schemas.Unset] = schemas.unset,
         optimize_costs: typing.Union[MetaOapg.properties.optimize_costs, bool, schemas.Unset] = schemas.unset,
         post_inference_hooks: typing.Union[
-            MetaOapg.properties.post_inference_hooks,
-            list,
-            tuple,
-            schemas.Unset,
+            MetaOapg.properties.post_inference_hooks, list, tuple, schemas.Unset
         ] = schemas.unset,
         prewarm: typing.Union[MetaOapg.properties.prewarm, bool, schemas.Unset] = schemas.unset,
         storage: typing.Union[
@@ -756,7 +766,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
     ) -> "CreateModelEndpointRequest":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             endpoint_type=endpoint_type,
             metadata=metadata,
             memory=memory,
@@ -769,6 +779,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
             per_worker=per_worker,
             labels=labels,
             billing_tags=billing_tags,
+            default_callback_auth=default_callback_auth,
             default_callback_url=default_callback_url,
             gpu_type=gpu_type,
             optimize_costs=optimize_costs,
@@ -780,5 +791,6 @@ class CreateModelEndpointRequest(schemas.DictSchema):
         )
 
 
+from launch.api_client.model.callback_auth import CallbackAuth
 from launch.api_client.model.gpu_type import GpuType
 from launch.api_client.model.model_endpoint_type import ModelEndpointType

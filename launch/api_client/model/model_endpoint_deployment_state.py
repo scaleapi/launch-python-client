@@ -159,7 +159,7 @@ class ModelEndpointDeploymentState(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -179,16 +179,10 @@ class ModelEndpointDeploymentState(schemas.DictSchema):
             int,
         ],
         available_workers: typing.Union[
-            MetaOapg.properties.available_workers,
-            decimal.Decimal,
-            int,
-            schemas.Unset,
+            MetaOapg.properties.available_workers, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
         unavailable_workers: typing.Union[
-            MetaOapg.properties.unavailable_workers,
-            decimal.Decimal,
-            int,
-            schemas.Unset,
+            MetaOapg.properties.unavailable_workers, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
@@ -210,7 +204,7 @@ class ModelEndpointDeploymentState(schemas.DictSchema):
     ) -> "ModelEndpointDeploymentState":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             max_workers=max_workers,
             min_workers=min_workers,
             per_worker=per_worker,

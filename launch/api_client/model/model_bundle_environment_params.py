@@ -150,7 +150,7 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -179,7 +179,7 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
     ) -> "ModelBundleEnvironmentParams":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             framework_type=framework_type,
             ecr_repo=ecr_repo,
             image_tag=image_tag,

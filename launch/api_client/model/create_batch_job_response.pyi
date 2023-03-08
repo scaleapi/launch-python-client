@@ -44,30 +44,18 @@ class CreateBatchJobResponse(schemas.DictSchema):
     def __getitem__(self, name: typing_extensions.Literal["job_id"]) -> MetaOapg.properties.job_id: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
-    def __getitem__(
-        self,
-        name: typing.Union[
-            typing_extensions.Literal["job_id",],
-            str,
-        ],
-    ):
+    def __getitem__(self, name: typing.Union[typing_extensions.Literal["job_id",], str]):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["job_id"]) -> MetaOapg.properties.job_id: ...
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
-    def get_item_oapg(
-        self,
-        name: typing.Union[
-            typing_extensions.Literal["job_id",],
-            str,
-        ],
-    ):
+    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["job_id",], str]):
         return super().get_item_oapg(name)
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -95,7 +83,7 @@ class CreateBatchJobResponse(schemas.DictSchema):
     ) -> "CreateBatchJobResponse":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             job_id=job_id,
             _configuration=_configuration,
             **kwargs,

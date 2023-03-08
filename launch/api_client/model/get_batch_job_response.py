@@ -32,34 +32,37 @@ class GetBatchJobResponse(schemas.DictSchema):
 
     class MetaOapg:
         required = {
+            "duration",
             "status",
         }
 
         class properties:
+            duration = schemas.NumberSchema
+
             @staticmethod
             def status() -> typing.Type["BatchJobStatus"]:
                 return BatchJobStatus
 
-            duration = schemas.NumberSchema
             num_tasks_completed = schemas.IntSchema
             num_tasks_pending = schemas.IntSchema
             result = schemas.StrSchema
             __annotations__ = {
-                "status": status,
                 "duration": duration,
+                "status": status,
                 "num_tasks_completed": num_tasks_completed,
                 "num_tasks_pending": num_tasks_pending,
                 "result": result,
             }
 
+    duration: MetaOapg.properties.duration
     status: "BatchJobStatus"
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus":
+    def __getitem__(self, name: typing_extensions.Literal["duration"]) -> MetaOapg.properties.duration:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["duration"]) -> MetaOapg.properties.duration:
+    def __getitem__(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus":
         ...
 
     @typing.overload
@@ -86,8 +89,8 @@ class GetBatchJobResponse(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "status",
                 "duration",
+                "status",
                 "num_tasks_completed",
                 "num_tasks_pending",
                 "result",
@@ -99,13 +102,11 @@ class GetBatchJobResponse(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus":
+    def get_item_oapg(self, name: typing_extensions.Literal["duration"]) -> MetaOapg.properties.duration:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["duration"]
-    ) -> typing.Union[MetaOapg.properties.duration, schemas.Unset]:
+    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus":
         ...
 
     @typing.overload
@@ -134,8 +135,8 @@ class GetBatchJobResponse(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "status",
                 "duration",
+                "status",
                 "num_tasks_completed",
                 "num_tasks_pending",
                 "result",
@@ -147,29 +148,22 @@ class GetBatchJobResponse(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
-        status: "BatchJobStatus",
         duration: typing.Union[
             MetaOapg.properties.duration,
             decimal.Decimal,
             int,
             float,
-            schemas.Unset,
-        ] = schemas.unset,
+        ],
+        status: "BatchJobStatus",
         num_tasks_completed: typing.Union[
-            MetaOapg.properties.num_tasks_completed,
-            decimal.Decimal,
-            int,
-            schemas.Unset,
+            MetaOapg.properties.num_tasks_completed, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
         num_tasks_pending: typing.Union[
-            MetaOapg.properties.num_tasks_pending,
-            decimal.Decimal,
-            int,
-            schemas.Unset,
+            MetaOapg.properties.num_tasks_pending, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
         result: typing.Union[MetaOapg.properties.result, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
@@ -192,9 +186,9 @@ class GetBatchJobResponse(schemas.DictSchema):
     ) -> "GetBatchJobResponse":
         return super().__new__(
             cls,
-            *args,
-            status=status,
+            *_args,
             duration=duration,
+            status=status,
             num_tasks_completed=num_tasks_completed,
             num_tasks_pending=num_tasks_pending,
             result=result,

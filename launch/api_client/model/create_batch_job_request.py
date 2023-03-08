@@ -46,22 +46,16 @@ class CreateBatchJobRequest(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
 
-                def __getitem__(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
-                def get_item_oapg(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
                 def __new__(
                     cls,
-                    *args: typing.Union[
+                    *_args: typing.Union[
                         dict,
                         frozendict.frozendict,
                     ],
@@ -73,7 +67,7 @@ class CreateBatchJobRequest(schemas.DictSchema):
                 ) -> "labels":
                     return super().__new__(
                         cls,
-                        *args,
+                        *_args,
                         _configuration=_configuration,
                         **kwargs,
                     )
@@ -183,7 +177,7 @@ class CreateBatchJobRequest(schemas.DictSchema):
 
     def __new__(
         cls,
-        *args: typing.Union[
+        *_args: typing.Union[
             dict,
             frozendict.frozendict,
         ],
@@ -222,7 +216,7 @@ class CreateBatchJobRequest(schemas.DictSchema):
     ) -> "CreateBatchJobRequest":
         return super().__new__(
             cls,
-            *args,
+            *_args,
             model_bundle_id=model_bundle_id,
             resource_requests=resource_requests,
             serialization_format=serialization_format,
