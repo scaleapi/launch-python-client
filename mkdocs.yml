@@ -22,6 +22,7 @@ theme:
   - search.highlight
   - content.tabs.link
   - content.code.annotate
+  - content.code.copy
   icon:
     repo: fontawesome/brands/github-alt
   logo: _static/launch-logo.svg
