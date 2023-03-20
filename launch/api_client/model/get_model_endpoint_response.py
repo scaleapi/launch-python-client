@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -547,7 +548,11 @@ class GetModelEndpointResponse(schemas.DictSchema):
 
 
 from launch.api_client.model.callback_auth import CallbackAuth
-from launch.api_client.model.model_endpoint_deployment_state import ModelEndpointDeploymentState
-from launch.api_client.model.model_endpoint_resource_state import ModelEndpointResourceState
+from launch.api_client.model.model_endpoint_deployment_state import (
+    ModelEndpointDeploymentState,
+)
+from launch.api_client.model.model_endpoint_resource_state import (
+    ModelEndpointResourceState,
+)
 from launch.api_client.model.model_endpoint_status import ModelEndpointStatus
 from launch.api_client.model.model_endpoint_type import ModelEndpointType

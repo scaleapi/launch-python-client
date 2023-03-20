@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -232,5 +233,9 @@ class CreateBatchJobRequest(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.batch_job_serialization_format import BatchJobSerializationFormat
-from launch.api_client.model.create_batch_job_resource_requests import CreateBatchJobResourceRequests
+from launch.api_client.model.batch_job_serialization_format import (
+    BatchJobSerializationFormat,
+)
+from launch.api_client.model.create_batch_job_resource_requests import (
+    CreateBatchJobResourceRequests,
+)

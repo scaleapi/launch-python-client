@@ -452,7 +452,11 @@ class GetModelEndpointResponse(schemas.DictSchema):
         )
 
 from launch_client.model.callback_auth import CallbackAuth
-from launch_client.model.model_endpoint_deployment_state import ModelEndpointDeploymentState
-from launch_client.model.model_endpoint_resource_state import ModelEndpointResourceState
+from launch_client.model.model_endpoint_deployment_state import (
+    ModelEndpointDeploymentState,
+)
+from launch_client.model.model_endpoint_resource_state import (
+    ModelEndpointResourceState,
+)
 from launch_client.model.model_endpoint_status import ModelEndpointStatus
 from launch_client.model.model_endpoint_type import ModelEndpointType

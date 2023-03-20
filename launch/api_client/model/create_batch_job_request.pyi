@@ -205,5 +205,9 @@ class CreateBatchJobRequest(schemas.DictSchema):
             **kwargs,
         )
 
-from launch_client.model.batch_job_serialization_format import BatchJobSerializationFormat
-from launch_client.model.create_batch_job_resource_requests import CreateBatchJobResourceRequests
+from launch_client.model.batch_job_serialization_format import (
+    BatchJobSerializationFormat,
+)
+from launch_client.model.create_batch_job_resource_requests import (
+    CreateBatchJobResourceRequests,
+)
