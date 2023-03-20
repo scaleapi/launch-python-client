@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -46,7 +45,9 @@ class ListModelBundlesResponse(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    _arg: typing.Union[typing.Tuple["ModelBundleResponse"], typing.List["ModelBundleResponse"]],
+                    _arg: typing.Union[
+                        typing.Tuple["ModelBundleResponse"], typing.List["ModelBundleResponse"]
+                    ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "model_bundles":
                     return super().__new__(
@@ -65,26 +66,46 @@ class ListModelBundlesResponse(schemas.DictSchema):
     model_bundles: MetaOapg.properties.model_bundles
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["model_bundles"]) -> MetaOapg.properties.model_bundles:
+    def __getitem__(
+        self, name: typing_extensions.Literal["model_bundles"]
+    ) -> MetaOapg.properties.model_bundles:
         ...
 
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema:
         ...
 
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["model_bundles",], str]):
+    def __getitem__(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "model_bundles",
+            ],
+            str,
+        ],
+    ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["model_bundles"]) -> MetaOapg.properties.model_bundles:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["model_bundles"]
+    ) -> MetaOapg.properties.model_bundles:
         ...
 
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["model_bundles",], str]):
+    def get_item_oapg(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "model_bundles",
+            ],
+            str,
+        ],
+    ):
         return super().get_item_oapg(name)
 
     def __new__(
