@@ -19,7 +19,7 @@ from launch.api_client.apis.paths.v1_model_endpoints_model_endpoint_id import V1
 from launch.api_client.apis.paths.v1_sync_tasks import V1SyncTasks
 
 PathToApi = typing_extensions.TypedDict(
-    'PathToApi',
+    "PathToApi",
     {
         PathValues.HEALTHCHECK: Healthcheck,
         PathValues.HEALTHZ: Healthz,
@@ -37,7 +37,7 @@ PathToApi = typing_extensions.TypedDict(
         PathValues.V1_MODELENDPOINTSSCHEMA_JSON: V1ModelEndpointsSchemaJson,
         PathValues.V1_MODELENDPOINTS_MODEL_ENDPOINT_ID: V1ModelEndpointsModelEndpointId,
         PathValues.V1_SYNCTASKS: V1SyncTasks,
-    }
+    },
 )
 
 path_to_api = PathToApi(

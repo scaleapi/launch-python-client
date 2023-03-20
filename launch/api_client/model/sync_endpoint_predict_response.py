@@ -58,9 +58,7 @@ class SyncEndpointPredictResponse(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["traceback"]
-    ) -> MetaOapg.properties.traceback:
+    def __getitem__(self, name: typing_extensions.Literal["traceback"]) -> MetaOapg.properties.traceback:
         ...
 
     @typing.overload

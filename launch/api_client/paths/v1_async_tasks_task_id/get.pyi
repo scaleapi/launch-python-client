@@ -31,22 +31,18 @@ from launch_client.model.get_async_task_v1_response import GetAsyncTaskV1Respons
 # Path params
 TaskIdSchema = schemas.StrSchema
 RequestRequiredPathParams = typing_extensions.TypedDict(
-    'RequestRequiredPathParams',
+    "RequestRequiredPathParams",
     {
-        'task_id': typing.Union[TaskIdSchema, str, ],
-    }
-)
-RequestOptionalPathParams = typing_extensions.TypedDict(
-    'RequestOptionalPathParams',
-    {
+        "task_id": typing.Union[
+            TaskIdSchema,
+            str,
+        ],
     },
-    total=False
 )
-
+RequestOptionalPathParams = typing_extensions.TypedDict("RequestOptionalPathParams", {}, total=False)
 
 class RequestPathParams(RequestRequiredPathParams, RequestOptionalPathParams):
     pass
-
 
 request_path_task_id = api_client.PathParameter(
     name="task_id",
@@ -56,46 +52,33 @@ request_path_task_id = api_client.PathParameter(
 )
 SchemaFor200ResponseBodyApplicationJson = GetAsyncTaskV1Response
 
-
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor200ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
-
 
 _response_for_200 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor200,
     content={
-        'application/json': api_client.MediaType(
-            schema=SchemaFor200ResponseBodyApplicationJson),
+        "application/json": api_client.MediaType(schema=SchemaFor200ResponseBodyApplicationJson),
     },
 )
 SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 
-
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor422ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
-
 
 _response_for_422 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor422,
     content={
-        'application/json': api_client.MediaType(
-            schema=SchemaFor422ResponseBodyApplicationJson),
+        "application/json": api_client.MediaType(schema=SchemaFor422ResponseBodyApplicationJson),
     },
 )
-_all_accept_content_types = (
-    'application/json',
-)
-
+_all_accept_content_types = ("application/json",)
 
 class BaseApi(api_client.Api):
     @typing.overload
@@ -106,10 +89,7 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
     def _get_async_inference_task_v1_async_tasks_task_id_get_oapg(
         self,
@@ -119,7 +99,6 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
     ) -> api_client.ApiResponseWithoutDeserialization: ...
-
     @typing.overload
     def _get_async_inference_task_v1_async_tasks_task_id_get_oapg(
         self,
@@ -128,11 +107,7 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def _get_async_inference_task_v1_async_tasks_task_id_get_oapg(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -151,9 +126,7 @@ class BaseApi(api_client.Api):
         used_path = path.value
 
         _path_params = {}
-        for parameter in (
-            request_path_task_id,
-        ):
+        for parameter in (request_path_task_id,):
             parameter_data = path_params.get(parameter.name, schemas.unset)
             if parameter_data is schemas.unset:
                 continue
@@ -161,17 +134,17 @@ class BaseApi(api_client.Api):
             _path_params.update(serialized_data)
 
         for k, v in _path_params.items():
-            used_path = used_path.replace('{%s}' % k, v)
+            used_path = used_path.replace("{%s}" % k, v)
 
         _headers = HTTPHeaderDict()
         # TODO add cookie handling
         if accept_content_types:
             for accept_content_type in accept_content_types:
-                _headers.add('Accept', accept_content_type)
+                _headers.add("Accept", accept_content_type)
 
         response = self.api_client.call_api(
             resource_path=used_path,
-            method='get'.upper(),
+            method="get".upper(),
             headers=_headers,
             auth_settings=_auth,
             stream=stream,
@@ -188,14 +161,9 @@ class BaseApi(api_client.Api):
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
-            raise exceptions.ApiException(
-                status=response.status,
-                reason=response.reason,
-                api_response=api_response
-            )
+            raise exceptions.ApiException(status=response.status, reason=response.reason, api_response=api_response)
 
         return api_response
-
 
 class GetAsyncInferenceTaskV1AsyncTasksTaskIdGet(BaseApi):
     # this class is used by api classes that refer to endpoints with operationId fn names
@@ -208,10 +176,7 @@ class GetAsyncInferenceTaskV1AsyncTasksTaskIdGet(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
     def get_async_inference_task_v1_async_tasks_task_id_get(
         self,
@@ -221,7 +186,6 @@ class GetAsyncInferenceTaskV1AsyncTasksTaskIdGet(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
     ) -> api_client.ApiResponseWithoutDeserialization: ...
-
     @typing.overload
     def get_async_inference_task_v1_async_tasks_task_id_get(
         self,
@@ -230,11 +194,7 @@ class GetAsyncInferenceTaskV1AsyncTasksTaskIdGet(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def get_async_inference_task_v1_async_tasks_task_id_get(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -248,9 +208,8 @@ class GetAsyncInferenceTaskV1AsyncTasksTaskIdGet(BaseApi):
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
-            skip_deserialization=skip_deserialization
+            skip_deserialization=skip_deserialization,
         )
-
 
 class ApiForget(BaseApi):
     # this class is used by api classes that refer to endpoints by path and http method names
@@ -263,10 +222,7 @@ class ApiForget(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
     def get(
         self,
@@ -276,7 +232,6 @@ class ApiForget(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
     ) -> api_client.ApiResponseWithoutDeserialization: ...
-
     @typing.overload
     def get(
         self,
@@ -285,11 +240,7 @@ class ApiForget(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def get(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -303,7 +254,5 @@ class ApiForget(BaseApi):
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
-            skip_deserialization=skip_deserialization
+            skip_deserialization=skip_deserialization,
         )
-
-

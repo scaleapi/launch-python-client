@@ -123,17 +123,13 @@ class CreateModelEndpointRequest(schemas.DictSchema):
                     additional_properties = schemas.StrSchema
                 def __getitem__(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
                 def get_item_oapg(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
                 def __new__(
@@ -380,31 +376,19 @@ class CreateModelEndpointRequest(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["cpus"]) -> MetaOapg.properties.cpus: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["endpoint_type"]
-    ) -> "ModelEndpointType": ...
+    def __getitem__(self, name: typing_extensions.Literal["endpoint_type"]) -> "ModelEndpointType": ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["gpus"]) -> MetaOapg.properties.gpus: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["labels"]
-    ) -> MetaOapg.properties.labels: ...
+    def __getitem__(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["max_workers"]
-    ) -> MetaOapg.properties.max_workers: ...
+    def __getitem__(self, name: typing_extensions.Literal["max_workers"]) -> MetaOapg.properties.max_workers: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["memory"]
-    ) -> MetaOapg.properties.memory: ...
+    def __getitem__(self, name: typing_extensions.Literal["memory"]) -> MetaOapg.properties.memory: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["metadata"]
-    ) -> MetaOapg.properties.metadata: ...
+    def __getitem__(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["min_workers"]
-    ) -> MetaOapg.properties.min_workers: ...
+    def __getitem__(self, name: typing_extensions.Literal["min_workers"]) -> MetaOapg.properties.min_workers: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["model_bundle_id"]
@@ -412,17 +396,11 @@ class CreateModelEndpointRequest(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["per_worker"]
-    ) -> MetaOapg.properties.per_worker: ...
+    def __getitem__(self, name: typing_extensions.Literal["per_worker"]) -> MetaOapg.properties.per_worker: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["billing_tags"]
-    ) -> MetaOapg.properties.billing_tags: ...
+    def __getitem__(self, name: typing_extensions.Literal["billing_tags"]) -> MetaOapg.properties.billing_tags: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["default_callback_auth"]
-    ) -> "CallbackAuth": ...
+    def __getitem__(self, name: typing_extensions.Literal["default_callback_auth"]) -> "CallbackAuth": ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["default_callback_url"]
@@ -430,21 +408,15 @@ class CreateModelEndpointRequest(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["gpu_type"]) -> "GpuType": ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["optimize_costs"]
-    ) -> MetaOapg.properties.optimize_costs: ...
+    def __getitem__(self, name: typing_extensions.Literal["optimize_costs"]) -> MetaOapg.properties.optimize_costs: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["post_inference_hooks"]
     ) -> MetaOapg.properties.post_inference_hooks: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["prewarm"]
-    ) -> MetaOapg.properties.prewarm: ...
+    def __getitem__(self, name: typing_extensions.Literal["prewarm"]) -> MetaOapg.properties.prewarm: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["storage"]
-    ) -> MetaOapg.properties.storage: ...
+    def __getitem__(self, name: typing_extensions.Literal["storage"]) -> MetaOapg.properties.storage: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -477,49 +449,29 @@ class CreateModelEndpointRequest(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["cpus"]
-    ) -> MetaOapg.properties.cpus: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["cpus"]) -> MetaOapg.properties.cpus: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["endpoint_type"]
-    ) -> "ModelEndpointType": ...
+    def get_item_oapg(self, name: typing_extensions.Literal["endpoint_type"]) -> "ModelEndpointType": ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["gpus"]
-    ) -> MetaOapg.properties.gpus: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["gpus"]) -> MetaOapg.properties.gpus: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["labels"]
-    ) -> MetaOapg.properties.labels: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["max_workers"]
-    ) -> MetaOapg.properties.max_workers: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["max_workers"]) -> MetaOapg.properties.max_workers: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["memory"]
-    ) -> MetaOapg.properties.memory: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["memory"]) -> MetaOapg.properties.memory: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["metadata"]
-    ) -> MetaOapg.properties.metadata: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["min_workers"]
-    ) -> MetaOapg.properties.min_workers: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["min_workers"]) -> MetaOapg.properties.min_workers: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["model_bundle_id"]
     ) -> MetaOapg.properties.model_bundle_id: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["name"]
-    ) -> MetaOapg.properties.name: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["per_worker"]
-    ) -> MetaOapg.properties.per_worker: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["per_worker"]) -> MetaOapg.properties.per_worker: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["billing_tags"]
@@ -533,9 +485,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
         self, name: typing_extensions.Literal["default_callback_url"]
     ) -> typing.Union[MetaOapg.properties.default_callback_url, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["gpu_type"]
-    ) -> typing.Union["GpuType", schemas.Unset]: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["gpu_type"]) -> typing.Union["GpuType", schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["optimize_costs"]
@@ -553,9 +503,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
         self, name: typing_extensions.Literal["storage"]
     ) -> typing.Union[MetaOapg.properties.storage, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -675,9 +623,7 @@ class CreateModelEndpointRequest(schemas.DictSchema):
             MetaOapg.properties.default_callback_url, str, schemas.Unset
         ] = schemas.unset,
         gpu_type: typing.Union["GpuType", schemas.Unset] = schemas.unset,
-        optimize_costs: typing.Union[
-            MetaOapg.properties.optimize_costs, bool, schemas.Unset
-        ] = schemas.unset,
+        optimize_costs: typing.Union[MetaOapg.properties.optimize_costs, bool, schemas.Unset] = schemas.unset,
         post_inference_hooks: typing.Union[
             MetaOapg.properties.post_inference_hooks, list, tuple, schemas.Unset
         ] = schemas.unset,

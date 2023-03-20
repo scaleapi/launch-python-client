@@ -34,17 +34,15 @@ from . import path
 # Query params
 ModelEndpointIdSchema = schemas.StrSchema
 RequestRequiredQueryParams = typing_extensions.TypedDict(
-    'RequestRequiredQueryParams',
+    "RequestRequiredQueryParams",
     {
-        'model_endpoint_id': typing.Union[ModelEndpointIdSchema, str, ],
-    }
-)
-RequestOptionalQueryParams = typing_extensions.TypedDict(
-    'RequestOptionalQueryParams',
-    {
+        "model_endpoint_id": typing.Union[
+            ModelEndpointIdSchema,
+            str,
+        ],
     },
-    total=False
 )
+RequestOptionalQueryParams = typing_extensions.TypedDict("RequestOptionalQueryParams", {}, total=False)
 
 
 class RequestQueryParams(RequestRequiredQueryParams, RequestOptionalQueryParams):
@@ -64,13 +62,12 @@ SchemaForRequestBodyApplicationJson = EndpointPredictV1Request
 
 request_body_endpoint_predict_v1_request = api_client.RequestBody(
     content={
-        'application/json': api_client.MediaType(
-            schema=SchemaForRequestBodyApplicationJson),
+        "application/json": api_client.MediaType(schema=SchemaForRequestBodyApplicationJson),
     },
     required=True,
 )
 _auth = [
-    'HTTPBasic',
+    "HTTPBasic",
 ]
 SchemaFor200ResponseBodyApplicationJson = CreateAsyncTaskV1Response
 
@@ -78,17 +75,14 @@ SchemaFor200ResponseBodyApplicationJson = CreateAsyncTaskV1Response
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor200ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
 
 
 _response_for_200 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor200,
     content={
-        'application/json': api_client.MediaType(
-            schema=SchemaFor200ResponseBodyApplicationJson),
+        "application/json": api_client.MediaType(schema=SchemaFor200ResponseBodyApplicationJson),
     },
 )
 SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
@@ -97,26 +91,21 @@ SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor422ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
 
 
 _response_for_422 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor422,
     content={
-        'application/json': api_client.MediaType(
-            schema=SchemaFor422ResponseBodyApplicationJson),
+        "application/json": api_client.MediaType(schema=SchemaFor422ResponseBodyApplicationJson),
     },
 )
 _status_code_to_response = {
-    '200': _response_for_200,
-    '422': _response_for_422,
+    "200": _response_for_200,
+    "422": _response_for_422,
 }
-_all_accept_content_types = (
-    'application/json',
-)
+_all_accept_content_types = ("application/json",)
 
 
 class BaseApi(api_client.Api):
@@ -130,9 +119,8 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def _create_async_inference_task_v1_async_tasks_post_oapg(
@@ -144,10 +132,8 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def _create_async_inference_task_v1_async_tasks_post_oapg(
@@ -159,7 +145,8 @@ class BaseApi(api_client.Api):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization: ...
+    ) -> api_client.ApiResponseWithoutDeserialization:
+        ...
 
     @typing.overload
     def _create_async_inference_task_v1_async_tasks_post_oapg(
@@ -171,15 +158,13 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
+        ...
 
     def _create_async_inference_task_v1_async_tasks_post_oapg(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = 'application/json',
+        content_type: str = "application/json",
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -196,9 +181,7 @@ class BaseApi(api_client.Api):
         used_path = path.value
 
         prefix_separator_iterator = None
-        for parameter in (
-            request_query_model_endpoint_id,
-        ):
+        for parameter in (request_query_model_endpoint_id,):
             parameter_data = query_params.get(parameter.name, schemas.unset)
             if parameter_data is schemas.unset:
                 continue
@@ -212,22 +195,23 @@ class BaseApi(api_client.Api):
         # TODO add cookie handling
         if accept_content_types:
             for accept_content_type in accept_content_types:
-                _headers.add('Accept', accept_content_type)
+                _headers.add("Accept", accept_content_type)
 
         if body is schemas.unset:
             raise exceptions.ApiValueError(
-                'The required body parameter has an invalid value of: unset. Set a valid value instead')
+                "The required body parameter has an invalid value of: unset. Set a valid value instead"
+            )
         _fields = None
         _body = None
         serialized_data = request_body_endpoint_predict_v1_request.serialize(body, content_type)
-        _headers.add('Content-Type', content_type)
-        if 'fields' in serialized_data:
-            _fields = serialized_data['fields']
-        elif 'body' in serialized_data:
-            _body = serialized_data['body']
+        _headers.add("Content-Type", content_type)
+        if "fields" in serialized_data:
+            _fields = serialized_data["fields"]
+        elif "body" in serialized_data:
+            _body = serialized_data["body"]
         response = self.api_client.call_api(
             resource_path=used_path,
-            method='post'.upper(),
+            method="post".upper(),
             headers=_headers,
             fields=_fields,
             body=_body,
@@ -246,11 +230,7 @@ class BaseApi(api_client.Api):
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
-            raise exceptions.ApiException(
-                status=response.status,
-                reason=response.reason,
-                api_response=api_response
-            )
+            raise exceptions.ApiException(status=response.status, reason=response.reason, api_response=api_response)
 
         return api_response
 
@@ -268,9 +248,8 @@ class CreateAsyncInferenceTaskV1AsyncTasksPost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def create_async_inference_task_v1_async_tasks_post(
@@ -282,10 +261,8 @@ class CreateAsyncInferenceTaskV1AsyncTasksPost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def create_async_inference_task_v1_async_tasks_post(
@@ -297,7 +274,8 @@ class CreateAsyncInferenceTaskV1AsyncTasksPost(BaseApi):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization: ...
+    ) -> api_client.ApiResponseWithoutDeserialization:
+        ...
 
     @typing.overload
     def create_async_inference_task_v1_async_tasks_post(
@@ -309,15 +287,13 @@ class CreateAsyncInferenceTaskV1AsyncTasksPost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
+        ...
 
     def create_async_inference_task_v1_async_tasks_post(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = 'application/json',
+        content_type: str = "application/json",
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -331,7 +307,7 @@ class CreateAsyncInferenceTaskV1AsyncTasksPost(BaseApi):
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
-            skip_deserialization=skip_deserialization
+            skip_deserialization=skip_deserialization,
         )
 
 
@@ -348,9 +324,8 @@ class ApiForpost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def post(
@@ -362,10 +337,8 @@ class ApiForpost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def post(
@@ -377,7 +350,8 @@ class ApiForpost(BaseApi):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization: ...
+    ) -> api_client.ApiResponseWithoutDeserialization:
+        ...
 
     @typing.overload
     def post(
@@ -389,15 +363,13 @@ class ApiForpost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
+        ...
 
     def post(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = 'application/json',
+        content_type: str = "application/json",
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -411,7 +383,5 @@ class ApiForpost(BaseApi):
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
-            skip_deserialization=skip_deserialization
+            skip_deserialization=skip_deserialization,
         )
-
-

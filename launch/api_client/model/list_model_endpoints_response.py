@@ -65,9 +65,7 @@ class ListModelEndpointsResponse(schemas.DictSchema):
     model_endpoints: MetaOapg.properties.model_endpoints
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_endpoints"]
-    ) -> MetaOapg.properties.model_endpoints:
+    def __getitem__(self, name: typing_extensions.Literal["model_endpoints"]) -> MetaOapg.properties.model_endpoints:
         ...
 
     @typing.overload
@@ -77,9 +75,7 @@ class ListModelEndpointsResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_endpoints",
-            ],
+            typing_extensions.Literal["model_endpoints",],
             str,
         ],
     ):
@@ -87,9 +83,7 @@ class ListModelEndpointsResponse(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["model_endpoints"]
-    ) -> MetaOapg.properties.model_endpoints:
+    def get_item_oapg(self, name: typing_extensions.Literal["model_endpoints"]) -> MetaOapg.properties.model_endpoints:
         ...
 
     @typing.overload
@@ -99,9 +93,7 @@ class ListModelEndpointsResponse(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_endpoints",
-            ],
+            typing_extensions.Literal["model_endpoints",],
             str,
         ],
     ):

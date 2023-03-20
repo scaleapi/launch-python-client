@@ -34,17 +34,15 @@ from . import path
 # Path params
 BatchJobIdSchema = schemas.StrSchema
 RequestRequiredPathParams = typing_extensions.TypedDict(
-    'RequestRequiredPathParams',
+    "RequestRequiredPathParams",
     {
-        'batch_job_id': typing.Union[BatchJobIdSchema, str, ],
-    }
-)
-RequestOptionalPathParams = typing_extensions.TypedDict(
-    'RequestOptionalPathParams',
-    {
+        "batch_job_id": typing.Union[
+            BatchJobIdSchema,
+            str,
+        ],
     },
-    total=False
 )
+RequestOptionalPathParams = typing_extensions.TypedDict("RequestOptionalPathParams", {}, total=False)
 
 
 class RequestPathParams(RequestRequiredPathParams, RequestOptionalPathParams):
@@ -63,13 +61,12 @@ SchemaForRequestBodyApplicationJson = UpdateBatchJobV1Request
 
 request_body_update_batch_job_v1_request = api_client.RequestBody(
     content={
-        'application/json': api_client.MediaType(
-            schema=SchemaForRequestBodyApplicationJson),
+        "application/json": api_client.MediaType(schema=SchemaForRequestBodyApplicationJson),
     },
     required=True,
 )
 _auth = [
-    'HTTPBasic',
+    "HTTPBasic",
 ]
 SchemaFor200ResponseBodyApplicationJson = UpdateBatchJobV1Response
 
@@ -77,17 +74,14 @@ SchemaFor200ResponseBodyApplicationJson = UpdateBatchJobV1Response
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor200ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
 
 
 _response_for_200 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor200,
     content={
-        'application/json': api_client.MediaType(
-            schema=SchemaFor200ResponseBodyApplicationJson),
+        "application/json": api_client.MediaType(schema=SchemaFor200ResponseBodyApplicationJson),
     },
 )
 SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
@@ -96,26 +90,21 @@ SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor422ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
 
 
 _response_for_422 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor422,
     content={
-        'application/json': api_client.MediaType(
-            schema=SchemaFor422ResponseBodyApplicationJson),
+        "application/json": api_client.MediaType(schema=SchemaFor422ResponseBodyApplicationJson),
     },
 )
 _status_code_to_response = {
-    '200': _response_for_200,
-    '422': _response_for_422,
+    "200": _response_for_200,
+    "422": _response_for_422,
 }
-_all_accept_content_types = (
-    'application/json',
-)
+_all_accept_content_types = ("application/json",)
 
 
 class BaseApi(api_client.Api):
@@ -129,9 +118,8 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def _update_batch_job_v1_batch_jobs_batch_job_id_put_oapg(
@@ -143,10 +131,8 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def _update_batch_job_v1_batch_jobs_batch_job_id_put_oapg(
@@ -158,7 +144,8 @@ class BaseApi(api_client.Api):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization: ...
+    ) -> api_client.ApiResponseWithoutDeserialization:
+        ...
 
     @typing.overload
     def _update_batch_job_v1_batch_jobs_batch_job_id_put_oapg(
@@ -170,15 +157,13 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
+        ...
 
     def _update_batch_job_v1_batch_jobs_batch_job_id_put_oapg(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = 'application/json',
+        content_type: str = "application/json",
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -195,9 +180,7 @@ class BaseApi(api_client.Api):
         used_path = path.value
 
         _path_params = {}
-        for parameter in (
-            request_path_batch_job_id,
-        ):
+        for parameter in (request_path_batch_job_id,):
             parameter_data = path_params.get(parameter.name, schemas.unset)
             if parameter_data is schemas.unset:
                 continue
@@ -205,28 +188,29 @@ class BaseApi(api_client.Api):
             _path_params.update(serialized_data)
 
         for k, v in _path_params.items():
-            used_path = used_path.replace('{%s}' % k, v)
+            used_path = used_path.replace("{%s}" % k, v)
 
         _headers = HTTPHeaderDict()
         # TODO add cookie handling
         if accept_content_types:
             for accept_content_type in accept_content_types:
-                _headers.add('Accept', accept_content_type)
+                _headers.add("Accept", accept_content_type)
 
         if body is schemas.unset:
             raise exceptions.ApiValueError(
-                'The required body parameter has an invalid value of: unset. Set a valid value instead')
+                "The required body parameter has an invalid value of: unset. Set a valid value instead"
+            )
         _fields = None
         _body = None
         serialized_data = request_body_update_batch_job_v1_request.serialize(body, content_type)
-        _headers.add('Content-Type', content_type)
-        if 'fields' in serialized_data:
-            _fields = serialized_data['fields']
-        elif 'body' in serialized_data:
-            _body = serialized_data['body']
+        _headers.add("Content-Type", content_type)
+        if "fields" in serialized_data:
+            _fields = serialized_data["fields"]
+        elif "body" in serialized_data:
+            _body = serialized_data["body"]
         response = self.api_client.call_api(
             resource_path=used_path,
-            method='put'.upper(),
+            method="put".upper(),
             headers=_headers,
             fields=_fields,
             body=_body,
@@ -245,11 +229,7 @@ class BaseApi(api_client.Api):
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
-            raise exceptions.ApiException(
-                status=response.status,
-                reason=response.reason,
-                api_response=api_response
-            )
+            raise exceptions.ApiException(status=response.status, reason=response.reason, api_response=api_response)
 
         return api_response
 
@@ -267,9 +247,8 @@ class UpdateBatchJobV1BatchJobsBatchJobIdPut(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def update_batch_job_v1_batch_jobs_batch_job_id_put(
@@ -281,10 +260,8 @@ class UpdateBatchJobV1BatchJobsBatchJobIdPut(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def update_batch_job_v1_batch_jobs_batch_job_id_put(
@@ -296,7 +273,8 @@ class UpdateBatchJobV1BatchJobsBatchJobIdPut(BaseApi):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization: ...
+    ) -> api_client.ApiResponseWithoutDeserialization:
+        ...
 
     @typing.overload
     def update_batch_job_v1_batch_jobs_batch_job_id_put(
@@ -308,15 +286,13 @@ class UpdateBatchJobV1BatchJobsBatchJobIdPut(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
+        ...
 
     def update_batch_job_v1_batch_jobs_batch_job_id_put(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = 'application/json',
+        content_type: str = "application/json",
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -330,7 +306,7 @@ class UpdateBatchJobV1BatchJobsBatchJobIdPut(BaseApi):
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
-            skip_deserialization=skip_deserialization
+            skip_deserialization=skip_deserialization,
         )
 
 
@@ -347,9 +323,8 @@ class ApiForput(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def put(
@@ -361,10 +336,8 @@ class ApiForput(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]:
+        ...
 
     @typing.overload
     def put(
@@ -376,7 +349,8 @@ class ApiForput(BaseApi):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization: ...
+    ) -> api_client.ApiResponseWithoutDeserialization:
+        ...
 
     @typing.overload
     def put(
@@ -388,15 +362,13 @@ class ApiForput(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
+        ...
 
     def put(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = 'application/json',
+        content_type: str = "application/json",
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -410,7 +382,5 @@ class ApiForput(BaseApi):
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
-            skip_deserialization=skip_deserialization
+            skip_deserialization=skip_deserialization,
         )
-
-
