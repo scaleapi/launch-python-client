@@ -49,9 +49,7 @@ class CreateBatchJobResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "job_id",
-            ],
+            typing_extensions.Literal["job_id",],
             str,
         ],
     ):
@@ -68,9 +66,7 @@ class CreateBatchJobResponse(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "job_id",
-            ],
+            typing_extensions.Literal["job_id",],
             str,
         ],
     ):
