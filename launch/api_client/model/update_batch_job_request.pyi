@@ -41,9 +41,7 @@ class UpdateBatchJobRequest(schemas.DictSchema):
     cancel: MetaOapg.properties.cancel
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["cancel"]
-    ) -> MetaOapg.properties.cancel: ...
+    def __getitem__(self, name: typing_extensions.Literal["cancel"]) -> MetaOapg.properties.cancel: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -56,13 +54,9 @@ class UpdateBatchJobRequest(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["cancel"]
-    ) -> MetaOapg.properties.cancel: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["cancel"]) -> MetaOapg.properties.cancel: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

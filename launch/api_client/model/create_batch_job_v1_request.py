@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -96,9 +97,7 @@ class CreateBatchJobV1Request(schemas.DictSchema):
     labels: MetaOapg.properties.labels
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["input_path"]
-    ) -> MetaOapg.properties.input_path:
+    def __getitem__(self, name: typing_extensions.Literal["input_path"]) -> MetaOapg.properties.input_path:
         ...
 
     @typing.overload
@@ -106,21 +105,15 @@ class CreateBatchJobV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_bundle_id"]
-    ) -> MetaOapg.properties.model_bundle_id:
+    def __getitem__(self, name: typing_extensions.Literal["model_bundle_id"]) -> MetaOapg.properties.model_bundle_id:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["resource_requests"]
-    ) -> "CreateBatchJobResourceRequests":
+    def __getitem__(self, name: typing_extensions.Literal["resource_requests"]) -> "CreateBatchJobResourceRequests":
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["serialization_format"]
-    ) -> "BatchJobSerializationFormat":
+    def __getitem__(self, name: typing_extensions.Literal["serialization_format"]) -> "BatchJobSerializationFormat":
         ...
 
     @typing.overload
@@ -144,33 +137,23 @@ class CreateBatchJobV1Request(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["input_path"]
-    ) -> MetaOapg.properties.input_path:
+    def get_item_oapg(self, name: typing_extensions.Literal["input_path"]) -> MetaOapg.properties.input_path:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["labels"]
-    ) -> MetaOapg.properties.labels:
+    def get_item_oapg(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["model_bundle_id"]
-    ) -> MetaOapg.properties.model_bundle_id:
+    def get_item_oapg(self, name: typing_extensions.Literal["model_bundle_id"]) -> MetaOapg.properties.model_bundle_id:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["resource_requests"]
-    ) -> "CreateBatchJobResourceRequests":
+    def get_item_oapg(self, name: typing_extensions.Literal["resource_requests"]) -> "CreateBatchJobResourceRequests":
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["serialization_format"]
-    ) -> "BatchJobSerializationFormat":
+    def get_item_oapg(self, name: typing_extensions.Literal["serialization_format"]) -> "BatchJobSerializationFormat":
         ...
 
     @typing.overload
@@ -244,5 +227,9 @@ class CreateBatchJobV1Request(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.batch_job_serialization_format import BatchJobSerializationFormat
-from launch.api_client.model.create_batch_job_resource_requests import CreateBatchJobResourceRequests
+from launch.api_client.model.batch_job_serialization_format import (
+    BatchJobSerializationFormat,
+)
+from launch.api_client.model.create_batch_job_resource_requests import (
+    CreateBatchJobResourceRequests,
+)

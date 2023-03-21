@@ -20,9 +20,13 @@ import typing_extensions  # noqa: F401
 import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
-from launch_client.model.endpoint_predict_v1_request import EndpointPredictV1Request
+from launch_client.model.endpoint_predict_v1_request import (
+    EndpointPredictV1Request,
+)
 from launch_client.model.http_validation_error import HTTPValidationError
-from launch_client.model.sync_endpoint_predict_v1_response import SyncEndpointPredictV1Response
+from launch_client.model.sync_endpoint_predict_v1_response import (
+    SyncEndpointPredictV1Response,
+)
 from urllib3._collections import HTTPHeaderDict
 
 # Query params
@@ -36,9 +40,7 @@ RequestRequiredQueryParams = typing_extensions.TypedDict(
         ],
     },
 )
-RequestOptionalQueryParams = typing_extensions.TypedDict(
-    "RequestOptionalQueryParams", {}, total=False
-)
+RequestOptionalQueryParams = typing_extensions.TypedDict("RequestOptionalQueryParams", {}, total=False)
 
 class RequestQueryParams(RequestRequiredQueryParams, RequestOptionalQueryParams):
     pass
@@ -198,16 +200,12 @@ class BaseApi(api_client.Api):
         else:
             response_for_status = _status_code_to_response.get(str(response.status))
             if response_for_status:
-                api_response = response_for_status.deserialize(
-                    response, self.api_client.configuration
-                )
+                api_response = response_for_status.deserialize(response, self.api_client.configuration)
             else:
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
-            raise exceptions.ApiException(
-                status=response.status, reason=response.reason, api_response=api_response
-            )
+            raise exceptions.ApiException(status=response.status, reason=response.reason, api_response=api_response)
 
         return api_response
 

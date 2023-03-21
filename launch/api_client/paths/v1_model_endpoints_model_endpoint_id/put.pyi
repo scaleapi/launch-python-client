@@ -21,8 +21,12 @@ import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
 from launch_client.model.http_validation_error import HTTPValidationError
-from launch_client.model.update_model_endpoint_v1_request import UpdateModelEndpointV1Request
-from launch_client.model.update_model_endpoint_v1_response import UpdateModelEndpointV1Response
+from launch_client.model.update_model_endpoint_v1_request import (
+    UpdateModelEndpointV1Request,
+)
+from launch_client.model.update_model_endpoint_v1_response import (
+    UpdateModelEndpointV1Response,
+)
 from urllib3._collections import HTTPHeaderDict
 
 # Path params
@@ -36,9 +40,7 @@ RequestRequiredPathParams = typing_extensions.TypedDict(
         ],
     },
 )
-RequestOptionalPathParams = typing_extensions.TypedDict(
-    "RequestOptionalPathParams", {}, total=False
-)
+RequestOptionalPathParams = typing_extensions.TypedDict("RequestOptionalPathParams", {}, total=False)
 
 class RequestPathParams(RequestRequiredPathParams, RequestOptionalPathParams):
     pass
@@ -175,9 +177,7 @@ class BaseApi(api_client.Api):
             )
         _fields = None
         _body = None
-        serialized_data = request_body_update_model_endpoint_v1_request.serialize(
-            body, content_type
-        )
+        serialized_data = request_body_update_model_endpoint_v1_request.serialize(body, content_type)
         _headers.add("Content-Type", content_type)
         if "fields" in serialized_data:
             _fields = serialized_data["fields"]
@@ -199,16 +199,12 @@ class BaseApi(api_client.Api):
         else:
             response_for_status = _status_code_to_response.get(str(response.status))
             if response_for_status:
-                api_response = response_for_status.deserialize(
-                    response, self.api_client.configuration
-                )
+                api_response = response_for_status.deserialize(response, self.api_client.configuration)
             else:
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
-            raise exceptions.ApiException(
-                status=response.status, reason=response.reason, api_response=api_response
-            )
+            raise exceptions.ApiException(status=response.status, reason=response.reason, api_response=api_response)
 
         return api_response
 

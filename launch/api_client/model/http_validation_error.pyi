@@ -37,9 +37,7 @@ class HTTPValidationError(schemas.DictSchema):
                         return ValidationError
                 def __new__(
                     cls,
-                    _arg: typing.Union[
-                        typing.Tuple["ValidationError"], typing.List["ValidationError"]
-                    ],
+                    _arg: typing.Union[typing.Tuple["ValidationError"], typing.List["ValidationError"]],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "detail":
                     return super().__new__(
@@ -53,9 +51,7 @@ class HTTPValidationError(schemas.DictSchema):
                 "detail": detail,
             }
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["detail"]
-    ) -> MetaOapg.properties.detail: ...
+    def __getitem__(self, name: typing_extensions.Literal["detail"]) -> MetaOapg.properties.detail: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(self, name: typing.Union[typing_extensions.Literal["detail",], str]):
@@ -66,9 +62,7 @@ class HTTPValidationError(schemas.DictSchema):
         self, name: typing_extensions.Literal["detail"]
     ) -> typing.Union[MetaOapg.properties.detail, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["detail",], str]):
         return super().get_item_oapg(name)
     def __new__(
@@ -77,9 +71,7 @@ class HTTPValidationError(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        detail: typing.Union[
-            MetaOapg.properties.detail, list, tuple, schemas.Unset
-        ] = schemas.unset,
+        detail: typing.Union[MetaOapg.properties.detail, list, tuple, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

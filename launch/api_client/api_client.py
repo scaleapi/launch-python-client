@@ -25,6 +25,9 @@ from urllib.parse import quote, urlparse
 import frozendict
 import typing_extensions
 import urllib3
+from urllib3._collections import HTTPHeaderDict
+from urllib3.fields import RequestField as RequestFieldBase
+
 from launch.api_client import rest
 from launch.api_client.configuration import Configuration
 from launch.api_client.exceptions import ApiTypeError, ApiValueError
@@ -40,8 +43,6 @@ from launch.api_client.schemas import (
     none_type,
     unset,
 )
-from urllib3._collections import HTTPHeaderDict
-from urllib3.fields import RequestField as RequestFieldBase
 
 
 class RequestField(RequestFieldBase):
@@ -73,9 +74,7 @@ class JSONEncoder(json.JSONEncoder):
             return {key: self.default(val) for key, val in obj.items()}
         elif isinstance(obj, (list, tuple)):
             return [self.default(item) for item in obj]
-        raise ApiValueError(
-            "Unable to prepare type {} for serialization".format(obj.__class__.__name__)
-        )
+        raise ApiValueError("Unable to prepare type {} for serialization".format(obj.__class__.__name__))
 
 
 class ParameterInType(enum.Enum):
@@ -147,9 +146,7 @@ class ParameterSerializerBase:
         elif isinstance(in_data, dict) and not in_data:
             # ignored by the expansion process https://datatracker.ietf.org/doc/html/rfc6570#section-3.2.1
             return None
-        raise ApiValueError(
-            "Unable to generate a ref6570 item representation of {}".format(in_data)
-        )
+        raise ApiValueError("Unable to generate a ref6570 item representation of {}".format(in_data))
 
     @staticmethod
     def _to_dict(name: str, value: str):
@@ -212,12 +209,8 @@ class ParameterSerializerBase:
         var_name_piece: str,
         named_parameter_expansion: bool,
     ) -> str:
-        in_data_transformed = {
-            key: cls.__ref6570_item_value(val, percent_encode) for key, val in in_data.items()
-        }
-        in_data_transformed = {
-            key: val for key, val in in_data_transformed.items() if val is not None
-        }
+        in_data_transformed = {key: cls.__ref6570_item_value(val, percent_encode) for key, val in in_data.items()}
+        in_data_transformed = {key: val for key, val in in_data_transformed.items() if val is not None}
         if not in_data_transformed:
             # ignored by the expansion process https://datatracker.ietf.org/doc/html/rfc6570#section-3.2.1
             return ""
@@ -380,9 +373,7 @@ class ParameterBase(JSONDetector):
     _json_encoder = JSONEncoder()
 
     @classmethod
-    def __verify_style_to_in_type(
-        cls, style: typing.Optional[ParameterStyle], in_type: ParameterInType
-    ):
+    def __verify_style_to_in_type(cls, style: typing.Optional[ParameterStyle], in_type: ParameterInType):
         if style is None:
             return
         in_type_set = cls.__style_to_in_type[style]
@@ -407,13 +398,9 @@ class ParameterBase(JSONDetector):
         if schema is None and content is None:
             raise ValueError("Value missing; Pass in either schema or content")
         if schema and content:
-            raise ValueError(
-                "Too many values provided. Both schema and content were provided. Only one may be input"
-            )
+            raise ValueError("Too many values provided. Both schema and content were provided. Only one may be input")
         if name in self.__disallowed_header_names and in_type is ParameterInType.HEADER:
-            raise ValueError(
-                "Invalid name, name may not be one of {}".format(self.__disallowed_header_names)
-            )
+            raise ValueError("Invalid name, name may not be one of {}".format(self.__disallowed_header_names))
         self.__verify_style_to_in_type(style, in_type)
         if content is None and style is None:
             style = self.__in_type_to_default_style[in_type]
@@ -490,9 +477,7 @@ class PathParameter(ParameterBase, StyleSimpleSerializer):
         self,
         in_data: typing.Union[None, int, float, str, bool, dict, list],
     ) -> typing.Dict[str, str]:
-        value = self._serialize_simple(
-            in_data=in_data, name=self.name, explode=self.explode, percent_encode=True
-        )
+        value = self._serialize_simple(in_data=in_data, name=self.name, explode=self.explode, percent_encode=True)
         return self._to_dict(self.name, value)
 
     def serialize(
@@ -539,9 +524,7 @@ class PathParameter(ParameterBase, StyleSimpleSerializer):
             if self._content_type_is_json(content_type):
                 value = self._serialize_json(cast_in_data)
                 return self._to_dict(self.name, value)
-            raise NotImplementedError(
-                "Serialization of {} has not yet been implemented".format(content_type)
-            )
+            raise NotImplementedError("Serialization of {} has not yet been implemented".format(content_type))
 
 
 class QueryParameter(ParameterBase, StyleFormSerializer):
@@ -676,12 +659,8 @@ class QueryParameter(ParameterBase, StyleFormSerializer):
             cast_in_data = self._json_encoder.default(cast_in_data)
             if self._content_type_is_json(content_type):
                 value = self._serialize_json(cast_in_data, eliminate_whitespace=True)
-                return self._to_dict(
-                    self.name, next(prefix_separator_iterator) + self.name + "=" + quote(value)
-                )
-            raise NotImplementedError(
-                "Serialization of {} has not yet been implemented".format(content_type)
-            )
+                return self._to_dict(self.name, next(prefix_separator_iterator) + self.name + "=" + quote(value))
+            raise NotImplementedError("Serialization of {} has not yet been implemented".format(content_type))
 
 
 class CookieParameter(ParameterBase, StyleFormSerializer):
@@ -754,9 +733,7 @@ class CookieParameter(ParameterBase, StyleFormSerializer):
             if self._content_type_is_json(content_type):
                 value = self._serialize_json(cast_in_data)
                 return self._to_dict(self.name, value)
-            raise NotImplementedError(
-                "Serialization of {} has not yet been implemented".format(content_type)
-            )
+            raise NotImplementedError("Serialization of {} has not yet been implemented".format(content_type))
 
 
 class HeaderParameter(ParameterBase, StyleSimpleSerializer):
@@ -826,9 +803,7 @@ class HeaderParameter(ParameterBase, StyleSimpleSerializer):
             if self._content_type_is_json(content_type):
                 value = self._serialize_json(cast_in_data)
                 return self.__to_headers(((self.name, value),))
-            raise NotImplementedError(
-                "Serialization of {} has not yet been implemented".format(content_type)
-            )
+            raise NotImplementedError("Serialization of {} has not yet been implemented".format(content_type))
 
 
 class Encoding:
@@ -923,9 +898,7 @@ class OpenApiResponse(JSONDetector):
         return None
 
     @classmethod
-    def __file_name_from_content_disposition(
-        cls, content_disposition: typing.Optional[str]
-    ) -> typing.Optional[str]:
+    def __file_name_from_content_disposition(cls, content_disposition: typing.Optional[str]) -> typing.Optional[str]:
         if content_disposition is None:
             return None
         match = cls.__filename_content_disposition_pattern.search(content_disposition)
@@ -972,17 +945,15 @@ class OpenApiResponse(JSONDetector):
     ) -> typing.Dict[str, typing.Any]:
         msg = email.message_from_bytes(response.data)
         return {
-            part.get_param("name", header="Content-Disposition"): part.get_payload(
-                decode=True
-            ).decode(part.get_content_charset())
+            part.get_param("name", header="Content-Disposition"): part.get_payload(decode=True).decode(
+                part.get_content_charset()
+            )
             if part.get_content_charset()
             else part.get_payload()
             for part in msg.get_payload()
         }
 
-    def deserialize(
-        self, response: urllib3.HTTPResponse, configuration: Configuration
-    ) -> ApiResponse:
+    def deserialize(self, response: urllib3.HTTPResponse, configuration: Configuration) -> ApiResponse:
         content_type = response.getheader("content-type")
         deserialized_body = unset
         streamed = response.supports_chunked_reads()
@@ -1001,9 +972,7 @@ class OpenApiResponse(JSONDetector):
             body_schema = self.content[content_type].schema
             if body_schema is None:
                 # some specs do not define response content media type schemas
-                return self.response_cls(
-                    response=response, headers=deserialized_headers, body=unset
-                )
+                return self.response_cls(response=response, headers=deserialized_headers, body=unset)
 
             if self._content_type_is_json(content_type):
                 body_data = self.__deserialize_json(response)
@@ -1013,18 +982,12 @@ class OpenApiResponse(JSONDetector):
                 body_data = self.__deserialize_multipart_form_data(response)
                 content_type = "multipart/form-data"
             else:
-                raise NotImplementedError(
-                    "Deserialization of {} has not yet been implemented".format(content_type)
-                )
-            deserialized_body = body_schema.from_openapi_data_oapg(
-                body_data, _configuration=configuration
-            )
+                raise NotImplementedError("Deserialization of {} has not yet been implemented".format(content_type))
+            deserialized_body = body_schema.from_openapi_data_oapg(body_data, _configuration=configuration)
         elif streamed:
             response.release_conn()
 
-        return self.response_cls(
-            response=response, headers=deserialized_headers, body=deserialized_body
-        )
+        return self.response_cls(response=response, headers=deserialized_headers, body=deserialized_body)
 
 
 class ApiClient:
@@ -1247,26 +1210,17 @@ class ApiClient:
                 url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body
             )
         elif method == "POST":
-            return self.rest_client.POST(
-                url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body
-            )
+            return self.rest_client.POST(url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body)
         elif method == "PUT":
-            return self.rest_client.PUT(
-                url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body
-            )
+            return self.rest_client.PUT(url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body)
         elif method == "PATCH":
             return self.rest_client.PATCH(
                 url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body
             )
         elif method == "DELETE":
-            return self.rest_client.DELETE(
-                url, headers=headers, stream=stream, timeout=timeout, body=body
-            )
+            return self.rest_client.DELETE(url, headers=headers, stream=stream, timeout=timeout, body=body)
         else:
-            raise ApiValueError(
-                "http method must be `GET`, `HEAD`, `OPTIONS`,"
-                " `POST`, `PATCH`, `PUT` or `DELETE`."
-            )
+            raise ApiValueError("http method must be `GET`, `HEAD`, `OPTIONS`," " `POST`, `PATCH`, `PUT` or `DELETE`.")
 
     def update_params_for_auth(self, headers, auth_settings, resource_path, method, body):
         """Updates header and query params based on authentication setting.
@@ -1368,17 +1322,13 @@ class Api:
         configuration = self.api_client.configuration
         try:
             if host_index is None:
-                index = configuration.server_operation_index.get(
-                    operation_id, configuration.server_index
-                )
+                index = configuration.server_operation_index.get(operation_id, configuration.server_index)
             else:
                 index = host_index
             server_variables = configuration.server_operation_variables.get(
                 operation_id, configuration.server_variables
             )
-            host = configuration.get_host_from_settings(
-                index, variables=server_variables, servers=servers
-            )
+            host = configuration.get_host_from_settings(index, variables=server_variables, servers=servers)
         except IndexError:
             if servers:
                 raise ApiValueError("Invalid host index. Must be 0 <= index < %s" % len(servers))
@@ -1441,21 +1391,15 @@ class RequestBody(StyleFormSerializer, JSONDetector):
             request_field.make_multipart(content_type="application/octet-stream")
         elif isinstance(value, FileIO):
             # TODO use content.encoding to limit allowed content types if they are present
-            request_field = RequestField.from_tuples(
-                key, (os.path.basename(value.name), value.read())
-            )
+            request_field = RequestField.from_tuples(key, (os.path.basename(value.name), value.read()))
             value.close()
         else:
             request_field = self.__multipart_json_item(key=key, value=value)
         return request_field
 
-    def __serialize_multipart_form_data(
-        self, in_data: Schema
-    ) -> typing.Dict[str, typing.Tuple[RequestField, ...]]:
+    def __serialize_multipart_form_data(self, in_data: Schema) -> typing.Dict[str, typing.Tuple[RequestField, ...]]:
         if not isinstance(in_data, frozendict.frozendict):
-            raise ValueError(
-                f"Unable to serialize {in_data} to multipart/form-data because it is not a dict of data"
-            )
+            raise ValueError(f"Unable to serialize {in_data} to multipart/form-data because it is not a dict of data")
         """
         In a multipart/form-data request body, each schema property, or each element of a schema array property,
         takes a section in the payload with an internal header as defined by RFC7578. The serialization strategy
@@ -1487,9 +1431,7 @@ class RequestBody(StyleFormSerializer, JSONDetector):
 
         return dict(fields=tuple(fields))
 
-    def __serialize_application_octet_stream(
-        self, in_data: BinarySchema
-    ) -> typing.Dict[str, bytes]:
+    def __serialize_application_octet_stream(self, in_data: BinarySchema) -> typing.Dict[str, bytes]:
         if isinstance(in_data, bytes):
             return dict(body=in_data)
         # FileIO type
@@ -1538,6 +1480,4 @@ class RequestBody(StyleFormSerializer, JSONDetector):
             return self.__serialize_application_x_www_form_data(cast_in_data)
         elif content_type == "application/octet-stream":
             return self.__serialize_application_octet_stream(cast_in_data)
-        raise NotImplementedError(
-            "Serialization has not yet been implemented for {}".format(content_type)
-        )
+        raise NotImplementedError("Serialization has not yet been implemented for {}".format(content_type))

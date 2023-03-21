@@ -62,9 +62,7 @@ class CreateModelBundleResponse(schemas.DictSchema):
         self, name: typing_extensions.Literal["model_bundle_id"]
     ) -> MetaOapg.properties.model_bundle_id: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

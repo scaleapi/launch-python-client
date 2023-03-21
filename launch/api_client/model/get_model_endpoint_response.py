@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -187,27 +188,19 @@ class GetModelEndpointResponse(schemas.DictSchema):
     status: "ModelEndpointStatus"
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["bundle_name"]
-    ) -> MetaOapg.properties.bundle_name:
+    def __getitem__(self, name: typing_extensions.Literal["bundle_name"]) -> MetaOapg.properties.bundle_name:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at:
+    def __getitem__(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["created_by"]
-    ) -> MetaOapg.properties.created_by:
+    def __getitem__(self, name: typing_extensions.Literal["created_by"]) -> MetaOapg.properties.created_by:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["destination"]
-    ) -> MetaOapg.properties.destination:
+    def __getitem__(self, name: typing_extensions.Literal["destination"]) -> MetaOapg.properties.destination:
         ...
 
     @typing.overload
@@ -219,9 +212,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["last_updated_at"]
-    ) -> MetaOapg.properties.last_updated_at:
+    def __getitem__(self, name: typing_extensions.Literal["last_updated_at"]) -> MetaOapg.properties.last_updated_at:
         ...
 
     @typing.overload
@@ -233,15 +224,11 @@ class GetModelEndpointResponse(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["aws_role"]
-    ) -> MetaOapg.properties.aws_role:
+    def __getitem__(self, name: typing_extensions.Literal["aws_role"]) -> MetaOapg.properties.aws_role:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["default_callback_auth"]
-    ) -> "CallbackAuth":
+    def __getitem__(self, name: typing_extensions.Literal["default_callback_auth"]) -> "CallbackAuth":
         ...
 
     @typing.overload
@@ -251,15 +238,11 @@ class GetModelEndpointResponse(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["deployment_name"]
-    ) -> MetaOapg.properties.deployment_name:
+    def __getitem__(self, name: typing_extensions.Literal["deployment_name"]) -> MetaOapg.properties.deployment_name:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["deployment_state"]
-    ) -> "ModelEndpointDeploymentState":
+    def __getitem__(self, name: typing_extensions.Literal["deployment_state"]) -> "ModelEndpointDeploymentState":
         ...
 
     @typing.overload
@@ -267,15 +250,11 @@ class GetModelEndpointResponse(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["metadata"]
-    ) -> MetaOapg.properties.metadata:
+    def __getitem__(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["num_queued_items"]
-    ) -> MetaOapg.properties.num_queued_items:
+    def __getitem__(self, name: typing_extensions.Literal["num_queued_items"]) -> MetaOapg.properties.num_queued_items:
         ...
 
     @typing.overload
@@ -285,9 +264,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["resource_state"]
-    ) -> "ModelEndpointResourceState":
+    def __getitem__(self, name: typing_extensions.Literal["resource_state"]) -> "ModelEndpointResourceState":
         ...
 
     @typing.overload
@@ -332,33 +309,23 @@ class GetModelEndpointResponse(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["bundle_name"]
-    ) -> MetaOapg.properties.bundle_name:
+    def get_item_oapg(self, name: typing_extensions.Literal["bundle_name"]) -> MetaOapg.properties.bundle_name:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at:
+    def get_item_oapg(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["created_by"]
-    ) -> MetaOapg.properties.created_by:
+    def get_item_oapg(self, name: typing_extensions.Literal["created_by"]) -> MetaOapg.properties.created_by:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["destination"]
-    ) -> MetaOapg.properties.destination:
+    def get_item_oapg(self, name: typing_extensions.Literal["destination"]) -> MetaOapg.properties.destination:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["endpoint_type"]
-    ) -> "ModelEndpointType":
+    def get_item_oapg(self, name: typing_extensions.Literal["endpoint_type"]) -> "ModelEndpointType":
         ...
 
     @typing.overload
@@ -366,9 +333,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["last_updated_at"]
-    ) -> MetaOapg.properties.last_updated_at:
+    def get_item_oapg(self, name: typing_extensions.Literal["last_updated_at"]) -> MetaOapg.properties.last_updated_at:
         ...
 
     @typing.overload
@@ -522,15 +487,9 @@ class GetModelEndpointResponse(schemas.DictSchema):
         default_callback_url: typing.Union[
             MetaOapg.properties.default_callback_url, str, schemas.Unset
         ] = schemas.unset,
-        deployment_name: typing.Union[
-            MetaOapg.properties.deployment_name, str, schemas.Unset
-        ] = schemas.unset,
-        deployment_state: typing.Union[
-            "ModelEndpointDeploymentState", schemas.Unset
-        ] = schemas.unset,
-        labels: typing.Union[
-            MetaOapg.properties.labels, dict, frozendict.frozendict, schemas.Unset
-        ] = schemas.unset,
+        deployment_name: typing.Union[MetaOapg.properties.deployment_name, str, schemas.Unset] = schemas.unset,
+        deployment_state: typing.Union["ModelEndpointDeploymentState", schemas.Unset] = schemas.unset,
+        labels: typing.Union[MetaOapg.properties.labels, dict, frozendict.frozendict, schemas.Unset] = schemas.unset,
         metadata: typing.Union[
             MetaOapg.properties.metadata, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
@@ -541,9 +500,7 @@ class GetModelEndpointResponse(schemas.DictSchema):
             MetaOapg.properties.post_inference_hooks, list, tuple, schemas.Unset
         ] = schemas.unset,
         resource_state: typing.Union["ModelEndpointResourceState", schemas.Unset] = schemas.unset,
-        results_s3_bucket: typing.Union[
-            MetaOapg.properties.results_s3_bucket, str, schemas.Unset
-        ] = schemas.unset,
+        results_s3_bucket: typing.Union[MetaOapg.properties.results_s3_bucket, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -591,7 +548,11 @@ class GetModelEndpointResponse(schemas.DictSchema):
 
 
 from launch.api_client.model.callback_auth import CallbackAuth
-from launch.api_client.model.model_endpoint_deployment_state import ModelEndpointDeploymentState
-from launch.api_client.model.model_endpoint_resource_state import ModelEndpointResourceState
+from launch.api_client.model.model_endpoint_deployment_state import (
+    ModelEndpointDeploymentState,
+)
+from launch.api_client.model.model_endpoint_resource_state import (
+    ModelEndpointResourceState,
+)
 from launch.api_client.model.model_endpoint_status import ModelEndpointStatus
 from launch.api_client.model.model_endpoint_type import ModelEndpointType

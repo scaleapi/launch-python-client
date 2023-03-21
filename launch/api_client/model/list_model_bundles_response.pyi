@@ -43,9 +43,7 @@ class ListModelBundlesResponse(schemas.DictSchema):
                         return ModelBundleResponse
                 def __new__(
                     cls,
-                    _arg: typing.Union[
-                        typing.Tuple["ModelBundleResponse"], typing.List["ModelBundleResponse"]
-                    ],
+                    _arg: typing.Union[typing.Tuple["ModelBundleResponse"], typing.List["ModelBundleResponse"]],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "model_bundles":
                     return super().__new__(
@@ -61,9 +59,7 @@ class ListModelBundlesResponse(schemas.DictSchema):
     model_bundles: MetaOapg.properties.model_bundles
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_bundles"]
-    ) -> MetaOapg.properties.model_bundles: ...
+    def __getitem__(self, name: typing_extensions.Literal["model_bundles"]) -> MetaOapg.properties.model_bundles: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -76,13 +72,9 @@ class ListModelBundlesResponse(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["model_bundles"]
-    ) -> MetaOapg.properties.model_bundles: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["model_bundles"]) -> MetaOapg.properties.model_bundles: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

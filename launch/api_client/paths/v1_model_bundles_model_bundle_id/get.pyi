@@ -35,9 +35,7 @@ RequestRequiredPathParams = typing_extensions.TypedDict(
         ],
     },
 )
-RequestOptionalPathParams = typing_extensions.TypedDict(
-    "RequestOptionalPathParams", {}, total=False
-)
+RequestOptionalPathParams = typing_extensions.TypedDict("RequestOptionalPathParams", {}, total=False)
 
 class RequestPathParams(RequestRequiredPathParams, RequestOptionalPathParams):
     pass
@@ -154,16 +152,12 @@ class BaseApi(api_client.Api):
         else:
             response_for_status = _status_code_to_response.get(str(response.status))
             if response_for_status:
-                api_response = response_for_status.deserialize(
-                    response, self.api_client.configuration
-                )
+                api_response = response_for_status.deserialize(response, self.api_client.configuration)
             else:
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
-            raise exceptions.ApiException(
-                status=response.status, reason=response.reason, api_response=api_response
-            )
+            raise exceptions.ApiException(status=response.status, reason=response.reason, api_response=api_response)
 
         return api_response
 

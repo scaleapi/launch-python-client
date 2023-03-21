@@ -73,9 +73,7 @@ class ListModelEndpointsV1Response(schemas.DictSchema):
         self, name: typing_extensions.Literal["model_endpoints"]
     ) -> MetaOapg.properties.model_endpoints: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["model_endpoints",], str]):
         return super().get_item_oapg(name)
     def __new__(
@@ -115,4 +113,6 @@ class ListModelEndpointsV1Response(schemas.DictSchema):
             **kwargs,
         )
 
-from launch_client.model.get_model_endpoint_v1_response import GetModelEndpointV1Response
+from launch_client.model.get_model_endpoint_v1_response import (
+    GetModelEndpointV1Response,
+)

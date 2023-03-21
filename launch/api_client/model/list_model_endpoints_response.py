@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -65,9 +66,7 @@ class ListModelEndpointsResponse(schemas.DictSchema):
     model_endpoints: MetaOapg.properties.model_endpoints
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_endpoints"]
-    ) -> MetaOapg.properties.model_endpoints:
+    def __getitem__(self, name: typing_extensions.Literal["model_endpoints"]) -> MetaOapg.properties.model_endpoints:
         ...
 
     @typing.overload
@@ -85,9 +84,7 @@ class ListModelEndpointsResponse(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["model_endpoints"]
-    ) -> MetaOapg.properties.model_endpoints:
+    def get_item_oapg(self, name: typing_extensions.Literal["model_endpoints"]) -> MetaOapg.properties.model_endpoints:
         ...
 
     @typing.overload
@@ -141,4 +138,6 @@ class ListModelEndpointsResponse(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.get_model_endpoint_response import GetModelEndpointResponse
+from launch.api_client.model.get_model_endpoint_response import (
+    GetModelEndpointResponse,
+)
