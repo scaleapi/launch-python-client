@@ -691,7 +691,7 @@ class LaunchClient:
 
             endpoint_type: Either ``"sync"`` or ``"async"``.
 
-            high_priority: Either ``"True"`` or ``"False"``. Enabling this will allow the created
+            high_priority: Either ``True`` or ``False``. Enabling this will allow the created
                 endpoint to leverage the shared pool of prewarmed nodes for faster spinup time.
 
             post_inference_hooks: List of hooks to trigger after inference tasks are served.
@@ -885,7 +885,7 @@ class LaunchClient:
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
 
-            high_priority: Either ``"True"`` or ``"False"``. Enabling this will allow the created
+            high_priority: Either ``True`` or ``False``. Enabling this will allow the created
                 endpoint to leverage the shared pool of prewarmed nodes for faster spinup time.
 
             post_inference_hooks: List of hooks to trigger after inference tasks are served.
