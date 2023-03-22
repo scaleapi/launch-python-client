@@ -144,6 +144,7 @@ class LaunchClient:
             self_hosted: True iff you are connecting to a self-hosted Scale Launch
         """
         self.connection = Connection(api_key, endpoint or SCALE_LAUNCH_ENDPOINT)
+        self.endpoint = endpoint
         self.self_hosted = self_hosted
         self.upload_bundle_fn: Optional[Callable[[str, str], None]] = None
         self.upload_batch_csv_fn: Optional[Callable[[str, str], None]] = None
