@@ -20,8 +20,8 @@ import typing_extensions  # noqa: F401
 import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
-from launch_client.model.get_model_endpoint_response import (
-    GetModelEndpointResponse,
+from launch_client.model.get_model_endpoint_v1_response import (
+    GetModelEndpointV1Response,
 )
 from launch_client.model.http_validation_error import HTTPValidationError
 from urllib3._collections import HTTPHeaderDict
@@ -48,7 +48,7 @@ request_path_model_endpoint_id = api_client.PathParameter(
     schema=ModelEndpointIdSchema,
     required=True,
 )
-SchemaFor200ResponseBodyApplicationJson = GetModelEndpointResponse
+SchemaFor200ResponseBodyApplicationJson = GetModelEndpointV1Response
 
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):

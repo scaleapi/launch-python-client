@@ -23,7 +23,9 @@ from urllib3._collections import HTTPHeaderDict
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
 from launch.api_client.model.http_validation_error import HTTPValidationError
-from launch.api_client.model.model_bundle_response import ModelBundleResponse
+from launch.api_client.model.model_bundle_v1_response import (
+    ModelBundleV1Response,
+)
 
 from . import path
 
@@ -55,7 +57,7 @@ request_query_model_name = api_client.QueryParameter(
 _auth = [
     "HTTPBasic",
 ]
-SchemaFor200ResponseBodyApplicationJson = ModelBundleResponse
+SchemaFor200ResponseBodyApplicationJson = ModelBundleV1Response
 
 
 @dataclass

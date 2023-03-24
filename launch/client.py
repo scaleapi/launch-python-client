@@ -27,8 +27,8 @@ from launch.api_client.model.create_batch_job_request import (
 from launch.api_client.model.create_model_bundle_request import (
     CreateModelBundleRequest,
 )
-from launch.api_client.model.create_model_endpoint_request import (
-    CreateModelEndpointRequest,
+from launch.api_client.model.create_model_endpoint_v1_request import (
+    CreateModelEndpointV1Request,
 )
 from launch.api_client.model.endpoint_predict_request import (
     EndpointPredictRequest,
@@ -42,8 +42,8 @@ from launch.api_client.model.model_bundle_packaging_type import (
     ModelBundlePackagingType,
 )
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
-from launch.api_client.model.update_model_endpoint_request import (
-    UpdateModelEndpointRequest,
+from launch.api_client.model.update_model_endpoint_v1_request import (
+    UpdateModelEndpointV1Request,
 )
 from launch.connection import Connection
 from launch.constants import (
@@ -623,6 +623,7 @@ class LaunchClient:
         per_worker: int = 10,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
+        high_priority: Optional[bool] = False,
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
         default_callback_url: Optional[str] = None,
         default_callback_auth_kind: Optional[Literal["basic", "mtls"]] = None,
@@ -691,6 +692,9 @@ class LaunchClient:
 
             endpoint_type: Either ``"sync"`` or ``"async"``.
 
+            high_priority: Either ``True`` or ``False``. Enabling this will allow the created
+                endpoint to leverage the shared pool of prewarmed nodes for faster spinup time.
+
             post_inference_hooks: List of hooks to trigger after inference tasks are served.
 
             default_callback_url: The default callback url to use for async endpoints.
@@ -741,6 +745,7 @@ class LaunchClient:
                 max_workers=max_workers,
                 per_worker=per_worker,
                 gpu_type=gpu_type,
+                high_priority=high_priority,
                 default_callback_url=default_callback_url,
                 default_callback_auth_kind=default_callback_auth_kind,
                 default_callback_auth_username=default_callback_auth_username,
@@ -792,12 +797,13 @@ class LaunchClient:
                     model_bundle_id=model_bundle.id,
                     name=endpoint_name,
                     per_worker=per_worker,
+                    high_priority=high_priority,
                     post_inference_hooks=post_inference_hooks_strs,
                     default_callback_url=default_callback_url,
                     default_callback_auth=default_callback_auth,
                     storage=storage,
                 )
-                create_model_endpoint_request = CreateModelEndpointRequest(**payload)
+                create_model_endpoint_request = CreateModelEndpointV1Request(**payload)
                 response = api_instance.create_model_endpoint_v1_model_endpoints_post(
                     body=create_model_endpoint_request,
                     skip_deserialization=True,
@@ -826,6 +832,7 @@ class LaunchClient:
         max_workers: Optional[int] = None,
         per_worker: Optional[int] = None,
         gpu_type: Optional[str] = None,
+        high_priority: Optional[bool] = None,
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
         default_callback_url: Optional[str] = None,
         default_callback_auth_kind: Optional[Literal["basic", "mtls"]] = None,
@@ -878,6 +885,9 @@ class LaunchClient:
 
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
+
+            high_priority: Either ``True`` or ``False``. Enabling this will allow the created
+                endpoint to leverage the shared pool of prewarmed nodes for faster spinup time.
 
             post_inference_hooks: List of hooks to trigger after inference tasks are served.
 
@@ -957,12 +967,13 @@ class LaunchClient:
                 min_workers=min_workers,
                 model_bundle_id=model_bundle_id,
                 per_worker=per_worker,
+                high_priority=high_priority,
                 post_inference_hooks=post_inference_hooks_strs,
                 default_callback_url=default_callback_url,
                 default_callback_auth=default_callback_auth,
                 storage=storage,
             )
-            update_model_endpoint_request = UpdateModelEndpointRequest(**payload)
+            update_model_endpoint_request = UpdateModelEndpointV1Request(**payload)
             path_params = frozendict({"model_endpoint_id": model_endpoint_id})
             response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(  # type: ignore
                 body=update_model_endpoint_request,

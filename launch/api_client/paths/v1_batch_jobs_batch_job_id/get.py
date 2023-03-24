@@ -22,7 +22,9 @@ from urllib3._collections import HTTPHeaderDict
 
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
-from launch.api_client.model.get_batch_job_response import GetBatchJobResponse
+from launch.api_client.model.get_batch_job_v1_response import (
+    GetBatchJobV1Response,
+)
 from launch.api_client.model.http_validation_error import HTTPValidationError
 
 from . import path
@@ -54,7 +56,7 @@ request_path_batch_job_id = api_client.PathParameter(
 _auth = [
     "HTTPBasic",
 ]
-SchemaFor200ResponseBodyApplicationJson = GetBatchJobResponse
+SchemaFor200ResponseBodyApplicationJson = GetBatchJobV1Response
 
 
 @dataclass

@@ -23,11 +23,11 @@ from urllib3._collections import HTTPHeaderDict
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
 from launch.api_client.model.http_validation_error import HTTPValidationError
-from launch.api_client.model.update_model_endpoint_request import (
-    UpdateModelEndpointRequest,
+from launch.api_client.model.update_model_endpoint_v1_request import (
+    UpdateModelEndpointV1Request,
 )
-from launch.api_client.model.update_model_endpoint_response import (
-    UpdateModelEndpointResponse,
+from launch.api_client.model.update_model_endpoint_v1_response import (
+    UpdateModelEndpointV1Response,
 )
 
 from . import path
@@ -57,10 +57,10 @@ request_path_model_endpoint_id = api_client.PathParameter(
     required=True,
 )
 # body param
-SchemaForRequestBodyApplicationJson = UpdateModelEndpointRequest
+SchemaForRequestBodyApplicationJson = UpdateModelEndpointV1Request
 
 
-request_body_update_model_endpoint_request = api_client.RequestBody(
+request_body_update_model_endpoint_v1_request = api_client.RequestBody(
     content={
         "application/json": api_client.MediaType(schema=SchemaForRequestBodyApplicationJson),
     },
@@ -69,7 +69,7 @@ request_body_update_model_endpoint_request = api_client.RequestBody(
 _auth = [
     "HTTPBasic",
 ]
-SchemaFor200ResponseBodyApplicationJson = UpdateModelEndpointResponse
+SchemaFor200ResponseBodyApplicationJson = UpdateModelEndpointV1Response
 
 
 @dataclass
@@ -203,7 +203,7 @@ class BaseApi(api_client.Api):
             )
         _fields = None
         _body = None
-        serialized_data = request_body_update_model_endpoint_request.serialize(body, content_type)
+        serialized_data = request_body_update_model_endpoint_v1_request.serialize(body, content_type)
         _headers.add("Content-Type", content_type)
         if "fields" in serialized_data:
             _fields = serialized_data["fields"]

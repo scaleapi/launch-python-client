@@ -22,8 +22,8 @@ from urllib3._collections import HTTPHeaderDict
 
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
-from launch.api_client.model.delete_model_endpoint_response import (
-    DeleteModelEndpointResponse,
+from launch.api_client.model.delete_model_endpoint_v1_response import (
+    DeleteModelEndpointV1Response,
 )
 from launch.api_client.model.http_validation_error import HTTPValidationError
 
@@ -56,7 +56,7 @@ request_path_model_endpoint_id = api_client.PathParameter(
 _auth = [
     "HTTPBasic",
 ]
-SchemaFor200ResponseBodyApplicationJson = DeleteModelEndpointResponse
+SchemaFor200ResponseBodyApplicationJson = DeleteModelEndpointV1Response
 
 
 @dataclass

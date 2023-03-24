@@ -20,7 +20,7 @@ import typing_extensions  # noqa: F401
 import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
-from launch_client.model.get_batch_job_response import GetBatchJobResponse
+from launch_client.model.get_batch_job_v1_response import GetBatchJobV1Response
 from launch_client.model.http_validation_error import HTTPValidationError
 from urllib3._collections import HTTPHeaderDict
 
@@ -46,7 +46,7 @@ request_path_batch_job_id = api_client.PathParameter(
     schema=BatchJobIdSchema,
     required=True,
 )
-SchemaFor200ResponseBodyApplicationJson = GetBatchJobResponse
+SchemaFor200ResponseBodyApplicationJson = GetBatchJobV1Response
 
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):

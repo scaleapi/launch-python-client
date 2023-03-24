@@ -23,8 +23,8 @@ from urllib3._collections import HTTPHeaderDict
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
 from launch.api_client.model.http_validation_error import HTTPValidationError
-from launch.api_client.model.list_model_endpoints_response import (
-    ListModelEndpointsResponse,
+from launch.api_client.model.list_model_endpoints_v1_response import (
+    ListModelEndpointsV1Response,
 )
 from launch.api_client.model.model_endpoint_order_by import (
     ModelEndpointOrderBy,
@@ -68,7 +68,7 @@ request_query_order_by = api_client.QueryParameter(
 _auth = [
     "HTTPBasic",
 ]
-SchemaFor200ResponseBodyApplicationJson = ListModelEndpointsResponse
+SchemaFor200ResponseBodyApplicationJson = ListModelEndpointsV1Response
 
 
 @dataclass

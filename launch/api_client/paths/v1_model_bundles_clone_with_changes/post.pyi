@@ -20,25 +20,25 @@ import typing_extensions  # noqa: F401
 import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
-from launch_client.model.clone_model_bundle_request import (
-    CloneModelBundleRequest,
+from launch_client.model.clone_model_bundle_v1_request import (
+    CloneModelBundleV1Request,
 )
-from launch_client.model.create_model_bundle_response import (
-    CreateModelBundleResponse,
+from launch_client.model.create_model_bundle_v1_response import (
+    CreateModelBundleV1Response,
 )
 from launch_client.model.http_validation_error import HTTPValidationError
 from urllib3._collections import HTTPHeaderDict
 
 # body param
-SchemaForRequestBodyApplicationJson = CloneModelBundleRequest
+SchemaForRequestBodyApplicationJson = CloneModelBundleV1Request
 
-request_body_clone_model_bundle_request = api_client.RequestBody(
+request_body_clone_model_bundle_v1_request = api_client.RequestBody(
     content={
         "application/json": api_client.MediaType(schema=SchemaForRequestBodyApplicationJson),
     },
     required=True,
 )
-SchemaFor200ResponseBodyApplicationJson = CreateModelBundleResponse
+SchemaFor200ResponseBodyApplicationJson = CreateModelBundleV1Response
 
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
@@ -138,7 +138,7 @@ class BaseApi(api_client.Api):
             )
         _fields = None
         _body = None
-        serialized_data = request_body_clone_model_bundle_request.serialize(body, content_type)
+        serialized_data = request_body_clone_model_bundle_v1_request.serialize(body, content_type)
         _headers.add("Content-Type", content_type)
         if "fields" in serialized_data:
             _fields = serialized_data["fields"]

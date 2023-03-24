@@ -416,7 +416,9 @@ class ParameterBase(JSONDetector):
         self.content = content
 
     def _serialize_json(
-        self, in_data: typing.Union[None, int, float, str, bool, dict, list], eliminate_whitespace: bool = False
+        self,
+        in_data: typing.Union[None, int, float, str, bool, dict, list],
+        eliminate_whitespace: bool = False,
     ) -> str:
         if eliminate_whitespace:
             return json.dumps(in_data, separators=self._json_encoder.compact_separators)
@@ -481,7 +483,19 @@ class PathParameter(ParameterBase, StyleSimpleSerializer):
     def serialize(
         self,
         in_data: typing.Union[
-            Schema, Decimal, int, float, str, date, datetime, None, bool, list, tuple, dict, frozendict.frozendict
+            Schema,
+            Decimal,
+            int,
+            float,
+            str,
+            date,
+            datetime,
+            None,
+            bool,
+            list,
+            tuple,
+            dict,
+            frozendict.frozendict,
         ],
     ) -> typing.Dict[str, str]:
         if self.schema:
@@ -597,7 +611,19 @@ class QueryParameter(ParameterBase, StyleFormSerializer):
     def serialize(
         self,
         in_data: typing.Union[
-            Schema, Decimal, int, float, str, date, datetime, None, bool, list, tuple, dict, frozendict.frozendict
+            Schema,
+            Decimal,
+            int,
+            float,
+            str,
+            date,
+            datetime,
+            None,
+            bool,
+            list,
+            tuple,
+            dict,
+            frozendict.frozendict,
         ],
         prefix_separator_iterator: typing.Optional[PrefixSeparatorIterator] = None,
     ) -> typing.Dict[str, str]:
@@ -665,7 +691,19 @@ class CookieParameter(ParameterBase, StyleFormSerializer):
     def serialize(
         self,
         in_data: typing.Union[
-            Schema, Decimal, int, float, str, date, datetime, None, bool, list, tuple, dict, frozendict.frozendict
+            Schema,
+            Decimal,
+            int,
+            float,
+            str,
+            date,
+            datetime,
+            None,
+            bool,
+            list,
+            tuple,
+            dict,
+            frozendict.frozendict,
         ],
     ) -> typing.Dict[str, str]:
         if self.schema:
@@ -732,7 +770,19 @@ class HeaderParameter(ParameterBase, StyleSimpleSerializer):
     def serialize(
         self,
         in_data: typing.Union[
-            Schema, Decimal, int, float, str, date, datetime, None, bool, list, tuple, dict, frozendict.frozendict
+            Schema,
+            Decimal,
+            int,
+            float,
+            str,
+            date,
+            datetime,
+            None,
+            bool,
+            list,
+            tuple,
+            dict,
+            frozendict.frozendict,
         ],
     ) -> HTTPHeaderDict:
         if self.schema:
@@ -890,7 +940,9 @@ class OpenApiResponse(JSONDetector):
             return response.data
 
     @staticmethod
-    def __deserialize_multipart_form_data(response: urllib3.HTTPResponse) -> typing.Dict[str, typing.Any]:
+    def __deserialize_multipart_form_data(
+        response: urllib3.HTTPResponse,
+    ) -> typing.Dict[str, typing.Any]:
         msg = email.message_from_bytes(response.data)
         return {
             part.get_param("name", header="Content-Disposition"): part.get_payload(decode=True).decode(
@@ -981,7 +1033,7 @@ class ApiClient:
             self.default_headers[header_name] = header_value
         self.cookie = cookie
         # Set default User-Agent.
-        self.user_agent = "OpenAPI-Generator/1.0.5/python"
+        self.user_agent = "OpenAPI-Generator/1.0.6/python"
 
     def __enter__(self):
         return self
@@ -1243,7 +1295,9 @@ class Api:
         if required_keys_with_unset_values:
             raise ApiValueError(
                 "{} contains invalid unset values for {} required keys: {}".format(
-                    cls.__name__, len(required_keys_with_unset_values), required_keys_with_unset_values
+                    cls.__name__,
+                    len(required_keys_with_unset_values),
+                    required_keys_with_unset_values,
                 )
             )
 

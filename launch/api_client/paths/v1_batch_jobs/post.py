@@ -22,21 +22,21 @@ from urllib3._collections import HTTPHeaderDict
 
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
-from launch.api_client.model.create_batch_job_request import (
-    CreateBatchJobRequest,
+from launch.api_client.model.create_batch_job_v1_request import (
+    CreateBatchJobV1Request,
 )
-from launch.api_client.model.create_batch_job_response import (
-    CreateBatchJobResponse,
+from launch.api_client.model.create_batch_job_v1_response import (
+    CreateBatchJobV1Response,
 )
 from launch.api_client.model.http_validation_error import HTTPValidationError
 
 from . import path
 
 # body param
-SchemaForRequestBodyApplicationJson = CreateBatchJobRequest
+SchemaForRequestBodyApplicationJson = CreateBatchJobV1Request
 
 
-request_body_create_batch_job_request = api_client.RequestBody(
+request_body_create_batch_job_v1_request = api_client.RequestBody(
     content={
         "application/json": api_client.MediaType(schema=SchemaForRequestBodyApplicationJson),
     },
@@ -45,7 +45,7 @@ request_body_create_batch_job_request = api_client.RequestBody(
 _auth = [
     "HTTPBasic",
 ]
-SchemaFor200ResponseBodyApplicationJson = CreateBatchJobResponse
+SchemaFor200ResponseBodyApplicationJson = CreateBatchJobV1Response
 
 
 @dataclass
@@ -162,7 +162,7 @@ class BaseApi(api_client.Api):
             )
         _fields = None
         _body = None
-        serialized_data = request_body_create_batch_job_request.serialize(body, content_type)
+        serialized_data = request_body_create_batch_job_v1_request.serialize(body, content_type)
         _headers.add("Content-Type", content_type)
         if "fields" in serialized_data:
             _fields = serialized_data["fields"]

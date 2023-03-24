@@ -21,8 +21,8 @@ import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
 from launch_client.model.http_validation_error import HTTPValidationError
-from launch_client.model.list_model_bundles_response import (
-    ListModelBundlesResponse,
+from launch_client.model.list_model_bundles_v1_response import (
+    ListModelBundlesV1Response,
 )
 from launch_client.model.model_bundle_order_by import ModelBundleOrderBy
 from urllib3._collections import HTTPHeaderDict
@@ -58,7 +58,7 @@ request_query_order_by = api_client.QueryParameter(
     schema=OrderBySchema,
     explode=True,
 )
-SchemaFor200ResponseBodyApplicationJson = ListModelBundlesResponse
+SchemaFor200ResponseBodyApplicationJson = ListModelBundlesV1Response
 
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):

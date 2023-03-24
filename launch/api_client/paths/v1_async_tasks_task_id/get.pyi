@@ -20,7 +20,9 @@ import typing_extensions  # noqa: F401
 import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
-from launch_client.model.get_async_task_response import GetAsyncTaskResponse
+from launch_client.model.get_async_task_v1_response import (
+    GetAsyncTaskV1Response,
+)
 from launch_client.model.http_validation_error import HTTPValidationError
 from urllib3._collections import HTTPHeaderDict
 
@@ -46,7 +48,7 @@ request_path_task_id = api_client.PathParameter(
     schema=TaskIdSchema,
     required=True,
 )
-SchemaFor200ResponseBodyApplicationJson = GetAsyncTaskResponse
+SchemaFor200ResponseBodyApplicationJson = GetAsyncTaskV1Response
 
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):

@@ -38,8 +38,8 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
 
         class properties:
             @staticmethod
-            def framework_type() -> typing.Type["ModelBundleFramework"]:
-                return ModelBundleFramework
+            def framework_type() -> typing.Type["ModelBundleFrameworkType"]:
+                return ModelBundleFrameworkType
             ecr_repo = schemas.StrSchema
             image_tag = schemas.StrSchema
             pytorch_image_tag = schemas.StrSchema
@@ -51,10 +51,10 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
                 "pytorch_image_tag": pytorch_image_tag,
                 "tensorflow_version": tensorflow_version,
             }
-    framework_type: "ModelBundleFramework"
+    framework_type: "ModelBundleFrameworkType"
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["framework_type"]) -> "ModelBundleFramework": ...
+    def __getitem__(self, name: typing_extensions.Literal["framework_type"]) -> "ModelBundleFrameworkType": ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["ecr_repo"]) -> MetaOapg.properties.ecr_repo: ...
     @typing.overload
@@ -85,7 +85,7 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["framework_type"]) -> "ModelBundleFramework": ...
+    def get_item_oapg(self, name: typing_extensions.Literal["framework_type"]) -> "ModelBundleFrameworkType": ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["ecr_repo"]
@@ -124,7 +124,7 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        framework_type: "ModelBundleFramework",
+        framework_type: "ModelBundleFrameworkType",
         ecr_repo: typing.Union[MetaOapg.properties.ecr_repo, str, schemas.Unset] = schemas.unset,
         image_tag: typing.Union[MetaOapg.properties.image_tag, str, schemas.Unset] = schemas.unset,
         pytorch_image_tag: typing.Union[MetaOapg.properties.pytorch_image_tag, str, schemas.Unset] = schemas.unset,
@@ -159,4 +159,6 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
             **kwargs,
         )
 
-from launch_client.model.model_bundle_framework import ModelBundleFramework
+from launch_client.model.model_bundle_framework_type import (
+    ModelBundleFrameworkType,
+)
