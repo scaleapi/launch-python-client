@@ -29,7 +29,9 @@ class ModelEndpointOrderBy(schemas.EnumBase, schemas.StrSchema):
 
     Do not edit the class manually.
 
+
     The canonical list of possible orderings of Model Bundles.
+
     """
 
     class MetaOapg:

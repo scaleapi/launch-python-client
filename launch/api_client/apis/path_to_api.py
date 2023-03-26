@@ -32,6 +32,16 @@ from launch.api_client.apis.paths.v1_model_endpoints_schema_json import (
     V1ModelEndpointsSchemaJson,
 )
 from launch.api_client.apis.paths.v1_sync_tasks import V1SyncTasks
+from launch.api_client.apis.paths.v2_model_bundles import V2ModelBundles
+from launch.api_client.apis.paths.v2_model_bundles_clone_with_changes import (
+    V2ModelBundlesCloneWithChanges,
+)
+from launch.api_client.apis.paths.v2_model_bundles_latest import (
+    V2ModelBundlesLatest,
+)
+from launch.api_client.apis.paths.v2_model_bundles_model_bundle_id import (
+    V2ModelBundlesModelBundleId,
+)
 from launch.api_client.paths import PathValues
 
 PathToApi = typing_extensions.TypedDict(
@@ -53,6 +63,10 @@ PathToApi = typing_extensions.TypedDict(
         PathValues.V1_MODELENDPOINTSSCHEMA_JSON: V1ModelEndpointsSchemaJson,
         PathValues.V1_MODELENDPOINTS_MODEL_ENDPOINT_ID: V1ModelEndpointsModelEndpointId,
         PathValues.V1_SYNCTASKS: V1SyncTasks,
+        PathValues.V2_MODELBUNDLES: V2ModelBundles,
+        PathValues.V2_MODELBUNDLES_CLONEWITHCHANGES: V2ModelBundlesCloneWithChanges,
+        PathValues.V2_MODELBUNDLES_LATEST: V2ModelBundlesLatest,
+        PathValues.V2_MODELBUNDLES_MODEL_BUNDLE_ID: V2ModelBundlesModelBundleId,
     },
 )
 
@@ -74,5 +88,9 @@ path_to_api = PathToApi(
         PathValues.V1_MODELENDPOINTSSCHEMA_JSON: V1ModelEndpointsSchemaJson,
         PathValues.V1_MODELENDPOINTS_MODEL_ENDPOINT_ID: V1ModelEndpointsModelEndpointId,
         PathValues.V1_SYNCTASKS: V1SyncTasks,
+        PathValues.V2_MODELBUNDLES: V2ModelBundles,
+        PathValues.V2_MODELBUNDLES_CLONEWITHCHANGES: V2ModelBundlesCloneWithChanges,
+        PathValues.V2_MODELBUNDLES_LATEST: V2ModelBundlesLatest,
+        PathValues.V2_MODELBUNDLES_MODEL_BUNDLE_ID: V2ModelBundlesModelBundleId,
     }
 )

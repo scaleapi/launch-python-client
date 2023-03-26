@@ -66,20 +66,39 @@ from launch.api_client.paths.v1_model_endpoints_schema_json.get import (
 from launch.api_client.paths.v1_sync_tasks.post import (
     CreateSyncInferenceTaskV1SyncTasksPost,
 )
+from launch.api_client.paths.v2_model_bundles.get import (
+    ListModelBundlesV2ModelBundlesGet,
+)
+from launch.api_client.paths.v2_model_bundles.post import (
+    CreateModelBundleV2ModelBundlesPost,
+)
+from launch.api_client.paths.v2_model_bundles_clone_with_changes.post import (
+    CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost,
+)
+from launch.api_client.paths.v2_model_bundles_latest.get import (
+    GetLatestModelBundleV2ModelBundlesLatestGet,
+)
+from launch.api_client.paths.v2_model_bundles_model_bundle_id.get import (
+    GetModelBundleV2ModelBundlesModelBundleIdGet,
+)
 
 
 class DefaultApi(
     CloneModelBundleWithChangesV1ModelBundlesCloneWithChangesPost,
+    CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost,
     CreateAsyncInferenceTaskV1AsyncTasksPost,
     CreateBatchJobV1BatchJobsPost,
     CreateModelBundleV1ModelBundlesPost,
+    CreateModelBundleV2ModelBundlesPost,
     CreateModelEndpointV1ModelEndpointsPost,
     CreateSyncInferenceTaskV1SyncTasksPost,
     DeleteModelEndpointV1ModelEndpointsModelEndpointIdDelete,
     GetAsyncInferenceTaskV1AsyncTasksTaskIdGet,
     GetBatchJobV1BatchJobsBatchJobIdGet,
     GetLatestModelBundleV1ModelBundlesLatestGet,
+    GetLatestModelBundleV2ModelBundlesLatestGet,
     GetModelBundleV1ModelBundlesModelBundleIdGet,
+    GetModelBundleV2ModelBundlesModelBundleIdGet,
     GetModelEndpointV1ModelEndpointsModelEndpointIdGet,
     GetModelEndpointsApiV1ModelEndpointsApiGet,
     GetModelEndpointsSchemaV1ModelEndpointsSchemaJsonGet,
@@ -87,6 +106,7 @@ class DefaultApi(
     HealthcheckHealthzGet,
     HealthcheckReadyzGet,
     ListModelBundlesV1ModelBundlesGet,
+    ListModelBundlesV2ModelBundlesGet,
     ListModelEndpointsV1ModelEndpointsGet,
     UpdateBatchJobV1BatchJobsBatchJobIdPut,
     UpdateModelEndpointV1ModelEndpointsModelEndpointIdPut,

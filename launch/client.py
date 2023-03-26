@@ -18,26 +18,28 @@ from typing_extensions import Literal
 from launch.api_client import ApiClient, Configuration
 from launch.api_client.apis.tags.default_api import DefaultApi
 from launch.api_client.model.callback_auth import CallbackAuth
-from launch.api_client.model.clone_model_bundle_request import (
-    CloneModelBundleRequest,
+from launch.api_client.model.clone_model_bundle_v1_request import (
+    CloneModelBundleV1Request,
 )
-from launch.api_client.model.create_batch_job_request import (
-    CreateBatchJobRequest,
+from launch.api_client.model.create_batch_job_v1_request import (
+    CreateBatchJobV1Request,
 )
-from launch.api_client.model.create_model_bundle_request import (
-    CreateModelBundleRequest,
+from launch.api_client.model.create_model_bundle_v1_request import (
+    CreateModelBundleV1Request,
 )
 from launch.api_client.model.create_model_endpoint_v1_request import (
     CreateModelEndpointV1Request,
 )
-from launch.api_client.model.endpoint_predict_request import (
-    EndpointPredictRequest,
+from launch.api_client.model.endpoint_predict_v1_request import (
+    EndpointPredictV1Request,
 )
 from launch.api_client.model.gpu_type import GpuType
 from launch.api_client.model.model_bundle_environment_params import (
     ModelBundleEnvironmentParams,
 )
-from launch.api_client.model.model_bundle_framework import ModelBundleFramework
+from launch.api_client.model.model_bundle_framework_type import (
+    ModelBundleFrameworkType,
+)
 from launch.api_client.model.model_bundle_packaging_type import (
     ModelBundlePackagingType,
 )
@@ -384,7 +386,7 @@ class LaunchClient:
 
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            framework = ModelBundleFramework(env_params["framework_type"])
+            framework = ModelBundleFrameworkType(env_params["framework_type"])
             env_params_copy = env_params.copy()
             env_params_copy["framework_type"] = framework  # type: ignore
             env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)  # type: ignore
@@ -398,7 +400,7 @@ class LaunchClient:
                 app_config=payload.get("app_config"),
                 schema_location=schema_location,
             )
-            create_model_bundle_request = CreateModelBundleRequest(**payload)  # type: ignore
+            create_model_bundle_request = CreateModelBundleV1Request(**payload)  # type: ignore
             api_instance.create_model_bundle_v1_model_bundles_post(
                 body=create_model_bundle_request,
                 skip_deserialization=True,
@@ -583,7 +585,7 @@ class LaunchClient:
         )
 
         _add_app_config_to_bundle_create_payload(payload, app_config)
-        framework = ModelBundleFramework(env_params["framework_type"])
+        framework = ModelBundleFrameworkType(env_params["framework_type"])
         env_params_copy = env_params.copy()
         env_params_copy["framework_type"] = framework  # type: ignore
         env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)  # type: ignore
@@ -600,7 +602,7 @@ class LaunchClient:
                 app_config=app_config,
                 schema_location=schema_location,
             )
-            create_model_bundle_request = CreateModelBundleRequest(**payload)  # type: ignore
+            create_model_bundle_request = CreateModelBundleV1Request(**payload)  # type: ignore
             api_instance.create_model_bundle_v1_model_bundles_post(
                 body=create_model_bundle_request,
                 skip_deserialization=True,
@@ -1069,7 +1071,7 @@ class LaunchClient:
                 original_model_bundle_id=bundle_id,
                 new_app_config=app_config,
             )
-            clone_model_bundle_request = CloneModelBundleRequest(**payload)
+            clone_model_bundle_request = CloneModelBundleV1Request(**payload)
             response = (
                 api_instance.clone_model_bundle_with_changes_v1_model_bundles_clone_with_changes_post(  # noqa: E501
                     body=clone_model_bundle_request,
@@ -1186,7 +1188,7 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             payload = dict_not_none(return_pickled=return_pickled, url=url, args=args)
-            request = EndpointPredictRequest(**payload)
+            request = EndpointPredictV1Request(**payload)
             query_params = frozendict({"model_endpoint_id": endpoint_id})
             response = api_instance.create_sync_inference_task_v1_sync_tasks_post(  # type: ignore
                 body=request,
@@ -1286,7 +1288,7 @@ class LaunchClient:
                 callback_url=callback_url,
                 callback_auth=callback_auth,
             )
-            request = EndpointPredictRequest(**payload)
+            request = EndpointPredictV1Request(**payload)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
             query_params = frozendict({"model_endpoint_id": model_endpoint_id})
             response = api_instance.create_async_inference_task_v1_async_tasks_post(  # type: ignore
@@ -1458,7 +1460,7 @@ class LaunchClient:
             labels=labels,
             resource_requests=resource_requests,
         )
-        request = CreateBatchJobRequest(**payload)
+        request = CreateBatchJobV1Request(**payload)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             response = api_instance.create_batch_job_v1_batch_jobs_post(  # type: ignore

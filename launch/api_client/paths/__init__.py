@@ -22,3 +22,7 @@ class PathValues(str, enum.Enum):
     V1_MODELENDPOINTSSCHEMA_JSON = "/v1/model-endpoints-schema.json"
     V1_MODELENDPOINTS_MODEL_ENDPOINT_ID = "/v1/model-endpoints/{model_endpoint_id}"
     V1_SYNCTASKS = "/v1/sync-tasks"
+    V2_MODELBUNDLES = "/v2/model-bundles"
+    V2_MODELBUNDLES_CLONEWITHCHANGES = "/v2/model-bundles/clone-with-changes"
+    V2_MODELBUNDLES_LATEST = "/v2/model-bundles/latest"
+    V2_MODELBUNDLES_MODEL_BUNDLE_ID = "/v2/model-bundles/{model_bundle_id}"
