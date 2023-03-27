@@ -21,6 +21,12 @@ from launch.api_client.model.callbackm_tls_auth import CallbackmTLSAuth
 from launch.api_client.model.clone_model_bundle_v1_request import (
     CloneModelBundleV1Request,
 )
+from launch.api_client.model.clone_model_bundle_v2_request import (
+    CloneModelBundleV2Request,
+)
+from launch.api_client.model.cloudpickle_artifact_flavor import (
+    CloudpickleArtifactFlavor,
+)
 from launch.api_client.model.create_async_task_v1_response import (
     CreateAsyncTaskV1Response,
 )
@@ -39,12 +45,19 @@ from launch.api_client.model.create_model_bundle_v1_request import (
 from launch.api_client.model.create_model_bundle_v1_response import (
     CreateModelBundleV1Response,
 )
+from launch.api_client.model.create_model_bundle_v2_request import (
+    CreateModelBundleV2Request,
+)
+from launch.api_client.model.create_model_bundle_v2_response import (
+    CreateModelBundleV2Response,
+)
 from launch.api_client.model.create_model_endpoint_v1_request import (
     CreateModelEndpointV1Request,
 )
 from launch.api_client.model.create_model_endpoint_v1_response import (
     CreateModelEndpointV1Response,
 )
+from launch.api_client.model.custom_framework import CustomFramework
 from launch.api_client.model.delete_model_endpoint_v1_response import (
     DeleteModelEndpointV1Response,
 )
@@ -65,6 +78,9 @@ from launch.api_client.model.http_validation_error import HTTPValidationError
 from launch.api_client.model.list_model_bundles_v1_response import (
     ListModelBundlesV1Response,
 )
+from launch.api_client.model.list_model_bundles_v2_response import (
+    ListModelBundlesV2Response,
+)
 from launch.api_client.model.list_model_endpoints_v1_response import (
     ListModelEndpointsV1Response,
 )
@@ -81,6 +97,9 @@ from launch.api_client.model.model_bundle_packaging_type import (
 from launch.api_client.model.model_bundle_v1_response import (
     ModelBundleV1Response,
 )
+from launch.api_client.model.model_bundle_v2_response import (
+    ModelBundleV2Response,
+)
 from launch.api_client.model.model_endpoint_deployment_state import (
     ModelEndpointDeploymentState,
 )
@@ -92,12 +111,15 @@ from launch.api_client.model.model_endpoint_resource_state import (
 )
 from launch.api_client.model.model_endpoint_status import ModelEndpointStatus
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
+from launch.api_client.model.pytorch_framework import PytorchFramework
 from launch.api_client.model.request_schema import RequestSchema
 from launch.api_client.model.response_schema import ResponseSchema
+from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
 from launch.api_client.model.sync_endpoint_predict_v1_response import (
     SyncEndpointPredictV1Response,
 )
 from launch.api_client.model.task_status import TaskStatus
+from launch.api_client.model.tensorflow_framework import TensorflowFramework
 from launch.api_client.model.update_batch_job_v1_request import (
     UpdateBatchJobV1Request,
 )
@@ -111,3 +133,4 @@ from launch.api_client.model.update_model_endpoint_v1_response import (
     UpdateModelEndpointV1Response,
 )
 from launch.api_client.model.validation_error import ValidationError
+from launch.api_client.model.zip_artifact_flavor import ZipArtifactFlavor
