@@ -474,6 +474,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.clone_model_bundle_with_changes_v2" class="md-nav__link">
+    clone_model_bundle_with_changes_v2()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#launch.client.LaunchClient.create_model_bundle" class="md-nav__link">
     create_model_bundle()
   </a>
@@ -740,6 +747,13 @@
           <li class="md-nav__item">
   <a href="#launch.client.LaunchClient.clone_model_bundle_with_changes" class="md-nav__link">
     clone_model_bundle_with_changes()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.clone_model_bundle_with_changes_v2" class="md-nav__link">
+    clone_model_bundle_with_changes_v2()
   </a>
   
 </li>
@@ -1285,6 +1299,84 @@ bundle's <code>app_config</code> will be set to <code>None</code></p></td>
                 <code><a class="autorefs autorefs-internal" title="launch.model_bundle.ModelBundle" href="../model_bundles/#launch.model_bundle.ModelBundle">ModelBundle</a></code>
           </td>
           <td><p>A <code>ModelBundle</code> object</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="launch.client.LaunchClient.clone_model_bundle_with_changes_v2" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">clone_model_bundle_with_changes_v2</span>
+
+
+<a href="#launch.client.LaunchClient.clone_model_bundle_with_changes_v2" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">clone_model_bundle_with_changes_v2</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">original_model_bundle_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">new_app_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Clone a model bundle with an optional new <code>app_config</code>.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>original_model_bundle_id</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The ID of the model bundle you want to clone.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>new_app_config</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]]</code>
+          </td>
+          <td><p>A dictionary of new app config values to use for the cloned model.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+          </td>
+          <td><p>A dictionary containing the following keys:</p>
+<ul>
+<li><code>model_bundle_id</code>: The ID of the cloned model bundle.</li>
+</ul></td>
         </tr>
     </tbody>
   </table>
