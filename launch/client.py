@@ -453,7 +453,7 @@ class LaunchClient:
         load_model_fn_module_path: str,
         request_schema: Type[BaseModel],
         response_schema: Type[BaseModel],
-        requirements_path: str,
+        requirements_path: Optional[str] = None,
         pytorch_image_tag: Optional[str] = None,
         tensorflow_version: Optional[str] = None,
         custom_base_image_repository: Optional[str] = None,
@@ -544,8 +544,10 @@ class LaunchClient:
 
                 - ``model_bundle_id``: The ID of the created model bundle.
         """
-        with open(requirements_path, "r", encoding="utf-8") as req_f:
-            requirements = req_f.read().splitlines()
+        requirements = []
+        if requirements_path is not None:
+            with open(requirements_path, "r", encoding="utf-8") as req_f:
+                requirements = req_f.read().splitlines()
         bundle_location = self._get_bundle_url_from_base_paths(base_paths)
         schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
         framework = _get_model_bundle_framework(
