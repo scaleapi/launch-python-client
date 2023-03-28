@@ -537,8 +537,22 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.get_latest_model_bundle_v2" class="md-nav__link">
+    get_latest_model_bundle_v2()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#launch.client.LaunchClient.get_model_bundle" class="md-nav__link">
     get_model_bundle()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.get_model_bundle_v2" class="md-nav__link">
+    get_model_bundle_v2()
   </a>
   
 </li>
@@ -553,6 +567,13 @@
           <li class="md-nav__item">
   <a href="#launch.client.LaunchClient.list_model_bundles" class="md-nav__link">
     list_model_bundles()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.list_model_bundles_v2" class="md-nav__link">
+    list_model_bundles_v2()
   </a>
   
 </li>
@@ -787,8 +808,22 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.get_latest_model_bundle_v2" class="md-nav__link">
+    get_latest_model_bundle_v2()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#launch.client.LaunchClient.get_model_bundle" class="md-nav__link">
     get_model_bundle()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.get_model_bundle_v2" class="md-nav__link">
+    get_model_bundle_v2()
   </a>
   
 </li>
@@ -803,6 +838,13 @@
           <li class="md-nav__item">
   <a href="#launch.client.LaunchClient.list_model_bundles" class="md-nav__link">
     list_model_bundles()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.list_model_bundles_v2" class="md-nav__link">
+    list_model_bundles_v2()
   </a>
   
 </li>
@@ -2977,6 +3019,81 @@ calling <code>batch_async_request</code>.</p></td>
 
 
 
+<h3 id="launch.client.LaunchClient.get_latest_model_bundle_v2" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">get_latest_model_bundle_v2</span>
+
+
+<a href="#launch.client.LaunchClient.get_latest_model_bundle_v2" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">get_latest_model_bundle_v2</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">model_bundle_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Get the latest version of a model bundle.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>model_bundle_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The name of the model bundle you want to get.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+          </td>
+          <td><p>A dictionary containing the following keys:</p>
+<ul>
+<li><code>id</code>: The ID of the model bundle.</li>
+<li><code>name</code>: The name of the model bundle.</li>
+<li><code>schema_location</code>: The location of the schema for the model bundle.</li>
+<li><code>flavor</code>: The flavor of the model bundle. Either <code>RunnableImage</code>,
+    <code>CloudpickleArtifact</code>, or <code>ZipArtifact</code>.</li>
+<li><code>created_at</code>: The time the model bundle was created.</li>
+<li><code>metadata</code>: A dictionary of metadata associated with the model bundle.</li>
+<li><code>model_artifact_ids</code>: A list of IDs of model artifacts associated with the
+    bundle.</li>
+</ul></td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
 <h3 id="launch.client.LaunchClient.get_model_bundle" class="doc doc-heading">
         <span class="doc doc-object-name doc-function-name">get_model_bundle</span>
 
@@ -3029,6 +3146,79 @@ calling <code>batch_async_request</code>.</p></td>
                 <code><a class="autorefs autorefs-internal" title="launch.model_bundle.ModelBundle" href="../model_bundles/#launch.model_bundle.ModelBundle">ModelBundle</a></code>
           </td>
           <td><p>A <code>ModelBundle</code> object</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="launch.client.LaunchClient.get_model_bundle_v2" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">get_model_bundle_v2</span>
+
+
+<a href="#launch.client.LaunchClient.get_model_bundle_v2" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">get_model_bundle_v2</span><span class="p">(</span><span class="n">model_bundle_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Get a model bundle.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>model_bundle_id</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The ID of the model bundle you want to get.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+          </td>
+          <td><p>A dictionary containing the following keys:</p>
+<ul>
+<li><code>id</code>: The ID of the model bundle.</li>
+<li><code>name</code>: The name of the model bundle.</li>
+<li><code>schema_location</code>: The location of the schema for the model bundle.</li>
+<li><code>flavor</code>: The flavor of the model bundle. Either <code>RunnableImage</code>,
+    <code>CloudpickleArtifact</code>, or <code>ZipArtifact</code>.</li>
+<li><code>created_at</code>: The time the model bundle was created.</li>
+<li><code>metadata</code>: A dictionary of metadata associated with the model bundle.</li>
+<li><code>model_artifact_ids</code>: A list of IDs of model artifacts associated with the
+    bundle.</li>
+</ul></td>
         </tr>
     </tbody>
   </table>
@@ -3113,6 +3303,55 @@ calling <code>batch_async_request</code>.</p></td>
                 <code><span title="typing.List">List</span>[<a class="autorefs autorefs-internal" title="launch.model_bundle.ModelBundle" href="../model_bundles/#launch.model_bundle.ModelBundle">ModelBundle</a>]</code>
           </td>
           <td><p>A list of ModelBundle objects</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="launch.client.LaunchClient.list_model_bundles_v2" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">list_model_bundles_v2</span>
+
+
+<a href="#launch.client.LaunchClient.list_model_bundles_v2" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">list_model_bundles_v2</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>List all model bundles.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]]</code>
+          </td>
+          <td><p>A list of dictionaries containing the following keys:</p>
+<ul>
+<li><code>id</code>: The ID of the model bundle.</li>
+<li><code>name</code>: The name of the model bundle.</li>
+<li><code>schema_location</code>: The location of the schema for the model bundle.</li>
+<li><code>flavor</code>: The flavor of the model bundle. Either <code>RunnableImage</code>,
+    <code>CloudpickleArtifact</code>, or <code>ZipArtifact</code>.</li>
+<li><code>created_at</code>: The time the model bundle was created.</li>
+<li><code>metadata</code>: A dictionary of metadata associated with the model bundle.</li>
+<li><code>model_artifact_ids</code>: A list of IDs of model artifacts associated with the
+    bundle.</li>
+</ul></td>
         </tr>
     </tbody>
   </table>
