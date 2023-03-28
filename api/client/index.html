@@ -1248,8 +1248,12 @@ requested. Here are the supported values:</p>
 
   <div class="doc doc-contents ">
   
-      <p>Clones an existing model bundle with changes to its app config. (More fields coming soon)</p>
 
+<details class="warning">
+  <summary>Warning</summary>
+  <p>This method is deprecated. Use
+<a href="./#clone_model_bundle_with_changes_v2"><code>clone_model_bundle_with_changes_v2</code></a> instead.</p>
+</details>
   <p><strong>Parameters:</strong></p>
   <table>
     <thead>
@@ -1319,7 +1323,7 @@ bundle's <code>app_config</code> will be set to <code>None</code></p></td>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">clone_model_bundle_with_changes_v2</span><span class="p">(</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">original_model_bundle_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">new_app_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CreateModelBundleV2Response</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1371,9 +1375,9 @@ bundle's <code>app_config</code> will be set to <code>None</code></p></td>
     <tbody>
         <tr>
           <td>
-                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+                <code><a class="autorefs autorefs-internal" title="launch.model_bundle.CreateModelBundleV2Response" href="../model_bundles/#launch.model_bundle.CreateModelBundleV2Response">CreateModelBundleV2Response</a></code>
           </td>
-          <td><p>A dictionary containing the following keys:</p>
+          <td><p>An object containing the following keys:</p>
 <ul>
 <li><code>model_bundle_id</code>: The ID of the cloned model bundle.</li>
 </ul></td>
@@ -1620,7 +1624,7 @@ Note: If request_schema is specified, then response_schema must also be specifie
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">custom_base_image_repository</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">custom_base_image_tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">app_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CreateModelBundleV2Response</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1793,9 +1797,9 @@ bundle when it is run. These values can be accessed by the bundle via the
     <tbody>
         <tr>
           <td>
-                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+                <code><a class="autorefs autorefs-internal" title="launch.model_bundle.CreateModelBundleV2Response" href="../model_bundles/#launch.model_bundle.CreateModelBundleV2Response">CreateModelBundleV2Response</a></code>
           </td>
-          <td><p>A dictionary containing the following keys:</p>
+          <td><p>An object containing the following keys:</p>
 <ul>
 <li><code>model_bundle_id</code>: The ID of the created model bundle.</li>
 </ul></td>
@@ -1995,7 +1999,7 @@ Note: If request_schema is specified, then response_schema must also be specifie
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">custom_base_image_repository</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">custom_base_image_tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">app_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CreateModelBundleV2Response</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2191,9 +2195,9 @@ bundle when it is run. These values can be accessed by the bundle via the
     <tbody>
         <tr>
           <td>
-                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+                <code><a class="autorefs autorefs-internal" title="launch.model_bundle.CreateModelBundleV2Response" href="../model_bundles/#launch.model_bundle.CreateModelBundleV2Response">CreateModelBundleV2Response</a></code>
           </td>
-          <td><p>A dictionary containing the following keys:</p>
+          <td><p>An object containing the following keys:</p>
 <ul>
 <li><code>model_bundle_id</code>: The ID of the created model bundle.</li>
 </ul></td>
@@ -2223,7 +2227,7 @@ bundle when it is run. These values can be accessed by the bundle via the
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">command</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">env</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CreateModelBundleV2Response</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2327,9 +2331,9 @@ is run.</p></td>
     <tbody>
         <tr>
           <td>
-                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+                <code><a class="autorefs autorefs-internal" title="launch.model_bundle.CreateModelBundleV2Response" href="../model_bundles/#launch.model_bundle.CreateModelBundleV2Response">CreateModelBundleV2Response</a></code>
           </td>
-          <td><p>A dictionary containing the following keys:</p>
+          <td><p>An object containing the following keys:</p>
 <ul>
 <li><code>model_bundle_id</code>: The ID of the created model bundle.</li>
 </ul></td>
@@ -3118,7 +3122,7 @@ calling <code>batch_async_request</code>.</p></td>
 <a href="#launch.client.LaunchClient.get_latest_model_bundle_v2" class="headerlink" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">get_latest_model_bundle_v2</span><span class="p">(</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">model_bundle_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelBundleV2Response</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3160,9 +3164,9 @@ calling <code>batch_async_request</code>.</p></td>
     <tbody>
         <tr>
           <td>
-                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+                <code><a class="autorefs autorefs-internal" title="launch.model_bundle.ModelBundleV2Response" href="../model_bundles/#launch.model_bundle.ModelBundleV2Response">ModelBundleV2Response</a></code>
           </td>
-          <td><p>A dictionary containing the following keys:</p>
+          <td><p>An object containing the following keys:</p>
 <ul>
 <li><code>id</code>: The ID of the model bundle.</li>
 <li><code>name</code>: The name of the model bundle.</li>
@@ -3255,7 +3259,9 @@ calling <code>batch_async_request</code>.</p></td>
 
 
 <a href="#launch.client.LaunchClient.get_model_bundle_v2" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">get_model_bundle_v2</span><span class="p">(</span><span class="n">model_bundle_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">get_model_bundle_v2</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">model_bundle_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelBundleV2Response</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3297,13 +3303,12 @@ calling <code>batch_async_request</code>.</p></td>
     <tbody>
         <tr>
           <td>
-                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+                <code><a class="autorefs autorefs-internal" title="launch.model_bundle.ModelBundleV2Response" href="../model_bundles/#launch.model_bundle.ModelBundleV2Response">ModelBundleV2Response</a></code>
           </td>
-          <td><p>A dictionary containing the following keys:</p>
+          <td><p>An object containing the following fields:</p>
 <ul>
 <li><code>id</code>: The ID of the model bundle.</li>
 <li><code>name</code>: The name of the model bundle.</li>
-<li><code>schema_location</code>: The location of the schema for the model bundle.</li>
 <li><code>flavor</code>: The flavor of the model bundle. Either <code>RunnableImage</code>,
     <code>CloudpickleArtifact</code>, or <code>ZipArtifact</code>.</li>
 <li><code>created_at</code>: The time the model bundle was created.</li>
@@ -3412,7 +3417,7 @@ calling <code>batch_async_request</code>.</p></td>
 
 
 <a href="#launch.client.LaunchClient.list_model_bundles_v2" class="headerlink" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">list_model_bundles_v2</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">list_model_bundles_v2</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ListModelBundlesV2Response</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3430,19 +3435,11 @@ calling <code>batch_async_request</code>.</p></td>
     <tbody>
         <tr>
           <td>
-                <code><span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]]</code>
+                <code><a class="autorefs autorefs-internal" title="launch.model_bundle.ListModelBundlesV2Response" href="../model_bundles/#launch.model_bundle.ListModelBundlesV2Response">ListModelBundlesV2Response</a></code>
           </td>
-          <td><p>A list of dictionaries containing the following keys:</p>
+          <td><p>An object containing the following keys:</p>
 <ul>
-<li><code>id</code>: The ID of the model bundle.</li>
-<li><code>name</code>: The name of the model bundle.</li>
-<li><code>schema_location</code>: The location of the schema for the model bundle.</li>
-<li><code>flavor</code>: The flavor of the model bundle. Either <code>RunnableImage</code>,
-    <code>CloudpickleArtifact</code>, or <code>ZipArtifact</code>.</li>
-<li><code>created_at</code>: The time the model bundle was created.</li>
-<li><code>metadata</code>: A dictionary of metadata associated with the model bundle.</li>
-<li><code>model_artifact_ids</code>: A list of IDs of model artifacts associated with the
-    bundle.</li>
+<li><code>model_bundles</code>: A list of model bundles. Each model bundle is an object.</li>
 </ul></td>
         </tr>
     </tbody>
