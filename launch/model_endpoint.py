@@ -260,7 +260,7 @@ class EndpointResponseFuture:
                 self.endpoint_name, self.async_task_id
             )
             status = async_response["status"]
-            if status == "PENDING":
+            if status in ["PENDING", "STARTED"]:
                 time.sleep(2)
             else:
                 if status == "SUCCESS":
