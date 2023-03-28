@@ -481,8 +481,29 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.create_model_bundle_from_callable_v2" class="md-nav__link">
+    create_model_bundle_from_callable_v2()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#launch.client.LaunchClient.create_model_bundle_from_dirs" class="md-nav__link">
     create_model_bundle_from_dirs()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.create_model_bundle_from_dirs_v2" class="md-nav__link">
+    create_model_bundle_from_dirs_v2()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2" class="md-nav__link">
+    create_model_bundle_from_runnable_image_v2()
   </a>
   
 </li>
@@ -710,8 +731,29 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.create_model_bundle_from_callable_v2" class="md-nav__link">
+    create_model_bundle_from_callable_v2()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#launch.client.LaunchClient.create_model_bundle_from_dirs" class="md-nav__link">
     create_model_bundle_from_dirs()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.create_model_bundle_from_dirs_v2" class="md-nav__link">
+    create_model_bundle_from_dirs_v2()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2" class="md-nav__link">
+    create_model_bundle_from_runnable_image_v2()
   </a>
   
 </li>
@@ -1242,16 +1284,12 @@ bundle's <code>app_config</code> will be set to <code>None</code></p></td>
 
   <div class="doc doc-contents ">
   
-      <p>Uploads and registers a model bundle to Scale Launch.</p>
-<p>A model bundle consists of exactly one of the following:</p>
-<ul>
-<li><code>predict_fn_or_cls</code></li>
-<li><code>load_predict_fn + model</code></li>
-<li><code>load_predict_fn + load_model_fn</code></li>
-</ul>
-<p>Pre/post-processing code can be included inside load_predict_fn/model or in
-predict_fn_or_cls call.</p>
 
+<details class="warning">
+  <summary>Warning</summary>
+  <p>This method is deprecated. Use
+<a href="./#create_model_bundle_from_callable_v2"><code>create_model_bundle_from_callable_v2</code></a> instead.</p>
+</details>
   <p><strong>Parameters:</strong></p>
   <table>
     <thead>
@@ -1428,6 +1466,217 @@ Note: If request_schema is specified, then response_schema must also be specifie
 
 
 
+<h3 id="launch.client.LaunchClient.create_model_bundle_from_callable_v2" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">create_model_bundle_from_callable_v2</span>
+
+
+<a href="#launch.client.LaunchClient.create_model_bundle_from_callable_v2" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">create_model_bundle_from_callable_v2</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">model_bundle_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">load_predict_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="p">[</span><span class="n">LaunchModel_T</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="p">],</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">load_model_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">LaunchModel_T</span><span class="p">],</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">request_schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">response_schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">requirements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">pytorch_image_tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">tensorflow_version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">custom_base_image_repository</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">custom_base_image_tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">app_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Uploads and registers a model bundle to Scale Launch.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>model_bundle_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>Name of the model bundle.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>load_predict_fn</code></td>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[[<span title="launch.client.LaunchModel_T">LaunchModel_T</span>], <span title="typing.Callable">Callable</span>[[<span title="typing.Any">Any</span>], <span title="typing.Any">Any</span>]]</code>
+          </td>
+          <td><p>Function that takes in a model and returns a predict function.
+When your model bundle is deployed, this predict function will be called as follows:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>input = {&quot;input&quot;: &quot;some input&quot;} # or whatever your request schema is.
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>def load_model_fn():
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    # load model
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    return model
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>def load_predict_fn(model, app_config=None):
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    def predict_fn(input):
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        # do pre-processing
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        output = model(input)
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        # do post-processing
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        return output
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    return predict_fn
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>predict_fn = load_predict_fn(load_model_fn(), app_config=optional_app_config)
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>response = predict_fn(input)
+</code></pre></div></p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>load_model_fn</code></td>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[[], <span title="launch.client.LaunchModel_T">LaunchModel_T</span>]</code>
+          </td>
+          <td><p>A function that, when run, loads a model.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>request_schema</code></td>
+          <td>
+                <code><span title="typing.Type">Type</span>[<span title="pydantic.BaseModel">BaseModel</span>]</code>
+          </td>
+          <td><p>A pydantic model that represents the request schema for the model
+bundle. This is used to validate the request body for the model bundle's endpoint.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>response_schema</code></td>
+          <td>
+                <code><span title="typing.Type">Type</span>[<span title="pydantic.BaseModel">BaseModel</span>]</code>
+          </td>
+          <td><p>A pydantic model that represents the request schema for the model
+bundle. This is used to validate the response for the model bundle's endpoint.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>requirements</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[str]]</code>
+          </td>
+          <td><p>List of pip requirements.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>pytorch_image_tag</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>The image tag for the PyTorch image that will be used to run the
+bundle. Exactly one of <code>pytorch_image_tag</code>, <code>tensorflow_version</code>, or
+<code>custom_base_image_repository</code> must be specified.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>tensorflow_version</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>The version of TensorFlow that will be used to run the bundle.
+If not specified, the default version will be used. Exactly one of
+<code>pytorch_image_tag</code>, <code>tensorflow_version</code>, or <code>custom_base_image_repository</code>
+must be specified.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>custom_base_image_repository</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>The repository for a custom base image that will be
+used to run the bundle. If not specified, the default base image will be used.
+Exactly one of <code>pytorch_image_tag</code>, <code>tensorflow_version</code>, or
+<code>custom_base_image_repository</code> must be specified.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>custom_base_image_tag</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>The tag for a custom base image that will be used to run the
+bundle. Must be specified if <code>custom_base_image_repository</code> is specified.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>app_config</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[<span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>], str]]</code>
+          </td>
+          <td><p>An optional dictionary of configuration values that will be passed to the
+bundle when it is run. These values can be accessed by the bundle via the
+<code>app_config</code> global variable.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+          </td>
+          <td><p>A dictionary containing the following keys:</p>
+<ul>
+<li><code>model_bundle_id</code>: The ID of the created model bundle.</li>
+</ul></td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
 <h3 id="launch.client.LaunchClient.create_model_bundle_from_dirs" class="doc doc-heading">
         <span class="doc doc-object-name doc-function-name">create_model_bundle_from_dirs</span>
 
@@ -1449,34 +1698,13 @@ Note: If request_schema is specified, then response_schema must also be specifie
 
   <div class="doc doc-contents ">
   
-      <p>Packages up code from one or more local filesystem folders and uploads them as a bundle
-to Scale Launch. In this mode, a bundle is just local code instead of a serialized object.</p>
-<p>For example, if you have a directory structure like so, and your current working
-directory is also <code>my_root</code>:</p>
-<p>.. code-block:: text</p>
-<p>my_root/
-       my_module1/
-           <strong>init</strong>.py
-           ...files and directories
-           my_inference_file.py
-       my_module2/
-           <strong>init</strong>.py
-           ...files and directories</p>
-<p>then calling <code>create_model_bundle_from_dirs</code> with <code>base_paths=["my_module1",
-"my_module2"]</code> essentially creates a zip file without the root directory, e.g.:</p>
-<p>.. code-block:: text</p>
-<p>my_module1/
-       <strong>init</strong>.py
-       ...files and directories
-       my_inference_file.py
-   my_module2/
-       <strong>init</strong>.py
-       ...files and directories</p>
-<p>and these contents will be unzipped relative to the server side application root. Bear
-these points in mind when referencing Python module paths for this bundle. For instance,
-if <code>my_inference_file.py</code> has <code>def f(...)</code> as the desired inference loading function,
-then the <code>load_predict_fn_module_path</code> argument should be <code>my_module1.my_inference_file.f</code>.</p>
 
+<details class="warning">
+  <summary>Warning</summary>
+  <p>This method is deprecated. Use
+<a href="./#launch.client.LaunchClient.create_model_bundle_from_dirs_v2"><code>create_model_bundle_from_dirs_v2</code></a>
+instead.</p>
+</details>
   <p><strong>Parameters:</strong></p>
   <table>
     <thead>
@@ -1529,18 +1757,19 @@ lives.</p></td>
 the use of pytorch or tensorflow, which base image tag to use, etc.
 Specifically, the dictionary should contain the following keys:</p>
 <ul>
-<li>
-<p><code>framework_type</code>: either <code>tensorflow</code> or <code>pytorch</code>. - PyTorch fields: -
-<code>pytorch_image_tag</code>: An image tag for the <code>pytorch</code> docker base image. The
-list of tags can be found from https://hub.docker.com/r/pytorch/pytorch/tags. -
-Example:</p>
-<p>.. code-block:: python</p>
-<p>{
-       "framework_type": "pytorch",
-       "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime"
-   }</p>
+<li><code>framework_type</code>: either <code>tensorflow</code> or <code>pytorch</code>.</li>
+<li>PyTorch fields:<ul>
+<li><code>pytorch_image_tag</code>: An image tag for the <code>pytorch</code> docker base image. The
+    list of tags can be found from https://hub.docker.com/r/pytorch/pytorch/tags</li>
+</ul>
 </li>
-</ul></td>
+</ul>
+<p>Example:
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;framework_type&quot;</span><span class="p">:</span> <span class="s2">&quot;pytorch&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="s2">&quot;pytorch_image_tag&quot;</span><span class="p">:</span> <span class="s2">&quot;1.10.0-cuda11.3-cudnn8-runtime&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+</code></pre></div></p></td>
           <td>
               <em>required</em>
           </td>
@@ -1613,6 +1842,375 @@ Note: If request_schema is specified, then response_schema must also be specifie
 
 
 
+<h3 id="launch.client.LaunchClient.create_model_bundle_from_dirs_v2" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">create_model_bundle_from_dirs_v2</span>
+
+
+<a href="#launch.client.LaunchClient.create_model_bundle_from_dirs_v2" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">create_model_bundle_from_dirs_v2</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">model_bundle_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">base_paths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">load_predict_fn_module_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">load_model_fn_module_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">request_schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">response_schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">requirements_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">pytorch_image_tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">tensorflow_version</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">custom_base_image_repository</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">custom_base_image_tag</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">app_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Packages up code from one or more local filesystem folders and uploads them as a bundle
+to Scale Launch. In this mode, a bundle is just local code instead of a serialized object.</p>
+<p>For example, if you have a directory structure like so, and your current working
+directory is <code>my_root</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>   my_root/
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>       my_module1/
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>           __init__.py
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>           ...files and directories
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>           my_inference_file.py
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>       my_module2/
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>           __init__.py
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>           ...files and directories
+</code></pre></div>
+<p>then calling <code>create_model_bundle_from_dirs_v2</code> with <code>base_paths=["my_module1",
+"my_module2"]</code> essentially creates a zip file without the root directory, e.g.:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>   my_module1/
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>       __init__.py
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>       ...files and directories
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>       my_inference_file.py
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>   my_module2/
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>       __init__.py
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>       ...files and directories
+</code></pre></div>
+<p>and these contents will be unzipped relative to the server side application root. Bear
+these points in mind when referencing Python module paths for this bundle. For instance,
+if <code>my_inference_file.py</code> has <code>def f(...)</code> as the desired inference loading function,
+then the <code>load_predict_fn_module_path</code> argument should be <code>my_module1.my_inference_file.f</code>.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>model_bundle_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The name of the model bundle you want to create.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>base_paths</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of paths to directories that will be zipped up and uploaded
+as a bundle. Each path must be relative to the current working directory.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>load_predict_fn_module_path</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The Python module path to the function that will be
+used to load the model for inference. This function should take in a path to a
+model directory, and return a model object. The model object should be pickleable.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>load_model_fn_module_path</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The Python module path to the function that will be
+used to load the model for training. This function should take in a path to a
+model directory, and return a model object. The model object should be pickleable.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>request_schema</code></td>
+          <td>
+                <code><span title="typing.Type">Type</span>[<span title="pydantic.BaseModel">BaseModel</span>]</code>
+          </td>
+          <td><p>A Pydantic model that defines the request schema for the bundle.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>response_schema</code></td>
+          <td>
+                <code><span title="typing.Type">Type</span>[<span title="pydantic.BaseModel">BaseModel</span>]</code>
+          </td>
+          <td><p>A Pydantic model that defines the response schema for the bundle.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>requirements_path</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>Path to a requirements.txt file that will be used to install
+dependencies for the bundle. This file must be relative to the current working
+directory.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>pytorch_image_tag</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>The image tag for the PyTorch image that will be used to run the
+bundle. Exactly one of <code>pytorch_image_tag</code>, <code>tensorflow_version</code>, or
+<code>custom_base_image_repository</code> must be specified.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>tensorflow_version</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>The version of TensorFlow that will be used to run the bundle.
+If not specified, the default version will be used. Exactly one of
+<code>pytorch_image_tag</code>, <code>tensorflow_version</code>, or <code>custom_base_image_repository</code>
+must be specified.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>custom_base_image_repository</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>The repository for a custom base image that will be
+used to run the bundle. If not specified, the default base image will be used.
+Exactly one of <code>pytorch_image_tag</code>, <code>tensorflow_version</code>, or
+<code>custom_base_image_repository</code> must be specified.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>custom_base_image_tag</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>The tag for a custom base image that will be used to run the
+bundle. Must be specified if <code>custom_base_image_repository</code> is specified.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>app_config</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]]</code>
+          </td>
+          <td><p>An optional dictionary of configuration values that will be passed to the
+bundle when it is run. These values can be accessed by the bundle via the
+<code>app_config</code> global variable.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+          </td>
+          <td><p>A dictionary containing the following keys:</p>
+<ul>
+<li><code>model_bundle_id</code>: The ID of the created model bundle.</li>
+</ul></td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">create_model_bundle_from_runnable_image_v2</span>
+
+
+<a href="#launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">create_model_bundle_from_runnable_image_v2</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">model_bundle_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">request_schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">response_schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">repository</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">command</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">env</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Create a model bundle from a runnable image. The specified <code>command</code> must start a process
+that will listen for requests on port 5005 using HTTP.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>model_bundle_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The name of the model bundle you want to create.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>request_schema</code></td>
+          <td>
+                <code><span title="typing.Type">Type</span>[<span title="pydantic.BaseModel">BaseModel</span>]</code>
+          </td>
+          <td><p>A Pydantic model that defines the request schema for the bundle.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>response_schema</code></td>
+          <td>
+                <code><span title="typing.Type">Type</span>[<span title="pydantic.BaseModel">BaseModel</span>]</code>
+          </td>
+          <td><p>A Pydantic model that defines the response schema for the bundle.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repository</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The name of the Docker repository for the runnable image.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>tag</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The tag for the runnable image.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>command</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>The command that will be used to start the process that listens for requests.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>env</code></td>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, str]</code>
+          </td>
+          <td><p>A dictionary of environment variables that will be passed to the bundle when it
+is run.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]</code>
+          </td>
+          <td><p>A dictionary containing the following keys:</p>
+<ul>
+<li><code>model_bundle_id</code>: The ID of the created model bundle.</li>
+</ul></td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
 <h3 id="launch.client.LaunchClient.create_model_endpoint" class="doc doc-heading">
         <span class="doc doc-object-name doc-function-name">create_model_endpoint</span>
 
@@ -1631,20 +2229,21 @@ Note: If request_schema is specified, then response_schema must also be specifie
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">per_worker</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">gpu_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">endpoint_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sync&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">post_inference_hooks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="n">List</span><span class="p">[</span><span class="n">PostInferenceHooks</span><span class="p">]</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">default_callback_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">default_callback_auth_kind</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        <span class="n">Literal</span><span class="p">[</span><span class="n">basic</span><span class="p">,</span> <span class="n">mtls</span><span class="p">]</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">default_callback_auth_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">default_callback_auth_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">default_callback_auth_cert</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">default_callback_auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="n">update_if_exists</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Endpoint</span><span class="p">]</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">high_priority</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">post_inference_hooks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="n">List</span><span class="p">[</span><span class="n">PostInferenceHooks</span><span class="p">]</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">default_callback_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="n">default_callback_auth_kind</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>        <span class="n">Literal</span><span class="p">[</span><span class="n">basic</span><span class="p">,</span> <span class="n">mtls</span><span class="p">]</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">default_callback_auth_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">default_callback_auth_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">default_callback_auth_cert</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="n">default_callback_auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="n">update_if_exists</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Endpoint</span><span class="p">]</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1804,6 +2403,17 @@ requested. Here are the supported values:</p>
           <td><p>Either <code>"sync"</code> or <code>"async"</code>.</p></td>
           <td>
                 <code>&#39;sync&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>high_priority</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[bool]</code>
+          </td>
+          <td><p>Either <code>True</code> or <code>False</code>. Enabling this will allow the created
+endpoint to leverage the shared pool of prewarmed nodes for faster spinup time.</p></td>
+          <td>
+                <code>False</code>
           </td>
         </tr>
         <tr>
@@ -2003,18 +2613,19 @@ names for a given user must be unique, so attempting to call this function with
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">max_workers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">per_worker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">gpu_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">post_inference_hooks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>        <span class="n">List</span><span class="p">[</span><span class="n">PostInferenceHooks</span><span class="p">]</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="n">default_callback_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">default_callback_auth_kind</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>        <span class="n">Literal</span><span class="p">[</span><span class="n">basic</span><span class="p">,</span> <span class="n">mtls</span><span class="p">]</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="n">default_callback_auth_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">default_callback_auth_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">default_callback_auth_cert</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">default_callback_auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">high_priority</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">post_inference_hooks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>        <span class="n">List</span><span class="p">[</span><span class="n">PostInferenceHooks</span><span class="p">]</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>    <span class="n">default_callback_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="n">default_callback_auth_kind</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        <span class="n">Literal</span><span class="p">[</span><span class="n">basic</span><span class="p">,</span> <span class="n">mtls</span><span class="p">]</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">default_callback_auth_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">default_callback_auth_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">default_callback_auth_cert</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">default_callback_auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -2152,6 +2763,17 @@ requested. Here are the supported values:</p>
 <li><code>nvidia-tesla-t4</code></li>
 <li><code>nvidia-ampere-a10</code></li>
 </ul></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>high_priority</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[bool]</code>
+          </td>
+          <td><p>Either <code>True</code> or <code>False</code>. Enabling this will allow the created
+endpoint to leverage the shared pool of prewarmed nodes for faster spinup time.</p></td>
           <td>
                 <code>None</code>
           </td>
