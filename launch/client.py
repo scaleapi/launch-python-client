@@ -76,7 +76,12 @@ from launch.make_batch_file import (
     make_batch_input_dict_file,
     make_batch_input_file,
 )
-from launch.model_bundle import ModelBundle
+from launch.model_bundle import (
+    CreateModelBundleV2Response,
+    ListModelBundlesV2Response,
+    ModelBundle,
+    ModelBundleV2Response,
+)
 from launch.model_endpoint import (
     AsyncEndpoint,
     Endpoint,
@@ -339,7 +344,7 @@ class LaunchClient:
         custom_base_image_repository: Optional[str] = None,
         custom_base_image_tag: Optional[str] = None,
         app_config: Optional[Union[Dict[str, Any], str]] = None,
-    ) -> Dict[str, Any]:
+    ) -> CreateModelBundleV2Response:
         """
         Uploads and registers a model bundle to Scale Launch.
 
@@ -399,7 +404,7 @@ class LaunchClient:
                 ``app_config`` global variable.
 
         Returns:
-            A dictionary containing the following keys:
+            An object containing the following keys:
 
                 - ``model_bundle_id``: The ID of the created model bundle.
         """
@@ -433,7 +438,7 @@ class LaunchClient:
                 body=create_model_bundle_request,
                 skip_deserialization=True,
             )
-            resp = json.loads(response.response.data)
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
 
         return resp
 
@@ -452,7 +457,7 @@ class LaunchClient:
         custom_base_image_repository: Optional[str] = None,
         custom_base_image_tag: Optional[str] = None,
         app_config: Optional[Dict[str, Any]] = None,
-    ) -> Dict[str, Any]:
+    ) -> CreateModelBundleV2Response:
         """
         Packages up code from one or more local filesystem folders and uploads them as a bundle
         to Scale Launch. In this mode, a bundle is just local code instead of a serialized object.
@@ -533,7 +538,7 @@ class LaunchClient:
                 ``app_config`` global variable.
 
         Returns:
-            A dictionary containing the following keys:
+            An object containing the following keys:
 
                 - ``model_bundle_id``: The ID of the created model bundle.
         """
@@ -567,7 +572,7 @@ class LaunchClient:
                 body=create_model_bundle_request,
                 skip_deserialization=True,
             )
-            resp = json.loads(response.response.data)
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
 
         return resp
 
@@ -581,7 +586,7 @@ class LaunchClient:
         tag: str,
         command: List[str],
         env: Dict[str, str],
-    ) -> Dict[str, Any]:
+    ) -> CreateModelBundleV2Response:
         """
         Create a model bundle from a runnable image. The specified ``command`` must start a process
         that will listen for requests on port 5005 using HTTP.
@@ -603,7 +608,7 @@ class LaunchClient:
                 is run.
 
         Returns:
-            A dictionary containing the following keys:
+            An object containing the following keys:
 
                 - ``model_bundle_id``: The ID of the created model bundle.
         """
@@ -628,11 +633,11 @@ class LaunchClient:
                 body=create_model_bundle_request,
                 skip_deserialization=True,
             )
-            resp = json.loads(response.response.data)
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
 
         return resp
 
-    def get_model_bundle_v2(self, model_bundle_id: str) -> Dict[str, Any]:
+    def get_model_bundle_v2(self, model_bundle_id: str) -> ModelBundleV2Response:
         """
         Get a model bundle.
 
@@ -640,11 +645,10 @@ class LaunchClient:
             model_bundle_id: The ID of the model bundle you want to get.
 
         Returns:
-            A dictionary containing the following keys:
+            An object containing the following fields:
 
                 - ``id``: The ID of the model bundle.
                 - ``name``: The name of the model bundle.
-                - ``schema_location``: The location of the schema for the model bundle.
                 - ``flavor``: The flavor of the model bundle. Either `RunnableImage`,
                     `CloudpickleArtifact`, or `ZipArtifact`.
                 - ``created_at``: The time the model bundle was created.
@@ -658,11 +662,11 @@ class LaunchClient:
                 model_bundle_id=model_bundle_id,
                 skip_deserialization=True,
             )
-            resp = json.loads(response.response.data)
+            resp = ModelBundleV2Response.parse_raw(response.response.data)
 
         return resp
 
-    def get_latest_model_bundle_v2(self, model_bundle_name: str) -> Dict[str, Any]:
+    def get_latest_model_bundle_v2(self, model_bundle_name: str) -> ModelBundleV2Response:
         """
         Get the latest version of a model bundle.
 
@@ -670,7 +674,7 @@ class LaunchClient:
             model_bundle_name: The name of the model bundle you want to get.
 
         Returns:
-            A dictionary containing the following keys:
+            An object containing the following keys:
 
                 - ``id``: The ID of the model bundle.
                 - ``name``: The name of the model bundle.
@@ -688,31 +692,23 @@ class LaunchClient:
                 model_bundle_name=model_bundle_name,
                 skip_deserialization=True,
             )
-            resp = json.loads(response.response.data)
+            resp = ModelBundleV2Response.parse_raw(response.response.data)
 
         return resp
 
-    def list_model_bundles_v2(self) -> List[Dict[str, Any]]:
+    def list_model_bundles_v2(self) -> ListModelBundlesV2Response:
         """
         List all model bundles.
 
         Returns:
-            A list of dictionaries containing the following keys:
+            An object containing the following keys:
 
-                - ``id``: The ID of the model bundle.
-                - ``name``: The name of the model bundle.
-                - ``schema_location``: The location of the schema for the model bundle.
-                - ``flavor``: The flavor of the model bundle. Either `RunnableImage`,
-                    `CloudpickleArtifact`, or `ZipArtifact`.
-                - ``created_at``: The time the model bundle was created.
-                - ``metadata``: A dictionary of metadata associated with the model bundle.
-                - ``model_artifact_ids``: A list of IDs of model artifacts associated with the
-                    bundle.
+                - ``model_bundles``: A list of model bundles. Each model bundle is an object.
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             response = api_instance.list_model_bundles_v2_model_bundles_get(skip_deserialization=True)
-            resp = json.loads(response.response.data)
+            resp = ListModelBundlesV2Response.parse_raw(response.response.data)
 
         return resp
 
@@ -720,7 +716,7 @@ class LaunchClient:
         self,
         original_model_bundle_id: str,
         new_app_config: Optional[Dict[str, Any]] = None,
-    ) -> Dict[str, Any]:
+    ) -> CreateModelBundleV2Response:
         """
         Clone a model bundle with an optional new ``app_config``.
 
@@ -730,7 +726,7 @@ class LaunchClient:
             new_app_config: A dictionary of new app config values to use for the cloned model.
 
         Returns:
-            A dictionary containing the following keys:
+            An object containing the following keys:
 
                 - ``model_bundle_id``: The ID of the cloned model bundle.
         """
@@ -746,7 +742,7 @@ class LaunchClient:
                 body=clone_model_bundle_request,
                 skip_deserialization=True,
             )
-            resp = json.loads(response.response.data)
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
 
         return resp
 
@@ -1501,13 +1497,16 @@ class LaunchClient:
             resp = json.loads(response.response.data)
         return ModelBundle.from_dict(resp)  # type: ignore
 
+    @deprecated(deprecated_in="1.0.0", details="Use create_model_bundle_from_callable_v2.")
     def clone_model_bundle_with_changes(
         self,
         model_bundle: Union[ModelBundle, str],
         app_config: Optional[Dict] = None,
     ) -> ModelBundle:
         """
-        Clones an existing model bundle with changes to its app config. (More fields coming soon)
+        Warning:
+            This method is deprecated. Use
+            [`clone_model_bundle_with_changes_v2`](./#clone_model_bundle_with_changes_v2) instead.
 
         Parameters:
             model_bundle: The existing bundle or its ID.
