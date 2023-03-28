@@ -22,6 +22,9 @@ from launch.api_client.model.callback_auth import CallbackAuth
 from launch.api_client.model.clone_model_bundle_v1_request import (
     CloneModelBundleV1Request,
 )
+from launch.api_client.model.clone_model_bundle_v2_request import (
+    CloneModelBundleV2Request,
+)
 from launch.api_client.model.cloudpickle_artifact_flavor import (
     CloudpickleArtifactFlavor,
 )
@@ -623,6 +626,124 @@ class LaunchClient:
             api_instance = DefaultApi(api_client)
             response = api_instance.create_model_bundle_v1_model_bundles_post(
                 body=create_model_bundle_request,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+
+        return resp
+
+    def get_model_bundle_v2(self, model_bundle_id: str) -> Dict[str, Any]:
+        """
+        Get a model bundle.
+
+        Parameters:
+            model_bundle_id: The ID of the model bundle you want to get.
+
+        Returns:
+            A dictionary containing the following keys:
+
+                - ``id``: The ID of the model bundle.
+                - ``name``: The name of the model bundle.
+                - ``schema_location``: The location of the schema for the model bundle.
+                - ``flavor``: The flavor of the model bundle. Either `RunnableImage`,
+                    `CloudpickleArtifact`, or `ZipArtifact`.
+                - ``created_at``: The time the model bundle was created.
+                - ``metadata``: A dictionary of metadata associated with the model bundle.
+                - ``model_artifact_ids``: A list of IDs of model artifacts associated with the
+                    bundle.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.get_model_bundle_v2_model_bundles__model_bundle_id__get(
+                model_bundle_id=model_bundle_id,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+
+        return resp
+
+    def get_latest_model_bundle_v2(self, model_bundle_name: str) -> Dict[str, Any]:
+        """
+        Get the latest version of a model bundle.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to get.
+
+        Returns:
+            A dictionary containing the following keys:
+
+                - ``id``: The ID of the model bundle.
+                - ``name``: The name of the model bundle.
+                - ``schema_location``: The location of the schema for the model bundle.
+                - ``flavor``: The flavor of the model bundle. Either `RunnableImage`,
+                    `CloudpickleArtifact`, or `ZipArtifact`.
+                - ``created_at``: The time the model bundle was created.
+                - ``metadata``: A dictionary of metadata associated with the model bundle.
+                - ``model_artifact_ids``: A list of IDs of model artifacts associated with the
+                    bundle.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.get_latest_model_bundle_v2_model_bundles__model_bundle_name__get(
+                model_bundle_name=model_bundle_name,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+
+        return resp
+
+    def list_model_bundles_v2(self) -> List[Dict[str, Any]]:
+        """
+        List all model bundles.
+
+        Returns:
+            A list of dictionaries containing the following keys:
+
+                - ``id``: The ID of the model bundle.
+                - ``name``: The name of the model bundle.
+                - ``schema_location``: The location of the schema for the model bundle.
+                - ``flavor``: The flavor of the model bundle. Either `RunnableImage`,
+                    `CloudpickleArtifact`, or `ZipArtifact`.
+                - ``created_at``: The time the model bundle was created.
+                - ``metadata``: A dictionary of metadata associated with the model bundle.
+                - ``model_artifact_ids``: A list of IDs of model artifacts associated with the
+                    bundle.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.list_model_bundles_v2_model_bundles_get(skip_deserialization=True)
+            resp = json.loads(response.response.data)
+
+        return resp
+
+    def clone_model_bundle_with_changes_v2(
+        self,
+        original_model_bundle_id: str,
+        new_app_config: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Clone a model bundle with an optional new ``app_config``.
+
+        Parameters:
+            original_model_bundle_id: The ID of the model bundle you want to clone.
+
+            new_app_config: A dictionary of new app config values to use for the cloned model.
+
+        Returns:
+            A dictionary containing the following keys:
+
+                - ``model_bundle_id``: The ID of the cloned model bundle.
+        """
+        clone_model_bundle_request = CloneModelBundleV2Request(
+            **dict_not_none(
+                original_model_bundle_id=original_model_bundle_id,
+                new_app_config=new_app_config,
+            )
+        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post(
+                body=clone_model_bundle_request,
                 skip_deserialization=True,
             )
             resp = json.loads(response.response.data)
