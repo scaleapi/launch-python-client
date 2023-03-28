@@ -11,6 +11,7 @@ from zipfile import ZipFile
 import cloudpickle
 import requests
 import yaml
+from deprecation import deprecated
 from frozendict import frozendict
 from pydantic import BaseModel
 from typing_extensions import Literal
@@ -21,15 +22,25 @@ from launch.api_client.model.callback_auth import CallbackAuth
 from launch.api_client.model.clone_model_bundle_v1_request import (
     CloneModelBundleV1Request,
 )
+from launch.api_client.model.clone_model_bundle_v2_request import (
+    CloneModelBundleV2Request,
+)
+from launch.api_client.model.cloudpickle_artifact_flavor import (
+    CloudpickleArtifactFlavor,
+)
 from launch.api_client.model.create_batch_job_v1_request import (
     CreateBatchJobV1Request,
 )
 from launch.api_client.model.create_model_bundle_v1_request import (
     CreateModelBundleV1Request,
 )
+from launch.api_client.model.create_model_bundle_v2_request import (
+    CreateModelBundleV2Request,
+)
 from launch.api_client.model.create_model_endpoint_v1_request import (
     CreateModelEndpointV1Request,
 )
+from launch.api_client.model.custom_framework import CustomFramework
 from launch.api_client.model.endpoint_predict_v1_request import (
     EndpointPredictV1Request,
 )
@@ -44,9 +55,13 @@ from launch.api_client.model.model_bundle_packaging_type import (
     ModelBundlePackagingType,
 )
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
+from launch.api_client.model.pytorch_framework import PytorchFramework
+from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
+from launch.api_client.model.tensorflow_framework import TensorflowFramework
 from launch.api_client.model.update_model_endpoint_v1_request import (
     UpdateModelEndpointV1Request,
 )
+from launch.api_client.model.zip_artifact_flavor import ZipArtifactFlavor
 from launch.connection import Connection
 from launch.constants import (
     BATCH_TASK_INPUT_SIGNED_URL_PATH,
@@ -61,7 +76,12 @@ from launch.make_batch_file import (
     make_batch_input_dict_file,
     make_batch_input_file,
 )
-from launch.model_bundle import ModelBundle
+from launch.model_bundle import (
+    CreateModelBundleV2Response,
+    ListModelBundlesV2Response,
+    ModelBundle,
+    ModelBundleV2Response,
+)
 from launch.model_endpoint import (
     AsyncEndpoint,
     Endpoint,
@@ -122,6 +142,35 @@ def _add_app_config_to_bundle_create_payload(payload: Dict[str, Any], app_config
         with open(app_config, "r") as f:  # pylint: disable=unspecified-encoding
             app_config_dict = yaml.safe_load(f)
             payload["app_config"] = app_config_dict
+
+
+def _get_model_bundle_framework(
+    pytorch_image_tag: Optional[str] = None,
+    tensorflow_version: Optional[str] = None,
+    custom_base_image_repository: Optional[str] = None,
+    custom_base_image_tag: Optional[str] = None,
+):
+    if pytorch_image_tag is not None:
+        return PytorchFramework(
+            pytorch_image_tag=pytorch_image_tag,
+            framework_type=ModelBundleFrameworkType.PYTORCH,
+        )
+    elif tensorflow_version is not None:
+        return TensorflowFramework(
+            tensorflow_version=tensorflow_version,
+            framework_type=ModelBundleFrameworkType.TENSORFLOW,
+        )
+    elif custom_base_image_repository is not None and custom_base_image_tag is not None:
+        return CustomFramework(
+            image_repository=custom_base_image_repository,
+            image_tag=custom_base_image_tag,
+            framework_type=ModelBundleFrameworkType.CUSTOM,
+        )
+    else:
+        raise ValueError(
+            "You must specify one of pytorch_image_tag, tensorflow_version, or "
+            "custom_base_image_repository and custom_base_image_tag"
+        )
 
 
 def dict_not_none(**kwargs):
@@ -247,6 +296,465 @@ class LaunchClient:
             requests.put(s3_path, data=data)
         return raw_bundle_url
 
+    def _get_bundle_url_from_base_paths(self, base_paths: List[str]) -> str:
+        tmpdir = tempfile.mkdtemp()
+        try:
+            zip_path = os.path.join(tmpdir, "bundle.zip")
+            _zip_directories(zip_path, base_paths)
+            with open(zip_path, "rb") as zip_f:
+                data = zip_f.read()
+        finally:
+            shutil.rmtree(tmpdir)
+
+        raw_bundle_url = self._upload_data(data)
+        return raw_bundle_url
+
+    def _upload_model_bundle(
+        self,
+        load_model_fn: Callable,
+        load_predict_fn: Callable,
+        bundle_metadata: Dict[str, Any],
+    ):
+        bundle = dict(load_model_fn=load_model_fn, load_predict_fn=load_predict_fn)
+        bundle_metadata["load_predict_fn"] = inspect.getsource(load_predict_fn)  # type: ignore
+        bundle_metadata["load_model_fn"] = inspect.getsource(load_model_fn)  # type: ignore
+        serialized_bundle = cloudpickle.dumps(bundle)
+        bundle_location = self._upload_data(data=serialized_bundle)
+        return bundle_location
+
+    def _upload_schemas(self, request_schema: Type[BaseModel], response_schema: Type[BaseModel]) -> str:
+        model_definitions = get_model_definitions(
+            request_schema=request_schema,
+            response_schema=response_schema,
+        )
+        model_definitions_encoded = json.dumps(model_definitions).encode()
+        return self._upload_data(model_definitions_encoded)
+
+    def create_model_bundle_from_callable_v2(
+        self,
+        *,
+        model_bundle_name: str,
+        load_predict_fn: Callable[[LaunchModel_T], Callable[[Any], Any]],
+        load_model_fn: Callable[[], LaunchModel_T],
+        request_schema: Type[BaseModel],
+        response_schema: Type[BaseModel],
+        requirements: Optional[List[str]] = None,
+        pytorch_image_tag: Optional[str] = None,
+        tensorflow_version: Optional[str] = None,
+        custom_base_image_repository: Optional[str] = None,
+        custom_base_image_tag: Optional[str] = None,
+        app_config: Optional[Union[Dict[str, Any], str]] = None,
+    ) -> CreateModelBundleV2Response:
+        """
+        Uploads and registers a model bundle to Scale Launch.
+
+        Parameters:
+            model_bundle_name: Name of the model bundle.
+
+            load_predict_fn: Function that takes in a model and returns a predict function.
+                When your model bundle is deployed, this predict function will be called as follows:
+                ```
+                input = {"input": "some input"} # or whatever your request schema is.
+
+                def load_model_fn():
+                    # load model
+                    return model
+
+                def load_predict_fn(model, app_config=None):
+                    def predict_fn(input):
+                        # do pre-processing
+                        output = model(input)
+                        # do post-processing
+                        return output
+                    return predict_fn
+
+                predict_fn = load_predict_fn(load_model_fn(), app_config=optional_app_config)
+                response = predict_fn(input)
+                ```
+
+            load_model_fn: A function that, when run, loads a model.
+
+            request_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the request body for the model bundle's endpoint.
+
+            response_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the response for the model bundle's endpoint.
+
+            requirements: List of pip requirements.
+
+            pytorch_image_tag: The image tag for the PyTorch image that will be used to run the
+                bundle. Exactly one of ``pytorch_image_tag``, ``tensorflow_version``, or
+                ``custom_base_image_repository`` must be specified.
+
+            tensorflow_version: The version of TensorFlow that will be used to run the bundle.
+                If not specified, the default version will be used. Exactly one of
+                ``pytorch_image_tag``, ``tensorflow_version``, or ``custom_base_image_repository``
+                must be specified.
+
+            custom_base_image_repository: The repository for a custom base image that will be
+                used to run the bundle. If not specified, the default base image will be used.
+                Exactly one of ``pytorch_image_tag``, ``tensorflow_version``, or
+                ``custom_base_image_repository`` must be specified.
+
+            custom_base_image_tag: The tag for a custom base image that will be used to run the
+                bundle. Must be specified if ``custom_base_image_repository`` is specified.
+
+            app_config: An optional dictionary of configuration values that will be passed to the
+                bundle when it is run. These values can be accessed by the bundle via the
+                ``app_config`` global variable.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundle_id``: The ID of the created model bundle.
+        """
+        nonnull_requirements = requirements or []
+        bundle_metadata: Dict[str, Any] = {}
+        bundle_location = self._upload_model_bundle(load_model_fn, load_predict_fn, bundle_metadata)
+        schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
+        framework = _get_model_bundle_framework(
+            pytorch_image_tag=pytorch_image_tag,
+            tensorflow_version=tensorflow_version,
+            custom_base_image_repository=custom_base_image_repository,
+            custom_base_image_tag=custom_base_image_tag,
+        )
+        flavor = CloudpickleArtifactFlavor(
+            **dict_not_none(
+                flavor="cloudpickle_artifact",
+                load_predict_fn=inspect.getsource(load_predict_fn),
+                load_model_fn=inspect.getsource(load_model_fn),
+                framework=framework,
+                requirements=nonnull_requirements,
+                app_config=app_config,
+                location=bundle_location,
+            )
+        )
+        create_model_bundle_request = CreateModelBundleV2Request(
+            name=model_bundle_name,
+            schema_location=schema_location,
+            flavor=flavor,
+        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
+                body=create_model_bundle_request,
+                skip_deserialization=True,
+            )
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def create_model_bundle_from_dirs_v2(
+        self,
+        *,
+        model_bundle_name: str,
+        base_paths: List[str],
+        load_predict_fn_module_path: str,
+        load_model_fn_module_path: str,
+        request_schema: Type[BaseModel],
+        response_schema: Type[BaseModel],
+        requirements_path: str,
+        pytorch_image_tag: Optional[str] = None,
+        tensorflow_version: Optional[str] = None,
+        custom_base_image_repository: Optional[str] = None,
+        custom_base_image_tag: Optional[str] = None,
+        app_config: Optional[Dict[str, Any]] = None,
+    ) -> CreateModelBundleV2Response:
+        """
+        Packages up code from one or more local filesystem folders and uploads them as a bundle
+        to Scale Launch. In this mode, a bundle is just local code instead of a serialized object.
+
+        For example, if you have a directory structure like so, and your current working
+        directory is ``my_root``:
+
+        ```text
+           my_root/
+               my_module1/
+                   __init__.py
+                   ...files and directories
+                   my_inference_file.py
+               my_module2/
+                   __init__.py
+                   ...files and directories
+        ```
+
+        then calling ``create_model_bundle_from_dirs_v2`` with ``base_paths=["my_module1",
+        "my_module2"]`` essentially creates a zip file without the root directory, e.g.:
+
+        ```text
+           my_module1/
+               __init__.py
+               ...files and directories
+               my_inference_file.py
+           my_module2/
+               __init__.py
+               ...files and directories
+        ```
+
+        and these contents will be unzipped relative to the server side application root. Bear
+        these points in mind when referencing Python module paths for this bundle. For instance,
+        if ``my_inference_file.py`` has ``def f(...)`` as the desired inference loading function,
+        then the `load_predict_fn_module_path` argument should be `my_module1.my_inference_file.f`.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to create.
+
+            base_paths: A list of paths to directories that will be zipped up and uploaded
+                as a bundle. Each path must be relative to the current working directory.
+
+            load_predict_fn_module_path: The Python module path to the function that will be
+                used to load the model for inference. This function should take in a path to a
+                model directory, and return a model object. The model object should be pickleable.
+
+            load_model_fn_module_path: The Python module path to the function that will be
+                used to load the model for training. This function should take in a path to a
+                model directory, and return a model object. The model object should be pickleable.
+
+            request_schema: A Pydantic model that defines the request schema for the bundle.
+
+            response_schema: A Pydantic model that defines the response schema for the bundle.
+
+            requirements_path: Path to a requirements.txt file that will be used to install
+                dependencies for the bundle. This file must be relative to the current working
+                directory.
+
+            pytorch_image_tag: The image tag for the PyTorch image that will be used to run the
+                bundle. Exactly one of ``pytorch_image_tag``, ``tensorflow_version``, or
+                ``custom_base_image_repository`` must be specified.
+
+            tensorflow_version: The version of TensorFlow that will be used to run the bundle.
+                If not specified, the default version will be used. Exactly one of
+                ``pytorch_image_tag``, ``tensorflow_version``, or ``custom_base_image_repository``
+                must be specified.
+
+            custom_base_image_repository: The repository for a custom base image that will be
+                used to run the bundle. If not specified, the default base image will be used.
+                Exactly one of ``pytorch_image_tag``, ``tensorflow_version``, or
+                ``custom_base_image_repository`` must be specified.
+
+            custom_base_image_tag: The tag for a custom base image that will be used to run the
+                bundle. Must be specified if ``custom_base_image_repository`` is specified.
+
+            app_config: An optional dictionary of configuration values that will be passed to the
+                bundle when it is run. These values can be accessed by the bundle via the
+                ``app_config`` global variable.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundle_id``: The ID of the created model bundle.
+        """
+        with open(requirements_path, "r", encoding="utf-8") as req_f:
+            requirements = req_f.read().splitlines()
+        bundle_location = self._get_bundle_url_from_base_paths(base_paths)
+        schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
+        framework = _get_model_bundle_framework(
+            pytorch_image_tag=pytorch_image_tag,
+            tensorflow_version=tensorflow_version,
+            custom_base_image_repository=custom_base_image_repository,
+            custom_base_image_tag=custom_base_image_tag,
+        )
+        flavor = ZipArtifactFlavor(
+            **dict_not_none(
+                flavor="zip_artifact",
+                load_predict_fn_module_path=load_predict_fn_module_path,
+                load_model_fn_module_path=load_model_fn_module_path,
+                framework=framework,
+                requirements=requirements,
+                app_config=app_config,
+                location=bundle_location,
+            )
+        )
+        create_model_bundle_request = CreateModelBundleV2Request(
+            name=model_bundle_name,
+            schema_location=schema_location,
+            flavor=flavor,
+        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
+                body=create_model_bundle_request,
+                skip_deserialization=True,
+            )
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def create_model_bundle_from_runnable_image_v2(
+        self,
+        *,
+        model_bundle_name: str,
+        request_schema: Type[BaseModel],
+        response_schema: Type[BaseModel],
+        repository: str,
+        tag: str,
+        command: List[str],
+        env: Dict[str, str],
+    ) -> CreateModelBundleV2Response:
+        """
+        Create a model bundle from a runnable image. The specified ``command`` must start a process
+        that will listen for requests on port 5005 using HTTP.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to create.
+
+            request_schema: A Pydantic model that defines the request schema for the bundle.
+
+            response_schema: A Pydantic model that defines the response schema for the bundle.
+
+            repository: The name of the Docker repository for the runnable image.
+
+            tag: The tag for the runnable image.
+
+            command: The command that will be used to start the process that listens for requests.
+
+            env: A dictionary of environment variables that will be passed to the bundle when it
+                is run.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundle_id``: The ID of the created model bundle.
+        """
+        schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
+        flavor = RunnableImageFlavor(
+            **dict_not_none(
+                flavor="runnable_image",
+                repository=repository,
+                tag=tag,
+                command=command,
+                env=env,
+                protocol="http",
+            )
+        )
+        create_model_bundle_request = CreateModelBundleV2Request(
+            name=model_bundle_name,
+            schema_location=schema_location,
+            flavor=flavor,
+        )
+
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
+                body=create_model_bundle_request,
+                skip_deserialization=True,
+            )
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def get_model_bundle_v2(self, model_bundle_id: str) -> ModelBundleV2Response:
+        """
+        Get a model bundle.
+
+        Parameters:
+            model_bundle_id: The ID of the model bundle you want to get.
+
+        Returns:
+            An object containing the following fields:
+
+                - ``id``: The ID of the model bundle.
+                - ``name``: The name of the model bundle.
+                - ``flavor``: The flavor of the model bundle. Either `RunnableImage`,
+                    `CloudpickleArtifact`, or `ZipArtifact`.
+                - ``created_at``: The time the model bundle was created.
+                - ``metadata``: A dictionary of metadata associated with the model bundle.
+                - ``model_artifact_ids``: A list of IDs of model artifacts associated with the
+                    bundle.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"model_bundle_id": model_bundle_id})
+            response = api_instance.get_model_bundle_v2_model_bundles_model_bundle_id_get(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = ModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def get_latest_model_bundle_v2(self, model_bundle_name: str) -> ModelBundleV2Response:
+        """
+        Get the latest version of a model bundle.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to get.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``id``: The ID of the model bundle.
+                - ``name``: The name of the model bundle.
+                - ``schema_location``: The location of the schema for the model bundle.
+                - ``flavor``: The flavor of the model bundle. Either `RunnableImage`,
+                    `CloudpickleArtifact`, or `ZipArtifact`.
+                - ``created_at``: The time the model bundle was created.
+                - ``metadata``: A dictionary of metadata associated with the model bundle.
+                - ``model_artifact_ids``: A list of IDs of model artifacts associated with the
+                    bundle.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            query_params = frozendict({"model_name": model_bundle_name})
+            response = api_instance.get_latest_model_bundle_v2_model_bundles_latest_get(  # type: ignore
+                query_params=query_params,
+                skip_deserialization=True,
+            )
+            resp = ModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def list_model_bundles_v2(self) -> ListModelBundlesV2Response:
+        """
+        List all model bundles.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundles``: A list of model bundles. Each model bundle is an object.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.list_model_bundles_v2_model_bundles_get(skip_deserialization=True)
+            resp = ListModelBundlesV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def clone_model_bundle_with_changes_v2(
+        self,
+        original_model_bundle_id: str,
+        new_app_config: Optional[Dict[str, Any]] = None,
+    ) -> CreateModelBundleV2Response:
+        """
+        Clone a model bundle with an optional new ``app_config``.
+
+        Parameters:
+            original_model_bundle_id: The ID of the model bundle you want to clone.
+
+            new_app_config: A dictionary of new app config values to use for the cloned model.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundle_id``: The ID of the cloned model bundle.
+        """
+        clone_model_bundle_request = CloneModelBundleV2Request(
+            **dict_not_none(
+                original_model_bundle_id=original_model_bundle_id,
+                new_app_config=new_app_config,
+            )
+        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post(
+                body=clone_model_bundle_request,
+                skip_deserialization=True,
+            )
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    @deprecated(deprecated_in="1.0.0", details="Use create_model_bundle_from_dirs_v2.")
     def create_model_bundle_from_dirs(
         self,
         *,
@@ -261,41 +769,10 @@ class LaunchClient:
         response_schema: Optional[Type[BaseModel]] = None,
     ) -> ModelBundle:
         """
-        Packages up code from one or more local filesystem folders and uploads them as a bundle
-        to Scale Launch. In this mode, a bundle is just local code instead of a serialized object.
-
-        For example, if you have a directory structure like so, and your current working
-        directory is also ``my_root``:
-
-        .. code-block:: text
-
-           my_root/
-               my_module1/
-                   __init__.py
-                   ...files and directories
-                   my_inference_file.py
-               my_module2/
-                   __init__.py
-                   ...files and directories
-
-        then calling ``create_model_bundle_from_dirs`` with ``base_paths=["my_module1",
-        "my_module2"]`` essentially creates a zip file without the root directory, e.g.:
-
-        .. code-block:: text
-
-           my_module1/
-               __init__.py
-               ...files and directories
-               my_inference_file.py
-           my_module2/
-               __init__.py
-               ...files and directories
-
-        and these contents will be unzipped relative to the server side application root. Bear
-        these points in mind when referencing Python module paths for this bundle. For instance,
-        if ``my_inference_file.py`` has ``def f(...)`` as the desired inference loading function,
-        then the `load_predict_fn_module_path` argument should be `my_module1.my_inference_file.f`.
-
+        Warning:
+            This method is deprecated. Use
+            [``create_model_bundle_from_dirs_v2``](./#launch.client.LaunchClient.create_model_bundle_from_dirs_v2)
+            instead.
 
         Parameters:
             model_bundle_name: The name of the model bundle you want to create. The name
@@ -310,17 +787,18 @@ class LaunchClient:
                 the use of pytorch or tensorflow, which base image tag to use, etc.
                 Specifically, the dictionary should contain the following keys:
 
-                - ``framework_type``: either ``tensorflow`` or ``pytorch``. - PyTorch fields: -
-                ``pytorch_image_tag``: An image tag for the ``pytorch`` docker base image. The
-                list of tags can be found from https://hub.docker.com/r/pytorch/pytorch/tags. -
+                - ``framework_type``: either ``tensorflow`` or ``pytorch``.
+                - PyTorch fields:
+                    - ``pytorch_image_tag``: An image tag for the ``pytorch`` docker base image. The
+                        list of tags can be found from https://hub.docker.com/r/pytorch/pytorch/tags
+
                 Example:
-
-                    .. code-block:: python
-
-                       {
-                           "framework_type": "pytorch",
-                           "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime"
-                       }
+                   ```py
+                   {
+                       "framework_type": "pytorch",
+                       "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime",
+                   }
+                   ```
 
             load_predict_fn_module_path: A python module path for a function that, when called
                 with the output of load_model_fn_module_path, returns a function that carries out
@@ -342,27 +820,13 @@ class LaunchClient:
         with open(requirements_path, "r", encoding="utf-8") as req_f:
             requirements = req_f.read().splitlines()
 
-        tmpdir = tempfile.mkdtemp()
-        try:
-            zip_path = os.path.join(tmpdir, "bundle.zip")
-            _zip_directories(zip_path, base_paths)
-            with open(zip_path, "rb") as zip_f:
-                data = zip_f.read()
-        finally:
-            shutil.rmtree(tmpdir)
-
-        raw_bundle_url = self._upload_data(data)
+        raw_bundle_url = self._get_bundle_url_from_base_paths(base_paths)
 
         schema_location = None
         if bool(request_schema) ^ bool(response_schema):
             raise ValueError("If request_schema is specified, then response_schema must also be specified.")
         if request_schema is not None and response_schema is not None:
-            model_definitions = get_model_definitions(
-                request_schema=request_schema,
-                response_schema=response_schema,
-            )
-            model_definitions_encoded = json.dumps(model_definitions).encode()
-            schema_location = self._upload_data(model_definitions_encoded)
+            schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
 
         bundle_metadata = {
             "load_predict_fn_module_path": load_predict_fn_module_path,
@@ -407,6 +871,7 @@ class LaunchClient:
             )
         return ModelBundle(model_bundle_name)
 
+    @deprecated(deprecated_in="1.0.0", details="Use create_model_bundle_from_callable_v2.")
     def create_model_bundle(  # pylint: disable=too-many-statements
         self,
         model_bundle_name: str,
@@ -423,16 +888,9 @@ class LaunchClient:
         response_schema: Optional[Type[BaseModel]] = None,
     ) -> ModelBundle:
         """
-        Uploads and registers a model bundle to Scale Launch.
-
-        A model bundle consists of exactly one of the following:
-
-        - ``predict_fn_or_cls``
-        - ``load_predict_fn + model``
-        - ``load_predict_fn + load_model_fn``
-
-        Pre/post-processing code can be included inside load_predict_fn/model or in
-        predict_fn_or_cls call.
+        Warning:
+            This method is deprecated. Use
+            [`create_model_bundle_from_callable_v2`](./#create_model_bundle_from_callable_v2) instead.
 
         Parameters:
             model_bundle_name: The name of the model bundle you want to create. The name
@@ -1047,13 +1505,16 @@ class LaunchClient:
             resp = json.loads(response.response.data)
         return ModelBundle.from_dict(resp)  # type: ignore
 
+    @deprecated(deprecated_in="1.0.0", details="Use create_model_bundle_from_callable_v2.")
     def clone_model_bundle_with_changes(
         self,
         model_bundle: Union[ModelBundle, str],
         app_config: Optional[Dict] = None,
     ) -> ModelBundle:
         """
-        Clones an existing model bundle with changes to its app config. (More fields coming soon)
+        Warning:
+            This method is deprecated. Use
+            [`clone_model_bundle_with_changes_v2`](./#clone_model_bundle_with_changes_v2) instead.
 
         Parameters:
             model_bundle: The existing bundle or its ID.
