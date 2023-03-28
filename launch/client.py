@@ -419,13 +419,15 @@ class LaunchClient:
             custom_base_image_tag=custom_base_image_tag,
         )
         flavor = CloudpickleArtifactFlavor(
-            flavor="cloudpickle_artifact",
-            load_predict_fn=inspect.getsource(load_predict_fn),
-            load_model_fn=inspect.getsource(load_model_fn),
-            framework=framework,
-            requirements=nonnull_requirements,
-            app_config=app_config,
-            location=bundle_location,
+            **dict_not_none(
+                flavor="cloudpickle_artifact",
+                load_predict_fn=inspect.getsource(load_predict_fn),
+                load_model_fn=inspect.getsource(load_model_fn),
+                framework=framework,
+                requirements=nonnull_requirements,
+                app_config=app_config,
+                location=bundle_location,
+            )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
             name=model_bundle_name,
@@ -434,7 +436,7 @@ class LaunchClient:
         )
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            response = api_instance.create_model_bundle_v1_model_bundles_post(
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
                 body=create_model_bundle_request,
                 skip_deserialization=True,
             )
@@ -553,13 +555,15 @@ class LaunchClient:
             custom_base_image_tag=custom_base_image_tag,
         )
         flavor = ZipArtifactFlavor(
-            flavor="zip_artifact",
-            load_predict_fn_module_path=load_predict_fn_module_path,
-            load_model_fn_module_path=load_model_fn_module_path,
-            framework=framework,
-            requirements=requirements,
-            app_config=app_config,
-            location=bundle_location,
+            **dict_not_none(
+                flavor="zip_artifact",
+                load_predict_fn_module_path=load_predict_fn_module_path,
+                load_model_fn_module_path=load_model_fn_module_path,
+                framework=framework,
+                requirements=requirements,
+                app_config=app_config,
+                location=bundle_location,
+            )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
             name=model_bundle_name,
@@ -568,7 +572,7 @@ class LaunchClient:
         )
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            response = api_instance.create_model_bundle_v1_model_bundles_post(
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
                 body=create_model_bundle_request,
                 skip_deserialization=True,
             )
@@ -614,12 +618,14 @@ class LaunchClient:
         """
         schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
         flavor = RunnableImageFlavor(
-            flavor="runnable_image",
-            repository=repository,
-            tag=tag,
-            command=command,
-            env=env,
-            protocol="http",
+            **dict_not_none(
+                flavor="runnable_image",
+                repository=repository,
+                tag=tag,
+                command=command,
+                env=env,
+                protocol="http",
+            )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
             name=model_bundle_name,
@@ -629,7 +635,7 @@ class LaunchClient:
 
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            response = api_instance.create_model_bundle_v1_model_bundles_post(
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
                 body=create_model_bundle_request,
                 skip_deserialization=True,
             )
@@ -658,8 +664,9 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            response = api_instance.get_model_bundle_v2_model_bundles__model_bundle_id__get(
-                model_bundle_id=model_bundle_id,
+            path_params = frozendict({"model_bundle_id": model_bundle_id})
+            response = api_instance.get_model_bundle_v2_model_bundles_model_bundle_id_get(  # type: ignore
+                path_params=path_params,
                 skip_deserialization=True,
             )
             resp = ModelBundleV2Response.parse_raw(response.response.data)
@@ -688,8 +695,9 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            response = api_instance.get_latest_model_bundle_v2_model_bundles__model_bundle_name__get(
-                model_bundle_name=model_bundle_name,
+            query_params = frozendict({"model_name": model_bundle_name})
+            response = api_instance.get_latest_model_bundle_v2_model_bundles_latest_get(  # type: ignore
+                query_params=query_params,
                 skip_deserialization=True,
             )
             resp = ModelBundleV2Response.parse_raw(response.response.data)
