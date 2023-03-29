@@ -14,8 +14,8 @@ The first directly pickles a user-specified `load_predict_fn`, a function which
 loads the model and returns a `predict_fn`, a function which takes in a request.
 The second takes in directories containing a `load_predict_fn` and the
 module path to the `load_predict_fn`.
-The third takes a Docker image that contains an entrypoint that starts a process
-listening for requests at port 5005 using HTTP and exposes `POST /predict` and
+The third takes a Docker image and a command that starts a process listening for
+requests at port 5005 using HTTP and exposes `POST /predict` and
 `GET /healthz` endpoints.
 
 Each of these modes of creating a model bundle is called a "Flavor".
@@ -36,7 +36,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
     * You have a lot of custom code that you want to include in the model bundle.
     * You do not want to build a web server and Docker image to serve your model.
 
-    A `RunnableImageArtifactFlavor` (creating from runnable image) is good if:
+    A `RunnableImageFlavor` (creating from runnable image) is good if:
 
     * You have a lot of dependencies.
     * You have a lot of custom code that you want to include in the model bundle.
