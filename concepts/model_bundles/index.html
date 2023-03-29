@@ -582,9 +582,9 @@
 are created by packaging a model up into a deployable format. </p>
 <h2 id="creating-model-bundles">Creating Model Bundles<a class="headerlink" href="#creating-model-bundles" title="Permanent link">&para;</a></h2>
 <p>There are three methods for creating model bundles:
-<a href="/api/client/#launch.client.LaunchClient.create_model_bundle_from_callable_v2"><code>create_model_bundle_from_callable_v2</code></a>
+<a href="/api/client/#launch.client.LaunchClient.create_model_bundle_from_callable_v2"><code>create_model_bundle_from_callable_v2</code></a>,
+<a href="/api/client/#launch.client.LaunchClient.create_model_bundle_from_dirs_v2"><code>create_model_bundle_from_dirs_v2</code></a>,
 and
-<a href="/api/client/#launch.client.LaunchClient.create_model_bundle_from_dirs_v2"><code>create_model_bundle_from_dirs_v2</code></a>.
 <a href="/api/client/#launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2"><code>create_model_bundle_from_runnable_image_v2</code></a>.
 The first directly pickles a user-specified <code>load_predict_fn</code>, a function which
 loads the model and returns a <code>predict_fn</code>, a function which takes in a request.
