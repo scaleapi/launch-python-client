@@ -2,67 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/cli/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/api/client/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/api/endpoint_predictions/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/api/hooks/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/api/model_bundles/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/api/model_endpoints/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/concepts/batch_jobs/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/concepts/callbacks/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/concepts/endpoint_predictions/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/concepts/model_bundles/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/concepts/model_endpoints/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://scaleapi.github.io/launch-python-client/concepts/overview/</loc>
-         <lastmod>2023-03-28</lastmod>
+         <lastmod>2023-03-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

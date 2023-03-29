@@ -590,8 +590,8 @@ The first directly pickles a user-specified <code>load_predict_fn</code>, a func
 loads the model and returns a <code>predict_fn</code>, a function which takes in a request.
 The second takes in directories containing a <code>load_predict_fn</code> and the
 module path to the <code>load_predict_fn</code>.
-The third takes a Docker image that contains an entrypoint that starts a process
-listening for requests at port 5005 using HTTP and exposes <code>POST /predict</code> and
+The third takes a Docker image and a command that starts a process listening for
+requests at port 5005 using HTTP and exposes <code>POST /predict</code> and
 <code>GET /healthz</code> endpoints.</p>
 <p>Each of these modes of creating a model bundle is called a "Flavor".</p>
 <div class="admonition info">
@@ -609,7 +609,7 @@ listening for requests at port 5005 using HTTP and exposes <code>POST /predict</
 <li>You have a lot of custom code that you want to include in the model bundle.</li>
 <li>You do not want to build a web server and Docker image to serve your model.</li>
 </ul>
-<p>A <code>RunnableImageArtifactFlavor</code> (creating from runnable image) is good if:</p>
+<p>A <code>RunnableImageFlavor</code> (creating from runnable image) is good if:</p>
 <ul>
 <li>You have a lot of dependencies.</li>
 <li>You have a lot of custom code that you want to include in the model bundle.</li>
