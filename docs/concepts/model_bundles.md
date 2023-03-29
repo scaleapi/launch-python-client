@@ -6,9 +6,9 @@ are created by packaging a model up into a deployable format.
 ## Creating Model Bundles
 
 There are three methods for creating model bundles:
-[`create_model_bundle_from_callable_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_callable_v2)
+[`create_model_bundle_from_callable_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_callable_v2),
+[`create_model_bundle_from_dirs_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_dirs_v2),
 and
-[`create_model_bundle_from_dirs_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_dirs_v2).
 [`create_model_bundle_from_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2).
 The first directly pickles a user-specified `load_predict_fn`, a function which
 loads the model and returns a `predict_fn`, a function which takes in a request.
