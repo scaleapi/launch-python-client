@@ -43,6 +43,12 @@ Each of these modes of creating a model bundle is called a "Flavor".
     * You are comfortable with building a web server and Docker image to serve your model.
 
 
+    A `TritonEnhancedRunnableImageFlavor` (a runnable image variant) is good if:
+
+    * You want to use a `RunnableImageFlavor`
+    * You also want to use [NVidia's `tritonserver`](https://developer.nvidia.com/nvidia-triton-inference-server) to accelerate model inference
+
+
 === "Creating From Callables"
     ```py
     import os
@@ -178,33 +184,63 @@ Each of these modes of creating a model bundle is called a "Flavor".
 
     BUNDLE_PARAMS = {
         "model_bundle_name": "test-bundle",
-        "load_model_fn": my_load_model_fn,
-        "load_predict_fn": my_load_predict_fn,
         "request_schema": MyRequestSchema,
         "response_schema": MyResponseSchema,
-        "repository": "launch_rearch",
-        "tag": "12b9131c5a1489c76592cddd186962cce965f0f6-cpu",
+        "repository": "...",
+        "tag": "...",
         "command": [
-            "dumb-init",
-            "--",
-            "ddtrace-run",
-            "run-service",
-            "--config",
-            "/install/launch_rearch/config/service--user_defined_code.yaml",
-            "--concurrency",
-            "1",
-            "--http",
-            "production",
-            "--port",
-            "5005",
+            ...
         ],
         "env": {
             "TEST_KEY": "test_value",
         },
+        "readiness_initial_delay_seconds": 30,
+
     }
 
     client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
     client.create_model_bundle_from_runnable_image_v2(**BUNDLE_PARAMS)
+    ```
+
+
+=== "Creating From a Triton Enhanced Runnable Image"
+    ```py
+    import os
+    from pydantic import BaseModel
+    from launch import LaunchClient
+
+
+    class MyRequestSchema(BaseModel):
+        x: int
+        y: str
+
+    class MyResponseSchema(BaseModel):
+        __root__: int
+
+
+    BUNDLE_PARAMS = {
+        "model_bundle_name": "test-bundle",
+        "request_schema": MyRequestSchema,
+        "response_schema": MyResponseSchema,
+        "repository": "...",
+        "tag": "...",
+        "command": [
+            ...
+        ],
+        "env": {
+            "TEST_KEY": "test_value",
+        },
+        "triton_model_repository": "...",
+        "triton_model_replicas": {"": ""},
+        "triton_num_cpu": 4.0,
+        "triton_commit_tag": "",
+        "triton_storage": "",
+        "triton_memory": "",
+        "triton_readiness_initial_delay_seconds": 300,
+    }
+
+    client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
+    client.create_model_bundle_from_triton_enhanced_runnable_image_v2(**BUNDLE_PARAMS)
     ```
 
 
