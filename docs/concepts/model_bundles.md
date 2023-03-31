@@ -16,7 +16,7 @@ The second takes in directories containing a `load_predict_fn` and the
 module path to the `load_predict_fn`.
 The third takes a Docker image and a command that starts a process listening for
 requests at port 5005 using HTTP and exposes `POST /predict` and
-`GET /healthz` endpoints.
+`GET /readyz` endpoints.
 
 Each of these modes of creating a model bundle is called a "Flavor".
 
