@@ -230,6 +230,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
         "env": {
             "TEST_KEY": "test_value",
         },
+        "readiness_initial_delay_seconds": 30,
         "triton_model_repository": "...",
         "triton_model_replicas": {"": ""},
         "triton_num_cpu": 4.0,
