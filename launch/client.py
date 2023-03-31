@@ -1808,7 +1808,7 @@ class LaunchClient:
         self,
         *,
         model_bundle: Union[ModelBundle, str],
-        urls: List[str] = None,
+        urls: Optional[List[str]] = None,
         inputs: Optional[List[Dict[str, Any]]] = None,
         batch_url_file_location: Optional[str] = None,
         serialization_format: str = "JSON",

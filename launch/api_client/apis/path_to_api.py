@@ -1,26 +1,48 @@
 import typing_extensions
 
-from launch.api_client.paths import PathValues
 from launch.api_client.apis.paths.healthcheck import Healthcheck
 from launch.api_client.apis.paths.healthz import Healthz
 from launch.api_client.apis.paths.readyz import Readyz
 from launch.api_client.apis.paths.v1_async_tasks import V1AsyncTasks
-from launch.api_client.apis.paths.v1_async_tasks_task_id import V1AsyncTasksTaskId
+from launch.api_client.apis.paths.v1_async_tasks_task_id import (
+    V1AsyncTasksTaskId,
+)
 from launch.api_client.apis.paths.v1_batch_jobs import V1BatchJobs
-from launch.api_client.apis.paths.v1_batch_jobs_batch_job_id import V1BatchJobsBatchJobId
+from launch.api_client.apis.paths.v1_batch_jobs_batch_job_id import (
+    V1BatchJobsBatchJobId,
+)
 from launch.api_client.apis.paths.v1_model_bundles import V1ModelBundles
-from launch.api_client.apis.paths.v1_model_bundles_clone_with_changes import V1ModelBundlesCloneWithChanges
-from launch.api_client.apis.paths.v1_model_bundles_latest import V1ModelBundlesLatest
-from launch.api_client.apis.paths.v1_model_bundles_model_bundle_id import V1ModelBundlesModelBundleId
+from launch.api_client.apis.paths.v1_model_bundles_clone_with_changes import (
+    V1ModelBundlesCloneWithChanges,
+)
+from launch.api_client.apis.paths.v1_model_bundles_latest import (
+    V1ModelBundlesLatest,
+)
+from launch.api_client.apis.paths.v1_model_bundles_model_bundle_id import (
+    V1ModelBundlesModelBundleId,
+)
 from launch.api_client.apis.paths.v1_model_endpoints import V1ModelEndpoints
-from launch.api_client.apis.paths.v1_model_endpoints_api import V1ModelEndpointsApi
-from launch.api_client.apis.paths.v1_model_endpoints_schema_json import V1ModelEndpointsSchemaJson
-from launch.api_client.apis.paths.v1_model_endpoints_model_endpoint_id import V1ModelEndpointsModelEndpointId
+from launch.api_client.apis.paths.v1_model_endpoints_api import (
+    V1ModelEndpointsApi,
+)
+from launch.api_client.apis.paths.v1_model_endpoints_model_endpoint_id import (
+    V1ModelEndpointsModelEndpointId,
+)
+from launch.api_client.apis.paths.v1_model_endpoints_schema_json import (
+    V1ModelEndpointsSchemaJson,
+)
 from launch.api_client.apis.paths.v1_sync_tasks import V1SyncTasks
 from launch.api_client.apis.paths.v2_model_bundles import V2ModelBundles
-from launch.api_client.apis.paths.v2_model_bundles_clone_with_changes import V2ModelBundlesCloneWithChanges
-from launch.api_client.apis.paths.v2_model_bundles_latest import V2ModelBundlesLatest
-from launch.api_client.apis.paths.v2_model_bundles_model_bundle_id import V2ModelBundlesModelBundleId
+from launch.api_client.apis.paths.v2_model_bundles_clone_with_changes import (
+    V2ModelBundlesCloneWithChanges,
+)
+from launch.api_client.apis.paths.v2_model_bundles_latest import (
+    V2ModelBundlesLatest,
+)
+from launch.api_client.apis.paths.v2_model_bundles_model_bundle_id import (
+    V2ModelBundlesModelBundleId,
+)
+from launch.api_client.paths import PathValues
 
 PathToApi = typing_extensions.TypedDict(
     "PathToApi",

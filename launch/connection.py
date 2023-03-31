@@ -1,4 +1,5 @@
 import time
+from typing import Optional
 
 import requests
 
@@ -11,7 +12,7 @@ from launch.retry_strategy import RetryStrategy
 class Connection:
     """Wrapper of HTTP requests to the Launch endpoint."""
 
-    def __init__(self, api_key: str, endpoint: str = None):
+    def __init__(self, api_key: str, endpoint: Optional[str] = None):
         self.api_key = api_key
         self.endpoint = endpoint
 
