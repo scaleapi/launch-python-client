@@ -22,7 +22,6 @@ import frozendict  # noqa: F401
 
 from launch_client import schemas  # noqa: F401
 
-
 class CallbackAuth(
     schemas.ComposedSchema,
 ):
@@ -32,20 +31,17 @@ class CallbackAuth(
     Do not edit the class manually.
     """
 
-
     class MetaOapg:
-        
         @staticmethod
         def discriminator():
             return {
-                'kind': {
-                    'CallbackBasicAuth': CallbackBasicAuth,
-                    'CallbackmTLSAuth': CallbackmTLSAuth,
-                    'basic': CallbackBasicAuth,
-                    'mtls': CallbackmTLSAuth,
+                "kind": {
+                    "CallbackBasicAuth": CallbackBasicAuth,
+                    "CallbackmTLSAuth": CallbackmTLSAuth,
+                    "basic": CallbackBasicAuth,
+                    "mtls": CallbackmTLSAuth,
                 }
             }
-        
         @classmethod
         @functools.lru_cache()
         def one_of(cls):
@@ -60,14 +56,44 @@ class CallbackAuth(
                 CallbackBasicAuth,
                 CallbackmTLSAuth,
             ]
-
-
     def __new__(
         cls,
-        *_args: typing.Union[dict, frozendict.frozendict, str, date, datetime, uuid.UUID, int, float, decimal.Decimal, bool, None, list, tuple, bytes, io.FileIO, io.BufferedReader, ],
+        *_args: typing.Union[
+            dict,
+            frozendict.frozendict,
+            str,
+            date,
+            datetime,
+            uuid.UUID,
+            int,
+            float,
+            decimal.Decimal,
+            bool,
+            None,
+            list,
+            tuple,
+            bytes,
+            io.FileIO,
+            io.BufferedReader,
+        ],
         _configuration: typing.Optional[schemas.Configuration] = None,
-        **kwargs: typing.Union[schemas.AnyTypeSchema, dict, frozendict.frozendict, str, date, datetime, uuid.UUID, int, float, decimal.Decimal, None, list, tuple, bytes],
-    ) -> 'CallbackAuth':
+        **kwargs: typing.Union[
+            schemas.AnyTypeSchema,
+            dict,
+            frozendict.frozendict,
+            str,
+            date,
+            datetime,
+            uuid.UUID,
+            int,
+            float,
+            decimal.Decimal,
+            None,
+            list,
+            tuple,
+            bytes,
+        ],
+    ) -> "CallbackAuth":
         return super().__new__(
             cls,
             *_args,

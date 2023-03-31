@@ -21,4 +21,5 @@ import uuid  # noqa: F401
 import frozendict  # noqa: F401
 
 from launch_client import schemas  # noqa: F401
+
 RequestSchema = schemas.AnyTypeSchema

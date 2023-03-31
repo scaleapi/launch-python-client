@@ -23,7 +23,7 @@ from launch.api_client.apis.paths.v2_model_bundles_latest import V2ModelBundlesL
 from launch.api_client.apis.paths.v2_model_bundles_model_bundle_id import V2ModelBundlesModelBundleId
 
 PathToApi = typing_extensions.TypedDict(
-    'PathToApi',
+    "PathToApi",
     {
         PathValues.HEALTHCHECK: Healthcheck,
         PathValues.HEALTHZ: Healthz,
@@ -45,7 +45,7 @@ PathToApi = typing_extensions.TypedDict(
         PathValues.V2_MODELBUNDLES_CLONEWITHCHANGES: V2ModelBundlesCloneWithChanges,
         PathValues.V2_MODELBUNDLES_LATEST: V2ModelBundlesLatest,
         PathValues.V2_MODELBUNDLES_MODEL_BUNDLE_ID: V2ModelBundlesModelBundleId,
-    }
+    },
 )
 
 path_to_api = PathToApi(
