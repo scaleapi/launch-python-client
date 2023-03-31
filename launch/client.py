@@ -58,6 +58,9 @@ from launch.api_client.model.model_endpoint_type import ModelEndpointType
 from launch.api_client.model.pytorch_framework import PytorchFramework
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
 from launch.api_client.model.tensorflow_framework import TensorflowFramework
+from launch.api_client.model.triton_enhanced_runnable_image_flavor import (
+    TritonEnhancedRunnableImageFlavor,
+)
 from launch.api_client.model.update_model_endpoint_v1_request import (
     UpdateModelEndpointV1Request,
 )
@@ -598,6 +601,8 @@ class LaunchClient:
         Create a model bundle from a runnable image. The specified ``command`` must start a process
         that will listen for requests on port 5005 using HTTP.
 
+        Inference requests must be served at the `POST /predict` route while the `GET /readyz` route is a healthcheck.
+
         Parameters:
             model_bundle_name: The name of the model bundle you want to create.
 
@@ -613,6 +618,10 @@ class LaunchClient:
 
             env: A dictionary of environment variables that will be passed to the bundle when it
                 is run.
+
+            readiness_initial_delay_seconds: The number of seconds to wait for the HTTP server to become ready and
+                successfully respond on its healthcheck.
+
 
         Returns:
             An object containing the following keys:
@@ -647,6 +656,106 @@ class LaunchClient:
 
         return resp
 
+    def create_model_bundle_from_triton_enhanced_runnable_image_v2(
+        self,
+        *,
+        model_bundle_name: str,
+        request_schema: Type[BaseModel],
+        response_schema: Type[BaseModel],
+        repository: str,
+        tag: str,
+        command: List[str],
+        env: Dict[str, str],
+        readiness_initial_delay_seconds: int,
+        triton_model_repository: str,
+        triton_model_replicas: Optional[Dict[str, str]],
+        triton_num_cpu: float,
+        triton_commit_tag: str,
+        triton_storage: Optional[str],
+        triton_memory: Optional[str],
+        triton_readiness_initial_delay_seconds: int,
+    ) -> CreateModelBundleV2Response:
+        """
+        Create a model bundle from a runnable image and a tritonserver image.
+
+        Same requirements as :param:`create_model_bundle_from_runnable_image_v2` with additional constraints necessary
+        for configuring tritonserver's execution.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to create.
+
+            request_schema: A Pydantic model that defines the request schema for the bundle.
+
+            response_schema: A Pydantic model that defines the response schema for the bundle.
+
+            repository: The name of the Docker repository for the runnable image.
+
+            tag: The tag for the runnable image.
+
+            command: The command that will be used to start the process that listens for requests.
+
+            env: A dictionary of environment variables that will be passed to the bundle when it
+                is run.
+
+            readiness_initial_delay_seconds: The number of seconds to wait for the HTTP server to become ready and
+                successfully respond on its healthcheck.
+
+            triton_model_repository: The S3 prefix that contains the contents of the model repository, formatted
+                according to https://github.com/triton-inference-server/server/blob/main/docs/user_guide/model_repository.md
+
+            triton_model_replicas: If supplied, the name and number of replicas to make for each model.
+
+            triton_num_cpu: Number of CPUs, fractional, to allocate to tritonserver.
+
+            triton_commit_tag: The image tag of the specific trionserver version.
+
+            triton_storage: Amount of storage space to allocate for the tritonserver container.
+
+            triton_memory: Amount of memory to allocate for the tritonserver container.
+
+            triton_readiness_initial_delay_seconds: Like readiness_initial_delay_seconds, but for tritonserver's
+                own healthcheck.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundle_id``: The ID of the created model bundle.
+        """
+        schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
+        flavor = TritonEnhancedRunnableImageFlavor(
+            **dict_not_none(
+                flavor="triton_enhanced_runnable_image",
+                repository=repository,
+                tag=tag,
+                command=command,
+                env=env,
+                protocol="http",
+                readiness_initial_delay_seconds=readiness_initial_delay_seconds,
+                triton_model_repository=triton_model_repository,
+                triton_model_replicas=triton_model_replicas,
+                triton_num_cpu=triton_num_cpu,
+                triton_commit_tag=triton_commit_tag,
+                triton_storage=triton_storage,
+                triton_memory=triton_memory,
+                triton_readiness_initial_delay_seconds=triton_readiness_initial_delay_seconds,
+            )
+        )
+        create_model_bundle_request = CreateModelBundleV2Request(
+            name=model_bundle_name,
+            schema_location=schema_location,
+            flavor=flavor,
+        )
+
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
+                body=create_model_bundle_request,
+                skip_deserialization=True,
+            )
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
     def get_model_bundle_v2(self, model_bundle_id: str) -> ModelBundleV2Response:
         """
         Get a model bundle.
@@ -660,7 +769,7 @@ class LaunchClient:
                 - ``id``: The ID of the model bundle.
                 - ``name``: The name of the model bundle.
                 - ``flavor``: The flavor of the model bundle. Either `RunnableImage`,
-                    `CloudpickleArtifact`, or `ZipArtifact`.
+                    `CloudpickleArtifact`, `ZipArtifact`, or `TritonEnhancedRunnableImageFlavor`.
                 - ``created_at``: The time the model bundle was created.
                 - ``metadata``: A dictionary of metadata associated with the model bundle.
                 - ``model_artifact_ids``: A list of IDs of model artifacts associated with the
@@ -691,7 +800,7 @@ class LaunchClient:
                 - ``name``: The name of the model bundle.
                 - ``schema_location``: The location of the schema for the model bundle.
                 - ``flavor``: The flavor of the model bundle. Either `RunnableImage`,
-                    `CloudpickleArtifact`, or `ZipArtifact`.
+                    `CloudpickleArtifact`, `ZipArtifact`, or `TritonEnhancedRunnableImageFlavor`.
                 - ``created_at``: The time the model bundle was created.
                 - ``metadata``: A dictionary of metadata associated with the model bundle.
                 - ``model_artifact_ids``: A list of IDs of model artifacts associated with the
