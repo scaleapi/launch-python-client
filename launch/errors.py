@@ -1,6 +1,6 @@
 import pkg_resources
 
-launch_client_version = pkg_resources.get_distribution("scale-launch").version
+launch.api_client_version = pkg_resources.get_distribution("scale-launch").version
 
 INFRA_FLAKE_MESSAGES = [
     "downstream duration timeout",
@@ -11,7 +11,7 @@ INFRA_FLAKE_MESSAGES = [
 class APIError(Exception):
     def __init__(self, endpoint, command, requests_response=None, aiohttp_response=None):
         message = (
-            f"Your client is on version {launch_client_version}. If you have not recently "
+            f"Your client is on version {launch.api_client_version}. If you have not recently "
             "done so, please make sure you have updated to the latest version of the "
             "client by reinstalling the client.\n "
         )

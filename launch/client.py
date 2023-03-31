@@ -592,6 +592,7 @@ class LaunchClient:
         tag: str,
         command: List[str],
         env: Dict[str, str],
+        readiness_initial_delay_seconds: int,
     ) -> CreateModelBundleV2Response:
         """
         Create a model bundle from a runnable image. The specified ``command`` must start a process
@@ -627,6 +628,7 @@ class LaunchClient:
                 command=command,
                 env=env,
                 protocol="http",
+                readiness_initial_delay_seconds=readiness_initial_delay_seconds,
             )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
