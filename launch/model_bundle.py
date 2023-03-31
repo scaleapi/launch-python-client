@@ -120,6 +120,10 @@ class RunnableImageFlavor(BaseModel):
 
     protocol: Literal["http"]
 
+    readiness_initial_delay_seconds: int = 120
+    """The number of seconds to wait until the image's healthcheck is pinged to determine readiness.
+    """
+
 
 class CreateModelBundleV2Response(BaseModel):
     """
