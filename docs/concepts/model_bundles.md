@@ -195,7 +195,6 @@ Each of these modes of creating a model bundle is called a "Flavor".
             "TEST_KEY": "test_value",
         },
         "readiness_initial_delay_seconds": 30,
-
     }
 
     client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
