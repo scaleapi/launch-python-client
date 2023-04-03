@@ -5,11 +5,13 @@ are created by packaging a model up into a deployable format.
 
 ## Creating Model Bundles
 
-There are three methods for creating model bundles:
+There are four methods for creating model bundles:
 [`create_model_bundle_from_callable_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_callable_v2),
 [`create_model_bundle_from_dirs_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_dirs_v2),
+[`create_model_bundle_from_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2),
 and
-[`create_model_bundle_from_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2).
+[`create_model_bundle_from_triton_enhanced_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_triton_enhanced_runnable_image_v2).
+
 The first directly pickles a user-specified `load_predict_fn`, a function which
 loads the model and returns a `predict_fn`, a function which takes in a request.
 The second takes in directories containing a `load_predict_fn` and the
@@ -17,6 +19,8 @@ module path to the `load_predict_fn`.
 The third takes a Docker image and a command that starts a process listening for
 requests at port 5005 using HTTP and exposes `POST /predict` and
 `GET /readyz` endpoints.
+The fourth is a variant of the third that also starts an instance of the NVidia
+Triton framework for efficient model serving.
 
 Each of these modes of creating a model bundle is called a "Flavor".
 
