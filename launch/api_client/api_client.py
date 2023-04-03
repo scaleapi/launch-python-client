@@ -1031,7 +1031,6 @@ class ApiClient:
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         host: typing.Optional[str] = None,
     ) -> urllib3.HTTPResponse:
-
         # header parameters
         used_headers = HTTPHeaderDict(self.default_headers)
         if self.cookie:

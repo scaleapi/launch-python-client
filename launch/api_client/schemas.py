@@ -665,6 +665,7 @@ if typing.TYPE_CHECKING:
     BoolMixin = BoolClass
     BytesMixin = bytes
     FileMixin = FileIO
+
     # qty 2
     class BinaryMixin(bytes, FileIO):
         pass
@@ -2347,7 +2348,6 @@ class IntBase:
     @classmethod
     def __validate_format(cls, arg: typing.Optional[decimal.Decimal], validation_metadata: ValidationMetadata):
         if isinstance(arg, decimal.Decimal):
-
             denominator = arg.as_integer_ratio()[-1]
             if denominator != 1:
                 raise ApiValueError(

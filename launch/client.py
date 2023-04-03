@@ -167,7 +167,7 @@ def _get_model_bundle_framework(
         return CustomFramework(
             image_repository=custom_base_image_repository,
             image_tag=custom_base_image_tag,
-            framework_type=ModelBundleFrameworkType.CUSTOM,
+            framework_type=ModelBundleFrameworkType.CUSTOM_BASE_IMAGE,
         )
     else:
         raise ValueError(
@@ -697,13 +697,15 @@ class LaunchClient:
             env: A dictionary of environment variables that will be passed to the bundle when it
                 is run.
 
-            readiness_initial_delay_seconds: The number of seconds to wait for the HTTP server to become ready and
-                successfully respond on its healthcheck.
+            readiness_initial_delay_seconds: The number of seconds to wait for the HTTP server to
+                become ready and successfully respond on its healthcheck.
 
-            triton_model_repository: The S3 prefix that contains the contents of the model repository, formatted
-                according to https://github.com/triton-inference-server/server/blob/main/docs/user_guide/model_repository.md
+            triton_model_repository: The S3 prefix that contains the contents of the model
+                repository, formatted according to
+                https://github.com/triton-inference-server/server/blob/main/docs/user_guide/model_repository.md
 
-            triton_model_replicas: If supplied, the name and number of replicas to make for each model.
+            triton_model_replicas: If supplied, the name and number of replicas to make for each
+                model.
 
             triton_num_cpu: Number of CPUs, fractional, to allocate to tritonserver.
 
@@ -713,8 +715,8 @@ class LaunchClient:
 
             triton_memory: Amount of memory to allocate for the tritonserver container.
 
-            triton_readiness_initial_delay_seconds: Like readiness_initial_delay_seconds, but for tritonserver's
-                own healthcheck.
+            triton_readiness_initial_delay_seconds: Like readiness_initial_delay_seconds, but for
+                tritonserver's own healthcheck.
 
         Returns:
             An object containing the following keys:
