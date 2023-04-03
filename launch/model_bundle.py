@@ -1,4 +1,5 @@
 import datetime
+from abc import ABC
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
@@ -45,6 +46,7 @@ class ModelBundleFlavorType(str, Enum):
     CLOUDPICKLE_ARTIFACT = "cloudpickle_artifact"
     ZIP_ARTIFACT = "zip_artifact"
     RUNNABLE_IMAGE = "runnable_image"
+    TRITON_ENHANCED_RUNNABLE_IMAGE = "triton_enhanced_runnable_image"
 
 
 class CloudpickleArtifactFlavor(BaseModel):
@@ -103,22 +105,57 @@ class ZipArtifactFlavor(BaseModel):
     """Path to the module to load the model object."""
 
 
-class RunnableImageFlavor(BaseModel):
-    flavor: Literal[ModelBundleFlavorType.RUNNABLE_IMAGE]
+class RunnableImageLike(BaseModel, ABC):
+    """An abstract base for flavors that are related to bundles defined by runnable images."""
 
     repository: str
-    """Docker repository of the image."""
-
     tag: str
-    """Docker tag of the image."""
-
     command: List[str]
-    """Command to run the image."""
-
     env: Optional[Dict[str, str]]
-    """Environment variables to set when running the image."""
+    protocol: Literal["http"]  # TODO: add support for other protocols (e.g. grpc)
+    readiness_initial_delay_seconds: int = 120
 
-    protocol: Literal["http"]
+
+class RunnableImageFlavor(RunnableImageLike):
+    """Model bundles that use custom docker images that expose an HTTP server for inference."""
+
+    flavor: Literal[ModelBundleFlavorType.RUNNABLE_IMAGE]
+
+
+class TritonEnhancedRunnableImageFlavor(RunnableImageLike):
+    """For runnable image models that require tritonserver running in a container."""
+
+    flavor: Literal[ModelBundleFlavorType.TRITON_ENHANCED_RUNNABLE_IMAGE]
+
+    triton_model_repository: str
+
+    triton_model_replicas: Optional[Dict[str, str]]
+
+    triton_num_cpu: float
+
+    triton_commit_tag: str
+
+    triton_storage: Optional[str]
+
+    triton_memory: Optional[str]
+
+    triton_readiness_initial_delay_seconds: int = 300
+
+
+ModelBundleFlavors = Union[
+    CloudpickleArtifactFlavor,
+    ZipArtifactFlavor,
+    RunnableImageFlavor,
+    TritonEnhancedRunnableImageFlavor,
+]
+"""Union type exhaustively representing all valid model bundle flavors.
+
+Valid model bundle flavors are:
+- [`CloudpickleArtifactFlavor`](./#launch.model_bundle.CloudpickleArtifactFlavor)
+- [`ZipArtifactFlavor`](./#launch.model_bundle.ZipArtifactFlavor)
+- [`RunnableImageFlavor`](./#launch.model_bundle.RunnableImageFlavor)
+- [`TritonEnhancedRunnableImageFlavor`](./#launch.model_bundle.TritonEnhancedRunnableImageFlavor)
+"""
 
 
 class CreateModelBundleV2Response(BaseModel):
@@ -152,13 +189,10 @@ class ModelBundleV2Response(BaseModel):
 
     schema_location: Optional[str]
 
-    flavor: Union[CloudpickleArtifactFlavor, ZipArtifactFlavor, RunnableImageFlavor] = Field(
-        ..., discriminator="flavor"
-    )
-    """Flavor of the Model Bundle, representing how the model bundle was packaged. Either
-    [`CloudpickleArtifactFlavor`](./#launch.model_bundle.CloudpickleArtifactFlavor),
-    [`ZipArtifactFlavor`](./#launch.model_bundle.ZipArtifactFlavor), or
-    [`RunnableImageFlavor`](./#launch.model_bundle.RunnableImageFlavor).
+    flavor: ModelBundleFlavors = Field(..., discriminator="flavor")
+    """Flavor of the Model Bundle, representing how the model bundle was packaged.
+
+    See [`ModelBundleFlavors`](./#launch_api.model_bundle.ModelBundleFlavors) for details.
     """
 
 

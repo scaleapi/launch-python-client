@@ -5,18 +5,22 @@ are created by packaging a model up into a deployable format.
 
 ## Creating Model Bundles
 
-There are three methods for creating model bundles:
+There are four methods for creating model bundles:
 [`create_model_bundle_from_callable_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_callable_v2),
 [`create_model_bundle_from_dirs_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_dirs_v2),
+[`create_model_bundle_from_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2),
 and
-[`create_model_bundle_from_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2).
+[`create_model_bundle_from_triton_enhanced_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_triton_enhanced_runnable_image_v2).
+
 The first directly pickles a user-specified `load_predict_fn`, a function which
 loads the model and returns a `predict_fn`, a function which takes in a request.
 The second takes in directories containing a `load_predict_fn` and the
 module path to the `load_predict_fn`.
 The third takes a Docker image and a command that starts a process listening for
 requests at port 5005 using HTTP and exposes `POST /predict` and
-`GET /healthz` endpoints.
+`GET /readyz` endpoints.
+The fourth is a variant of the third that also starts an instance of the NVidia
+Triton framework for efficient model serving.
 
 Each of these modes of creating a model bundle is called a "Flavor".
 
@@ -41,6 +45,12 @@ Each of these modes of creating a model bundle is called a "Flavor".
     * You have a lot of dependencies.
     * You have a lot of custom code that you want to include in the model bundle.
     * You are comfortable with building a web server and Docker image to serve your model.
+
+
+    A `TritonEnhancedRunnableImageFlavor` (a runnable image variant) is good if:
+
+    * You want to use a `RunnableImageFlavor`
+    * You also want to use [NVidia's `tritonserver`](https://developer.nvidia.com/nvidia-triton-inference-server) to accelerate model inference
 
 
 === "Creating From Callables"
@@ -178,33 +188,63 @@ Each of these modes of creating a model bundle is called a "Flavor".
 
     BUNDLE_PARAMS = {
         "model_bundle_name": "test-bundle",
-        "load_model_fn": my_load_model_fn,
-        "load_predict_fn": my_load_predict_fn,
         "request_schema": MyRequestSchema,
         "response_schema": MyResponseSchema,
-        "repository": "launch_rearch",
-        "tag": "12b9131c5a1489c76592cddd186962cce965f0f6-cpu",
+        "repository": "...",
+        "tag": "...",
         "command": [
-            "dumb-init",
-            "--",
-            "ddtrace-run",
-            "run-service",
-            "--config",
-            "/install/launch_rearch/config/service--user_defined_code.yaml",
-            "--concurrency",
-            "1",
-            "--http",
-            "production",
-            "--port",
-            "5005",
+            ...
         ],
         "env": {
             "TEST_KEY": "test_value",
         },
+        "readiness_initial_delay_seconds": 30,
     }
 
     client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
     client.create_model_bundle_from_runnable_image_v2(**BUNDLE_PARAMS)
+    ```
+
+
+=== "Creating From a Triton Enhanced Runnable Image"
+    ```py
+    import os
+    from pydantic import BaseModel
+    from launch import LaunchClient
+
+
+    class MyRequestSchema(BaseModel):
+        x: int
+        y: str
+
+    class MyResponseSchema(BaseModel):
+        __root__: int
+
+
+    BUNDLE_PARAMS = {
+        "model_bundle_name": "test-bundle",
+        "request_schema": MyRequestSchema,
+        "response_schema": MyResponseSchema,
+        "repository": "...",
+        "tag": "...",
+        "command": [
+            ...
+        ],
+        "env": {
+            "TEST_KEY": "test_value",
+        },
+        "readiness_initial_delay_seconds": 30,
+        "triton_model_repository": "...",
+        "triton_model_replicas": {"": ""},
+        "triton_num_cpu": 4.0,
+        "triton_commit_tag": "",
+        "triton_storage": "",
+        "triton_memory": "",
+        "triton_readiness_initial_delay_seconds": 300,
+    }
+
+    client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
+    client.create_model_bundle_from_triton_enhanced_runnable_image_v2(**BUNDLE_PARAMS)
     ```
 
 

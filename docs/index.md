@@ -33,22 +33,20 @@ def my_load_predict_fn(model):
     return returns_model_of_x_plus_len_of_y
 
 
-def my_model(x):
-    return x * 2
-
-ENV_PARAMS = {
-    "framework_type": "pytorch",
-    "pytorch_image_tag": "1.7.1-cuda11.0-cudnn8-runtime",
-}
+def my_load_model_fn():
+    def my_model(x):
+        return x * 2
+  
+    return my_model
 
 BUNDLE_PARAMS = {
     "model_bundle_name": "test-bundle",
-    "model": my_model,
     "load_predict_fn": my_load_predict_fn,
-    "env_params": ENV_PARAMS,
-    "requirements": ["pytest==7.2.1", "numpy"],  # list your requirements here
+    "load_model_fn": my_load_model_fn,
     "request_schema": MyRequestSchema,
     "response_schema": MyResponseSchema,
+    "requirements": ["pytest==7.2.1", "numpy"],  # list your requirements here
+    "pytorch_image_tag": "1.7.1-cuda11.0-cudnn8-runtime",
 }
 
 ENDPOINT_PARAMS = {
@@ -81,7 +79,7 @@ def predict_on_endpoint(request: MyRequestSchema) -> MyResponseSchema:
 
 client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
 
-client.create_model_bundle(**BUNDLE_PARAMS)
+client.create_model_bundle_from_callable_v2(**BUNDLE_PARAMS)
 endpoint = client.create_model_endpoint(**ENDPOINT_PARAMS)
 
 request = MyRequestSchema(x=5, y="hello")

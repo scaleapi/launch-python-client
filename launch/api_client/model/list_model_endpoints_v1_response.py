@@ -45,8 +45,7 @@ class ListModelEndpointsV1Response(schemas.DictSchema):
                 def __new__(
                     cls,
                     _arg: typing.Union[
-                        typing.Tuple["GetModelEndpointV1Response"],
-                        typing.List["GetModelEndpointV1Response"],
+                        typing.Tuple["GetModelEndpointV1Response"], typing.List["GetModelEndpointV1Response"]
                     ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "model_endpoints":
