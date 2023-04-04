@@ -40,18 +40,18 @@ jobs:
           command: |
             poetry run black --check -t py36 launch
       - run:
-          name: Flake8 Lint Check # Uses setup.cfg for configuration
+          name: Ruff Lint Check # Uses pyproject.toml for configuration
           command: |
-            poetry run flake8 launch --count --statistics --exclude launch/clientlib
+            poetry run ruff launch
       - run:
           name: Pylint Lint Check # Uses .pylintrc for configuration
           command: |
-            poetry run pylint launch --ignore=clientlib
-      - run :
+            poetry run pylint launch --ignore=api_client,openapi_client
+      - run:
           name: MyPy typing check
           command: |
-            poetry run mypy --ignore-missing-imports launch --exclude launch/clientlib
-      - run :
+            poetry run mypy --ignore-missing-imports launch --exclude launch/api_client --exclude launch/openapi_client
+      - run:
           name: Isort Import Formatting Check # Only validation, without re-formatting
           command: |
             poetry run isort --check-only launch

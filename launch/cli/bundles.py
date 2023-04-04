@@ -1,9 +1,12 @@
+import re
+from typing import Optional
+
 import click
-from rich.console import Console
 from rich.syntax import Syntax
 from rich.table import Column, Table
 
 from launch.cli.client import init_client
+from launch.cli.console import pretty_print, spinner
 
 
 @click.group("bundles")
@@ -15,8 +18,9 @@ def bundles(ctx: click.Context):
 
 
 @bundles.command("list")
+@click.option("--name", "-n", help="Regex to use to filter by name", default=None)
 @click.pass_context
-def list_bundles(ctx: click.Context):
+def list_bundles(ctx: click.Context, name: Optional[str]):
     """
     List all of your Bundles
     """
@@ -30,16 +34,17 @@ def list_bundles(ctx: click.Context):
         title="Bundles",
         title_justify="left",
     )
-
-    for model_bundle in client.list_model_bundles():
-        table.add_row(
-            model_bundle.bundle_id,
-            model_bundle.name,
-            model_bundle.location,
-            model_bundle.packaging_type,
-        )
-    console = Console()
-    console.print(table)
+    with spinner("Fetching bundles"):
+        model_bundles = client.list_model_bundles()
+        for model_bundle in model_bundles:
+            if name is None or re.match(name, model_bundle.name):
+                table.add_row(
+                    model_bundle.id,
+                    model_bundle.name,
+                    model_bundle.location,
+                    model_bundle.packaging_type,
+                )
+    pretty_print(table)
 
 
 @bundles.command("get")
@@ -49,34 +54,20 @@ def get_bundle(ctx: click.Context, bundle_name: str):
     """Print bundle info"""
     client = init_client(ctx)
 
-    model_bundle = client.get_model_bundle(bundle_name)
+    with spinner(f"Fetching bundle '{bundle_name}'"):
+        model_bundle = client.get_model_bundle(bundle_name)
 
-    console = Console()
-    console.print(f"bundle_id: {model_bundle.bundle_id}")
-    console.print(f"bundle_name: {model_bundle.name}")
-    console.print(f"location: {model_bundle.location}")
-    console.print(f"packaging_type: {model_bundle.packaging_type}")
-    console.print(f"env_params: {model_bundle.env_params}")
-    console.print(f"requirements: {model_bundle.requirements}")
+    pretty_print(f"bundle_id: {model_bundle.id}")
+    pretty_print(f"bundle_name: {model_bundle.name}")
+    pretty_print(f"location: {model_bundle.location}")
+    pretty_print(f"packaging_type: {model_bundle.packaging_type}")
+    pretty_print(f"env_params: {model_bundle.env_params}")
+    pretty_print(f"requirements: {model_bundle.requirements}")
+    pretty_print(f"app_config: {model_bundle.app_config}")
 
-    console.print("metadata:")
+    pretty_print("metadata:")
     for meta_name, meta_value in model_bundle.metadata.items():
         # TODO print non-code metadata differently
-        console.print(f"{meta_name}:", style="yellow")
+        pretty_print(f"{meta_name}:", style="yellow")
         syntax = Syntax(meta_value, "python")
-        console.print(syntax)
-
-
-@bundles.command("delete")
-@click.argument("bundle_name")
-@click.pass_context
-def delete_bundle(ctx: click.Context, bundle_name: str):
-    """
-    Deletes a model bundle.
-    """
-    client = init_client(ctx)
-
-    console = Console()
-    model_bundle = client.get_model_bundle(bundle_name)
-    res = client.delete_model_bundle(model_bundle)
-    console.print(res)
+        pretty_print(syntax)

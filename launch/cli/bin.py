@@ -1,48 +1,18 @@
-from dataclasses import dataclass
-from typing import Optional
-
 import click
 
+from launch.cli.batch_jobs import batch_jobs
 from launch.cli.bundles import bundles
+from launch.cli.config import ContextObject, config, set_config
 from launch.cli.endpoints import endpoints
+from launch.cli.tasks import tasks
 
 
-@dataclass
-class ContextObject:
-    self_hosted: bool
-    gateway_endpoint: Optional[str] = None
-    api_key: Optional[str] = None
-
-
-@click.group("cli")
-@click.option(
-    "-s",
-    "--self-hosted",
-    is_flag=True,
-    help="Use this flag if Scale Launch is self hosted",
-)
-@click.option(
-    "-e",
-    "--gateway-endpoint",
-    envvar="LAUNCH_GATEWAY_ENDPOINT",
-    default=None,
-    type=str,
-    help="Redefine Scale Launch gateway endpoint. Mandatory parameter when using self-hosted Scale Launch.",
-)
-@click.option(
-    "-a",
-    "--api-key",
-    envvar="LAUNCH_API_KEY",
-    required=True,
-    type=str,
-    help="Scale Launch API key",
-)
-@click.pass_context
-def entry_point(ctx, **kwargs):
-    """
+class RichGroup(click.Group):
+    def format_help(self, ctx, formatter):
+        formatter.width = 118
+        formatter.write(
+            """
     This is the command line interface (CLI) package for Scale Launch.
-
-    .. code-block:: text
 
        ██╗      █████╗ ██╗   ██╗███╗   ██╗ ██████╗██╗  ██╗
        ██║     ██╔══██╗██║   ██║████╗  ██║██╔════╝██║  ██║
@@ -51,12 +21,24 @@ def entry_point(ctx, **kwargs):
        ███████╗██║  ██║╚██████╔╝██║ ╚████║╚██████╗██║  ██║
        ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝
 
-    """
-    ctx.obj = ContextObject(**kwargs)
+"""
+        )
+        super().format_help(ctx, formatter)
 
 
+@click.group("cli", cls=RichGroup)
+@click.pass_context
+def entry_point(ctx, **kwargs):
+    ctx.obj = ContextObject().load()
+    if ctx.obj.api_key is None:
+        ctx.invoke(set_config)
+
+
+entry_point.add_command(batch_jobs)  # type: ignore
 entry_point.add_command(bundles)  # type: ignore
+entry_point.add_command(config)  # type: ignore
 entry_point.add_command(endpoints)  # type: ignore
+entry_point.add_command(tasks)  # type: ignore
 
 if __name__ == "__main__":
     entry_point()  # pylint: disable=no-value-for-parameter

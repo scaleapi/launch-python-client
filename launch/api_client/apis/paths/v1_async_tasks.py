@@ -1,0 +1,7 @@
+from launch.api_client.paths.v1_async_tasks.post import ApiForpost
+
+
+class V1AsyncTasks(
+    ApiForpost,
+):
+    pass

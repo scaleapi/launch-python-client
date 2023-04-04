@@ -1,16 +1,18 @@
 import concurrent.futures
 import json
-import os
 import time
 import uuid
+from abc import ABC, abstractmethod
 from collections import Counter
 from dataclasses import dataclass
-from typing import Dict, Optional, Sequence
+from typing import Dict, List, Optional, Sequence
 
 from dataclasses_json import Undefined, dataclass_json
 from deprecation import deprecated
+from typing_extensions import Literal
 
-from launch.constants import ENDPOINT_PATH
+from launch.api_client import ApiClient
+from launch.api_client.apis.tags.default_api import DefaultApi
 from launch.request_validation import validate_task_request
 
 TASK_PENDING_STATE = "PENDING"
@@ -30,6 +32,11 @@ class ModelEndpoint:
     The name of the endpoint. Must be unique across all endpoints owned by the user.
     """
 
+    id: Optional[str] = None
+    """
+    A globally unique identifier for the endpoint.
+    """
+
     bundle_name: Optional[str] = None
     """
     The name of the bundle for the endpoint. The owner of the bundle must be the same as the owner for the endpoint.
@@ -40,14 +47,14 @@ class ModelEndpoint:
     The status of the endpoint.
     """
 
-    resource_settings: Optional[dict] = None
+    resource_state: Optional[dict] = None
     """
-    Resource settings for the endpoint.
+    Resource state for the endpoint.
     """
 
-    worker_settings: Optional[dict] = None
+    deployment_state: Optional[dict] = None
     """
-    Worker settings for the endpoint.
+    Deployment state for the endpoint.
     """
 
     metadata: Optional[dict] = None
@@ -70,8 +77,23 @@ class ModelEndpoint:
     Queue identifier for endpoint, use only for debugging.
     """
 
+    post_inference_hooks: Optional[List[str]] = None
+    """
+    List of post inference hooks for the endpoint.
+    """
+
+    default_callback_url: Optional[str] = None
+    """
+    Default callback url for the endpoint.
+    """
+
     def __repr__(self):
-        return f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', status='{self.status}', resource_settings='{json.dumps(self.resource_settings)}', worker_settings='{json.dumps(self.worker_settings)}', endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
+        return (
+            f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', "
+            f"status='{self.status}', resource_state='{json.dumps(self.resource_state)}', "
+            f"deployment_state='{json.dumps(self.deployment_state)}', "
+            f"endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
+        )
 
 
 class EndpointRequest:
@@ -94,6 +116,30 @@ class EndpointRequest:
 
         return_pickled: Whether the output should be a pickled python object, or directly returned serialized json.
 
+        callback_url: The callback url to use for this task. If None, then the
+            default_callback_url of the endpoint is used. The endpoint must specify
+            "callback" as a post-inference hook for the callback to be triggered.
+
+        callback_auth_kind: The default callback auth kind to use for async endpoints.
+            Either "basic" or "mtls". This can be overridden in the task parameters for each
+            individual task.
+
+        callback_auth_username: The default callback auth username to use. This only
+            applies if callback_auth_kind is "basic". This can be overridden in the task
+            parameters for each individual task.
+
+        callback_auth_password: The default callback auth password to use. This only
+            applies if callback_auth_kind is "basic". This can be overridden in the task
+            parameters for each individual task.
+
+        callback_auth_cert: The default callback auth cert to use. This only applies
+            if callback_auth_kind is "mtls". This can be overridden in the task
+            parameters for each individual task.
+
+        callback_auth_key: The default callback auth key to use. This only applies
+            if callback_auth_kind is "mtls". This can be overridden in the task
+            parameters for each individual task.
+
         request_id: (deprecated) A user-specifiable id for requests.
             Should be unique among EndpointRequests made in the same batch call.
             If one isn't provided the client will generate its own.
@@ -103,7 +149,13 @@ class EndpointRequest:
         self,
         url: Optional[str] = None,
         args: Optional[Dict] = None,
-        return_pickled: Optional[bool] = True,
+        callback_url: Optional[str] = None,
+        callback_auth_kind: Optional[Literal["basic", "mtls"]] = None,
+        callback_auth_username: Optional[str] = None,
+        callback_auth_password: Optional[str] = None,
+        callback_auth_cert: Optional[str] = None,
+        callback_auth_key: Optional[str] = None,
+        return_pickled: Optional[bool] = False,
         request_id: Optional[str] = None,
     ):
         # TODO: request_id is pretty much here only to support the clientside AsyncEndpointBatchResponse
@@ -113,6 +165,12 @@ class EndpointRequest:
             request_id = str(uuid.uuid4())
         self.url = url
         self.args = args
+        self.callback_url = callback_url
+        self.callback_auth_kind = callback_auth_kind
+        self.callback_auth_username = callback_auth_username
+        self.callback_auth_password = callback_auth_password
+        self.callback_auth_cert = callback_auth_cert
+        self.callback_auth_key = callback_auth_key
         self.return_pickled = return_pickled
         self.request_id: str = request_id
 
@@ -137,7 +195,8 @@ class EndpointResponse:
 
             status: A string representing the status of the request, i.e. ``SUCCESS``, ``FAILURE``, or ``PENDING``
 
-            result_url: A string that is a url containing the pickled python object from the Endpoint's predict function.
+            result_url: A string that is a url containing the pickled python object from the
+                Endpoint's predict function.
 
                 Exactly one of ``result_url`` or ``result`` will be populated,
                 depending on the value of ``return_pickled`` in the request.
@@ -158,7 +217,10 @@ class EndpointResponse:
         self.traceback = traceback
 
     def __str__(self) -> str:
-        return f"status: {self.status}, result: {self.result}, result_url: {self.result_url}, traceback: {self.traceback}"
+        return (
+            f"status: {self.status}, result: {self.result}, result_url: {self.result_url}, "
+            f"traceback: {self.traceback}"
+        )
 
 
 class EndpointResponseFuture:
@@ -182,40 +244,47 @@ class EndpointResponseFuture:
         self.endpoint_name = endpoint_name
         self.async_task_id = async_task_id
 
-    def get(self) -> EndpointResponse:
+    def get(self, timeout: Optional[float] = None) -> EndpointResponse:
         """
         Retrieves the ``EndpointResponse`` for the prediction request after it completes. This method blocks.
+
+        Parameters:
+            timeout: The maximum number of seconds to wait for the response. If None, then
+                the method will block indefinitely until the response is ready.
         """
-        while True:
+        if timeout is not None and timeout <= 0:
+            raise ValueError("Timeout must be greater than 0.")
+        start_time = time.time()
+        while timeout is None or time.time() - start_time < timeout:
             async_response = self.client._get_async_endpoint_response(  # pylint: disable=W0212
                 self.endpoint_name, self.async_task_id
             )
-            if async_response["state"] == "PENDING":
+            status = async_response["status"]
+            if status in ["PENDING", "STARTED"]:
                 time.sleep(2)
             else:
-                if async_response["state"] == "SUCCESS":
+                if status == "SUCCESS":
                     return EndpointResponse(
                         client=self.client,
-                        status=async_response["state"],
-                        result_url=async_response.get("result_url", None),
-                        result=async_response.get("result", None),
+                        status=status,
+                        result_url=async_response.get("result", {}).get("result_url", None),
+                        result=async_response.get("result", {}).get("result", None),
                         traceback=None,
                     )
-                elif async_response["state"] == "FAILURE":
+                elif status == "FAILURE":
                     return EndpointResponse(
                         client=self.client,
-                        status=async_response["state"],
+                        status=status,
                         result_url=None,
                         result=None,
                         traceback=async_response.get("traceback", None),
                     )
                 else:
-                    raise ValueError(
-                        f"Unrecognized state: {async_response['state']}"
-                    )
+                    raise ValueError(f"Unrecognized status: {async_response['status']}")
+        raise TimeoutError
 
 
-class Endpoint:
+class Endpoint(ABC):
     """An abstract class that represent any kind of endpoints in Scale Launch"""
 
     def __init__(self, model_endpoint: ModelEndpoint, client):
@@ -223,9 +292,17 @@ class Endpoint:
         self.client = client
 
     def _update_model_endpoint_view(self):
-        resp = self.client.connection.get(
-            os.path.join(ENDPOINT_PATH, self.model_endpoint.name)
-        )
+        with ApiClient(self.client.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            query_params = {"name": self.model_endpoint.name}
+            response = api_instance.list_model_endpoints_v1_model_endpoints_get(
+                query_params=query_params,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+            if len(resp["model_endpoints"]) == 0:
+                raise ValueError(f"Could not update model endpoint view for endpoint {self.model_endpoint.name}")
+            resp = resp["model_endpoints"][0]
         self.model_endpoint = ModelEndpoint.from_dict(resp)
 
     def status(self) -> Optional[str]:
@@ -233,15 +310,19 @@ class Endpoint:
         self._update_model_endpoint_view()
         return self.model_endpoint.status
 
-    def resource_settings(self) -> Optional[dict]:
-        """Gets the resource settings of the Endpoint."""
+    def resource_state(self) -> Optional[dict]:
+        """Gets the resource state of the Endpoint."""
         self._update_model_endpoint_view()
-        return self.model_endpoint.resource_settings
+        return self.model_endpoint.resource_state
 
-    def worker_settings(self) -> Optional[dict]:
+    def deployment_state(self) -> Optional[dict]:
         """Gets the worker settings of the Endpoint."""
         self._update_model_endpoint_view()
-        return self.model_endpoint.worker_settings
+        return self.model_endpoint.deployment_state
+
+    @abstractmethod
+    def predict(self, request: EndpointRequest):
+        """Runs a prediction request."""
 
 
 class SyncEndpoint(Endpoint):
@@ -262,7 +343,15 @@ class SyncEndpoint(Endpoint):
         return f"SyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def __repr__(self):
-        return f"SyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_settings='{json.dumps(self.model_endpoint.resource_settings)}', worker_settings='{json.dumps(self.model_endpoint.worker_settings)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
+        return (
+            f"SyncEndpoint(name='{self.model_endpoint.name}', "
+            f"bundle_name='{self.model_endpoint.bundle_name}', "
+            f"status='{self.model_endpoint.status}', "
+            f"resource_state='{json.dumps(self.model_endpoint.resource_state)}', "
+            f"deployment_state='{json.dumps(self.model_endpoint.deployment_state)}', "
+            f"endpoint_type='{self.model_endpoint.endpoint_type}', "
+            f"metadata='{self.model_endpoint.metadata}')"
+        )
 
     def predict(self, request: EndpointRequest) -> EndpointResponse:
         """
@@ -277,11 +366,12 @@ class SyncEndpoint(Endpoint):
             args=request.args,
             return_pickled=request.return_pickled,
         )
+        raw_response = {k: v for k, v in raw_response.items() if v is not None}
         return EndpointResponse(
             client=self.client,
-            status=raw_response.get("state"),
-            result_url=raw_response.get("result_url", None),
-            result=raw_response.get("result", None),
+            status=raw_response.get("status"),
+            result_url=raw_response.get("result", {}).get("result_url", None),
+            result=raw_response.get("result", {}).get("result", None),
             traceback=raw_response.get("traceback", None),
         )
 
@@ -304,7 +394,15 @@ class AsyncEndpoint(Endpoint):
         return f"AsyncEndpoint <endpoint_name:{self.model_endpoint.name}>"
 
     def __repr__(self):
-        return f"AsyncEndpoint(name='{self.model_endpoint.name}', bundle_name='{self.model_endpoint.bundle_name}', status='{self.model_endpoint.status}', resource_settings='{json.dumps(self.model_endpoint.resource_settings)}', worker_settings='{json.dumps(self.model_endpoint.worker_settings)}', endpoint_type='{self.model_endpoint.endpoint_type}', metadata='{self.model_endpoint.metadata}')"
+        return (
+            f"AsyncEndpoint(name='{self.model_endpoint.name}', "
+            f"bundle_name='{self.model_endpoint.bundle_name}', "
+            f"status='{self.model_endpoint.status}', "
+            f"resource_state='{json.dumps(self.model_endpoint.resource_state)}', "
+            f"deployment_state='{json.dumps(self.model_endpoint.deployment_state)}', "
+            f"endpoint_type='{self.model_endpoint.endpoint_type}', "
+            f"metadata='{self.model_endpoint.metadata}')"
+        )
 
     def predict(self, request: EndpointRequest) -> EndpointResponseFuture:
         """
@@ -319,16 +417,23 @@ class AsyncEndpoint(Endpoint):
 
             .. code-block:: python
 
-               my_endpoint = AsyncEndpoint(...)
-               f: EndpointResponseFuture = my_endpoint.predict(EndpointRequest(...))
-               result = f.get()  # blocks on completion
+                my_endpoint = AsyncEndpoint(...)
+                f: EndpointResponseFuture = my_endpoint.predict(EndpointRequest(...))
+                result = f.get()  # blocks on completion
         """
-        async_task_id = self.client._async_request(  # pylint: disable=W0212
+        response = self.client._async_request(  # pylint: disable=W0212
             self.model_endpoint.name,
             url=request.url,
             args=request.args,
+            callback_url=request.callback_url,
+            callback_auth_kind=request.callback_auth_kind,
+            callback_auth_username=request.callback_auth_username,
+            callback_auth_password=request.callback_auth_password,
+            callback_auth_cert=request.callback_auth_cert,
+            callback_auth_key=request.callback_auth_key,
             return_pickled=request.return_pickled,
         )
+        async_task_id = response["task_id"]
         return EndpointResponseFuture(
             client=self.client,
             endpoint_name=self.model_endpoint.name,
@@ -336,9 +441,7 @@ class AsyncEndpoint(Endpoint):
         )
 
     @deprecated
-    def predict_batch(
-        self, requests: Sequence[EndpointRequest]
-    ) -> "AsyncEndpointBatchResponse":
+    def predict_batch(self, requests: Sequence[EndpointRequest]) -> "AsyncEndpointBatchResponse":
         """
         (deprecated)
         Runs inference on the data items specified by urls. Returns a AsyncEndpointResponse.
@@ -353,21 +456,23 @@ class AsyncEndpoint(Endpoint):
         # if batches are possible make this aware you can pass batches
         # TODO add batch support once those are out
 
-        if len(requests) != len(
-            set(request.request_id for request in requests)
-        ):
+        if len(requests) != len(set(request.request_id for request in requests)):
             raise ValueError("Request_ids in a batch must be unique")
 
         def single_request(request):
             # request has keys url and args
 
-            inner_inference_request = (
-                self.client._async_request(  # pylint: disable=W0212
-                    endpoint_name=self.model_endpoint.name,
-                    url=request.url,
-                    args=request.args,
-                    return_pickled=request.return_pickled,
-                )
+            inner_inference_request = self.client._async_request(  # pylint: disable=W0212
+                endpoint_name=self.model_endpoint.name,
+                url=request.url,
+                args=request.args,
+                callback_url=request.callback_url,
+                callback_auth_kind=request.callback_auth_kind,
+                callback_auth_username=request.callback_auth_username,
+                callback_auth_password=request.callback_auth_password,
+                callback_auth_cert=request.callback_auth_cert,
+                callback_auth_key=request.callback_auth_key,
+                return_pickled=request.return_pickled,
             )
             request_key = request.request_id
             return request_key, inner_inference_request
@@ -405,19 +510,12 @@ class AsyncEndpointBatchResponse:
         endpoint_name: str,
         request_ids: Dict[str, str],
     ):
-
         self.client = client
         self.endpoint_name = endpoint_name
-        self.request_ids = (
-            request_ids.copy()
-        )  # custom request_id (clientside) -> task_id (serverside)
-        self.responses: Dict[str, Optional[EndpointResponse]] = {
-            req_id: None for req_id in request_ids.keys()
-        }
+        self.request_ids = request_ids.copy()  # custom request_id (clientside) -> task_id (serverside)
+        self.responses: Dict[str, Optional[EndpointResponse]] = {req_id: None for req_id in request_ids.keys()}
         # celery task statuses
-        self.statuses: Dict[str, Optional[str]] = {
-            req_id: TASK_PENDING_STATE for req_id in request_ids.keys()
-        }
+        self.statuses: Dict[str, Optional[str]] = {req_id: TASK_PENDING_STATE for req_id in request_ids.keys()}
 
     def poll_endpoints(self):
         """
@@ -438,7 +536,7 @@ class AsyncEndpointBatchResponse:
             return (
                 inner_url,
                 inner_task_id,
-                inner_response.get("state", None),
+                inner_response.get("status", None),
                 inner_response,
             )
 
@@ -452,13 +550,13 @@ class AsyncEndpointBatchResponse:
         for response in responses:
             if response is None:
                 continue
-            url, _, state, raw_response = response
-            if state:
-                self.statuses[url] = state
+            url, _, status, raw_response = response
+            if status:
+                self.statuses[url] = status
             if raw_response:
                 response_object = EndpointResponse(
                     client=self.client,
-                    status=raw_response["state"],
+                    status=raw_response["status"],
                     result_url=raw_response.get("result_url", None),
                     result=raw_response.get("result", None),
                     traceback=raw_response.get("traceback", None),
@@ -467,18 +565,16 @@ class AsyncEndpointBatchResponse:
 
     def is_done(self, poll=True) -> bool:
         """
-        Checks the client local state to see if all requests are done.
+        Checks the client local status to see if all requests are done.
 
         Parameters:
-            poll: If ``True``, then this will first check the state for a subset
+            poll: If ``True``, then this will first check the status for a subset
             of the remaining incomplete tasks on the Launch server.
         """
         # TODO: make some request to some endpoint
         if poll:
             self.poll_endpoints()
-        return all(
-            resp != TASK_PENDING_STATE for resp in self.statuses.values()
-        )
+        return all(resp != TASK_PENDING_STATE for resp in self.statuses.values())
 
     def get_responses(self) -> Dict[str, Optional[EndpointResponse]]:
         """

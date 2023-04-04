@@ -109,10 +109,9 @@ class ModuleManager:
         import pkg_resources
 
         # yixu: this populates either self.pip_pkg_map or self.nonlocal_package_path
-        # pkg_resources.working_set is basically a snapshot of sys.path, i.e. the packages that are imported
-        for (
-            dist
-        ) in pkg_resources.working_set:  # pylint: disable=not-an-iterable
+        # pkg_resources.working_set is basically a snapshot of sys.path, i.e. the packages that
+        # are imported
+        for dist in pkg_resources.working_set:  # pylint: disable=not-an-iterable
             module_path = dist.module_path or dist.location
             if not module_path:
                 # Skip if no module path was found for pkg distribution
@@ -125,9 +124,7 @@ class ModuleManager:
             self.pip_pkg_map[dist._key] = dist._version
             for mn in dist._get_metadata("top_level.txt"):
                 if dist._key != "setuptools":
-                    self.pip_module_map.setdefault(mn, []).append(
-                        (dist._key, dist._version)
-                    )
+                    self.pip_module_map.setdefault(mn, []).append((dist._key, dist._version))
                 else:
                     self.setuptools_module_set.add(mn)
 
@@ -143,9 +140,7 @@ class ModuleManager:
                 else:
                     path = m.module_finder.path
                 is_local = self.is_local_path(path)
-                self.searched_modules[m.name] = ModuleInfo(
-                    m.name, path, is_local, m.ispkg
-                )
+                self.searched_modules[m.name] = ModuleInfo(m.name, path, is_local, m.ispkg)
 
     def verify_pkg(self, pkg_req):
         if pkg_req.name not in self.pip_pkg_map:
@@ -248,20 +243,15 @@ class DepSeekWork:
                     if (
                         module_name in self.module_manager.pip_module_map
                         and module_name not in self.dependencies
-                        and module_name
-                        not in self.module_manager.setuptools_module_set
+                        and module_name not in self.module_manager.setuptools_module_set
                     ):
-                        self.dependencies[
-                            module_name
-                        ] = self.module_manager.pip_module_map[module_name]
+                        self.dependencies[module_name] = self.module_manager.pip_module_map[module_name]
             else:
                 if module_name in self.module_manager.pip_module_map:
                     if module_name not in self.dependencies:
                         # In some special cases, the pip-installed module can not
                         # be located in the searched_modules
-                        self.dependencies[
-                            module_name
-                        ] = self.module_manager.pip_module_map[module_name]
+                        self.dependencies[module_name] = self.module_manager.pip_module_map[module_name]
                 else:
                     if module_name not in sys.builtin_module_names:
                         self.unknown_module_set.add(module_name)
@@ -297,9 +287,7 @@ class DepSeekWork:
                 filename = module_path.filename
                 if filename.endswith(".py"):
                     logger.debug("Seeking modules in zip %s", filename)
-                    content = self.module_manager.zip_modules[
-                        zip_path
-                    ].get_source(filename.replace(".py", ""))
+                    content = self.module_manager.zip_modules[zip_path].get_source(filename.replace(".py", ""))
                     self.seek_in_source(content)
 
 

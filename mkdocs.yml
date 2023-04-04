@@ -1,0 +1,89 @@
+site_name: Launch
+site_description: Simple, modern and high performance machine learning deployment in python.
+site_url: https://scaleapi.github.io/launch-python-client/
+
+theme:
+  name: material
+  palette:
+  - scheme: default
+    primary: blue grey
+    accent: indigo
+    toggle:
+      icon: material/lightbulb
+      name: Switch to dark mode
+  - scheme: slate
+    primary: blue grey
+    accent: indigo
+    toggle:
+      icon: material/lightbulb-outline
+      name: Switch to light mode
+  features:
+  - search.suggest
+  - search.highlight
+  - content.tabs.link
+  - content.code.annotate
+  - content.code.copy
+  icon:
+    repo: fontawesome/brands/github-alt
+  logo: _static/launch-logo.svg
+  favicon: _static/favicon-32x32.png
+  language: en
+
+repo_name: scaleapi/launch-python-client
+repo_url: https://github.com/scaleapi/launch-python-client
+edit_uri: ''
+nav:
+  - Introduction: index.md
+  - CLI: cli.md
+  - Concepts:
+      - concepts/overview.md
+      - concepts/model_bundles.md
+      - concepts/model_endpoints.md
+      - concepts/endpoint_predictions.md
+      - concepts/batch_jobs.md
+      - concepts/callbacks.md
+  - 'API Documentation':
+    - api/client.md
+    - api/model_bundles.md
+    - api/model_endpoints.md
+    - api/endpoint_predictions.md
+    - api/hooks.md
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html
+  - mdx_include
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.tabbed:
+      alternate_style: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      watch: [launch]
+      handlers:
+        python:
+          rendering:
+            show_root_heading: true
+            show_root_full_path: false
+            show_source: false
+            heading_level: 2
+            merge_init_into_class: true
+            show_signature_annotations: true
+            separate_signature: true
+  - mkdocs-simple-hooks:
+      hooks:
+        on_pre_build: 'docs.plugins:on_pre_build'
+        on_files: 'docs.plugins:on_files'
+        on_page_markdown: 'docs.plugins:on_page_markdown'

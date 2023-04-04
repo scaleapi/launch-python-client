@@ -1,45 +1,98 @@
 import inspect  # pylint: disable=C0302
+import json
 import logging
 import os
 import shutil
 import tempfile
 from io import StringIO
-from typing import Any, Callable, Dict, List, Optional, TypeVar, Union
+from typing import Any, Callable, Dict, List, Optional, Type, TypeVar, Union
 from zipfile import ZipFile
 
 import cloudpickle
 import requests
 import yaml
 from deprecation import deprecated
+from frozendict import frozendict
+from pydantic import BaseModel
+from typing_extensions import Literal
 
+from launch.api_client import ApiClient, Configuration
+from launch.api_client.apis.tags.default_api import DefaultApi
+from launch.api_client.model.callback_auth import CallbackAuth
+from launch.api_client.model.clone_model_bundle_v1_request import (
+    CloneModelBundleV1Request,
+)
+from launch.api_client.model.clone_model_bundle_v2_request import (
+    CloneModelBundleV2Request,
+)
+from launch.api_client.model.cloudpickle_artifact_flavor import (
+    CloudpickleArtifactFlavor,
+)
+from launch.api_client.model.create_batch_job_v1_request import (
+    CreateBatchJobV1Request,
+)
+from launch.api_client.model.create_model_bundle_v1_request import (
+    CreateModelBundleV1Request,
+)
+from launch.api_client.model.create_model_bundle_v2_request import (
+    CreateModelBundleV2Request,
+)
+from launch.api_client.model.create_model_endpoint_v1_request import (
+    CreateModelEndpointV1Request,
+)
+from launch.api_client.model.custom_framework import CustomFramework
+from launch.api_client.model.endpoint_predict_v1_request import (
+    EndpointPredictV1Request,
+)
+from launch.api_client.model.gpu_type import GpuType
+from launch.api_client.model.model_bundle_environment_params import (
+    ModelBundleEnvironmentParams,
+)
+from launch.api_client.model.model_bundle_framework_type import (
+    ModelBundleFrameworkType,
+)
+from launch.api_client.model.model_bundle_packaging_type import (
+    ModelBundlePackagingType,
+)
+from launch.api_client.model.model_endpoint_type import ModelEndpointType
+from launch.api_client.model.pytorch_framework import PytorchFramework
+from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
+from launch.api_client.model.tensorflow_framework import TensorflowFramework
+from launch.api_client.model.triton_enhanced_runnable_image_flavor import (
+    TritonEnhancedRunnableImageFlavor,
+)
+from launch.api_client.model.update_model_endpoint_v1_request import (
+    UpdateModelEndpointV1Request,
+)
+from launch.api_client.model.zip_artifact_flavor import ZipArtifactFlavor
 from launch.connection import Connection
 from launch.constants import (
-    ASYNC_TASK_PATH,
-    ASYNC_TASK_RESULT_PATH,
     BATCH_TASK_INPUT_SIGNED_URL_PATH,
-    BATCH_TASK_PATH,
-    BATCH_TASK_RESULTS_PATH,
     ENDPOINT_PATH,
     MODEL_BUNDLE_SIGNED_URL_PATH,
     SCALE_LAUNCH_ENDPOINT,
-    SYNC_TASK_PATH,
+    SCALE_LAUNCH_V1_ENDPOINT,
 )
-from launch.errors import APIError
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.hooks import PostInferenceHooks
 from launch.make_batch_file import (
     make_batch_input_dict_file,
     make_batch_input_file,
 )
-from launch.model_bundle import ModelBundle
+from launch.model_bundle import (
+    CreateModelBundleV2Response,
+    ListModelBundlesV2Response,
+    ModelBundle,
+    ModelBundleV2Response,
+)
 from launch.model_endpoint import (
     AsyncEndpoint,
     Endpoint,
     ModelEndpoint,
     SyncEndpoint,
 )
+from launch.pydantic_schemas import get_model_definitions
 from launch.request_validation import validate_task_request
-from launch.utils import trim_kwargs
 
 DEFAULT_NETWORK_TIMEOUT_SEC = 120
 
@@ -58,6 +111,20 @@ def _model_bundle_to_name(model_bundle: Union[ModelBundle, str]) -> str:
         raise TypeError("model_bundle should be type ModelBundle or str")
 
 
+def _model_bundle_to_id(model_bundle: Union[ModelBundle, str]) -> str:
+    if isinstance(model_bundle, ModelBundle):
+        if model_bundle.id is None:
+            raise ValueError(
+                "You need to pass in a ModelBundle that has an id, "
+                "i.e. one that has already been registered on the server"
+            )
+        return model_bundle.id
+    elif isinstance(model_bundle, str):
+        return model_bundle
+    else:
+        raise TypeError("model_bundle should be type ModelBundle or str")
+
+
 def _model_endpoint_to_name(model_endpoint: Union[ModelEndpoint, str]) -> str:
     if isinstance(model_endpoint, ModelEndpoint):
         return model_endpoint.name
@@ -67,20 +134,50 @@ def _model_endpoint_to_name(model_endpoint: Union[ModelEndpoint, str]) -> str:
         raise TypeError("model_endpoint should be type ModelEndpoint or str")
 
 
-def _add_app_config_to_bundle_create_payload(
-    payload: Dict[str, Any], app_config: Optional[Union[Dict[str, Any], str]]
-):
+def _add_app_config_to_bundle_create_payload(payload: Dict[str, Any], app_config: Optional[Union[Dict[str, Any], str]]):
     """
-    Edits a request payload (for creating a bundle) to include a (not serialized) app_config if it's not None
+    Edits a request payload (for creating a bundle) to include a (not serialized) app_config if it's
+    not None
     """
     if isinstance(app_config, Dict):
         payload["app_config"] = app_config
     elif isinstance(app_config, str):
-        with open(  # pylint: disable=unspecified-encoding
-            app_config, "r"
-        ) as f:
+        with open(app_config, "r") as f:  # pylint: disable=unspecified-encoding
             app_config_dict = yaml.safe_load(f)
             payload["app_config"] = app_config_dict
+
+
+def _get_model_bundle_framework(
+    pytorch_image_tag: Optional[str] = None,
+    tensorflow_version: Optional[str] = None,
+    custom_base_image_repository: Optional[str] = None,
+    custom_base_image_tag: Optional[str] = None,
+):
+    if pytorch_image_tag is not None:
+        return PytorchFramework(
+            pytorch_image_tag=pytorch_image_tag,
+            framework_type=ModelBundleFrameworkType.PYTORCH,
+        )
+    elif tensorflow_version is not None:
+        return TensorflowFramework(
+            tensorflow_version=tensorflow_version,
+            framework_type=ModelBundleFrameworkType.TENSORFLOW,
+        )
+    elif custom_base_image_repository is not None and custom_base_image_tag is not None:
+        return CustomFramework(
+            image_repository=custom_base_image_repository,
+            image_tag=custom_base_image_tag,
+            framework_type=ModelBundleFrameworkType.CUSTOM_BASE_IMAGE,
+        )
+    else:
+        raise ValueError(
+            "You must specify one of pytorch_image_tag, tensorflow_version, or "
+            "custom_base_image_repository and custom_base_image_tag"
+        )
+
+
+def dict_not_none(**kwargs):
+    return {k: v for k, v in kwargs.items() if v is not None}
 
 
 class LaunchClient:
@@ -100,16 +197,19 @@ class LaunchClient:
             endpoint: The Scale Launch Endpoint (this should not need to be changed)
             self_hosted: True iff you are connecting to a self-hosted Scale Launch
         """
-        endpoint = endpoint or SCALE_LAUNCH_ENDPOINT
-        self.connection = Connection(api_key, endpoint)
+        self.connection = Connection(api_key, endpoint or SCALE_LAUNCH_ENDPOINT)
+        self.endpoint = endpoint
         self.self_hosted = self_hosted
         self.upload_bundle_fn: Optional[Callable[[str, str], None]] = None
         self.upload_batch_csv_fn: Optional[Callable[[str, str], None]] = None
-        self.endpoint_auth_decorator_fn: Callable[
-            [Dict[str, Any]], Dict[str, Any]
-        ] = lambda x: x
         self.bundle_location_fn: Optional[Callable[[], str]] = None
         self.batch_csv_location_fn: Optional[Callable[[], str]] = None
+        self.configuration = Configuration(
+            host=endpoint or SCALE_LAUNCH_V1_ENDPOINT,
+            discard_unknown_keys=True,
+            username=api_key,
+            password="",
+        )
 
     def __repr__(self):
         return f"LaunchClient(connection='{self.connection}')"
@@ -117,11 +217,10 @@ class LaunchClient:
     def __eq__(self, other):
         return self.connection == other.connection
 
-    def register_upload_bundle_fn(
-        self, upload_bundle_fn: Callable[[str, str], None]
-    ):
+    def register_upload_bundle_fn(self, upload_bundle_fn: Callable[[str, str], None]):
         """
-        For self-hosted mode only. Registers a function that handles model bundle upload. This function is called as
+        For self-hosted mode only. Registers a function that handles model bundle upload. This
+        function is called as
 
             upload_bundle_fn(serialized_bundle, bundle_url)
 
@@ -131,150 +230,76 @@ class LaunchClient:
         See ``register_bundle_location_fn`` for more notes on the signature of ``upload_bundle_fn``
 
         Parameters:
-            upload_bundle_fn: Function that takes in a serialized bundle (bytes type), and uploads that bundle to an appropriate
-                location. Only needed for self-hosted mode.
+            upload_bundle_fn: Function that takes in a serialized bundle (bytes type),
+                and uploads that bundle to an appropriate location. Only needed for self-hosted mode.
         """
         self.upload_bundle_fn = upload_bundle_fn
 
-    def register_upload_batch_csv_fn(
-        self, upload_batch_csv_fn: Callable[[str, str], None]
-    ):
+    def register_upload_batch_csv_fn(self, upload_batch_csv_fn: Callable[[str, str], None]):
         """
-        For self-hosted mode only. Registers a function that handles batch text upload. This function is called as
+        For self-hosted mode only. Registers a function that handles batch text upload. This
+        function is called as
 
             upload_batch_csv_fn(csv_text, csv_url)
 
-        This function should directly write the contents of ``csv_text`` as a text string into ``csv_url``.
+        This function should directly write the contents of ``csv_text`` as a text string into
+        ``csv_url``.
 
         Parameters:
-            upload_batch_csv_fn: Function that takes in a csv text (string type), and uploads that bundle to an appropriate
-                location. Only needed for self-hosted mode.
+            upload_batch_csv_fn: Function that takes in a csv text (string type),
+                and uploads that bundle to an appropriate location. Only needed for self-hosted mode.
         """
         self.upload_batch_csv_fn = upload_batch_csv_fn
 
-    def register_bundle_location_fn(
-        self, bundle_location_fn: Callable[[], str]
-    ):
+    def register_bundle_location_fn(self, bundle_location_fn: Callable[[], str]):
         """
-        For self-hosted mode only. Registers a function that gives a location for a model bundle. Should give different
-        locations each time. This function is called as ``bundle_location_fn()``, and should return a ``bundle_url``
-        that ``register_upload_bundle_fn`` can take.
+        For self-hosted mode only. Registers a function that gives a location for a model bundle.
+        Should give different locations each time. This function is called as
+        ``bundle_location_fn()``, and should return a ``bundle_url`` that
+        ``register_upload_bundle_fn`` can take.
 
-        Strictly, ``bundle_location_fn()`` does not need to return a ``str``. The only requirement is that if
-        ``bundle_location_fn`` returns a value of type ``T``, then ``upload_bundle_fn()`` takes in an object of type T
-        as its second argument (i.e. bundle_url).
+        Strictly, ``bundle_location_fn()`` does not need to return a ``str``. The only
+        requirement is that if ``bundle_location_fn`` returns a value of type ``T``,
+        then ``upload_bundle_fn()`` takes in an object of type T as its second argument (i.e.
+        bundle_url).
 
         Parameters:
             bundle_location_fn: Function that generates bundle_urls for upload_bundle_fn.
         """
         self.bundle_location_fn = bundle_location_fn
 
-    def register_batch_csv_location_fn(
-        self, batch_csv_location_fn: Callable[[], str]
-    ):
+    def register_batch_csv_location_fn(self, batch_csv_location_fn: Callable[[], str]):
         """
-        For self-hosted mode only. Registers a function that gives a location for batch CSV inputs. Should give different
-        locations each time. This function is called as batch_csv_location_fn(), and should return a batch_csv_url that
-        upload_batch_csv_fn can take.
+        For self-hosted mode only. Registers a function that gives a location for batch CSV
+        inputs. Should give different locations each time. This function is called as
+        batch_csv_location_fn(), and should return a batch_csv_url that upload_batch_csv_fn can
+        take.
 
-        Strictly, batch_csv_location_fn() does not need to return a str. The only requirement is that if batch_csv_location_fn
-        returns a value of type T, then upload_batch_csv_fn() takes in an object of type T as its second argument
-        (i.e. batch_csv_url).
+        Strictly, batch_csv_location_fn() does not need to return a str. The only requirement is
+        that if batch_csv_location_fn returns a value of type T, then upload_batch_csv_fn() takes
+        in an object of type T as its second argument (i.e. batch_csv_url).
 
         Parameters:
             batch_csv_location_fn: Function that generates batch_csv_urls for upload_batch_csv_fn.
         """
         self.batch_csv_location_fn = batch_csv_location_fn
 
-    def register_endpoint_auth_decorator(self, endpoint_auth_decorator_fn):
-        """
-        For self-hosted mode only. Registers a function that modifies the endpoint creation payload to include
-        required fields for self-hosting.
-        """
-        self.endpoint_auth_decorator_fn = endpoint_auth_decorator_fn
+    def _upload_data(self, data: bytes) -> str:
+        if self.self_hosted:
+            if self.upload_bundle_fn is None:
+                raise ValueError("Upload_bundle_fn should be registered")
+            if self.bundle_location_fn is None:
+                raise ValueError("Need either bundle_location_fn to know where to upload bundles")
+            raw_bundle_url = self.bundle_location_fn()  # type: ignore
+            self.upload_bundle_fn(data, raw_bundle_url)  # type: ignore
+        else:
+            model_bundle_url = self.connection.post({}, MODEL_BUNDLE_SIGNED_URL_PATH)
+            s3_path = model_bundle_url["signedUrl"]
+            raw_bundle_url = f"s3://{model_bundle_url['bucket']}/{model_bundle_url['key']}"
+            requests.put(s3_path, data=data)
+        return raw_bundle_url
 
-    def create_model_bundle_from_dirs(
-        self,
-        model_bundle_name: str,
-        base_paths: List[str],
-        requirements_path: str,
-        env_params: Dict[str, str],
-        load_predict_fn_module_path: str,
-        load_model_fn_module_path: str,
-        app_config: Optional[Union[Dict[str, Any], str]] = None,
-    ) -> ModelBundle:
-        """
-        Packages up code from one or more local filesystem folders and uploads them as a bundle to Scale Launch.
-        In this mode, a bundle is just local code instead of a serialized object.
-
-        For example, if you have a directory structure like so, and your current working directory is also ``my_root``:
-
-        .. code-block:: text
-
-           my_root/
-               my_module1/
-                   __init__.py
-                   ...files and directories
-                   my_inference_file.py
-               my_module2/
-                   __init__.py
-                   ...files and directories
-
-        then calling ``create_model_bundle_from_dirs`` with ``base_paths=["my_module1", "my_module2"]`` essentially
-        creates a zip file without the root directory, e.g.:
-
-        .. code-block:: text
-
-           my_module1/
-               __init__.py
-               ...files and directories
-               my_inference_file.py
-           my_module2/
-               __init__.py
-               ...files and directories
-
-        and these contents will be unzipped relative to the server side application root. Bear these points in mind when
-        referencing Python module paths for this bundle. For instance, if ``my_inference_file.py`` has ``def f(...)``
-        as the desired inference loading function, then the `load_predict_fn_module_path` argument should be
-        `my_module1.my_inference_file.f`.
-
-
-        Parameters:
-            model_bundle_name: The name of the model bundle you want to create. The name must be unique across all
-                bundles that you own.
-
-            base_paths: The paths on the local filesystem where the bundle code lives.
-
-            requirements_path: A path on the local filesystem where a ``requirements.txt`` file lives.
-
-            env_params: A dictionary that dictates environment information e.g.
-                the use of pytorch or tensorflow, which base image tag to use, etc.
-                Specifically, the dictionary should contain the following keys:
-
-                - ``framework_type``: either ``tensorflow`` or ``pytorch``.
-                - PyTorch fields:
-                    - ``pytorch_image_tag``: An image tag for the ``pytorch`` docker base image. The list of tags
-                        can be found from https://hub.docker.com/r/pytorch/pytorch/tags.
-                    - Example:
-
-                    .. code-block:: python
-
-                       {
-                           "framework_type": "pytorch",
-                           "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime"
-                       }
-
-            load_predict_fn_module_path: A python module path for a function that, when called with the output of
-                load_model_fn_module_path, returns a function that carries out inference.
-
-            load_model_fn_module_path: A python module path for a function that returns a model. The output feeds into
-                the function located at load_predict_fn_module_path.
-
-            app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
-        """
-        with open(requirements_path, "r", encoding="utf-8") as req_f:
-            requirements = req_f.read().splitlines()
-
+    def _get_bundle_url_from_base_paths(self, base_paths: List[str]) -> str:
         tmpdir = tempfile.mkdtemp()
         try:
             zip_path = os.path.join(tmpdir, "bundle.zip")
@@ -284,24 +309,639 @@ class LaunchClient:
         finally:
             shutil.rmtree(tmpdir)
 
-        if self.self_hosted:
-            if self.upload_bundle_fn is None:
-                raise ValueError("Upload_bundle_fn should be registered")
-            if self.bundle_location_fn is None:
-                raise ValueError(
-                    "Need either bundle_location_fn to know where to upload bundles"
-                )
-            raw_bundle_url = self.bundle_location_fn()  # type: ignore
-            self.upload_bundle_fn(data, raw_bundle_url)  # type: ignore
-        else:
-            model_bundle_url = self.connection.post(
-                {}, MODEL_BUNDLE_SIGNED_URL_PATH
+        raw_bundle_url = self._upload_data(data)
+        return raw_bundle_url
+
+    def _upload_model_bundle(
+        self,
+        load_model_fn: Callable,
+        load_predict_fn: Callable,
+        bundle_metadata: Dict[str, Any],
+    ):
+        bundle = dict(load_model_fn=load_model_fn, load_predict_fn=load_predict_fn)
+        bundle_metadata["load_predict_fn"] = inspect.getsource(load_predict_fn)  # type: ignore
+        bundle_metadata["load_model_fn"] = inspect.getsource(load_model_fn)  # type: ignore
+        serialized_bundle = cloudpickle.dumps(bundle)
+        bundle_location = self._upload_data(data=serialized_bundle)
+        return bundle_location
+
+    def _upload_schemas(self, request_schema: Type[BaseModel], response_schema: Type[BaseModel]) -> str:
+        model_definitions = get_model_definitions(
+            request_schema=request_schema,
+            response_schema=response_schema,
+        )
+        model_definitions_encoded = json.dumps(model_definitions).encode()
+        return self._upload_data(model_definitions_encoded)
+
+    def create_model_bundle_from_callable_v2(
+        self,
+        *,
+        model_bundle_name: str,
+        load_predict_fn: Callable[[LaunchModel_T], Callable[[Any], Any]],
+        load_model_fn: Callable[[], LaunchModel_T],
+        request_schema: Type[BaseModel],
+        response_schema: Type[BaseModel],
+        requirements: Optional[List[str]] = None,
+        pytorch_image_tag: Optional[str] = None,
+        tensorflow_version: Optional[str] = None,
+        custom_base_image_repository: Optional[str] = None,
+        custom_base_image_tag: Optional[str] = None,
+        app_config: Optional[Union[Dict[str, Any], str]] = None,
+    ) -> CreateModelBundleV2Response:
+        """
+        Uploads and registers a model bundle to Scale Launch.
+
+        Parameters:
+            model_bundle_name: Name of the model bundle.
+
+            load_predict_fn: Function that takes in a model and returns a predict function.
+                When your model bundle is deployed, this predict function will be called as follows:
+                ```
+                input = {"input": "some input"} # or whatever your request schema is.
+
+                def load_model_fn():
+                    # load model
+                    return model
+
+                def load_predict_fn(model, app_config=None):
+                    def predict_fn(input):
+                        # do pre-processing
+                        output = model(input)
+                        # do post-processing
+                        return output
+                    return predict_fn
+
+                predict_fn = load_predict_fn(load_model_fn(), app_config=optional_app_config)
+                response = predict_fn(input)
+                ```
+
+            load_model_fn: A function that, when run, loads a model.
+
+            request_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the request body for the model bundle's endpoint.
+
+            response_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the response for the model bundle's endpoint.
+
+            requirements: List of pip requirements.
+
+            pytorch_image_tag: The image tag for the PyTorch image that will be used to run the
+                bundle. Exactly one of ``pytorch_image_tag``, ``tensorflow_version``, or
+                ``custom_base_image_repository`` must be specified.
+
+            tensorflow_version: The version of TensorFlow that will be used to run the bundle.
+                If not specified, the default version will be used. Exactly one of
+                ``pytorch_image_tag``, ``tensorflow_version``, or ``custom_base_image_repository``
+                must be specified.
+
+            custom_base_image_repository: The repository for a custom base image that will be
+                used to run the bundle. If not specified, the default base image will be used.
+                Exactly one of ``pytorch_image_tag``, ``tensorflow_version``, or
+                ``custom_base_image_repository`` must be specified.
+
+            custom_base_image_tag: The tag for a custom base image that will be used to run the
+                bundle. Must be specified if ``custom_base_image_repository`` is specified.
+
+            app_config: An optional dictionary of configuration values that will be passed to the
+                bundle when it is run. These values can be accessed by the bundle via the
+                ``app_config`` global variable.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundle_id``: The ID of the created model bundle.
+        """
+        nonnull_requirements = requirements or []
+        bundle_metadata: Dict[str, Any] = {}
+        bundle_location = self._upload_model_bundle(load_model_fn, load_predict_fn, bundle_metadata)
+        schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
+        framework = _get_model_bundle_framework(
+            pytorch_image_tag=pytorch_image_tag,
+            tensorflow_version=tensorflow_version,
+            custom_base_image_repository=custom_base_image_repository,
+            custom_base_image_tag=custom_base_image_tag,
+        )
+        flavor = CloudpickleArtifactFlavor(
+            **dict_not_none(
+                flavor="cloudpickle_artifact",
+                load_predict_fn=inspect.getsource(load_predict_fn),
+                load_model_fn=inspect.getsource(load_model_fn),
+                framework=framework,
+                requirements=nonnull_requirements,
+                app_config=app_config,
+                location=bundle_location,
             )
-            s3_path = model_bundle_url["signedUrl"]
-            raw_bundle_url = (
-                f"s3://{model_bundle_url['bucket']}/{model_bundle_url['key']}"
+        )
+        create_model_bundle_request = CreateModelBundleV2Request(
+            name=model_bundle_name,
+            schema_location=schema_location,
+            flavor=flavor,
+        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
+                body=create_model_bundle_request,
+                skip_deserialization=True,
             )
-            requests.put(s3_path, data=data)
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def create_model_bundle_from_dirs_v2(
+        self,
+        *,
+        model_bundle_name: str,
+        base_paths: List[str],
+        load_predict_fn_module_path: str,
+        load_model_fn_module_path: str,
+        request_schema: Type[BaseModel],
+        response_schema: Type[BaseModel],
+        requirements_path: Optional[str] = None,
+        pytorch_image_tag: Optional[str] = None,
+        tensorflow_version: Optional[str] = None,
+        custom_base_image_repository: Optional[str] = None,
+        custom_base_image_tag: Optional[str] = None,
+        app_config: Optional[Dict[str, Any]] = None,
+    ) -> CreateModelBundleV2Response:
+        """
+        Packages up code from one or more local filesystem folders and uploads them as a bundle
+        to Scale Launch. In this mode, a bundle is just local code instead of a serialized object.
+
+        For example, if you have a directory structure like so, and your current working
+        directory is ``my_root``:
+
+        ```text
+           my_root/
+               my_module1/
+                   __init__.py
+                   ...files and directories
+                   my_inference_file.py
+               my_module2/
+                   __init__.py
+                   ...files and directories
+        ```
+
+        then calling ``create_model_bundle_from_dirs_v2`` with ``base_paths=["my_module1",
+        "my_module2"]`` essentially creates a zip file without the root directory, e.g.:
+
+        ```text
+           my_module1/
+               __init__.py
+               ...files and directories
+               my_inference_file.py
+           my_module2/
+               __init__.py
+               ...files and directories
+        ```
+
+        and these contents will be unzipped relative to the server side application root. Bear
+        these points in mind when referencing Python module paths for this bundle. For instance,
+        if ``my_inference_file.py`` has ``def f(...)`` as the desired inference loading function,
+        then the `load_predict_fn_module_path` argument should be `my_module1.my_inference_file.f`.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to create.
+
+            base_paths: A list of paths to directories that will be zipped up and uploaded
+                as a bundle. Each path must be relative to the current working directory.
+
+            load_predict_fn_module_path: The Python module path to the function that will be
+                used to load the model for inference. This function should take in a path to a
+                model directory, and return a model object. The model object should be pickleable.
+
+            load_model_fn_module_path: The Python module path to the function that will be
+                used to load the model for training. This function should take in a path to a
+                model directory, and return a model object. The model object should be pickleable.
+
+            request_schema: A Pydantic model that defines the request schema for the bundle.
+
+            response_schema: A Pydantic model that defines the response schema for the bundle.
+
+            requirements_path: Path to a requirements.txt file that will be used to install
+                dependencies for the bundle. This file must be relative to the current working
+                directory.
+
+            pytorch_image_tag: The image tag for the PyTorch image that will be used to run the
+                bundle. Exactly one of ``pytorch_image_tag``, ``tensorflow_version``, or
+                ``custom_base_image_repository`` must be specified.
+
+            tensorflow_version: The version of TensorFlow that will be used to run the bundle.
+                If not specified, the default version will be used. Exactly one of
+                ``pytorch_image_tag``, ``tensorflow_version``, or ``custom_base_image_repository``
+                must be specified.
+
+            custom_base_image_repository: The repository for a custom base image that will be
+                used to run the bundle. If not specified, the default base image will be used.
+                Exactly one of ``pytorch_image_tag``, ``tensorflow_version``, or
+                ``custom_base_image_repository`` must be specified.
+
+            custom_base_image_tag: The tag for a custom base image that will be used to run the
+                bundle. Must be specified if ``custom_base_image_repository`` is specified.
+
+            app_config: An optional dictionary of configuration values that will be passed to the
+                bundle when it is run. These values can be accessed by the bundle via the
+                ``app_config`` global variable.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundle_id``: The ID of the created model bundle.
+        """
+        requirements = []
+        if requirements_path is not None:
+            with open(requirements_path, "r", encoding="utf-8") as req_f:
+                requirements = req_f.read().splitlines()
+        bundle_location = self._get_bundle_url_from_base_paths(base_paths)
+        schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
+        framework = _get_model_bundle_framework(
+            pytorch_image_tag=pytorch_image_tag,
+            tensorflow_version=tensorflow_version,
+            custom_base_image_repository=custom_base_image_repository,
+            custom_base_image_tag=custom_base_image_tag,
+        )
+        flavor = ZipArtifactFlavor(
+            **dict_not_none(
+                flavor="zip_artifact",
+                load_predict_fn_module_path=load_predict_fn_module_path,
+                load_model_fn_module_path=load_model_fn_module_path,
+                framework=framework,
+                requirements=requirements,
+                app_config=app_config,
+                location=bundle_location,
+            )
+        )
+        create_model_bundle_request = CreateModelBundleV2Request(
+            name=model_bundle_name,
+            schema_location=schema_location,
+            flavor=flavor,
+        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
+                body=create_model_bundle_request,
+                skip_deserialization=True,
+            )
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def create_model_bundle_from_runnable_image_v2(
+        self,
+        *,
+        model_bundle_name: str,
+        request_schema: Type[BaseModel],
+        response_schema: Type[BaseModel],
+        repository: str,
+        tag: str,
+        command: List[str],
+        env: Dict[str, str],
+        readiness_initial_delay_seconds: int,
+    ) -> CreateModelBundleV2Response:
+        """
+        Create a model bundle from a runnable image. The specified ``command`` must start a process
+        that will listen for requests on port 5005 using HTTP.
+
+        Inference requests must be served at the `POST /predict` route while the `GET /readyz` route is a healthcheck.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to create.
+
+            request_schema: A Pydantic model that defines the request schema for the bundle.
+
+            response_schema: A Pydantic model that defines the response schema for the bundle.
+
+            repository: The name of the Docker repository for the runnable image.
+
+            tag: The tag for the runnable image.
+
+            command: The command that will be used to start the process that listens for requests.
+
+            env: A dictionary of environment variables that will be passed to the bundle when it
+                is run.
+
+            readiness_initial_delay_seconds: The number of seconds to wait for the HTTP server to become ready and
+                successfully respond on its healthcheck.
+
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundle_id``: The ID of the created model bundle.
+        """
+        schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
+        flavor = RunnableImageFlavor(
+            **dict_not_none(
+                flavor="runnable_image",
+                repository=repository,
+                tag=tag,
+                command=command,
+                env=env,
+                protocol="http",
+                readiness_initial_delay_seconds=readiness_initial_delay_seconds,
+            )
+        )
+        create_model_bundle_request = CreateModelBundleV2Request(
+            name=model_bundle_name,
+            schema_location=schema_location,
+            flavor=flavor,
+        )
+
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
+                body=create_model_bundle_request,
+                skip_deserialization=True,
+            )
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def create_model_bundle_from_triton_enhanced_runnable_image_v2(
+        self,
+        *,
+        model_bundle_name: str,
+        request_schema: Type[BaseModel],
+        response_schema: Type[BaseModel],
+        repository: str,
+        tag: str,
+        command: List[str],
+        env: Dict[str, str],
+        readiness_initial_delay_seconds: int,
+        triton_model_repository: str,
+        triton_model_replicas: Optional[Dict[str, str]],
+        triton_num_cpu: float,
+        triton_commit_tag: str,
+        triton_storage: Optional[str],
+        triton_memory: Optional[str],
+        triton_readiness_initial_delay_seconds: int,
+    ) -> CreateModelBundleV2Response:
+        """
+        Create a model bundle from a runnable image and a tritonserver image.
+
+        Same requirements as :param:`create_model_bundle_from_runnable_image_v2` with additional constraints necessary
+        for configuring tritonserver's execution.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to create.
+
+            request_schema: A Pydantic model that defines the request schema for the bundle.
+
+            response_schema: A Pydantic model that defines the response schema for the bundle.
+
+            repository: The name of the Docker repository for the runnable image.
+
+            tag: The tag for the runnable image.
+
+            command: The command that will be used to start the process that listens for requests.
+
+            env: A dictionary of environment variables that will be passed to the bundle when it
+                is run.
+
+            readiness_initial_delay_seconds: The number of seconds to wait for the HTTP server to
+                become ready and successfully respond on its healthcheck.
+
+            triton_model_repository: The S3 prefix that contains the contents of the model
+                repository, formatted according to
+                https://github.com/triton-inference-server/server/blob/main/docs/user_guide/model_repository.md
+
+            triton_model_replicas: If supplied, the name and number of replicas to make for each
+                model.
+
+            triton_num_cpu: Number of CPUs, fractional, to allocate to tritonserver.
+
+            triton_commit_tag: The image tag of the specific trionserver version.
+
+            triton_storage: Amount of storage space to allocate for the tritonserver container.
+
+            triton_memory: Amount of memory to allocate for the tritonserver container.
+
+            triton_readiness_initial_delay_seconds: Like readiness_initial_delay_seconds, but for
+                tritonserver's own healthcheck.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundle_id``: The ID of the created model bundle.
+        """
+        schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
+        flavor = TritonEnhancedRunnableImageFlavor(
+            **dict_not_none(
+                flavor="triton_enhanced_runnable_image",
+                repository=repository,
+                tag=tag,
+                command=command,
+                env=env,
+                protocol="http",
+                readiness_initial_delay_seconds=readiness_initial_delay_seconds,
+                triton_model_repository=triton_model_repository,
+                triton_model_replicas=triton_model_replicas,
+                triton_num_cpu=triton_num_cpu,
+                triton_commit_tag=triton_commit_tag,
+                triton_storage=triton_storage,
+                triton_memory=triton_memory,
+                triton_readiness_initial_delay_seconds=triton_readiness_initial_delay_seconds,
+            )
+        )
+        create_model_bundle_request = CreateModelBundleV2Request(
+            name=model_bundle_name,
+            schema_location=schema_location,
+            flavor=flavor,
+        )
+
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
+                body=create_model_bundle_request,
+                skip_deserialization=True,
+            )
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def get_model_bundle_v2(self, model_bundle_id: str) -> ModelBundleV2Response:
+        """
+        Get a model bundle.
+
+        Parameters:
+            model_bundle_id: The ID of the model bundle you want to get.
+
+        Returns:
+            An object containing the following fields:
+
+                - ``id``: The ID of the model bundle.
+                - ``name``: The name of the model bundle.
+                - ``flavor``: The flavor of the model bundle. Either `RunnableImage`,
+                    `CloudpickleArtifact`, `ZipArtifact`, or `TritonEnhancedRunnableImageFlavor`.
+                - ``created_at``: The time the model bundle was created.
+                - ``metadata``: A dictionary of metadata associated with the model bundle.
+                - ``model_artifact_ids``: A list of IDs of model artifacts associated with the
+                    bundle.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"model_bundle_id": model_bundle_id})
+            response = api_instance.get_model_bundle_v2_model_bundles_model_bundle_id_get(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = ModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def get_latest_model_bundle_v2(self, model_bundle_name: str) -> ModelBundleV2Response:
+        """
+        Get the latest version of a model bundle.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to get.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``id``: The ID of the model bundle.
+                - ``name``: The name of the model bundle.
+                - ``schema_location``: The location of the schema for the model bundle.
+                - ``flavor``: The flavor of the model bundle. Either `RunnableImage`,
+                    `CloudpickleArtifact`, `ZipArtifact`, or `TritonEnhancedRunnableImageFlavor`.
+                - ``created_at``: The time the model bundle was created.
+                - ``metadata``: A dictionary of metadata associated with the model bundle.
+                - ``model_artifact_ids``: A list of IDs of model artifacts associated with the
+                    bundle.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            query_params = frozendict({"model_name": model_bundle_name})
+            response = api_instance.get_latest_model_bundle_v2_model_bundles_latest_get(  # type: ignore
+                query_params=query_params,
+                skip_deserialization=True,
+            )
+            resp = ModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def list_model_bundles_v2(self) -> ListModelBundlesV2Response:
+        """
+        List all model bundles.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundles``: A list of model bundles. Each model bundle is an object.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.list_model_bundles_v2_model_bundles_get(skip_deserialization=True)
+            resp = ListModelBundlesV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def clone_model_bundle_with_changes_v2(
+        self,
+        original_model_bundle_id: str,
+        new_app_config: Optional[Dict[str, Any]] = None,
+    ) -> CreateModelBundleV2Response:
+        """
+        Clone a model bundle with an optional new ``app_config``.
+
+        Parameters:
+            original_model_bundle_id: The ID of the model bundle you want to clone.
+
+            new_app_config: A dictionary of new app config values to use for the cloned model.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundle_id``: The ID of the cloned model bundle.
+        """
+        clone_model_bundle_request = CloneModelBundleV2Request(
+            **dict_not_none(
+                original_model_bundle_id=original_model_bundle_id,
+                new_app_config=new_app_config,
+            )
+        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post(
+                body=clone_model_bundle_request,
+                skip_deserialization=True,
+            )
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    @deprecated(deprecated_in="1.0.0", details="Use create_model_bundle_from_dirs_v2.")
+    def create_model_bundle_from_dirs(
+        self,
+        *,
+        model_bundle_name: str,
+        base_paths: List[str],
+        requirements_path: str,
+        env_params: Dict[str, str],
+        load_predict_fn_module_path: str,
+        load_model_fn_module_path: str,
+        app_config: Optional[Union[Dict[str, Any], str]] = None,
+        request_schema: Optional[Type[BaseModel]] = None,
+        response_schema: Optional[Type[BaseModel]] = None,
+    ) -> ModelBundle:
+        """
+        Warning:
+            This method is deprecated. Use
+            [``create_model_bundle_from_dirs_v2``](./#launch.client.LaunchClient.create_model_bundle_from_dirs_v2)
+            instead.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to create. The name
+                must be unique across all bundles that you own.
+
+            base_paths: The paths on the local filesystem where the bundle code lives.
+
+            requirements_path: A path on the local filesystem where a ``requirements.txt`` file
+                lives.
+
+            env_params: A dictionary that dictates environment information e.g.
+                the use of pytorch or tensorflow, which base image tag to use, etc.
+                Specifically, the dictionary should contain the following keys:
+
+                - ``framework_type``: either ``tensorflow`` or ``pytorch``.
+                - PyTorch fields:
+                    - ``pytorch_image_tag``: An image tag for the ``pytorch`` docker base image. The
+                        list of tags can be found from https://hub.docker.com/r/pytorch/pytorch/tags
+
+                Example:
+                   ```py
+                   {
+                       "framework_type": "pytorch",
+                       "pytorch_image_tag": "1.10.0-cuda11.3-cudnn8-runtime",
+                   }
+                   ```
+
+            load_predict_fn_module_path: A python module path for a function that, when called
+                with the output of load_model_fn_module_path, returns a function that carries out
+                inference.
+
+            load_model_fn_module_path: A python module path for a function that returns a model.
+                The output feeds into the function located at load_predict_fn_module_path.
+
+            app_config: Either a Dictionary that represents a YAML file contents or a local path
+                to a YAML file.
+
+            request_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the request body for the model bundle's endpoint.
+
+            response_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the response for the model bundle's endpoint.
+                Note: If request_schema is specified, then response_schema must also be specified.
+        """
+        with open(requirements_path, "r", encoding="utf-8") as req_f:
+            requirements = req_f.read().splitlines()
+
+        raw_bundle_url = self._get_bundle_url_from_base_paths(base_paths)
+
+        schema_location = None
+        if bool(request_schema) ^ bool(response_schema):
+            raise ValueError("If request_schema is specified, then response_schema must also be specified.")
+        if request_schema is not None and response_schema is not None:
+            schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
 
         bundle_metadata = {
             "load_predict_fn_module_path": load_predict_fn_module_path,
@@ -319,91 +959,104 @@ class LaunchClient:
             bundle_metadata=bundle_metadata,
             requirements=requirements,
             env_params=env_params,
+            schema_location=schema_location,
         )
         _add_app_config_to_bundle_create_payload(payload, app_config)
 
-        self.connection.post(
-            payload=payload,
-            route="model_bundle",
-        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            framework = ModelBundleFrameworkType(env_params["framework_type"])
+            env_params_copy = env_params.copy()
+            env_params_copy["framework_type"] = framework  # type: ignore
+            env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)  # type: ignore
+            payload = dict_not_none(
+                env_params=env_params_obj,
+                location=raw_bundle_url,
+                name=model_bundle_name,
+                requirements=requirements,
+                packaging_type=ModelBundlePackagingType("zip"),
+                metadata=bundle_metadata,
+                app_config=payload.get("app_config"),
+                schema_location=schema_location,
+            )
+            create_model_bundle_request = CreateModelBundleV1Request(**payload)  # type: ignore
+            api_instance.create_model_bundle_v1_model_bundles_post(
+                body=create_model_bundle_request,
+                skip_deserialization=True,
+            )
         return ModelBundle(model_bundle_name)
 
+    @deprecated(deprecated_in="1.0.0", details="Use create_model_bundle_from_callable_v2.")
     def create_model_bundle(  # pylint: disable=too-many-statements
         self,
         model_bundle_name: str,
         env_params: Dict[str, str],
         *,
-        load_predict_fn: Optional[
-            Callable[[LaunchModel_T], Callable[[Any], Any]]
-        ] = None,
+        load_predict_fn: Optional[Callable[[LaunchModel_T], Callable[[Any], Any]]] = None,
         predict_fn_or_cls: Optional[Callable[[Any], Any]] = None,
         requirements: Optional[List[str]] = None,
         model: Optional[LaunchModel_T] = None,
         load_model_fn: Optional[Callable[[], LaunchModel_T]] = None,
-        bundle_url: Optional[str] = None,
         app_config: Optional[Union[Dict[str, Any], str]] = None,
         globals_copy: Optional[Dict[str, Any]] = None,
+        request_schema: Optional[Type[BaseModel]] = None,
+        response_schema: Optional[Type[BaseModel]] = None,
     ) -> ModelBundle:
         """
-        Uploads and registers a model bundle to Scale Launch.
-
-        A model bundle consists of exactly one of the following:
-
-        - ``predict_fn_or_cls``
-        - ``load_predict_fn + model``
-        - ``load_predict_fn + load_model_fn``
-
-        Pre/post-processing code can be included inside load_predict_fn/model or in predict_fn_or_cls call.
+        Warning:
+            This method is deprecated. Use
+            [`create_model_bundle_from_callable_v2`](./#create_model_bundle_from_callable_v2) instead.
 
         Parameters:
-            model_bundle_name: The name of the model bundle you want to create. The name must be unique across all
-                bundles that you own.
+            model_bundle_name: The name of the model bundle you want to create. The name
+                must be unique across all bundles that you own.
 
-            predict_fn_or_cls: ``Function`` or a ``Callable`` class that runs end-to-end (pre/post processing and model inference) on the call.
-                i.e. ``predict_fn_or_cls(REQUEST) -> RESPONSE``.
+            predict_fn_or_cls: `Function` or a ``Callable`` class that runs end-to-end
+                (pre/post processing and model inference) on the call. i.e.
+                ``predict_fn_or_cls(REQUEST) -> RESPONSE``.
 
             model: Typically a trained Neural Network, e.g. a Pytorch module.
 
                 Exactly one of ``model`` and ``load_model_fn`` must be provided.
 
-            load_model_fn: A function that, when run, loads a model. This function is essentially a deferred
-                wrapper around the ``model`` argument.
+            load_model_fn: A function that, when run, loads a model. This function is essentially
+                a deferred wrapper around the ``model`` argument.
 
                 Exactly one of ``model`` and ``load_model_fn`` must be provided.
 
-            load_predict_fn: Function that, when called with a model, returns a function that carries out inference.
+            load_predict_fn: Function that, when called with a model, returns a function that
+                carries out inference.
 
                 If ``model`` is specified, then this is equivalent
                 to:
                     ``load_predict_fn(model, app_config=optional_app_config]) -> predict_fn``
 
-                Otherwise, if ``load_model_fn`` is specified, then this is equivalent
-                to:
-                    ``load_predict_fn(load_model_fn(), app_config=optional_app_config]) -> predict_fn``
+                Otherwise, if ``load_model_fn`` is specified, then this is equivalent to:
+                ``load_predict_fn(load_model_fn(), app_config=optional_app_config]) -> predict_fn``
 
                 In both cases, ``predict_fn`` is then the inference function, i.e.:
                     ``predict_fn(REQUEST) -> RESPONSE``
 
 
-            requirements: A list of python package requirements, where each list element is of the form
-                ``<package_name>==<package_version>``, e.g.
+            requirements: A list of python package requirements, where each list element is of
+                the form ``<package_name>==<package_version>``, e.g.
 
                 ``["tensorflow==2.3.0", "tensorflow-hub==0.11.0"]``
 
-                If you do not pass in a value for ``requirements``, then you must pass in ``globals()`` for the
-                ``globals_copy`` argument.
+                If you do not pass in a value for ``requirements``, then you must pass in
+                ``globals()`` for the ``globals_copy`` argument.
 
-            app_config: Either a Dictionary that represents a YAML file contents or a local path to a YAML file.
+            app_config: Either a Dictionary that represents a YAML file contents or a local path
+                to a YAML file.
 
             env_params: A dictionary that dictates environment information e.g.
                 the use of pytorch or tensorflow, which base image tag to use, etc.
                 Specifically, the dictionary should contain the following keys:
 
-                - ``framework_type``: either ``tensorflow`` or ``pytorch``.
-                - PyTorch fields:
-                    - ``pytorch_image_tag``: An image tag for the ``pytorch`` docker base image. The list of tags
-                        can be found from https://hub.docker.com/r/pytorch/pytorch/tags.
-                    - Example:
+                - ``framework_type``: either ``tensorflow`` or ``pytorch``. - PyTorch fields: -
+                ``pytorch_image_tag``: An image tag for the ``pytorch`` docker base image. The
+                list of tags can be found from https://hub.docker.com/r/pytorch/pytorch/tags. -
+                Example:
 
                     .. code-block:: python
 
@@ -415,10 +1068,15 @@ class LaunchClient:
                 - Tensorflow fields:
                     - ``tensorflow_version``: Version of tensorflow, e.g. ``"2.3.0"``.
 
-            globals_copy: Dictionary of the global symbol table. Normally provided by ``globals()`` built-in function.
+            globals_copy: Dictionary of the global symbol table. Normally provided by
+                ``globals()`` built-in function.
 
-            bundle_url: (Only used in self-hosted mode.) The desired location of bundle.
-                Overrides any value given by ``self.bundle_location_fn``
+            request_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the request body for the model bundle's endpoint.
+
+            response_schema: A pydantic model that represents the request schema for the model
+                bundle. This is used to validate the response for the model bundle's endpoint.
+                Note: If request_schema is specified, then response_schema must also be specified.
         """
         # TODO(ivan): remove `disable=too-many-branches` when get rid of `load_*` functions
         # pylint: disable=too-many-branches
@@ -431,17 +1089,17 @@ class LaunchClient:
 
         if sum(check_args) != 1:
             raise ValueError(
-                "A model bundle consists of exactly {predict_fn_or_cls}, {load_predict_fn + model}, or {load_predict_fn + load_model_fn}."
+                "A model bundle consists of exactly {predict_fn_or_cls}, {load_predict_fn + "
+                "model}, or {load_predict_fn + load_model_fn}. "
             )
-        # TODO should we try to catch when people intentionally pass both model and load_model_fn as None?
+        # TODO should we try to catch when people intentionally pass both model and load_model_fn
+        #  as None?
 
         if requirements is None:
-            # TODO explore: does globals() actually work as expected? Should we use globals_copy instead?
+            # TODO explore: does globals() actually work as expected? Should we use globals_copy
+            #  instead?
             requirements_inferred = find_packages_from_imports(globals())
-            requirements = [
-                f"{key}=={value}"
-                for key, value in requirements_inferred.items()
-            ]
+            requirements = [f"{key}=={value}" for key, value in requirements_inferred.items()]
             logger.info(
                 "Using \n%s\n for model bundle %s",
                 requirements,
@@ -457,9 +1115,7 @@ class LaunchClient:
                     continue
                 cloudpickle.register_pickle_by_value(module)
 
-        bundle: Union[
-            Callable[[Any], Any], Dict[str, Any], None
-        ]  # validate bundle
+        bundle: Union[Callable[[Any], Any], Dict[str, Any], None]  # validate bundle
         bundle_metadata = {}
         # Create bundle
         if predict_fn_or_cls:
@@ -471,44 +1127,25 @@ class LaunchClient:
             bundle_metadata["predict_fn_or_cls"] = source_code
         elif model is not None:
             bundle = dict(model=model, load_predict_fn=load_predict_fn)
-            bundle_metadata["load_predict_fn"] = inspect.getsource(
-                load_predict_fn  # type: ignore
-            )
+            bundle_metadata["load_predict_fn"] = inspect.getsource(load_predict_fn)  # type: ignore
         else:
-            bundle = dict(
-                load_model_fn=load_model_fn, load_predict_fn=load_predict_fn
-            )
-            bundle_metadata["load_predict_fn"] = inspect.getsource(
-                load_predict_fn  # type: ignore
-            )
-            bundle_metadata["load_model_fn"] = inspect.getsource(
-                load_model_fn  # type: ignore
-            )
+            bundle = dict(load_model_fn=load_model_fn, load_predict_fn=load_predict_fn)
+            bundle_metadata["load_predict_fn"] = inspect.getsource(load_predict_fn)  # type: ignore
+            bundle_metadata["load_model_fn"] = inspect.getsource(load_model_fn)  # type: ignore
 
         serialized_bundle = cloudpickle.dumps(bundle)
+        raw_bundle_url = self._upload_data(data=serialized_bundle)
 
-        if self.self_hosted:
-            if self.upload_bundle_fn is None:
-                raise ValueError("Upload_bundle_fn should be registered")
-            if self.bundle_location_fn is None and bundle_url is None:
-                raise ValueError(
-                    "Need either bundle_location_fn or bundle_url to know where to upload bundles"
-                )
-            if bundle_url is None:
-                bundle_url = self.bundle_location_fn()  # type: ignore
-            self.upload_bundle_fn(serialized_bundle, bundle_url)
-            raw_bundle_url = bundle_url
-        else:
-            # Grab a signed url to make upload to
-            model_bundle_s3_url = self.connection.post(
-                {}, MODEL_BUNDLE_SIGNED_URL_PATH
+        schema_location = None
+        if bool(request_schema) ^ bool(response_schema):
+            raise ValueError("If request_schema is specified, then response_schema must also be specified.")
+        if request_schema is not None and response_schema is not None:
+            model_definitions = get_model_definitions(
+                request_schema=request_schema,
+                response_schema=response_schema,
             )
-            s3_path = model_bundle_s3_url["signedUrl"]
-            raw_bundle_url = f"s3://{model_bundle_s3_url['bucket']}/{model_bundle_s3_url['key']}"
-
-            # Make bundle upload
-
-            requests.put(s3_path, data=serialized_bundle)
+            model_definitions_encoded = json.dumps(model_definitions).encode()
+            schema_location = self._upload_data(model_definitions_encoded)
 
         payload = dict(
             packaging_type="cloudpickle",
@@ -517,20 +1154,39 @@ class LaunchClient:
             bundle_metadata=bundle_metadata,
             requirements=requirements,
             env_params=env_params,
+            schema_location=schema_location,
         )
 
         _add_app_config_to_bundle_create_payload(payload, app_config)
+        framework = ModelBundleFrameworkType(env_params["framework_type"])
+        env_params_copy = env_params.copy()
+        env_params_copy["framework_type"] = framework  # type: ignore
+        env_params_obj = ModelBundleEnvironmentParams(**env_params_copy)  # type: ignore
 
-        self.connection.post(
-            payload=payload,
-            route="model_bundle",
-        )  # TODO use return value somehow
-        # resp["data"]["bundle_name"] should equal model_bundle_name
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            payload = dict_not_none(
+                env_params=env_params_obj,
+                location=raw_bundle_url,
+                name=model_bundle_name,
+                requirements=requirements,
+                packaging_type=ModelBundlePackagingType("cloudpickle"),
+                metadata=bundle_metadata,
+                app_config=app_config,
+                schema_location=schema_location,
+            )
+            create_model_bundle_request = CreateModelBundleV1Request(**payload)  # type: ignore
+            api_instance.create_model_bundle_v1_model_bundles_post(
+                body=create_model_bundle_request,
+                skip_deserialization=True,
+            )
+        # resp["data"]["name"] should equal model_bundle_name
         # TODO check that a model bundle was created and no name collisions happened
         return ModelBundle(model_bundle_name)
 
     def create_model_endpoint(
         self,
+        *,
         endpoint_name: str,
         model_bundle: Union[ModelBundle, str],
         cpus: int = 3,
@@ -542,68 +1198,108 @@ class LaunchClient:
         per_worker: int = 10,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
+        high_priority: Optional[bool] = False,
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
+        default_callback_url: Optional[str] = None,
+        default_callback_auth_kind: Optional[Literal["basic", "mtls"]] = None,
+        default_callback_auth_username: Optional[str] = None,
+        default_callback_auth_password: Optional[str] = None,
+        default_callback_auth_cert: Optional[str] = None,
+        default_callback_auth_key: Optional[str] = None,
         update_if_exists: bool = False,
         labels: Optional[Dict[str, str]] = None,
     ) -> Optional[Endpoint]:
         """
-        Creates and registers a model endpoint in Scale Launch. The returned object is an instance of type ``Endpoint``,
-        which is a base class of either ``SyncEndpoint`` or ``AsyncEndpoint``. This is the object
-        to which you sent inference requests.
+        Creates and registers a model endpoint in Scale Launch. The returned object is an
+        instance of type ``Endpoint``, which is a base class of either ``SyncEndpoint`` or
+        ``AsyncEndpoint``. This is the object to which you sent inference requests.
 
         Parameters:
-            endpoint_name: The name of the model endpoint you want to create. The name must be unique across
-                all endpoints that you own.
+            endpoint_name: The name of the model endpoint you want to create. The name
+                must be unique across all endpoints that you own.
 
             model_bundle: The ``ModelBundle`` that the endpoint should serve.
 
-            cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater than or equal to 1.
+            cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater
+                than or equal to 1.
 
-            memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must be a positive
-                amount of memory.
+            memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must
+                be a positive amount of memory.
 
-            storage: Amount of local ephemeral storage each worker should get, e.g. "4Gi", "512Mi", etc. This must
-                be a positive amount of storage.
+            storage: Amount of local ephemeral storage each worker should get, e.g. "4Gi",
+                "512Mi", etc. This must be a positive amount of storage.
 
             gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
 
-            min_workers: The minimum number of workers. Must be greater than or equal to 0. This should be determined
-                by computing the minimum throughput of your workload and dividing it by the throughput of a single
-                worker. This field must be at least ``1`` for synchronous endpoints.
+            min_workers: The minimum number of workers. Must be greater than or equal to 0. This
+                should be determined by computing the minimum throughput of your workload and
+                dividing it by the throughput of a single worker. This field must be at least ``1``
+                for synchronous endpoints.
 
-            max_workers: The maximum number of workers. Must be greater than or equal to 0, and as well as
-                greater than or equal to ``min_workers``. This should be determined by computing the maximum throughput
-                of your workload and dividing it by the throughput of a single worker.
+            max_workers: The maximum number of workers. Must be greater than or equal to 0,
+                and as well as greater than or equal to ``min_workers``. This should be determined by
+                computing the maximum throughput of your workload and dividing it by the throughput
+                of a single worker.
 
-            per_worker: The maximum number of concurrent requests that an individual worker can service. Launch
-                automatically scales the number of workers for the endpoint so that each worker is processing
-                ``per_worker`` requests, subject to the limits defined by ``min_workers`` and ``max_workers``.
+            per_worker: The maximum number of concurrent requests that an individual worker can
+                service. Launch automatically scales the number of workers for the endpoint so that
+                each worker is processing ``per_worker`` requests, subject to the limits defined by
+                ``min_workers`` and ``max_workers``.
 
-                - If the average number of concurrent requests per worker is lower than ``per_worker``, then the number
-                  of workers will be reduced.
-                - Otherwise, if the average number of concurrent requests per worker is higher
-                  than ``per_worker``, then the number of workers will be increased to meet the elevated traffic.
+                - If the average number of concurrent requests per worker is lower than
+                ``per_worker``, then the number of workers will be reduced. - Otherwise,
+                if the average number of concurrent requests per worker is higher than
+                ``per_worker``, then the number of workers will be increased to meet the elevated
+                traffic.
 
                 Here is our recommendation for computing ``per_worker``:
 
-                1. Compute ``min_workers`` and ``max_workers`` per your minimum and maximum throughput requirements.
-                2. Determine a value for the maximum number of concurrent requests in the workload. Divide this number
-                by ``max_workers``. Doing this ensures that the number of workers will "climb" to ``max_workers``.
+                1. Compute ``min_workers`` and ``max_workers`` per your minimum and maximum
+                throughput requirements. 2. Determine a value for the maximum number of
+                concurrent requests in the workload. Divide this number by ``max_workers``. Doing
+                this ensures that the number of workers will "climb" to ``max_workers``.
 
-            gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Here are the
-                supported values:
+            gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu
+                requested. Here are the supported values:
 
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
 
             endpoint_type: Either ``"sync"`` or ``"async"``.
 
+            high_priority: Either ``True`` or ``False``. Enabling this will allow the created
+                endpoint to leverage the shared pool of prewarmed nodes for faster spinup time.
+
             post_inference_hooks: List of hooks to trigger after inference tasks are served.
 
-            update_if_exists: If ``True``, will attempt to update the endpoint if it exists. Otherwise, will
-                unconditionally try to create a new endpoint. Note that endpoint names for a given user must be unique,
-                so attempting to call this function with ``update_if_exists=False`` for an existing endpoint will raise
-                an error.
+            default_callback_url: The default callback url to use for async endpoints.
+                This can be overridden in the task parameters for each individual task.
+                post_inference_hooks must contain "callback" for the callback to be triggered.
+
+            default_callback_auth_kind: The default callback auth kind to use for async endpoints.
+                Either "basic" or "mtls". This can be overridden in the task parameters for each
+                individual task.
+
+            default_callback_auth_username: The default callback auth username to use. This only
+                applies if default_callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_password: The default callback auth password to use. This only
+                applies if default_callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_cert: The default callback auth cert to use. This only applies
+                if default_callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_key: The default callback auth key to use. This only applies
+                if default_callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
+            update_if_exists: If ``True``, will attempt to update the endpoint if it exists.
+                Otherwise, will unconditionally try to create a new endpoint. Note that endpoint
+                names for a given user must be unique, so attempting to call this function with
+                ``update_if_exists=False`` for an existing endpoint will raise an error.
 
             labels: An optional dictionary of key/value pairs to associate with this endpoint.
 
@@ -611,7 +1307,8 @@ class LaunchClient:
              A Endpoint object that can be used to make requests to the endpoint.
 
         """
-        if update_if_exists and self.get_model_endpoint(endpoint_name):
+        existing_endpoint = self.get_model_endpoint(endpoint_name)
+        if update_if_exists and existing_endpoint:
             self.edit_model_endpoint(
                 model_endpoint=endpoint_name,
                 model_bundle=model_bundle,
@@ -623,57 +1320,83 @@ class LaunchClient:
                 max_workers=max_workers,
                 per_worker=per_worker,
                 gpu_type=gpu_type,
+                high_priority=high_priority,
+                default_callback_url=default_callback_url,
+                default_callback_auth_kind=default_callback_auth_kind,
+                default_callback_auth_username=default_callback_auth_username,
+                default_callback_auth_password=default_callback_auth_password,
+                default_callback_auth_cert=default_callback_auth_cert,
+                default_callback_auth_key=default_callback_auth_key,
             )
-            # R1710: Either all return statements in a function should return an expression, or none of them should.
-            return None
+            return existing_endpoint
         else:
-            # Presumably, the user knows that the endpoint doesn't already exist, and so we can defer
-            # to the server to reject any duplicate creations.
+            # Presumably, the user knows that the endpoint doesn't already exist, and so we can
+            # defer to the server to reject any duplicate creations.
             logger.info("Creating new endpoint")
-            bundle_name = _model_bundle_to_name(model_bundle)
-            payload = dict(
-                endpoint_name=endpoint_name,
-                bundle_name=bundle_name,
-                cpus=cpus,
-                memory=memory,
-                storage=storage,
-                gpus=gpus,
-                gpu_type=gpu_type,
-                min_workers=min_workers,
-                max_workers=max_workers,
-                per_worker=per_worker,
-                endpoint_type=endpoint_type,
-                post_inference_hooks=post_inference_hooks,
-                labels=labels or {},
-            )
-            if gpus == 0:
-                del payload["gpu_type"]
-            elif gpus > 0 and gpu_type is None:
-                raise ValueError("If nonzero gpus, must provide gpu_type")
-            payload = self.endpoint_auth_decorator_fn(payload)
-            resp = self.connection.post(payload, ENDPOINT_PATH)
-            endpoint_creation_task_id = resp.get(
-                "endpoint_creation_task_id", None
-            )  # TODO probably throw on None
-            logger.info(
-                "Endpoint creation task id is %s", endpoint_creation_task_id
-            )
-            model_endpoint = ModelEndpoint(
-                name=endpoint_name, bundle_name=bundle_name
-            )
-            if endpoint_type == "async":
-                return AsyncEndpoint(
-                    model_endpoint=model_endpoint, client=self
+            with ApiClient(self.configuration) as api_client:
+                api_instance = DefaultApi(api_client)
+                if not isinstance(model_bundle, ModelBundle) or model_bundle.id is None:
+                    model_bundle = self.get_model_bundle(model_bundle)
+                post_inference_hooks_strs = None
+                if post_inference_hooks is not None:
+                    post_inference_hooks_strs = []
+                    for hook in post_inference_hooks:
+                        if isinstance(hook, PostInferenceHooks):
+                            post_inference_hooks_strs.append(hook.value)
+                        else:
+                            post_inference_hooks_strs.append(hook)
+
+                if default_callback_auth_kind is not None:
+                    default_callback_auth = CallbackAuth(
+                        **dict_not_none(
+                            kind=default_callback_auth_kind,
+                            username=default_callback_auth_username,
+                            password=default_callback_auth_password,
+                            cert=default_callback_auth_cert,
+                            key=default_callback_auth_key,
+                        )
+                    )
+                else:
+                    default_callback_auth = None
+
+                payload = dict_not_none(
+                    cpus=cpus,
+                    endpoint_type=ModelEndpointType(endpoint_type),
+                    gpus=gpus,
+                    gpu_type=GpuType(gpu_type) if gpu_type is not None else None,
+                    labels=labels or {},
+                    max_workers=max_workers,
+                    memory=memory,
+                    metadata={},
+                    min_workers=min_workers,
+                    model_bundle_id=model_bundle.id,
+                    name=endpoint_name,
+                    per_worker=per_worker,
+                    high_priority=high_priority,
+                    post_inference_hooks=post_inference_hooks_strs,
+                    default_callback_url=default_callback_url,
+                    default_callback_auth=default_callback_auth,
+                    storage=storage,
                 )
+                create_model_endpoint_request = CreateModelEndpointV1Request(**payload)
+                response = api_instance.create_model_endpoint_v1_model_endpoints_post(
+                    body=create_model_endpoint_request,
+                    skip_deserialization=True,
+                )
+                resp = json.loads(response.response.data)
+            endpoint_creation_task_id = resp.get("endpoint_creation_task_id", None)  # TODO probably throw on None
+            logger.info("Endpoint creation task id is %s", endpoint_creation_task_id)
+            model_endpoint = ModelEndpoint(name=endpoint_name, bundle_name=model_bundle.name)
+            if endpoint_type == "async":
+                return AsyncEndpoint(model_endpoint=model_endpoint, client=self)
             elif endpoint_type == "sync":
                 return SyncEndpoint(model_endpoint=model_endpoint, client=self)
             else:
-                raise ValueError(
-                    "Endpoint should be one of the types 'sync' or 'async'"
-                )
+                raise ValueError("Endpoint should be one of the types 'sync' or 'async'")
 
     def edit_model_endpoint(
         self,
+        *,
         model_endpoint: Union[ModelEndpoint, str],
         model_bundle: Optional[Union[ModelBundle, str]] = None,
         cpus: Optional[float] = None,
@@ -684,112 +1407,183 @@ class LaunchClient:
         max_workers: Optional[int] = None,
         per_worker: Optional[int] = None,
         gpu_type: Optional[str] = None,
+        high_priority: Optional[bool] = None,
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
+        default_callback_url: Optional[str] = None,
+        default_callback_auth_kind: Optional[Literal["basic", "mtls"]] = None,
+        default_callback_auth_username: Optional[str] = None,
+        default_callback_auth_password: Optional[str] = None,
+        default_callback_auth_cert: Optional[str] = None,
+        default_callback_auth_key: Optional[str] = None,
     ) -> None:
         """
-        Edits an existing model endpoint. Here are the fields that **cannot** be edited on an existing endpoint:
+        Edits an existing model endpoint. Here are the fields that **cannot** be edited on an
+        existing endpoint:
 
-        - The endpoint's name.
-        - The endpoint's type (i.e. you cannot go from a ``SyncEnpdoint`` to an ``AsyncEndpoint`` or vice versa.
+        - The endpoint's name. - The endpoint's type (i.e. you cannot go from a ``SyncEnpdoint``
+        to an ``AsyncEndpoint`` or vice versa.
 
         Parameters:
-            model_endpoint: The model endpoint (or its name) you want to edit. The name must be unique across
-                all endpoints that you own.
+            model_endpoint: The model endpoint (or its name) you want to edit. The name
+                must be unique across all endpoints that you own.
 
             model_bundle: The ``ModelBundle`` that the endpoint should serve.
 
-            cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater than or equal to 1.
+            cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater
+                than or equal to 1.
 
-            memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must be a positive
-                amount of memory.
+            memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must
+                be a positive amount of memory.
 
-            storage: Amount of local ephemeral storage each worker should get, e.g. "4Gi", "512Mi", etc. This must
-                be a positive amount of storage.
+            storage: Amount of local ephemeral storage each worker should get, e.g. "4Gi",
+                "512Mi", etc. This must be a positive amount of storage.
 
             gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
 
             min_workers: The minimum number of workers. Must be greater than or equal to 0.
 
-            max_workers: The maximum number of workers. Must be greater than or equal to 0, and as well as
-                greater than or equal to ``min_workers``.
+            max_workers: The maximum number of workers. Must be greater than or equal to 0,
+                and as well as greater than or equal to ``min_workers``.
 
-            per_worker: The maximum number of concurrent requests that an individual worker can service. Launch
-                automatically scales the number of workers for the endpoint so that each worker is processing
-                ``per_worker`` requests:
+            per_worker: The maximum number of concurrent requests that an individual worker can
+                service. Launch automatically scales the number of workers for the endpoint so that
+                each worker is processing ``per_worker`` requests:
 
-                - If the average number of concurrent requests per worker is lower than ``per_worker``, then the number
-                  of workers will be reduced.
-                - Otherwise, if the average number of concurrent requests per worker is higher
-                  than ``per_worker``, then the number of workers will be increased to meet the elevated traffic.
+                - If the average number of concurrent requests per worker is lower than
+                ``per_worker``, then the number of workers will be reduced. - Otherwise,
+                if the average number of concurrent requests per worker is higher than
+                ``per_worker``, then the number of workers will be increased to meet the elevated
+                traffic.
 
-            gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu requested. Here are the
-                supported values:
+            gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu
+                requested. Here are the supported values:
 
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
 
-            endpoint_type: Either ``"sync"`` or ``"async"``.
+            high_priority: Either ``True`` or ``False``. Enabling this will allow the created
+                endpoint to leverage the shared pool of prewarmed nodes for faster spinup time.
 
             post_inference_hooks: List of hooks to trigger after inference tasks are served.
 
+            default_callback_url: The default callback url to use for async endpoints.
+                This can be overridden in the task parameters for each individual task.
+                post_inference_hooks must contain "callback" for the callback to be triggered.
+
+            default_callback_auth_kind: The default callback auth kind to use for async endpoints.
+                Either "basic" or "mtls". This can be overridden in the task parameters for each
+                individual task.
+
+            default_callback_auth_username: The default callback auth username to use. This only
+                applies if default_callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_password: The default callback auth password to use. This only
+                applies if default_callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_cert: The default callback auth cert to use. This only applies
+                if default_callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_key: The default callback auth key to use. This only applies
+                if default_callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
         """
         logger.info("Editing existing endpoint")
-        bundle_name = (
-            _model_bundle_to_name(model_bundle) if model_bundle else None
-        )
-        endpoint_name = _model_endpoint_to_name(model_endpoint)
-        payload = dict(
-            bundle_name=bundle_name,
-            cpus=cpus,
-            memory=memory,
-            storage=storage,
-            gpus=gpus,
-            gpu_type=gpu_type,
-            min_workers=min_workers,
-            max_workers=max_workers,
-            per_worker=per_worker,
-            post_inference_hooks=post_inference_hooks,
-        )
-        # Allows changing some authorization settings by changing endpoint_auth_decorator_fn
-        payload = self.endpoint_auth_decorator_fn(payload)
-        if gpus == 0 and gpu_type is not None:
-            logger.warning("GPU type setting %s will have no effect", gpu_type)
-            payload["gpu_type"] = None
-        payload = trim_kwargs(payload)
-        resp = self.connection.put(payload, f"{ENDPOINT_PATH}/{endpoint_name}")
-        endpoint_creation_task_id = resp.get(
-            "endpoint_creation_task_id", None
-        )  # Returned from server as "creation"
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+
+            if model_bundle is None:
+                model_bundle_id = None
+            elif isinstance(model_bundle, ModelBundle) and model_bundle.id is not None:
+                model_bundle_id = model_bundle.id
+            else:
+                model_bundle = self.get_model_bundle(model_bundle)
+                model_bundle_id = model_bundle.id
+
+            if model_endpoint is None:
+                model_endpoint_id = None
+            elif isinstance(model_endpoint, ModelEndpoint) and model_endpoint.id is not None:
+                model_endpoint_id = model_endpoint.id
+            else:
+                endpoint_name = _model_endpoint_to_name(model_endpoint)
+                model_endpoint_full = self.get_model_endpoint(endpoint_name)
+                model_endpoint_id = model_endpoint_full.model_endpoint.id  # type: ignore
+
+            post_inference_hooks_strs = None
+            if post_inference_hooks is not None:
+                post_inference_hooks_strs = []
+                for hook in post_inference_hooks:
+                    if isinstance(hook, PostInferenceHooks):
+                        post_inference_hooks_strs.append(hook.value)
+                    else:
+                        post_inference_hooks_strs.append(hook)
+
+            if default_callback_auth_kind is not None:
+                default_callback_auth = CallbackAuth(
+                    **dict_not_none(
+                        kind=default_callback_auth_kind,
+                        username=default_callback_auth_username,
+                        password=default_callback_auth_password,
+                        cert=default_callback_auth_cert,
+                        key=default_callback_auth_key,
+                    )
+                )
+            else:
+                default_callback_auth = None
+
+            payload = dict_not_none(
+                cpus=cpus,
+                gpus=gpus,
+                gpu_type=GpuType(gpu_type) if gpu_type is not None else None,
+                max_workers=max_workers,
+                memory=memory,
+                min_workers=min_workers,
+                model_bundle_id=model_bundle_id,
+                per_worker=per_worker,
+                high_priority=high_priority,
+                post_inference_hooks=post_inference_hooks_strs,
+                default_callback_url=default_callback_url,
+                default_callback_auth=default_callback_auth,
+                storage=storage,
+            )
+            update_model_endpoint_request = UpdateModelEndpointV1Request(**payload)
+            path_params = frozendict({"model_endpoint_id": model_endpoint_id})
+            response = api_instance.update_model_endpoint_v1_model_endpoints_model_endpoint_id_put(  # type: ignore
+                body=update_model_endpoint_request,
+                path_params=path_params,  # type: ignore
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+        endpoint_creation_task_id = resp.get("endpoint_creation_task_id", None)  # Returned from server as "creation"
         logger.info("Endpoint edit task id is %s", endpoint_creation_task_id)
 
-    def get_model_endpoint(
-        self, endpoint_name: str
-    ) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
+    def get_model_endpoint(self, endpoint_name: str) -> Optional[Union[AsyncEndpoint, SyncEndpoint]]:
         """
         Gets a model endpoint associated with a name.
 
         Parameters:
             endpoint_name: The name of the endpoint to retrieve.
         """
-        try:
-            resp = self.connection.get(
-                os.path.join(ENDPOINT_PATH, endpoint_name)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            query_params = frozendict({"name": endpoint_name})
+            response = api_instance.list_model_endpoints_v1_model_endpoints_get(  # type: ignore
+                query_params=query_params,
+                skip_deserialization=True,
             )
-        except APIError as e:
-            if e.status_code != 404:
-                logger.exception(
-                    "Got an error when retrieving endpoint %s", endpoint_name
-                )
-            return None
+            resp = json.loads(response.response.data)
+            if len(resp["model_endpoints"]) == 0:
+                return None
+            resp = resp["model_endpoints"][0]
 
         if resp["endpoint_type"] == "async":
             return AsyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
         elif resp["endpoint_type"] == "sync":
             return SyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
         else:
-            raise ValueError(
-                "Endpoint should be one of the types 'sync' or 'async'"
-            )
+            raise ValueError("Endpoint should be one of the types 'sync' or 'async'")
 
     def list_model_bundles(self) -> List[ModelBundle]:
         """
@@ -798,15 +1592,14 @@ class LaunchClient:
         Returns:
             A list of ModelBundle objects
         """
-        resp = self.connection.get("model_bundle")
-        model_bundles = [
-            ModelBundle.from_dict(item) for item in resp["bundles"]  # type: ignore
-        ]
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.list_model_bundles_v1_model_bundles_get(skip_deserialization=True)
+            resp = json.loads(response.response.data)
+        model_bundles = [ModelBundle.from_dict(item) for item in resp["model_bundles"]]  # type: ignore
         return model_bundles
 
-    def get_model_bundle(
-        self, model_bundle: Union[ModelBundle, str]
-    ) -> ModelBundle:
+    def get_model_bundle(self, model_bundle: Union[ModelBundle, str]) -> ModelBundle:
         """
         Returns a model bundle specified by ``bundle_name`` that the user owns.
 
@@ -817,39 +1610,51 @@ class LaunchClient:
             A ``ModelBundle`` object
         """
         bundle_name = _model_bundle_to_name(model_bundle)
-        resp = self.connection.get(f"model_bundle/{bundle_name}")
-        assert (
-            len(resp["bundles"]) == 1
-        ), f"Bundle with name `{bundle_name}` not found"
-        return ModelBundle.from_dict(resp["bundles"][0])  # type: ignore
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            query_params = frozendict({"model_name": bundle_name})
+            response = api_instance.get_latest_model_bundle_v1_model_bundles_latest_get(  # type: ignore
+                query_params=query_params,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+        return ModelBundle.from_dict(resp)  # type: ignore
 
+    @deprecated(deprecated_in="1.0.0", details="Use create_model_bundle_from_callable_v2.")
     def clone_model_bundle_with_changes(
         self,
-        existing_bundle: Union[ModelBundle, str],
-        new_bundle_name: str,
+        model_bundle: Union[ModelBundle, str],
         app_config: Optional[Dict] = None,
     ) -> ModelBundle:
         """
-        Clones an existing model bundle with changes to its app config. (More fields coming soon)
+        Warning:
+            This method is deprecated. Use
+            [`clone_model_bundle_with_changes_v2`](./#clone_model_bundle_with_changes_v2) instead.
 
         Parameters:
-            existing_bundle: The existing bundle or its name.
-            new_bundle_name: The new bundle's name.
-            app_config: The new bundle's app config, if not passed in, the new bundle's ``app_config`` will be set to ``None``
+            model_bundle: The existing bundle or its ID.
+            app_config: The new bundle's app config, if not passed in, the new
+                bundle's ``app_config`` will be set to ``None``
 
         Returns:
             A ``ModelBundle`` object
         """
-        bundle_name = _model_bundle_to_name(existing_bundle)
-        payload = dict(
-            existing_bundle_name=bundle_name,
-            new_bundle_name=new_bundle_name,
-            app_config=app_config,
-        )
-        resp = self.connection.post(
-            payload=payload, route="model_bundle/clone_with_changes"
-        )
-        return ModelBundle.from_dict(resp)  # type: ignore
+
+        bundle_id = _model_bundle_to_id(model_bundle)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            payload = dict_not_none(
+                original_model_bundle_id=bundle_id,
+                new_app_config=app_config,
+            )
+            clone_model_bundle_request = CloneModelBundleV1Request(**payload)
+            response = (
+                api_instance.clone_model_bundle_with_changes_v1_model_bundles_clone_with_changes_post(  # noqa: E501
+                    body=clone_model_bundle_request,
+                    skip_deserialization=True,
+                )
+            )
+        return json.loads(response.response.data)
 
     def list_model_endpoints(self) -> List[Endpoint]:
         """
@@ -858,36 +1663,27 @@ class LaunchClient:
         Returns:
             A list of ``ModelEndpoint`` objects.
         """
-        resp = self.connection.get(ENDPOINT_PATH)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.list_model_endpoints_v1_model_endpoints_get(skip_deserialization=True)
+            resp = json.loads(response.response.data)
         async_endpoints: List[Endpoint] = [
             AsyncEndpoint(
                 model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
                 client=self,
             )
-            for endpoint in resp["endpoints"]
+            for endpoint in resp["model_endpoints"]
             if endpoint["endpoint_type"] == "async"
         ]
         sync_endpoints: List[Endpoint] = [
             SyncEndpoint(
-                model_endpoint=ModelEndpoint.from_dict(endpoint), client=self  # type: ignore
+                model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
+                client=self,
             )
-            for endpoint in resp["endpoints"]
+            for endpoint in resp["model_endpoints"]
             if endpoint["endpoint_type"] == "sync"
         ]
         return async_endpoints + sync_endpoints
-
-    def delete_model_bundle(self, model_bundle: Union[ModelBundle, str]):
-        """
-        Deletes the model bundle.
-
-        Parameters:
-            model_bundle: A ``ModelBundle`` object or the name of a model bundle.
-
-        """
-        bundle_name = _model_bundle_to_name(model_bundle)
-        route = f"model_bundle/{bundle_name}"
-        resp = self.connection.delete(route)
-        return resp["deleted"]
 
     def delete_model_endpoint(self, model_endpoint: Union[ModelEndpoint, str]):
         """
@@ -897,13 +1693,19 @@ class LaunchClient:
             model_endpoint: A ``ModelEndpoint`` object.
         """
         endpoint_name = _model_endpoint_to_name(model_endpoint)
-        route = f"{ENDPOINT_PATH}/{endpoint_name}"
-        resp = self.connection.delete(route)
+        endpoint = self.get_model_endpoint(endpoint_name)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
+            path_params = frozendict({"model_endpoint_id": model_endpoint_id})
+            response = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
         return resp["deleted"]
 
-    def read_endpoint_creation_logs(
-        self, model_endpoint: Union[ModelEndpoint, str]
-    ):
+    def read_endpoint_creation_logs(self, model_endpoint: Union[ModelEndpoint, str]):
         """
         Retrieves the logs for the creation of the endpoint.
 
@@ -917,31 +1719,33 @@ class LaunchClient:
 
     def _sync_request(
         self,
-        endpoint_id: str,
+        endpoint_name: str,
         url: Optional[str] = None,
         args: Optional[Dict] = None,
-        return_pickled: bool = True,
+        return_pickled: bool = False,
     ) -> Dict[str, Any]:
         """
-        Not recommended for use, instead use functions provided by SyncEndpoint
-        Makes a request to the Sync Model Endpoint at endpoint_id, and blocks until request completion or timeout.
-        Endpoint at endpoint_id must be a SyncEndpoint, otherwise this request will fail.
+        Not recommended for use, instead use functions provided by SyncEndpoint Makes a request
+        to the Sync Model Endpoint at endpoint_id, and blocks until request completion or
+        timeout. Endpoint at endpoint_id must be a SyncEndpoint, otherwise this request will fail.
 
         Parameters:
-            endpoint_id: The id of the endpoint to make the request to
+            endpoint_name: The name of the endpoint to make the request to
 
-            url: A url that points to a file containing model input.
-                Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
-                **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
-                to the predict function. If you instead want to pass the url itself as an input to the predict function,
-                see ``args``.
+            url: A url that points to a file containing model input. Must be accessible by Scale
+            Launch, hence it needs to either be public or a signedURL. **Note**: the contents of
+            the file located at ``url`` are opened as a sequence of ``bytes`` and passed to the
+            predict function. If you instead want to pass the url itself as an input to the
+            predict function, see ``args``.
 
-            args: A dictionary of arguments to the ``predict`` function defined in your model bundle.
-                Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``, etc.
-                If your ``predict`` function has signature ``predict(foo, bar)``, then args should be a dictionary with
-                keys ``foo`` and ``bar``. Exactly one of ``url`` and ``args`` must be specified.
+            args: A dictionary of arguments to the ``predict`` function defined in your model
+            bundle. Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``,
+            etc. If your ``predict`` function has signature ``predict(foo, bar)``, then args
+            should be a dictionary with keys ``foo`` and ``bar``. Exactly one of ``url`` and
+            ``args`` must be specified.
 
-            return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
+            return_pickled: Whether the python object returned is pickled, or directly written to
+            the file returned.
 
         Returns:
             A dictionary with key either ``"result_url"`` or ``"result"``, depending on the value
@@ -955,90 +1759,81 @@ class LaunchClient:
             and the value is the output of the endpoint's ``predict`` function, serialized as json.
         """
         validate_task_request(url=url, args=args)
-        payload: Dict[str, Any] = dict(return_pickled=return_pickled)
-        if url is not None:
-            payload["url"] = url
-        if args is not None:
-            payload["args"] = args
-        resp = self.connection.post(
-            payload=payload,
-            route=f"{SYNC_TASK_PATH}/{endpoint_id}",
-        )
+        endpoint = self.get_model_endpoint(endpoint_name)
+        endpoint_id = endpoint.model_endpoint.id  # type: ignore
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            payload = dict_not_none(return_pickled=return_pickled, url=url, args=args)
+            request = EndpointPredictV1Request(**payload)
+            query_params = frozendict({"model_endpoint_id": endpoint_id})
+            response = api_instance.create_sync_inference_task_v1_sync_tasks_post(  # type: ignore
+                body=request,
+                query_params=query_params,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
         return resp
-
-    @deprecated(details="Use AsyncEndpoint.predict() instead")
-    def async_request(
-        self,
-        endpoint_name: str,
-        url: Optional[str] = None,
-        args: Optional[Dict] = None,
-        return_pickled: bool = True,
-    ) -> str:
-        """
-        Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
-        Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key that can be used to retrieve
-        the result of inference at a later time.
-
-        Parameters:
-            endpoint_name: The name of the endpoint to make the request to
-
-            url: A url that points to a file containing model input.
-                Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
-                **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
-                to the predict function. If you instead want to pass the url itself as an input to the predict function,
-                see ``args``.
-
-                Exactly one of ``url`` and ``args`` must be specified.
-
-            args: A dictionary of arguments to the ModelBundle's predict function.
-                Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``, etc.
-                If your predict function has signature ``predict(foo, bar)``, then args should be a dictionary with
-                keys ``"foo"`` and ``"bar"``.
-
-                Exactly one of ``url`` and ``args`` must be specified.
-
-            return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
-
-        Returns:
-            An id/key that can be used to fetch inference results at a later time.
-            Example output:
-                `abcabcab-cabc-abca-0123456789ab`
-        """
-        return self._async_request(
-            endpoint_name=endpoint_name,
-            url=url,
-            args=args,
-            return_pickled=return_pickled,
-        )
 
     def _async_request(
         self,
         endpoint_name: str,
+        *,
         url: Optional[str] = None,
         args: Optional[Dict] = None,
-        return_pickled: bool = True,
+        callback_url: Optional[str] = None,
+        callback_auth_kind: Optional[Literal["basic", "mtls"]] = None,
+        callback_auth_username: Optional[str] = None,
+        callback_auth_password: Optional[str] = None,
+        callback_auth_cert: Optional[str] = None,
+        callback_auth_key: Optional[str] = None,
+        return_pickled: bool = False,
     ) -> str:
         """
-        Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key that can be used to retrieve
-        the result of inference at a later time.
+        Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key
+        that can be used to retrieve the result of inference at a later time.
 
         Parameters:
             endpoint_name: The name of the endpoint to make the request to
 
-            url: A url that points to a file containing model input.
-                Must be accessible by Scale Launch, hence it needs to either be public or a signedURL.
-                **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
-                to the predict function. If you instead want to pass the url itself as an input to the predict function,
-                see ``args``.
+            url: A url that points to a file containing model input. Must be accessible by Scale
+            Launch, hence it needs to either be public or a signedURL. **Note**: the contents of
+            the file located at ``url`` are opened as a sequence of ``bytes`` and passed to the
+            predict function. If you instead want to pass the url itself as an input to the
+            predict function, see ``args``.
 
-            args: A dictionary of arguments to the ModelBundle's predict function.
-                Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``, etc.
-                If your predict function has signature ``predict(foo, bar)``, then args should be a dictionary with
-                keys ``"foo"`` and ``"bar"``.
+            args: A dictionary of arguments to the ModelBundle's predict function. Must be
+            json-serializable, i.e. composed of ``str``, ``int``, ``float``, etc. If your predict
+            function has signature ``predict(foo, bar)``, then args should be a dictionary with
+            keys ``"foo"`` and ``"bar"``.
 
                 Exactly one of ``url`` and ``args`` must be specified.
 
-            return_pickled: Whether the python object returned is pickled, or directly written to the file returned.
+            callback_url: The callback url to use for this task. If None, then the
+                default_callback_url of the endpoint is used. The endpoint must specify
+                "callback" as a post-inference hook for the callback to be triggered.
+
+            callback_auth_kind: The default callback auth kind to use for async endpoints.
+                Either "basic" or "mtls". This can be overridden in the task parameters for each
+                individual task.
+
+            callback_auth_username: The default callback auth username to use. This only
+                applies if callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            callback_auth_password: The default callback auth password to use. This only
+                applies if callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            callback_auth_cert: The default callback auth cert to use. This only applies
+                if callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
+            callback_auth_key: The default callback auth key to use. This only applies
+                if callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
+            return_pickled: Whether the python object returned is pickled, or directly written to
+            the file returned.
 
         Returns:
             An id/key that can be used to fetch inference results at a later time.
@@ -1046,159 +1841,159 @@ class LaunchClient:
                 `abcabcab-cabc-abca-0123456789ab`
         """
         validate_task_request(url=url, args=args)
-        payload: Dict[str, Any] = dict(return_pickled=return_pickled)
-        if url is not None:
-            payload["url"] = url
-        if args is not None:
-            payload["args"] = args
+        endpoint = self.get_model_endpoint(endpoint_name)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            if callback_auth_kind is not None:
+                callback_auth = CallbackAuth(
+                    **dict_not_none(
+                        kind=callback_auth_kind,
+                        username=callback_auth_username,
+                        password=callback_auth_password,
+                        cert=callback_auth_cert,
+                        key=callback_auth_key,
+                    )
+                )
+            else:
+                callback_auth = None
 
-        resp = self.connection.post(
-            payload=payload,
-            route=f"{ASYNC_TASK_PATH}/{endpoint_name}",
-        )
-        return resp["task_id"]
-
-    @deprecated(
-        details="Use EndpointResponseFuture.get(), where EndpointResponseFuture "
-        "is returned by AsyncEndpoint.predict()"
-    )
-    def get_async_response(self, async_task_id: str) -> Dict[str, Any]:
-        """
-        Not recommended to use this, instead we recommend to use functions provided by ``AsyncEndpoint``.
-        Gets inference results from a previously created task.
-
-        Parameters:
-            async_task_id: The id/key returned from a previous invocation of ``async_request``.
-
-        Returns:
-            A dictionary that contains task status and optionally a result url or result if the task has completed.
-            Result url or result will be returned if the task has succeeded. Will return a result url iff
-            ``return_pickled`` was set to ``True`` on task creation.
-
-            The dictionary's keys are as follows:
-
-            - ``state``: ``'PENDING'`` or ``'SUCCESS'`` or ``'FAILURE'``
-            - ``result_url``: a url pointing to inference results. This url is accessible for 12 hours after the request has been made.
-            - ``result``: the value returned by the endpoint's `predict` function, serialized as json
-
-            Example output:
-
-            .. code-block:: json
-
-                {
-                    'state': 'SUCCESS',
-                    'result_url': 'https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy'
-                }
-
-        """
-        # TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
-        resp = self.connection.get(
-            route=f"{ASYNC_TASK_RESULT_PATH}/{async_task_id}"
-        )
+            payload = dict_not_none(
+                return_pickled=return_pickled,
+                url=url,
+                args=args,
+                callback_url=callback_url,
+                callback_auth=callback_auth,
+            )
+            request = EndpointPredictV1Request(**payload)
+            model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
+            query_params = frozendict({"model_endpoint_id": model_endpoint_id})
+            response = api_instance.create_async_inference_task_v1_async_tasks_post(  # type: ignore
+                body=request,
+                query_params=query_params,  # type: ignore
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
         return resp
 
-    def _get_async_endpoint_response(
-        self, endpoint_name: str, async_task_id: str
-    ) -> Dict[str, Any]:
+    def _get_async_endpoint_response(self, endpoint_name: str, async_task_id: str) -> Dict[str, Any]:
         """
-        Not recommended to use this, instead we recommend to use functions provided by AsyncEndpoint.
-        Gets inference results from a previously created task.
+        Not recommended to use this, instead we recommend to use functions provided by
+        AsyncEndpoint. Gets inference results from a previously created task.
 
         Parameters:
             endpoint_name: The name of the endpoint the request was made to.
             async_task_id: The id/key returned from a previous invocation of async_request.
 
-        Returns:
-            A dictionary that contains task status and optionally a result url or result if the task has completed.
-            Result url or result will be returned if the task has succeeded. Will return a result url iff
-            ``return_pickled`` was set to ``True`` on task creation.
+        Returns: A dictionary that contains task status and optionally a result url or result if
+        the task has completed. Result url or result will be returned if the task has succeeded.
+        Will return a result url iff ``return_pickled`` was set to ``True`` on task creation.
 
             The dictionary's keys are as follows:
 
-            - ``state``: ``'PENDING'`` or ``'SUCCESS'`` or ``'FAILURE'``
-            - ``result_url``: a url pointing to inference results. This url is accessible for 12 hours after the request has been made.
-            - ``result``: the value returned by the endpoint's `predict` function, serialized as json
+            - ``status``: ``'PENDING'`` or ``'SUCCESS'`` or ``'FAILURE'`` - ``result_url``: a url
+            pointing to inference results. This url is accessible for 12 hours after the request
+            has been made. - ``result``: the value returned by the endpoint's `predict` function,
+            serialized as json
 
             Example output:
 
             .. code-block:: json
 
                 {
-                    'state': 'SUCCESS',
+                    'status': 'SUCCESS',
                     'result_url': 'https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy'
                 }
 
         """
-        # TODO: do we want to read the results from here as well? i.e. translate result_url into a python object
-        resp = self.connection.get(
-            route=f"{ENDPOINT_PATH}/{endpoint_name}/{ASYNC_TASK_PATH}/{async_task_id}"
-        )
+        # TODO: do we want to read the results from here as well? i.e. translate result_url into
+        #  a python object
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"task_id": async_task_id})
+            response = api_instance.get_async_inference_task_v1_async_tasks_task_id_get(  # type: ignore
+                path_params=path_params,  # type: ignore
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
         return resp
 
     def batch_async_request(
         self,
+        *,
         model_bundle: Union[ModelBundle, str],
-        urls: List[str] = None,
+        urls: Optional[List[str]] = None,
         inputs: Optional[List[Dict[str, Any]]] = None,
         batch_url_file_location: Optional[str] = None,
-        serialization_format: str = "json",
-        batch_task_options: Optional[Dict[str, Any]] = None,
+        serialization_format: str = "JSON",
         labels: Optional[Dict[str, str]] = None,
-    ):
+        cpus: Optional[int] = None,
+        memory: Optional[str] = None,
+        gpus: Optional[int] = None,
+        gpu_type: Optional[str] = None,
+        storage: Optional[str] = None,
+        max_workers: Optional[int] = None,
+        per_worker: Optional[int] = None,
+    ) -> Dict[str, Any]:
         """
-        Sends a batch inference request using a given bundle. Returns a key that can be used to retrieve
-        the results of inference at a later time.
+        Sends a batch inference request using a given bundle. Returns a key that can be used to
+        retrieve the results of inference at a later time.
 
         Must have exactly one of urls or inputs passed in.
 
         Parameters:
             model_bundle: The bundle or the name of a the bundle to use for inference.
 
-            urls: A list of urls, each pointing to a file containing model input.
-                Must be accessible by Scale Launch, hence urls need to either be public or signedURLs.
+            urls: A list of urls, each pointing to a file containing model input. Must be
+                accessible by Scale Launch, hence urls need to either be public or signedURLs.
 
-            inputs: A list of model inputs, if exists, we will upload the inputs and pass it in to Launch.
+            inputs: A list of model inputs, if exists, we will upload the inputs and pass it in
+                to Launch.
 
-            batch_url_file_location: In self-hosted mode, the input to the batch job will be uploaded
-                to this location if provided. Otherwise, one will be determined from bundle_location_fn()
+            batch_url_file_location: In self-hosted mode, the input to the batch job will be
+                uploaded to this location if provided. Otherwise, one will be determined from
+                bundle_location_fn()
 
-            serialization_format: Serialization format of output, either 'pickle' or 'json'.
+            serialization_format: Serialization format of output, either 'PICKLE' or 'JSON'.
                 'pickle' corresponds to pickling results + returning
 
-            batch_task_options: A Dict of optional endpoint/batch task settings, i.e. certain endpoint settings
-                like ``cpus``, ``memory``, ``gpus``, ``gpu_type``, ``max_workers``, as well as under-the-hood batch
-                job settings, like ``pyspark_partition_size``, ``pyspark_max_executors``.
+            labels: An optional dictionary of key/value pairs to associate with this endpoint.
+
+            cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater than
+                or equal to 1.
+
+            memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must be
+                a positive amount of memory.
+
+            storage: Amount of local ephemeral storage each worker should get, e.g. "4Gi", "512Mi",
+                etc. This must be a positive amount of storage.
+
+            gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
+
+            max_workers: The maximum number of workers. Must be greater than or equal to 0, and as
+                well as greater than or equal to ``min_workers``.
+
+            per_worker: The maximum number of concurrent requests that an individual worker can
+                service. Launch automatically scales the number of workers for the endpoint so that
+                each worker is processing ``per_worker`` requests:
+
+                - If the average number of concurrent requests per worker is lower than
+                  ``per_worker``, then the number of workers will be reduced.
+                - Otherwise, if the average number of concurrent requests per worker is higher
+                  than ``per_worker``, then the number of workers will be increased to meet the
+                  elevated traffic.
+
+            gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu
+                requested. Here are the supported values:
+
+                - ``nvidia-tesla-t4``
+                - ``nvidia-ampere-a10``
 
         Returns:
-            An id/key that can be used to fetch inference results at a later time
+            A dictionary that contains `job_id` as a key, and the ID as the value.
         """
 
-        bundle_name = _model_bundle_to_name(model_bundle)
-
-        if batch_task_options is None:
-            batch_task_options = {}
-        allowed_batch_task_options = {
-            "cpus",
-            "memory",
-            "storage",
-            "gpus",
-            "gpu_type",
-            "max_workers",
-            "pyspark_partition_size",
-            "pyspark_max_executors",
-        }
-        if (
-            len(set(batch_task_options.keys()) - allowed_batch_task_options)
-            > 0
-        ):
-            raise ValueError(
-                f"Disallowed options {set(batch_task_options.keys()) - allowed_batch_task_options} for batch task"
-            )
-
         if not bool(inputs) ^ bool(urls):
-            raise ValueError(
-                "Exactly one of inputs and urls is required for batch tasks"
-            )
+            raise ValueError("Exactly one of inputs and urls is required for batch tasks")
 
         f = StringIO()
         if urls:
@@ -1211,44 +2006,52 @@ class LaunchClient:
             # TODO make this not use bundle_location_fn()
             location_fn = self.batch_csv_location_fn or self.bundle_location_fn
             if location_fn is None and batch_url_file_location is None:
-                raise ValueError(
-                    "Must register batch_csv_location_fn if csv file location not passed in"
-                )
+                raise ValueError("Must register batch_csv_location_fn if csv file location not passed in")
             file_location = batch_url_file_location or location_fn()  # type: ignore
-            self.upload_batch_csv_fn(  # type: ignore
-                f.getvalue(), file_location
-            )
+            self.upload_batch_csv_fn(f.getvalue(), file_location)  # type: ignore
         else:
-            model_bundle_s3_url = self.connection.post(
-                {}, BATCH_TASK_INPUT_SIGNED_URL_PATH
-            )
+            model_bundle_s3_url = self.connection.post({}, BATCH_TASK_INPUT_SIGNED_URL_PATH)
             s3_path = model_bundle_s3_url["signedUrl"]
             requests.put(s3_path, data=f.getvalue())
             file_location = f"s3://{model_bundle_s3_url['bucket']}/{model_bundle_s3_url['key']}"
 
         logger.info("Writing batch task csv to %s", file_location)
 
-        payload = dict(
+        if not isinstance(model_bundle, ModelBundle) or model_bundle.id is None:
+            model_bundle = self.get_model_bundle(model_bundle)
+
+        resource_requests = dict_not_none(
+            cpus=cpus,
+            memory=memory,
+            gpus=gpus,
+            gpu_type=gpu_type,
+            storage=storage,
+            max_workers=max_workers,
+            per_worker=per_worker,
+        )
+        payload = dict_not_none(
+            model_bundle_id=model_bundle.id,
             input_path=file_location,
             serialization_format=serialization_format,
             labels=labels,
+            resource_requests=resource_requests,
         )
-        payload.update(batch_task_options)
-        payload = self.endpoint_auth_decorator_fn(payload)
-        resp = self.connection.post(
-            route=f"{BATCH_TASK_PATH}/{bundle_name}",
-            payload=payload,
-        )
-        return resp["job_id"]
+        request = CreateBatchJobV1Request(**payload)
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.create_batch_job_v1_batch_jobs_post(  # type: ignore
+                body=request,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+        return resp
 
-    def get_batch_async_response(
-        self, batch_async_task_id: str
-    ) -> Dict[str, Any]:
+    def get_batch_async_response(self, batch_job_id: str) -> Dict[str, Any]:
         """
         Gets inference results from a previously created batch job.
 
         Parameters:
-            batch_async_task_id: An id representing the batch task job. This id is the in the response from
+            batch_job_id: An id representing the batch task job. This id is the in the response from
                 calling ``batch_async_request``.
 
         Returns:
@@ -1256,11 +2059,19 @@ class LaunchClient:
 
             - ``status``: The status of the job.
             - ``result``: The url where the result is stored.
-            - ``duration``: A string representation of how long the job took to finish.
+            - ``duration``: A string representation of how long the job took to finish
+                    or how long it has been running, for a job current in progress.
+            - ``num_tasks_pending``: The number of tasks that are still pending.
+            - ``num_tasks_completed``: The number of tasks that have completed.
         """
-        resp = self.connection.get(
-            route=f"{BATCH_TASK_RESULTS_PATH}/{batch_async_task_id}"
-        )
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"batch_job_id": batch_job_id})
+            response = api_instance.get_batch_job_v1_batch_jobs_batch_job_id_get(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
         return resp
 
 
@@ -1269,9 +2080,7 @@ def _zip_directory(zipf: ZipFile, path: str) -> None:
         for file_ in files:
             zipf.write(
                 filename=os.path.join(root, file_),
-                arcname=os.path.relpath(
-                    os.path.join(root, file_), os.path.join(path, "..")
-                ),
+                arcname=os.path.relpath(os.path.join(root, file_), os.path.join(path, "..")),
             )
 
 

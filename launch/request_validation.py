@@ -13,6 +13,4 @@ def validate_task_request(url, args):
     if url is None and args is None:
         raise ValueError("Must specify at least one of url or args")
     if url is not None and args is not None:
-        logger.warning(
-            "Passing both url and args to task request; args will be ignored"
-        )
+        logger.warning("Passing both url and args to task request; args will be ignored")
