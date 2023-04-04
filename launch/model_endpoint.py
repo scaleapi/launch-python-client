@@ -87,12 +87,18 @@ class ModelEndpoint:
     Default callback url for the endpoint.
     """
 
+    num_queued_items: Optional[int] = None
+    """
+    Number of items currently queued for the endpoint.
+    """
+
     def __repr__(self):
         return (
             f"ModelEndpoint(name='{self.name}', bundle_name='{self.bundle_name}', "
             f"status='{self.status}', resource_state='{json.dumps(self.resource_state)}', "
             f"deployment_state='{json.dumps(self.deployment_state)}', "
-            f"endpoint_type='{self.endpoint_type}', metadata='{self.metadata}')"
+            f"endpoint_type='{self.endpoint_type}', metadata='{self.metadata}', "
+            f"num_queued_items='{self.num_queued_items}')"
         )
 
 
