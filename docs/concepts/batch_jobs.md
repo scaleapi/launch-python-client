@@ -11,9 +11,12 @@ method of the
 [`LaunchClient`](/api/client/#launch.client.LaunchClient).
 
 ```py title="Creating and Following a Batch Job"
+import logging
 import os
 import time
 from launch import LaunchClient
+
+logger = logging.getLogger(__name__)
 
 client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
 batch_job = client.batch_async_request(
@@ -34,7 +37,7 @@ while status != "SUCCESS" and status != "FAILURE" and status != "CANCELLED":
     time.sleep(30)
     res = client.get_batch_async_response(batch_job["job_id"])
     status = res["status"]
-    print(f"the batch job is {status}")
+    logging.info(f"the batch job is {status}")
 
-print(res)
+logging.info(res)
 ```
