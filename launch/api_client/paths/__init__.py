@@ -13,6 +13,13 @@ class PathValues(str, enum.Enum):
     V1_ASYNCTASKS_TASK_ID = "/v1/async-tasks/{task_id}"
     V1_BATCHJOBS = "/v1/batch-jobs"
     V1_BATCHJOBS_BATCH_JOB_ID = "/v1/batch-jobs/{batch_job_id}"
+    V1_DOCKERIMAGEBATCHJOBBUNDLES = "/v1/docker-image-batch-job-bundles"
+    V1_DOCKERIMAGEBATCHJOBBUNDLES_LATEST = "/v1/docker-image-batch-job-bundles/latest"
+    V1_DOCKERIMAGEBATCHJOBBUNDLES_DOCKER_IMAGE_BATCH_JOB_BUNDLE_ID = (
+        "/v1/docker-image-batch-job-bundles/{docker_image_batch_job_bundle_id}"
+    )
+    V1_DOCKERIMAGEBATCHJOBS = "/v1/docker-image-batch-jobs"
+    V1_DOCKERIMAGEBATCHJOBS_BATCH_JOB_ID = "/v1/docker-image-batch-jobs/{batch_job_id}"
     V1_MODELBUNDLES = "/v1/model-bundles"
     V1_MODELBUNDLES_CLONEWITHCHANGES = "/v1/model-bundles/clone-with-changes"
     V1_MODELBUNDLES_LATEST = "/v1/model-bundles/latest"

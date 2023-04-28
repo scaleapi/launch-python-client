@@ -11,6 +11,21 @@ from launch.api_client.apis.paths.v1_batch_jobs import V1BatchJobs
 from launch.api_client.apis.paths.v1_batch_jobs_batch_job_id import (
     V1BatchJobsBatchJobId,
 )
+from launch.api_client.apis.paths.v1_docker_image_batch_job_bundles import (
+    V1DockerImageBatchJobBundles,
+)
+from launch.api_client.apis.paths.v1_docker_image_batch_job_bundles_docker_image_batch_job_bundle_id import (
+    V1DockerImageBatchJobBundlesDockerImageBatchJobBundleId,
+)
+from launch.api_client.apis.paths.v1_docker_image_batch_job_bundles_latest import (
+    V1DockerImageBatchJobBundlesLatest,
+)
+from launch.api_client.apis.paths.v1_docker_image_batch_jobs import (
+    V1DockerImageBatchJobs,
+)
+from launch.api_client.apis.paths.v1_docker_image_batch_jobs_batch_job_id import (
+    V1DockerImageBatchJobsBatchJobId,
+)
 from launch.api_client.apis.paths.v1_model_bundles import V1ModelBundles
 from launch.api_client.apis.paths.v1_model_bundles_clone_with_changes import (
     V1ModelBundlesCloneWithChanges,
@@ -54,6 +69,11 @@ PathToApi = typing_extensions.TypedDict(
         PathValues.V1_ASYNCTASKS_TASK_ID: V1AsyncTasksTaskId,
         PathValues.V1_BATCHJOBS: V1BatchJobs,
         PathValues.V1_BATCHJOBS_BATCH_JOB_ID: V1BatchJobsBatchJobId,
+        PathValues.V1_DOCKERIMAGEBATCHJOBBUNDLES: V1DockerImageBatchJobBundles,
+        PathValues.V1_DOCKERIMAGEBATCHJOBBUNDLES_LATEST: V1DockerImageBatchJobBundlesLatest,
+        PathValues.V1_DOCKERIMAGEBATCHJOBBUNDLES_DOCKER_IMAGE_BATCH_JOB_BUNDLE_ID: V1DockerImageBatchJobBundlesDockerImageBatchJobBundleId,
+        PathValues.V1_DOCKERIMAGEBATCHJOBS: V1DockerImageBatchJobs,
+        PathValues.V1_DOCKERIMAGEBATCHJOBS_BATCH_JOB_ID: V1DockerImageBatchJobsBatchJobId,
         PathValues.V1_MODELBUNDLES: V1ModelBundles,
         PathValues.V1_MODELBUNDLES_CLONEWITHCHANGES: V1ModelBundlesCloneWithChanges,
         PathValues.V1_MODELBUNDLES_LATEST: V1ModelBundlesLatest,
@@ -79,6 +99,11 @@ path_to_api = PathToApi(
         PathValues.V1_ASYNCTASKS_TASK_ID: V1AsyncTasksTaskId,
         PathValues.V1_BATCHJOBS: V1BatchJobs,
         PathValues.V1_BATCHJOBS_BATCH_JOB_ID: V1BatchJobsBatchJobId,
+        PathValues.V1_DOCKERIMAGEBATCHJOBBUNDLES: V1DockerImageBatchJobBundles,
+        PathValues.V1_DOCKERIMAGEBATCHJOBBUNDLES_LATEST: V1DockerImageBatchJobBundlesLatest,
+        PathValues.V1_DOCKERIMAGEBATCHJOBBUNDLES_DOCKER_IMAGE_BATCH_JOB_BUNDLE_ID: V1DockerImageBatchJobBundlesDockerImageBatchJobBundleId,
+        PathValues.V1_DOCKERIMAGEBATCHJOBS: V1DockerImageBatchJobs,
+        PathValues.V1_DOCKERIMAGEBATCHJOBS_BATCH_JOB_ID: V1DockerImageBatchJobsBatchJobId,
         PathValues.V1_MODELBUNDLES: V1ModelBundles,
         PathValues.V1_MODELBUNDLES_CLONEWITHCHANGES: V1ModelBundlesCloneWithChanges,
         PathValues.V1_MODELBUNDLES_LATEST: V1ModelBundlesLatest,

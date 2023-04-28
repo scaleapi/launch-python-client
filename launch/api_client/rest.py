@@ -164,7 +164,12 @@ class RESTClientObject(object):
                 elif isinstance(body, str) or isinstance(body, bytes):
                     request_body = body
                     r = self.pool_manager.request(
-                        method, url, body=request_body, preload_content=not stream, timeout=timeout, headers=headers
+                        method,
+                        url,
+                        body=request_body,
+                        preload_content=not stream,
+                        timeout=timeout,
+                        headers=headers,
                     )
                 else:
                     # Cannot generate the request from given parameters
@@ -192,7 +197,15 @@ class RESTClientObject(object):
         return self.request("HEAD", url, headers=headers, stream=stream, timeout=timeout, fields=fields)
 
     def OPTIONS(self, url, headers=None, body=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
-        return self.request("OPTIONS", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields)
+        return self.request(
+            "OPTIONS",
+            url,
+            headers=headers,
+            stream=stream,
+            timeout=timeout,
+            body=body,
+            fields=fields,
+        )
 
     def DELETE(self, url, headers=None, body=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
         return self.request("DELETE", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields)

@@ -32,7 +32,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
 
     class MetaOapg:
         class properties:
-            aws_role = schemas.StrSchema
             billing_tags = schemas.DictSchema
 
             class cpus(
@@ -275,7 +274,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
                     return super().__getitem__(i)
 
             prewarm = schemas.BoolSchema
-            results_s3_bucket = schemas.StrSchema
 
             class storage(
                 schemas.ComposedSchema,
@@ -347,7 +345,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
                     )
 
             __annotations__ = {
-                "aws_role": aws_role,
                 "billing_tags": billing_tags,
                 "cpus": cpus,
                 "default_callback_auth": default_callback_auth,
@@ -365,13 +362,8 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
                 "per_worker": per_worker,
                 "post_inference_hooks": post_inference_hooks,
                 "prewarm": prewarm,
-                "results_s3_bucket": results_s3_bucket,
                 "storage": storage,
             }
-
-    @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["aws_role"]) -> MetaOapg.properties.aws_role:
-        ...
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["billing_tags"]) -> MetaOapg.properties.billing_tags:
@@ -446,12 +438,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["results_s3_bucket"]
-    ) -> MetaOapg.properties.results_s3_bucket:
-        ...
-
-    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["storage"]) -> MetaOapg.properties.storage:
         ...
 
@@ -463,7 +449,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "aws_role",
                 "billing_tags",
                 "cpus",
                 "default_callback_auth",
@@ -481,7 +466,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
                 "per_worker",
                 "post_inference_hooks",
                 "prewarm",
-                "results_s3_bucket",
                 "storage",
             ],
             str,
@@ -489,12 +473,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
     ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
-
-    @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["aws_role"]
-    ) -> typing.Union[MetaOapg.properties.aws_role, schemas.Unset]:
-        ...
 
     @typing.overload
     def get_item_oapg(
@@ -598,12 +576,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(
-        self, name: typing_extensions.Literal["results_s3_bucket"]
-    ) -> typing.Union[MetaOapg.properties.results_s3_bucket, schemas.Unset]:
-        ...
-
-    @typing.overload
-    def get_item_oapg(
         self, name: typing_extensions.Literal["storage"]
     ) -> typing.Union[MetaOapg.properties.storage, schemas.Unset]:
         ...
@@ -616,7 +588,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "aws_role",
                 "billing_tags",
                 "cpus",
                 "default_callback_auth",
@@ -634,7 +605,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
                 "per_worker",
                 "post_inference_hooks",
                 "prewarm",
-                "results_s3_bucket",
                 "storage",
             ],
             str,
@@ -648,7 +618,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        aws_role: typing.Union[MetaOapg.properties.aws_role, str, schemas.Unset] = schemas.unset,
         billing_tags: typing.Union[
             MetaOapg.properties.billing_tags, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
@@ -712,7 +681,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
             MetaOapg.properties.post_inference_hooks, list, tuple, schemas.Unset
         ] = schemas.unset,
         prewarm: typing.Union[MetaOapg.properties.prewarm, bool, schemas.Unset] = schemas.unset,
-        results_s3_bucket: typing.Union[MetaOapg.properties.results_s3_bucket, str, schemas.Unset] = schemas.unset,
         storage: typing.Union[
             MetaOapg.properties.storage,
             dict,
@@ -754,7 +722,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         return super().__new__(
             cls,
             *_args,
-            aws_role=aws_role,
             billing_tags=billing_tags,
             cpus=cpus,
             default_callback_auth=default_callback_auth,
@@ -772,7 +739,6 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
             per_worker=per_worker,
             post_inference_hooks=post_inference_hooks,
             prewarm=prewarm,
-            results_s3_bucket=results_s3_bucket,
             storage=storage,
             _configuration=_configuration,
             **kwargs,

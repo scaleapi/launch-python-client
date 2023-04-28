@@ -18,10 +18,9 @@ from datetime import date, datetime  # noqa: F401
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
 import urllib3
+from launch_client import schemas  # noqa: F401
+from launch_client import api_client, exceptions
 from urllib3._collections import HTTPHeaderDict
-
-from launch.api_client import schemas  # noqa: F401
-from launch.api_client import api_client, exceptions
 
 SchemaFor200ResponseBodyApplicationJson = schemas.AnyTypeSchema
 
