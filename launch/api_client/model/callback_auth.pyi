@@ -19,8 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
-from launch.api_client import schemas  # noqa: F401
+from launch_client import schemas  # noqa: F401
 
 class CallbackAuth(
     schemas.ComposedSchema,
@@ -101,5 +100,5 @@ class CallbackAuth(
             **kwargs,
         )
 
-from launch.api_client.model.callback_basic_auth import CallbackBasicAuth
-from launch.api_client.model.callbackm_tls_auth import CallbackmTLSAuth
+from launch_client.model.callback_basic_auth import CallbackBasicAuth
+from launch_client.model.callbackm_tls_auth import CallbackmTLSAuth

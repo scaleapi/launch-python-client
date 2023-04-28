@@ -39,6 +39,21 @@ from launch.api_client.model.create_batch_job_v1_request import (
 from launch.api_client.model.create_batch_job_v1_response import (
     CreateBatchJobV1Response,
 )
+from launch.api_client.model.create_docker_image_batch_job_bundle_v1_request import (
+    CreateDockerImageBatchJobBundleV1Request,
+)
+from launch.api_client.model.create_docker_image_batch_job_bundle_v1_response import (
+    CreateDockerImageBatchJobBundleV1Response,
+)
+from launch.api_client.model.create_docker_image_batch_job_resource_requests import (
+    CreateDockerImageBatchJobResourceRequests,
+)
+from launch.api_client.model.create_docker_image_batch_job_v1_request import (
+    CreateDockerImageBatchJobV1Request,
+)
+from launch.api_client.model.create_docker_image_batch_job_v1_response import (
+    CreateDockerImageBatchJobV1Response,
+)
 from launch.api_client.model.create_model_bundle_v1_request import (
     CreateModelBundleV1Request,
 )
@@ -61,6 +76,9 @@ from launch.api_client.model.custom_framework import CustomFramework
 from launch.api_client.model.delete_model_endpoint_v1_response import (
     DeleteModelEndpointV1Response,
 )
+from launch.api_client.model.docker_image_batch_job_bundle_v1_response import (
+    DockerImageBatchJobBundleV1Response,
+)
 from launch.api_client.model.endpoint_predict_v1_request import (
     EndpointPredictV1Request,
 )
@@ -70,11 +88,17 @@ from launch.api_client.model.get_async_task_v1_response import (
 from launch.api_client.model.get_batch_job_v1_response import (
     GetBatchJobV1Response,
 )
+from launch.api_client.model.get_docker_image_batch_job_v1_response import (
+    GetDockerImageBatchJobV1Response,
+)
 from launch.api_client.model.get_model_endpoint_v1_response import (
     GetModelEndpointV1Response,
 )
 from launch.api_client.model.gpu_type import GpuType
 from launch.api_client.model.http_validation_error import HTTPValidationError
+from launch.api_client.model.list_docker_image_batch_job_bundle_v1_response import (
+    ListDockerImageBatchJobBundleV1Response,
+)
 from launch.api_client.model.list_model_bundles_v1_response import (
     ListModelBundlesV1Response,
 )
@@ -128,6 +152,12 @@ from launch.api_client.model.update_batch_job_v1_request import (
 )
 from launch.api_client.model.update_batch_job_v1_response import (
     UpdateBatchJobV1Response,
+)
+from launch.api_client.model.update_docker_image_batch_job_v1_request import (
+    UpdateDockerImageBatchJobV1Request,
+)
+from launch.api_client.model.update_docker_image_batch_job_v1_response import (
+    UpdateDockerImageBatchJobV1Response,
 )
 from launch.api_client.model.update_model_endpoint_v1_request import (
     UpdateModelEndpointV1Request,
