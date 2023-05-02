@@ -34,9 +34,6 @@ from launch.api_client.model.create_batch_job_v1_request import (
 from launch.api_client.model.create_docker_image_batch_job_bundle_v1_request import (
     CreateDockerImageBatchJobBundleV1Request,
 )
-from launch.api_client.model.create_docker_image_batch_job_resource_requests import (
-    CreateDockerImageBatchJobResourceRequests,
-)
 from launch.api_client.model.create_docker_image_batch_job_v1_request import (
     CreateDockerImageBatchJobV1Request,
 )
@@ -2144,14 +2141,12 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            resource_requests = CreateDockerImageBatchJobResourceRequests(
-                **dict_not_none(
-                    cpus=cpus,
-                    memory=memory,
-                    gpus=gpus,
-                    gpu_type=gpu_type,
-                    storage=storage,
-                )
+            resource_requests = dict_not_none(
+                cpus=cpus,
+                memory=memory,
+                gpus=gpus,
+                gpu_type=gpu_type,
+                storage=storage,
             )
             create_docker_image_batch_job_bundle_request = CreateDockerImageBatchJobBundleV1Request(
                 **dict_not_none(
@@ -2281,14 +2276,12 @@ class LaunchClient:
 
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            resource_requests = CreateDockerImageBatchJobResourceRequests(
-                **dict_not_none(
-                    cpus=cpus,
-                    memory=memory,
-                    gpus=gpus,
-                    gpu_type=gpu_type,
-                    storage=storage,
-                )
+            resource_requests = dict_not_none(
+                cpus=cpus,
+                memory=memory,
+                gpus=gpus,
+                gpu_type=gpu_type,
+                storage=storage,
             )
             create_docker_image_batch_job_request = CreateDockerImageBatchJobV1Request(
                 **dict_not_none(
@@ -2303,7 +2296,7 @@ class LaunchClient:
                 body=create_docker_image_batch_job_request,
                 skip_deserialization=True,
             )
-            resp = CreateDockerImageBatchJobV1Request.parse_raw(response.response.data)
+            resp = json.loads(response.response.data)
         return resp
 
     def get_docker_image_batch_job(self, batch_job_id: str):
