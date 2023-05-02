@@ -37,6 +37,9 @@ from launch.api_client.model.create_docker_image_batch_job_bundle_v1_request imp
 from launch.api_client.model.create_docker_image_batch_job_resource_requests import (
     CreateDockerImageBatchJobResourceRequests,
 )
+from launch.api_client.model.create_docker_image_batch_job_v1_request import (
+    CreateDockerImageBatchJobV1Request,
+)
 from launch.api_client.model.create_model_bundle_v1_request import (
     CreateModelBundleV1Request,
 )
@@ -2105,25 +2108,61 @@ class LaunchClient:
     ) -> CreateDockerImageBatchJobBundleResponse:
         """
         For self hosted mode only.
-        TODO docs
+
+        Creates a Docker Image Batch Job Bundle.
+
+        Parameters:
+            name:
+                A user-defined name for the bundle. Does not need to be unique.
+            image_repository:
+                The (short) repository of your image. For example, if your image is located at
+                123456789012.dkr.ecr.us-west-2.amazonaws.com/repo:tag, and your version of Launch
+                is configured to look at 123456789012.dkr.ecr.us-west-2.amazonaws.com for Docker Images,
+                you would pass the value `repo` for the `image_repository` parameter.
+            image_tag:
+                The tag of your image inside of the repo. In the example above, you would pass
+                the value `tag` for the `image_tag` parameter.
+            command:
+                The command to run inside the docker image.
+            env:
+                A dictionary of environment variables to inject into your docker image.
+            mount_location:
+                A location in the filesystem where you would like a json-formatted file, controllable
+                on runtime, to be mounted. This allows behavior to be specified on runtime.
+                (Specifically, the contents of this file can be read via `json.load()` inside of the
+                user-defined code.)
+            cpus:
+                Optional default value for the number of cpus to give the job.
+            memory:
+                Optional default value for the amount of memory to give the job.
+            gpus:
+                Optional default value for the number of gpus to give the job.
+            gpu_type:
+                Optional default value for the type of gpu to give the job.
+            storage:
+                Optional default value for the amount of disk to give the job.
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             resource_requests = CreateDockerImageBatchJobResourceRequests(
-                cpus=cpus,
-                memory=memory,
-                gpus=gpus,
-                gpu_type=gpu_type,
-                storage=storage,
+                **dict_not_none(
+                    cpus=cpus,
+                    memory=memory,
+                    gpus=gpus,
+                    gpu_type=gpu_type,
+                    storage=storage,
+                )
             )
             create_docker_image_batch_job_bundle_request = CreateDockerImageBatchJobBundleV1Request(
-                name=name,
-                image_repository=image_repository,
-                image_tag=image_tag,
-                command=command,
-                env=env,
-                mount_location=mount_location,
-                resource_requests=resource_requests,
+                **dict_not_none(
+                    name=name,
+                    image_repository=image_repository,
+                    image_tag=image_tag,
+                    command=command,
+                    env=env,
+                    mount_location=mount_location,
+                    resource_requests=resource_requests,
+                )
             )
             response = api_instance.create_docker_image_batch_job_bundle_v1_docker_image_batch_job_bundles_post(
                 body=create_docker_image_batch_job_bundle_request, skip_deserialization=True
@@ -2135,9 +2174,7 @@ class LaunchClient:
         self, docker_image_batch_job_bundle_id: str
     ) -> DockerImageBatchJobBundleResponse:
         """
-        For self hosted mode only.
-
-        TODO return some DockerImageBatchJobBundleResponse
+        For self hosted mode only. Gets information for a single batch job bundle with a given id.
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
@@ -2152,6 +2189,9 @@ class LaunchClient:
         return resp
 
     def get_latest_docker_image_batch_job_bundle(self, bundle_name: str) -> DockerImageBatchJobBundleResponse:
+        """
+        For self hosted mode only. Gets information for the latest batch job bundle with a given name.
+        """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             query_params = frozendict({"bundle_name": bundle_name})
@@ -2164,10 +2204,20 @@ class LaunchClient:
 
         return resp
 
-    def list_docker_image_batch_job_bundles(self, bundle_name: Optional[str]) -> ListDockerImageBatchJobBundleResponse:
+    def list_docker_image_batch_job_bundles(
+        self, bundle_name: Optional[str] = None, order_by: Optional[Literal["newest", "oldest"]] = None
+    ) -> ListDockerImageBatchJobBundleResponse:
+        """
+        For self hosted mode only. Gets information for multiple bundles.
+
+        Parameters:
+            bundle_name: The name of the bundles to retrieve. If not specified, this will retrieve all
+            bundles.
+            order_by: Either "newest", "oldest", or not specified. Specify to sort by newest/oldest.
+        """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            query_params = frozendict(dict_not_none(bundle_name=bundle_name))
+            query_params = frozendict(dict_not_none(bundle_name=bundle_name, order_by=order_by))
             response = api_instance.get_latest_docker_image_batch_job_bundle_v1_docker_image_batch_job_bundles_latest_get(  # noqa: E501
                 # type: ignore
                 query_params=query_params,
@@ -2180,9 +2230,10 @@ class LaunchClient:
     def create_docker_image_batch_job(
         self,
         *,
-        docker_image_batch_job_bundle: Union[str],
-        job_config: Optional[Dict[str, Any]],
         labels: Dict[str, str],
+        docker_image_batch_job_bundle: Optional[Union[str, DockerImageBatchJobBundleResponse]] = None,
+        docker_image_batch_job_bundle_name: Optional[str] = None,
+        job_config: Optional[Dict[str, Any]] = None,
         cpus: Optional[int] = None,
         memory: Optional[str] = None,
         gpus: Optional[int] = None,
@@ -2191,18 +2242,105 @@ class LaunchClient:
     ):
         """
         For self hosted mode only.
+        Parameters:
+            docker_image_batch_job_bundle: Specifies the docker image bundle to use for the batch job.
+                Either the string id of a docker image bundle, or a
+                DockerImageBatchJobBundleResponse object.
+                Only one of docker_image_batch_job_bundle and docker_image_batch_job_bundle_name
+                can be specified.
+            docker_image_batch_job_bundle_name: The name of a batch job bundle. If specified,
+                Launch will use the most recent bundle with that name owned by the current user.
+                Only one of docker_image_batch_job_bundle and docker_image_batch_job_bundle_name
+                can be specified.
+            labels: Kubernetes labels that are present on the batch job.
+            job_config: A JSON-serializable python object that will get passed to the batch job,
+                specifically as the contents of a file mounted at `mount_location` inside the bundle.
+                You can call python's `json.load()` on the file to retrieve the contents.
+            cpus: Optional override for the number of cpus to give to your job. Either the default
+                must be specified in the bundle, or this must be specified.
+            memory: Optional override for the amount of memory to give to your job. Either the default
+                must be specified in the bundle, or this must be specified.
+            gpus: Optional number of gpus to give to the bundle. If not specified in the bundle or
+                here, will be interpreted as 0 gpus.
+            gpu_type: Optional type of gpu. If the final number of gpus is positive, must be specified
+                either in the bundle or here.
+            storage: Optional reserved amount of disk to give to your batch job. If not specified,
+                your job may be evicted if it is using too much disk.
         """
 
-        pass
+        assert (docker_image_batch_job_bundle is None) ^ (
+            docker_image_batch_job_bundle_name is None
+        ), "Exactly one of docker_image_batch_job_bundle and docker_image_batch_job_bundle_name must be specified"
+
+        if docker_image_batch_job_bundle is not None and isinstance(
+            docker_image_batch_job_bundle, DockerImageBatchJobBundleResponse
+        ):
+            docker_image_batch_job_bundle_id: Optional[str] = docker_image_batch_job_bundle.id
+        else:
+            docker_image_batch_job_bundle_id = docker_image_batch_job_bundle
+
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            resource_requests = CreateDockerImageBatchJobResourceRequests(
+                **dict_not_none(
+                    cpus=cpus,
+                    memory=memory,
+                    gpus=gpus,
+                    gpu_type=gpu_type,
+                    storage=storage,
+                )
+            )
+            create_docker_image_batch_job_request = CreateDockerImageBatchJobV1Request(
+                **dict_not_none(
+                    docker_image_batch_job_bundle_id=docker_image_batch_job_bundle_id,
+                    docker_image_batch_job_bundle_name=docker_image_batch_job_bundle_name,
+                    job_config=job_config,
+                    labels=labels,
+                    resource_requests=resource_requests,
+                )
+            )
+            response = api_instance.create_docker_image_batch_job_v1_docker_image_batch_jobs_post(
+                body=create_docker_image_batch_job_request,
+                skip_deserialization=True,
+            )
+            resp = CreateDockerImageBatchJobV1Request.parse_raw(response.response.data)
+        return resp
 
     def get_docker_image_batch_job(self, batch_job_id: str):
-        pass
+        """
+        For self hosted mode only. Gets information about a batch job given a batch job id.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"batch_job_id": batch_job_id})
+            response = (
+                api_instance.get_docker_image_batch_job_v1_docker_image_batch_jobs_batch_job_id_get(  # type: ignore
+                    path_params=path_params,
+                    skip_deserialization=True,
+                )
+            )
+            resp = json.loads(response.response.data)
+
+        return resp
 
     def update_docker_image_batch_job(self, batch_job_id: str, cancel: bool):
         """
-        TODO why isn't there a corresponding for regular batch jobs?
+        For self hosted mode only. Updates a batch job by id.
+        Use this if you want to cancel/delete a batch job.
         """
-        pass
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"batch_job_id": batch_job_id})
+            body = UpdateDockerImageBatchJobV1Request(cancel=cancel)
+            response = api_instance.update_docker_image_batch_job_v1_docker_image_batch_jobs_batch_job_id_put(  # type: ignore # noqa: E501
+                # noqa: E501
+                body=body,
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+
+        return resp
 
 
 def _zip_directory(zipf: ZipFile, path: str) -> None:

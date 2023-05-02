@@ -56,5 +56,5 @@ class ListDockerImageBatchJobBundleResponse(BaseModel):
     """
 
     docker_image_batch_job_bundles: List[DockerImageBatchJobBundleResponse]
-    """A list of 
+    """A list of
     [Docker Image Batch Job Bundles](./#launch.docker_image_batch_job_bundle.DockerImageBatchJobBundleResponse)."""
