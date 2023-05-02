@@ -31,6 +31,12 @@ from launch.api_client.model.cloudpickle_artifact_flavor import (
 from launch.api_client.model.create_batch_job_v1_request import (
     CreateBatchJobV1Request,
 )
+from launch.api_client.model.create_docker_image_batch_job_bundle_v1_request import (
+    CreateDockerImageBatchJobBundleV1Request,
+)
+from launch.api_client.model.create_docker_image_batch_job_resource_requests import (
+    CreateDockerImageBatchJobResourceRequests,
+)
 from launch.api_client.model.create_model_bundle_v1_request import (
     CreateModelBundleV1Request,
 )
@@ -61,6 +67,9 @@ from launch.api_client.model.tensorflow_framework import TensorflowFramework
 from launch.api_client.model.triton_enhanced_runnable_image_flavor import (
     TritonEnhancedRunnableImageFlavor,
 )
+from launch.api_client.model.update_docker_image_batch_job_v1_request import (
+    UpdateDockerImageBatchJobV1Request,
+)
 from launch.api_client.model.update_model_endpoint_v1_request import (
     UpdateModelEndpointV1Request,
 )
@@ -72,6 +81,11 @@ from launch.constants import (
     MODEL_BUNDLE_SIGNED_URL_PATH,
     SCALE_LAUNCH_ENDPOINT,
     SCALE_LAUNCH_V1_ENDPOINT,
+)
+from launch.docker_image_batch_job_bundle import (
+    CreateDockerImageBatchJobBundleResponse,
+    DockerImageBatchJobBundleResponse,
+    ListDockerImageBatchJobBundleResponse,
 )
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.hooks import PostInferenceHooks
@@ -2088,26 +2102,80 @@ class LaunchClient:
         gpus: Optional[int] = None,
         gpu_type: Optional[str] = None,
         storage: Optional[str] = None,
-    ):
+    ) -> CreateDockerImageBatchJobBundleResponse:
         """
         For self hosted mode only.
-        TODO return a Create...Response probably
+        TODO docs
         """
-        pass
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            resource_requests = CreateDockerImageBatchJobResourceRequests(
+                cpus=cpus,
+                memory=memory,
+                gpus=gpus,
+                gpu_type=gpu_type,
+                storage=storage,
+            )
+            create_docker_image_batch_job_bundle_request = CreateDockerImageBatchJobBundleV1Request(
+                name=name,
+                image_repository=image_repository,
+                image_tag=image_tag,
+                command=command,
+                env=env,
+                mount_location=mount_location,
+                resource_requests=resource_requests,
+            )
+            response = api_instance.create_docker_image_batch_job_bundle_v1_docker_image_batch_job_bundles_post(
+                body=create_docker_image_batch_job_bundle_request, skip_deserialization=True
+            )
+            resp = CreateDockerImageBatchJobBundleResponse.parse_raw(response.response.data)
+        return resp
 
-    def get_docker_image_batch_job_bundle(self, docker_image_batch_job_bundle_id: str):
+    def get_docker_image_batch_job_bundle(
+        self, docker_image_batch_job_bundle_id: str
+    ) -> DockerImageBatchJobBundleResponse:
         """
         For self hosted mode only.
 
         TODO return some DockerImageBatchJobBundleResponse
         """
-        pass
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"docker_image_batch_job_bundle_id": docker_image_batch_job_bundle_id})
+            response = api_instance.get_docker_image_batch_job_model_bundle_v1_docker_image_batch_job_bundles_docker_image_batch_job_bundle_id_get(  # noqa: E501
+                # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = DockerImageBatchJobBundleResponse.parse_raw(response.response.data)
 
-    def get_latest_docker_image_batch_job_bundle(self, bundle_name: str):
-        pass
+        return resp
 
-    def list_docker_image_batch_job_bundles(self, bundle_name: Optional[str]):
-        pass
+    def get_latest_docker_image_batch_job_bundle(self, bundle_name: str) -> DockerImageBatchJobBundleResponse:
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            query_params = frozendict({"bundle_name": bundle_name})
+            response = api_instance.get_latest_docker_image_batch_job_bundle_v1_docker_image_batch_job_bundles_latest_get(  # noqa: E501
+                # type: ignore
+                query_params=query_params,
+                skip_deserialization=True,
+            )
+            resp = DockerImageBatchJobBundleResponse.parse_raw(response.response.data)
+
+        return resp
+
+    def list_docker_image_batch_job_bundles(self, bundle_name: Optional[str]) -> ListDockerImageBatchJobBundleResponse:
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            query_params = frozendict(dict_not_none(bundle_name=bundle_name))
+            response = api_instance.get_latest_docker_image_batch_job_bundle_v1_docker_image_batch_job_bundles_latest_get(  # noqa: E501
+                # type: ignore
+                query_params=query_params,
+                skip_deserialization=True,
+            )
+            resp = ListDockerImageBatchJobBundleResponse.parse_raw(response.response.data)
+
+        return resp
 
     def create_docker_image_batch_job(
         self,
@@ -2124,6 +2192,7 @@ class LaunchClient:
         """
         For self hosted mode only.
         """
+
         pass
 
     def get_docker_image_batch_job(self, batch_job_id: str):
