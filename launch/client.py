@@ -2174,8 +2174,7 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"docker_image_batch_job_bundle_id": docker_image_batch_job_bundle_id})
-            response = api_instance.get_docker_image_batch_job_model_bundle_v1_docker_image_batch_job_bundles_docker_image_batch_job_bundle_id_get(  # noqa: E501
-                # type: ignore
+            response = api_instance.get_docker_image_batch_job_model_bundle_v1_docker_image_batch_job_bundles_docker_image_batch_job_bundle_id_get(  # type: ignore  # noqa: E501
                 path_params=path_params,
                 skip_deserialization=True,
             )
@@ -2190,8 +2189,7 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             query_params = frozendict({"bundle_name": bundle_name})
-            response = api_instance.get_latest_docker_image_batch_job_bundle_v1_docker_image_batch_job_bundles_latest_get(  # noqa: E501
-                # type: ignore
+            response = api_instance.get_latest_docker_image_batch_job_bundle_v1_docker_image_batch_job_bundles_latest_get(  # type: ignore  # noqa: E501
                 query_params=query_params,
                 skip_deserialization=True,
             )
@@ -2213,8 +2211,7 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             query_params = frozendict(dict_not_none(bundle_name=bundle_name, order_by=order_by))
-            response = api_instance.list_docker_image_batch_job_model_bundles_v1_docker_image_batch_job_bundles_get(  # noqa: E501
-                # type: ignore
+            response = api_instance.list_docker_image_batch_job_model_bundles_v1_docker_image_batch_job_bundles_get(  # type: ignore  # noqa: E501
                 query_params=query_params,
                 skip_deserialization=True,
             )
