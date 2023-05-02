@@ -2333,7 +2333,6 @@ class LaunchClient:
             path_params = frozendict({"batch_job_id": batch_job_id})
             body = UpdateDockerImageBatchJobV1Request(cancel=cancel)
             response = api_instance.update_docker_image_batch_job_v1_docker_image_batch_jobs_batch_job_id_put(  # type: ignore # noqa: E501
-                # noqa: E501
                 body=body,
                 path_params=path_params,
                 skip_deserialization=True,
