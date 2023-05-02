@@ -2141,6 +2141,9 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
+            # Raw dictionary since it's not the entire request and we can get away with this
+            # Also having it be a CreateDockerImageBatchJobResourceRequest runs into problems
+            # if no values are specified
             resource_requests = dict_not_none(
                 cpus=cpus,
                 memory=memory,
@@ -2273,6 +2276,9 @@ class LaunchClient:
 
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
+            # Raw dictionary since it's not the entire request and we can get away with this
+            # Also having it be a CreateDockerImageBatchJobResourceRequest runs into problems
+            # if no values are specified
             resource_requests = dict_not_none(
                 cpus=cpus,
                 memory=memory,
