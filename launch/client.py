@@ -2074,6 +2074,67 @@ class LaunchClient:
             resp = json.loads(response.response.data)
         return resp
 
+    def create_docker_image_batch_job_bundle(
+        self,
+        *,
+        name: str,
+        image_repository: str,
+        image_tag: str,
+        command: List[str],
+        env: Optional[Dict[str, str]],
+        mount_location: Optional[str],
+        cpus: Optional[int] = None,
+        memory: Optional[str] = None,
+        gpus: Optional[int] = None,
+        gpu_type: Optional[str] = None,
+        storage: Optional[str] = None,
+    ):
+        """
+        For self hosted mode only.
+        TODO return a Create...Response probably
+        """
+        pass
+
+    def get_docker_image_batch_job_bundle(self, docker_image_batch_job_bundle_id: str):
+        """
+        For self hosted mode only.
+
+        TODO return some DockerImageBatchJobBundleResponse
+        """
+        pass
+
+    def get_latest_docker_image_batch_job_bundle(self, bundle_name: str):
+        pass
+
+    def list_docker_image_batch_job_bundles(self, bundle_name: Optional[str]):
+        pass
+
+    def create_docker_image_batch_job(
+        self,
+        *,
+        docker_image_batch_job_bundle: Union[str],
+        job_config: Optional[Dict[str, Any]],
+        labels: Dict[str, str],
+        cpus: Optional[int] = None,
+        memory: Optional[str] = None,
+        gpus: Optional[int] = None,
+        gpu_type: Optional[str] = None,
+        storage: Optional[str] = None,
+    ):
+        """
+        For self hosted mode only.
+        """
+        pass
+
+    def get_docker_image_batch_job(self, batch_job_id: str):
+        pass
+
+    def update_docker_image_batch_job(self, batch_job_id: str, cancel: bool):
+        """
+        TODO why isn't there a corresponding for regular batch jobs?
+        """
+        pass
+
 
 def _zip_directory(zipf: ZipFile, path: str) -> None:
     for root, _, files in os.walk(path):
