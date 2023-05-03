@@ -27,7 +27,7 @@ exclude = [
 
 [tool.poetry]
 name = "scale-launch"
-version = "1.0.0"
+version = "1.1.0"
 description = "The official Python client library for Launch, the Data Platform for AI"
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
