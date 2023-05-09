@@ -1947,6 +1947,7 @@ class LaunchClient:
         storage: Optional[str] = None,
         max_workers: Optional[int] = None,
         per_worker: Optional[int] = None,
+        timeout_seconds: Optional[float] = None,
     ) -> Dict[str, Any]:
         """
         Sends a batch inference request using a given bundle. Returns a key that can be used to
@@ -2002,6 +2003,9 @@ class LaunchClient:
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
 
+            timeout_seconds: The maximum amount of time (in seconds) that the batch job can take.
+                If not specified, the server defaults to 12 hours.
+
         Returns:
             A dictionary that contains `job_id` as a key, and the ID as the value.
         """
@@ -2049,6 +2053,7 @@ class LaunchClient:
             serialization_format=serialization_format,
             labels=labels,
             resource_requests=resource_requests,
+            timeout_seconds=timeout_seconds,
         )
         request = CreateBatchJobV1Request(**payload)
         with ApiClient(self.configuration) as api_client:
