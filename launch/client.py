@@ -2004,7 +2004,8 @@ class LaunchClient:
                 - ``nvidia-ampere-a10``
 
             timeout_seconds: The maximum amount of time (in seconds) that the batch job can take.
-                If not specified, the server defaults to 12 hours.
+                If not specified, the server defaults to 12 hours. This includes the time required
+                to build the endpoint and the total time required for all the individual tasks.
 
         Returns:
             A dictionary that contains `job_id` as a key, and the ID as the value.
