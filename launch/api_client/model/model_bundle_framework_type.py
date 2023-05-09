@@ -29,7 +29,9 @@ class ModelBundleFrameworkType(schemas.EnumBase, schemas.StrSchema):
 
     Do not edit the class manually.
 
+
     The canonical list of possible machine learning frameworks of Model Bundles.
+
     """
 
     class MetaOapg:

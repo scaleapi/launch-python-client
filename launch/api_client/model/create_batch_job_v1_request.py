@@ -88,12 +88,14 @@ class CreateBatchJobV1Request(schemas.DictSchema):
             def serialization_format() -> typing.Type["BatchJobSerializationFormat"]:
                 return BatchJobSerializationFormat
 
+            timeout_seconds = schemas.NumberSchema
             __annotations__ = {
                 "input_path": input_path,
                 "labels": labels,
                 "model_bundle_id": model_bundle_id,
                 "resource_requests": resource_requests,
                 "serialization_format": serialization_format,
+                "timeout_seconds": timeout_seconds,
             }
 
     model_bundle_id: MetaOapg.properties.model_bundle_id
@@ -123,6 +125,10 @@ class CreateBatchJobV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["timeout_seconds"]) -> MetaOapg.properties.timeout_seconds:
+        ...
+
+    @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema:
         ...
 
@@ -135,6 +141,7 @@ class CreateBatchJobV1Request(schemas.DictSchema):
                 "model_bundle_id",
                 "resource_requests",
                 "serialization_format",
+                "timeout_seconds",
             ],
             str,
         ],
@@ -163,6 +170,12 @@ class CreateBatchJobV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["timeout_seconds"]
+    ) -> typing.Union[MetaOapg.properties.timeout_seconds, schemas.Unset]:
+        ...
+
+    @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
@@ -175,6 +188,7 @@ class CreateBatchJobV1Request(schemas.DictSchema):
                 "model_bundle_id",
                 "resource_requests",
                 "serialization_format",
+                "timeout_seconds",
             ],
             str,
         ],
@@ -202,6 +216,9 @@ class CreateBatchJobV1Request(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
+        timeout_seconds: typing.Union[
+            MetaOapg.properties.timeout_seconds, decimal.Decimal, int, float, schemas.Unset
+        ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -228,6 +245,7 @@ class CreateBatchJobV1Request(schemas.DictSchema):
             serialization_format=serialization_format,
             input_path=input_path,
             labels=labels,
+            timeout_seconds=timeout_seconds,
             _configuration=_configuration,
             **kwargs,
         )

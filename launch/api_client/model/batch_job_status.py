@@ -40,6 +40,7 @@ class BatchJobStatus(schemas.EnumBase, schemas.StrSchema):
             "FAILURE": "FAILURE",
             "CANCELLED": "CANCELLED",
             "UNDEFINED": "UNDEFINED",
+            "TIMEOUT": "TIMEOUT",
         }
 
     @schemas.classproperty
@@ -65,3 +66,7 @@ class BatchJobStatus(schemas.EnumBase, schemas.StrSchema):
     @schemas.classproperty
     def UNDEFINED(cls):
         return cls("UNDEFINED")
+
+    @schemas.classproperty
+    def TIMEOUT(cls):
+        return cls("TIMEOUT")
