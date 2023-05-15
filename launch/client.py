@@ -446,10 +446,12 @@ class LaunchClient:
             )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
-            name=model_bundle_name,
-            schema_location=schema_location,
-            flavor=flavor,
-            metadata=metadata,
+            **dict_not_none(
+                name=model_bundle_name,
+                schema_location=schema_location,
+                flavor=flavor,
+                metadata=metadata,
+            )
         )
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
@@ -588,10 +590,12 @@ class LaunchClient:
             )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
-            name=model_bundle_name,
-            schema_location=schema_location,
-            flavor=flavor,
-            metadata=metadata,
+            **dict_not_none(
+                name=model_bundle_name,
+                schema_location=schema_location,
+                flavor=flavor,
+                metadata=metadata,
+            )
         )
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
@@ -661,10 +665,12 @@ class LaunchClient:
             )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
-            name=model_bundle_name,
-            schema_location=schema_location,
-            flavor=flavor,
-            metadata=metadata,
+            **dict_not_none(
+                name=model_bundle_name,
+                schema_location=schema_location,
+                flavor=flavor,
+                metadata=metadata,
+            )
         )
 
         with ApiClient(self.configuration) as api_client:
@@ -767,10 +773,12 @@ class LaunchClient:
             )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
-            name=model_bundle_name,
-            schema_location=schema_location,
-            flavor=flavor,
-            metadata=metadata,
+            **dict_not_none(
+                name=model_bundle_name,
+                schema_location=schema_location,
+                flavor=flavor,
+                metadata=metadata,
+            )
         )
 
         with ApiClient(self.configuration) as api_client:
