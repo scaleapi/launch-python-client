@@ -330,11 +330,8 @@ class LaunchClient:
         self,
         load_model_fn: Callable,
         load_predict_fn: Callable,
-        bundle_metadata: Dict[str, Any],
     ):
         bundle = dict(load_model_fn=load_model_fn, load_predict_fn=load_predict_fn)
-        bundle_metadata["load_predict_fn"] = inspect.getsource(load_predict_fn)  # type: ignore
-        bundle_metadata["load_model_fn"] = inspect.getsource(load_model_fn)  # type: ignore
         serialized_bundle = cloudpickle.dumps(bundle)
         bundle_location = self._upload_data(data=serialized_bundle)
         return bundle_location
@@ -361,6 +358,7 @@ class LaunchClient:
         custom_base_image_repository: Optional[str] = None,
         custom_base_image_tag: Optional[str] = None,
         app_config: Optional[Union[Dict[str, Any], str]] = None,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> CreateModelBundleV2Response:
         """
         Uploads and registers a model bundle to Scale Launch.
@@ -420,14 +418,15 @@ class LaunchClient:
                 bundle when it is run. These values can be accessed by the bundle via the
                 ``app_config`` global variable.
 
+            metadata: Metadata to record with the bundle.
+
         Returns:
             An object containing the following keys:
 
                 - ``model_bundle_id``: The ID of the created model bundle.
         """
         nonnull_requirements = requirements or []
-        bundle_metadata: Dict[str, Any] = {}
-        bundle_location = self._upload_model_bundle(load_model_fn, load_predict_fn, bundle_metadata)
+        bundle_location = self._upload_model_bundle(load_model_fn, load_predict_fn)
         schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
         framework = _get_model_bundle_framework(
             pytorch_image_tag=pytorch_image_tag,
@@ -447,9 +446,12 @@ class LaunchClient:
             )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
-            name=model_bundle_name,
-            schema_location=schema_location,
-            flavor=flavor,
+            **dict_not_none(
+                name=model_bundle_name,
+                schema_location=schema_location,
+                flavor=flavor,
+                metadata=metadata,
+            )
         )
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
@@ -476,6 +478,7 @@ class LaunchClient:
         custom_base_image_repository: Optional[str] = None,
         custom_base_image_tag: Optional[str] = None,
         app_config: Optional[Dict[str, Any]] = None,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> CreateModelBundleV2Response:
         """
         Packages up code from one or more local filesystem folders and uploads them as a bundle
@@ -556,6 +559,8 @@ class LaunchClient:
                 bundle when it is run. These values can be accessed by the bundle via the
                 ``app_config`` global variable.
 
+            metadata: Metadata to record with the bundle.
+
         Returns:
             An object containing the following keys:
 
@@ -585,9 +590,12 @@ class LaunchClient:
             )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
-            name=model_bundle_name,
-            schema_location=schema_location,
-            flavor=flavor,
+            **dict_not_none(
+                name=model_bundle_name,
+                schema_location=schema_location,
+                flavor=flavor,
+                metadata=metadata,
+            )
         )
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
@@ -610,6 +618,7 @@ class LaunchClient:
         command: List[str],
         env: Dict[str, str],
         readiness_initial_delay_seconds: int,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> CreateModelBundleV2Response:
         """
         Create a model bundle from a runnable image. The specified ``command`` must start a process
@@ -636,6 +645,7 @@ class LaunchClient:
             readiness_initial_delay_seconds: The number of seconds to wait for the HTTP server to become ready and
                 successfully respond on its healthcheck.
 
+            metadata: Metadata to record with the bundle.
 
         Returns:
             An object containing the following keys:
@@ -655,9 +665,12 @@ class LaunchClient:
             )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
-            name=model_bundle_name,
-            schema_location=schema_location,
-            flavor=flavor,
+            **dict_not_none(
+                name=model_bundle_name,
+                schema_location=schema_location,
+                flavor=flavor,
+                metadata=metadata,
+            )
         )
 
         with ApiClient(self.configuration) as api_client:
@@ -688,6 +701,7 @@ class LaunchClient:
         triton_storage: Optional[str],
         triton_memory: Optional[str],
         triton_readiness_initial_delay_seconds: int,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> CreateModelBundleV2Response:
         """
         Create a model bundle from a runnable image and a tritonserver image.
@@ -732,6 +746,8 @@ class LaunchClient:
             triton_readiness_initial_delay_seconds: Like readiness_initial_delay_seconds, but for
                 tritonserver's own healthcheck.
 
+            metadata: Metadata to record with the bundle.
+
         Returns:
             An object containing the following keys:
 
@@ -757,9 +773,12 @@ class LaunchClient:
             )
         )
         create_model_bundle_request = CreateModelBundleV2Request(
-            name=model_bundle_name,
-            schema_location=schema_location,
-            flavor=flavor,
+            **dict_not_none(
+                name=model_bundle_name,
+                schema_location=schema_location,
+                flavor=flavor,
+                metadata=metadata,
+            )
         )
 
         with ApiClient(self.configuration) as api_client:
