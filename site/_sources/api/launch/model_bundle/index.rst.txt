@@ -1,0 +1,63 @@
+:orphan:
+
+:py:mod:`launch.model_bundle`
+=============================
+
+.. py:module:: launch.model_bundle
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.model_bundle.ModelBundle
+
+
+
+
+.. py:class:: ModelBundle
+
+   Represents a ModelBundle.
+
+   .. py:attribute:: bundle_id
+      :annotation: :Optional[str]
+
+      A globally unique identifier for the bundle. This is not to be used in the API.
+
+   .. py:attribute:: env_params
+      :annotation: :Optional[Dict[str, str]]
+
+      A dictionary that dictates environment information. See LaunchClient.create_model_bundle
+      for more information.
+
+   .. py:attribute:: location
+      :annotation: :Optional[str]
+
+      An opaque location for the bundle.
+
+   .. py:attribute:: metadata
+      :annotation: :Optional[Dict[Any, Any]]
+
+      Arbitrary metadata for the bundle.
+
+   .. py:attribute:: name
+      :annotation: :str
+
+      The name of the bundle. Must be unique across all bundles that the user owns.
+
+   .. py:attribute:: packaging_type
+      :annotation: :Optional[str]
+
+      The packaging type for the bundle. Can be ``cloudpickle`` or ``zip``.
+
+   .. py:attribute:: requirements
+      :annotation: :Optional[List[str]]
+
+      A list of Python package requirements for the bundle. See LaunchClient.create_model_bundle
+      for more information.
+
+

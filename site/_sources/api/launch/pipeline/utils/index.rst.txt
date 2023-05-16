@@ -1,0 +1,32 @@
+:orphan:
+
+:py:mod:`launch.pipeline.utils`
+===============================
+
+.. py:module:: launch.pipeline.utils
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   launch.pipeline.utils.make_sequential_pipeline
+   launch.pipeline.utils.make_service
+
+
+
+.. py:function:: make_sequential_pipeline(items)
+
+   Create a structure that describes a sequential pipeline.
+
+
+.. py:function:: make_service(service, runtime, deployment, **kwargs)
+
+   Create a structure that describes a single service.
+
+

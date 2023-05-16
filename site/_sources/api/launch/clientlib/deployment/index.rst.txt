@@ -1,0 +1,29 @@
+:orphan:
+
+:py:mod:`launch.clientlib.deployment`
+=====================================
+
+.. py:module:: launch.clientlib.deployment
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.clientlib.deployment.DeployedService
+
+
+
+
+.. py:class:: DeployedService
+
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+

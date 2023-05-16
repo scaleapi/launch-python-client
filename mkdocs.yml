@@ -48,6 +48,8 @@ nav:
     - api/model_endpoints.md
     - api/endpoint_predictions.md
     - api/hooks.md
+  - Guides:
+    - guides/custom_docker_images.md
 
 markdown_extensions:
   - toc:

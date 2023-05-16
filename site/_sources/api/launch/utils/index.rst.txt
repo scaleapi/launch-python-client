@@ -1,0 +1,26 @@
+:orphan:
+
+:py:mod:`launch.utils`
+======================
+
+.. py:module:: launch.utils
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   launch.utils.trim_kwargs
+
+
+
+.. py:function:: trim_kwargs(kwargs_dict)
+
+   Returns a copy of kwargs_dict with None values removed
+
+

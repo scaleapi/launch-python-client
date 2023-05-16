@@ -1,0 +1,31 @@
+:orphan:
+
+:py:mod:`launch.clientlib.batching.named_arrays`
+================================================
+
+.. py:module:: launch.clientlib.batching.named_arrays
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.clientlib.batching.named_arrays.LoaderNamedBatchableService
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   launch.clientlib.batching.named_arrays.BatcherNamed
+
+
+
+

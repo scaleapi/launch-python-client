@@ -1,0 +1,225 @@
+:orphan:
+
+:py:mod:`launch.clientlib`
+==========================
+
+.. py:module:: launch.clientlib
+
+
+Package Contents
+----------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.clientlib.DeployedService
+   launch.clientlib.DeploymentOptions
+   launch.clientlib.FullService
+   launch.clientlib.JsonHandler
+   launch.clientlib.JsonService
+   launch.clientlib.ReferencedDeployment
+   launch.clientlib.RequestHandler
+   launch.clientlib.ResponseHandler
+   launch.clientlib.RunnableTritonConfig
+   launch.clientlib.Runtime
+   launch.clientlib.Service
+   launch.clientlib.SpecsTritonModel
+   launch.clientlib.Status
+   launch.clientlib.ToProtobufText
+   launch.clientlib.TritonModel
+   launch.clientlib.TritonModelConfig
+   launch.clientlib.TritonTensor
+
+
+
+
+.. py:class:: DeployedService
+
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+.. py:class:: DeploymentOptions
+
+
+
+   The configuration options that determine where the service is deployed and how it acts in the cluster.
+
+
+.. py:class:: FullService
+
+
+
+   The thing that we technically run: service + payload serializers.
+
+   Its the service logic + knowing how to encode & decode things into the transit data format.
+   Default implementation is to use JSON formatted strings.
+
+
+.. py:class:: JsonHandler
+
+
+
+   Responsible for converting protocol-formatted data (D) into a service's input type (I).
+
+
+.. py:class:: JsonService(service)
+
+
+
+   This is what all std-ml-srv services are, effectively.
+
+   + all services accept and return JSON-formatable values
+   + all protocols encode the data a JSON-formatted strings
+
+
+.. py:class:: ReferencedDeployment
+
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+   .. py:method:: call(self, serialized_request)
+      :abstractmethod:
+
+      Perform an inference request against the deployed service(s).
+
+      Handles all routing. Returns a future, which represents the result of the computation to be completed.
+      Call .get() to block on result. Note that if the request is going to a syncronous deployment, then
+      there will exist a background thread that is responsible for receiving the request. It will persist
+      until the caller invokes `.get()`.
+
+      If the call fails, then the result will be an exception.
+      If `.status()` is not `complete`, then all `call`s will fail.
+
+
+
+.. py:class:: RequestHandler
+
+
+
+   Responsible for converting protocol-formatted data (D) into a service's input type (I).
+
+
+.. py:class:: ResponseHandler
+
+
+
+   Responsible for converting a service's output (O) into the protocol's data format (D).
+
+
+.. py:class:: RunnableTritonConfig
+
+
+
+   Typed version of namedtuple.
+
+   Usage in Python versions >= 3.6::
+
+       class Employee(NamedTuple):
+           name: str
+           id: int
+
+   This is equivalent to::
+
+       Employee = collections.namedtuple('Employee', ['name', 'id'])
+
+   The resulting class has an extra __annotations__ attribute, giving a
+   dict that maps field names to types.  (The field names are also in
+   the _fields attribute, which is part of the namedtuple API.)
+   Alternative equivalent keyword syntax is also accepted::
+
+       Employee = NamedTuple('Employee', name=str, id=int)
+
+   In Python versions <= 3.5 use::
+
+       Employee = NamedTuple('Employee', [('name', str), ('id', int)])
+
+
+.. py:class:: Runtime
+
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+   .. py:method:: start(self)
+      :abstractmethod:
+
+      Starts infinite loop: service accepts and responds to requests.
+
+
+
+.. py:class:: Service
+
+
+
+   Core user-defined logic abstraction.
+
+   Users *must* implement a Service to their sepecifications! The `Service` class is
+   where a Launch user can define all of their custom code.
+
+
+.. py:class:: SpecsTritonModel
+
+
+
+   A model that also describes the shapes of its input and output tensors.
+
+
+.. py:class:: Status
+
+
+
+   Generic enumeration.
+
+   Derive from this class to define new enumerations.
+
+
+   .. py:method:: name(self)
+
+      The name of the Enum member.
+
+
+   .. py:method:: value(self)
+
+      The value of the Enum member.
+
+
+
+.. py:class:: ToProtobufText
+
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+.. py:class:: TritonModel
+
+
+
+   A kind of service that only executes a model's forward pass for inference.
+
+
+.. py:class:: TritonModelConfig
+
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+
+.. py:class:: TritonTensor
+
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+

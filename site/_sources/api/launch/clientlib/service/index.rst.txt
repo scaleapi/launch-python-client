@@ -1,0 +1,56 @@
+:orphan:
+
+:py:mod:`launch.clientlib.service`
+==================================
+
+.. py:module:: launch.clientlib.service
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.clientlib.service.FullService
+   launch.clientlib.service.RequestHandler
+   launch.clientlib.service.ResponseHandler
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   launch.clientlib.service.D
+
+
+
+.. py:class:: FullService
+
+
+
+   The thing that we technically run: service + payload serializers.
+
+   Its the service logic + knowing how to encode & decode things into the transit data format.
+   Default implementation is to use JSON formatted strings.
+
+
+.. py:class:: RequestHandler
+
+
+
+   Responsible for converting protocol-formatted data (D) into a service's input type (I).
+
+
+.. py:class:: ResponseHandler
+
+
+
+   Responsible for converting a service's output (O) into the protocol's data format (D).
+
+
