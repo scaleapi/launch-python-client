@@ -24,7 +24,7 @@ you can add `pip install fastapi` to the Dockerfile directly.
 
 Inside your project workspace, create a `server.py` file with these contents:
 
-```py test='skip'
+```py
 from fastapi import FastAPI
 
 from pydantic import BaseModel
@@ -63,7 +63,8 @@ using AWS ECR, please make sure that the necessary cross-account permissions all
 
 Now you can upload your docker image as a Model Bundle, and then create a Model Endpoint referencing that Model Bundle.
 
-```py test='skip'
+
+```py
 import os
 
 from launch import LaunchClient
