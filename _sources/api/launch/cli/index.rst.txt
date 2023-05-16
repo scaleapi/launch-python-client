@@ -1,0 +1,13 @@
+:py:mod:`launch.cli`
+====================
+
+.. py:module:: launch.cli
+
+.. autoapi-nested-parse::
+
+   .. click:: launch.cli.bin:entry_point
+      :prog: scale-launch
+      :nested: full
+
+
+

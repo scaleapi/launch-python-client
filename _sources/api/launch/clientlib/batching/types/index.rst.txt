@@ -1,0 +1,62 @@
+:orphan:
+
+:py:mod:`launch.clientlib.batching.types`
+=========================================
+
+.. py:module:: launch.clientlib.batching.types
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.clientlib.batching.types.BatchableService
+   launch.clientlib.batching.types.Batcher
+
+
+
+
+.. py:class:: BatchableService
+
+
+
+   A service that operates on batches of requests.
+
+   The objective is to provide optimized throughput for model inference services.
+   Many models predictions are embarrassingly parallel. Thus they can operate efficeintly
+   on a batch of inputs, producing a batch of outputs.
+
+   This interface's objective is to provide a `call_batch` function that uses
+   a `Batcher` and a `Model`
+
+   NOTE: This is the "batteries included" service.
+
+
+.. py:class:: Batcher
+
+
+
+   Abstract base class for generic types.
+
+   A generic type is typically declared by inheriting from
+   this class parameterized with one or more type variables.
+   For example, a generic mapping type might be defined as::
+
+     class Mapping(Generic[KT, VT]):
+         def __getitem__(self, key: KT) -> VT:
+             ...
+         # Etc.
+
+   This class can then be used as follows::
+
+     def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT:
+         try:
+             return mapping[key]
+         except KeyError:
+             return default
+
+

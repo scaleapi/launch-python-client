@@ -1,0 +1,48 @@
+:orphan:
+
+:py:mod:`launch.clientlib.core`
+===============================
+
+.. py:module:: launch.clientlib.core
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.clientlib.core.Deployment
+   launch.clientlib.core.Runtime
+   launch.clientlib.core.Service
+
+
+
+
+
+.. py:class:: Runtime
+
+
+
+   Helper class that provides a standard way to create an ABC using
+   inheritance.
+
+   .. py:method:: start(self)
+      :abstractmethod:
+
+      Starts infinite loop: service accepts and responds to requests.
+
+
+
+.. py:class:: Service
+
+
+
+   Core user-defined logic abstraction.
+
+   Users *must* implement a Service to their sepecifications! The `Service` class is
+   where a Launch user can define all of their custom code.
+
+

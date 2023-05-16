@@ -1,0 +1,272 @@
+:orphan:
+
+:py:mod:`launch.model_endpoint`
+===============================
+
+.. py:module:: launch.model_endpoint
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.model_endpoint.AsyncEndpoint
+   launch.model_endpoint.AsyncEndpointBatchResponse
+   launch.model_endpoint.Endpoint
+   launch.model_endpoint.EndpointRequest
+   launch.model_endpoint.EndpointResponse
+   launch.model_endpoint.EndpointResponseFuture
+   launch.model_endpoint.ModelEndpoint
+   launch.model_endpoint.SyncEndpoint
+
+
+
+
+.. py:class:: AsyncEndpoint(model_endpoint, client)
+
+
+
+   An asynchronous model endpoint.
+
+   :param model_endpoint: ModelEndpoint object.
+   :param client: A LaunchClient object
+
+   .. py:method:: predict(self, request)
+
+      Runs an asynchronous prediction request.
+
+      :param request: The ``EndpointRequest`` object that contains the payload.
+
+      :returns: An ``EndpointResponseFuture`` such the user can use to query the status of the request.
+                Example:
+
+                .. code-block:: python
+
+                   my_endpoint = AsyncEndpoint(...)
+                   f: EndpointResponseFuture = my_endpoint.predict(EndpointRequest(...))
+                   result = f.get()  # blocks on completion
+
+
+   .. py:method:: predict_batch(self, requests)
+
+      (deprecated)
+      Runs inference on the data items specified by urls. Returns a AsyncEndpointResponse.
+
+      :param requests: List of EndpointRequests. Request_ids must all be distinct.
+
+      :returns: an AsyncEndpointResponse keeping track of the inference requests made
+
+
+   .. py:method:: resource_settings(self)
+
+      Gets the resource settings of the Endpoint.
+
+
+   .. py:method:: status(self)
+
+      Gets the status of the Endpoint.
+
+
+   .. py:method:: worker_settings(self)
+
+      Gets the worker settings of the Endpoint.
+
+
+
+.. py:class:: AsyncEndpointBatchResponse(client, endpoint_name, request_ids)
+
+   (deprecated)
+
+   Currently represents a list of async inference requests to a specific endpoint. Keeps track of the requests made,
+   and gives a way to poll for their status.
+
+   Invariant: set keys for self.request_ids and self.responses are equal
+
+   idk about this abstraction tbh, could use a redesign maybe?
+
+   Also batch inference sort of removes the need for much of the complication in here
+
+
+   .. py:method:: get_responses(self)
+
+      Returns a dictionary, where each key is the request_id for an EndpointRequest passed in, and the corresponding
+      object at that key is the corresponding EndpointResponse.
+
+
+   .. py:method:: is_done(self, poll=True)
+
+      Checks the client local state to see if all requests are done.
+
+      :param poll: If ``True``, then this will first check the state for a subset
+      :param of the remaining incomplete tasks on the Launch server.:
+
+
+   .. py:method:: poll_endpoints(self)
+
+      Runs one round of polling the endpoint for async task results.
+
+
+
+.. py:class:: Endpoint(model_endpoint, client)
+
+   An abstract class that represent any kind of endpoints in Scale Launch
+
+   .. py:method:: resource_settings(self)
+
+      Gets the resource settings of the Endpoint.
+
+
+   .. py:method:: status(self)
+
+      Gets the status of the Endpoint.
+
+
+   .. py:method:: worker_settings(self)
+
+      Gets the worker settings of the Endpoint.
+
+
+
+.. py:class:: EndpointRequest(url = None, args = None, return_pickled = True, request_id = None)
+
+   Represents a single request to either a ``SyncEndpoint`` or ``AsyncEndpoint``.
+
+   :param url: A url to some file that can be read in to a ModelBundle's predict function. Can be an image, raw text, etc.
+               **Note**: the contents of the file located at ``url`` are opened as a sequence of ``bytes`` and passed
+               to the predict function. If you instead want to pass the url itself as an input to the predict function,
+               see ``args``.
+
+               Exactly one of ``url`` and ``args`` must be specified.
+   :param args: A Dictionary with arguments to a ModelBundle's predict function. If the predict function has signature
+                ``predict_fn(foo, bar)``, then the keys in the dictionary should be ``"foo"`` and ``"bar"``.
+                Values must be native Python objects.
+
+                Exactly one of ``url`` and ``args`` must be specified.
+   :param return_pickled: Whether the output should be a pickled python object, or directly returned serialized json.
+   :param request_id: (deprecated) A user-specifiable id for requests.
+                      Should be unique among EndpointRequests made in the same batch call.
+                      If one isn't provided the client will generate its own.
+
+
+.. py:class:: EndpointResponse(client, status, result_url = None, result = None, traceback = None)
+
+   Represents a response received from a Endpoint.
+
+
+   :param client: An instance of ``LaunchClient``.
+   :param status: A string representing the status of the request, i.e. ``SUCCESS``, ``FAILURE``, or ``PENDING``
+   :param result_url: A string that is a url containing the pickled python object from the Endpoint's predict function.
+
+                      Exactly one of ``result_url`` or ``result`` will be populated,
+                      depending on the value of ``return_pickled`` in the request.
+   :param result: A string that is the serialized return value (in json form) of the Endpoint's predict function.
+                  Specifically, one can ``json.loads()`` the value of result to get the original python object back.
+
+                  Exactly one of ``result_url`` or ``result`` will be populated,
+                  depending on the value of ``return_pickled`` in the request.
+   :param traceback: The stack trace if the inference endpoint raised an error. Can be used for debugging
+
+
+.. py:class:: EndpointResponseFuture(client, endpoint_name, async_task_id)
+
+   Represents a future response from an Endpoint. Specifically, when the ``EndpointResponseFuture`` is ready,
+   then its ``get`` method will return an actual instance of ``EndpointResponse``.
+
+   This object should not be directly instantiated by the user.
+
+   :param client: An instance of ``LaunchClient``.
+   :param endpoint_name: The name of the endpoint.
+   :param async_task_id: An async task id.
+
+   .. py:method:: get(self)
+
+      Retrieves the ``EndpointResponse`` for the prediction request after it completes. This method blocks.
+
+
+
+.. py:class:: ModelEndpoint
+
+   Represents an Endpoint from the database.
+
+   .. py:attribute:: bundle_name
+      :annotation: :Optional[str]
+
+      The name of the bundle for the endpoint. The owner of the bundle must be the same as the owner for the endpoint.
+
+   .. py:attribute:: configs
+      :annotation: :Optional[dict]
+
+      Config for the endpoint.
+
+   .. py:attribute:: destination
+      :annotation: :Optional[str]
+
+      Queue identifier for endpoint, use only for debugging.
+
+   .. py:attribute:: endpoint_type
+      :annotation: :Optional[str]
+
+      The type of the endpoint. Must be ``'async'`` or ``'sync'``.
+
+   .. py:attribute:: metadata
+      :annotation: :Optional[dict]
+
+      Metadata for the endpoint.
+
+   .. py:attribute:: name
+      :annotation: :str
+
+      The name of the endpoint. Must be unique across all endpoints owned by the user.
+
+   .. py:attribute:: resource_settings
+      :annotation: :Optional[dict]
+
+      Resource settings for the endpoint.
+
+   .. py:attribute:: status
+      :annotation: :Optional[str]
+
+      The status of the endpoint.
+
+   .. py:attribute:: worker_settings
+      :annotation: :Optional[dict]
+
+      Worker settings for the endpoint.
+
+
+.. py:class:: SyncEndpoint(model_endpoint, client)
+
+
+
+   A synchronous model endpoint.
+
+   :param model_endpoint: ModelEndpoint object.
+   :param client: A LaunchClient object
+
+   .. py:method:: predict(self, request)
+
+      Runs a synchronous prediction request.
+
+      :param request: The ``EndpointRequest`` object that contains the payload.
+
+
+   .. py:method:: resource_settings(self)
+
+      Gets the resource settings of the Endpoint.
+
+
+   .. py:method:: status(self)
+
+      Gets the status of the Endpoint.
+
+
+   .. py:method:: worker_settings(self)
+
+      Gets the worker settings of the Endpoint.
+
+
+

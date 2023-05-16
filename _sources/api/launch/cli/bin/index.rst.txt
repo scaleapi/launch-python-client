@@ -1,0 +1,36 @@
+:orphan:
+
+:py:mod:`launch.cli.bin`
+========================
+
+.. py:module:: launch.cli.bin
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   launch.cli.bin.entry_point
+
+
+
+.. py:function:: entry_point(ctx, **kwargs)
+
+   This is the command line interface (CLI) package for Scale Launch.
+
+   .. code-block:: text
+
+      ██╗      █████╗ ██╗   ██╗███╗   ██╗ ██████╗██╗  ██╗
+      ██║     ██╔══██╗██║   ██║████╗  ██║██╔════╝██║  ██║
+      ██║     ███████║██║   ██║██╔██╗ ██║██║     ███████║
+      ██║     ██╔══██║██║   ██║██║╚██╗██║██║     ██╔══██║
+      ███████╗██║  ██║╚██████╔╝██║ ╚████║╚██████╗██║  ██║
+      ╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝
+
+
+

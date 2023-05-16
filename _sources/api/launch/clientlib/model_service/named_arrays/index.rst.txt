@@ -1,0 +1,31 @@
+:orphan:
+
+:py:mod:`launch.clientlib.model_service.named_arrays`
+=====================================================
+
+.. py:module:: launch.clientlib.model_service.named_arrays
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   launch.clientlib.model_service.named_arrays.LoaderNamedInferenceService
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   launch.clientlib.model_service.named_arrays.ProcessorNamed
+
+
+
+
