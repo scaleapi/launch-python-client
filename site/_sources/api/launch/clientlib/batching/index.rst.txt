@@ -1,8 +1,0 @@
-:orphan:
-
-:py:mod:`launch.clientlib.batching`
-===================================
-
-.. py:module:: launch.clientlib.batching
-
-
