@@ -29,8 +29,6 @@ from fastapi import FastAPI
 
 from pydantic import BaseModel
 
-import my_inference_fn  # This is your inference function, defined elsewhere within your Python codebase.
-
 app = FastAPI()
 
 class MyRequestSchema(BaseModel):
@@ -39,6 +37,12 @@ class MyRequestSchema(BaseModel):
 
 class MyResponseSchema(BaseModel):
     response: str
+
+def my_inference_fn(req: MyRequestSchema) -> MyResponseSchema:
+    # This is an example inference function - you can instead import a function from your own codebase,
+    # or shell out to the OS, etc.
+    resp = req.inputs + "_hello"
+    return MyResponseSchema(response=resp)
 
 @app.get("/predict")
 async def predict(request: MyRequestSchema) -> MyResponseSchema:
@@ -59,7 +63,6 @@ using AWS ECR, please make sure that the necessary cross-account permissions all
 
 Now you can upload your docker image as a Model Bundle, and then create a Model Endpoint referencing that Model Bundle.
 
-Creating the Model Bundle:
 ```python3
 import os
 
@@ -90,10 +93,7 @@ client.create_model_bundle_from_runnable_image_v2(
     readiness_initial_delay_seconds=120,
     env={},
 )
-```
 
-Creating the Model Endpoint:
-```python3
 client.create_model_endpoint(
     endpoint_name=f"endpoint-{model_bundle_name}",
     model_bundle=model_bundle_name,
