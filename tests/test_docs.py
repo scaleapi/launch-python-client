@@ -47,7 +47,8 @@ def extract_code_chunks(path: Path, text: str, offset: int):
         code = m_code.group(2)
         if TEST_SKIP_MAGIC_STRING in code:
             code = code.replace(TEST_SKIP_MAGIC_STRING, "")
-            end_line = start_line + code.count("\n")
+            start_line += 1
+            end_line = start_line + code.count("\n") + 1
             source = "__skip__"
         else:
             end_line = start_line + code.count("\n") + 1
