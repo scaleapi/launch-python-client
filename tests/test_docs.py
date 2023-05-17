@@ -12,6 +12,8 @@ from launch.model_endpoint import AsyncEndpoint, ModelEndpoint
 
 ROOT_DIR = Path(__file__).parent.parent
 
+TEST_SKIP_MAGIC_STRING = "# test='skip'"
+
 
 @pytest.fixture
 def import_execute(request, tmp_work_path: Path):
@@ -43,16 +45,13 @@ def extract_code_chunks(path: Path, text: str, offset: int):
 
         start_line = offset + text[: m_code.start()].count("\n") + 1
         code = m_code.group(2)
-        end_line = start_line + code.count("\n") + 1
-        source = "\n" * start_line + code
-        if "test='skip'" in source:
-            # Doing this instead of check in 'prefix', because that will cause the markdown
-            # to not render properly. The side effect is that the user will see something like:
-            #
-            # # test='skip'
-            #
-            # as a comment in the code snippet, but eh.
+        if TEST_SKIP_MAGIC_STRING in code:
+            start_line += 1
+            end_line = start_line + code.count("\n")
             source = "__skip__"
+        else:
+            end_line = start_line + code.count("\n") + 1
+            source = "\n" * start_line + code
         yield pytest.param(f"{path.stem}_{start_line}_{end_line}", source, id=f"{rel_path}:{start_line}-{end_line}")
 
 
