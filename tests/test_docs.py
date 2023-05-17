@@ -45,7 +45,13 @@ def extract_code_chunks(path: Path, text: str, offset: int):
         code = m_code.group(2)
         end_line = start_line + code.count("\n") + 1
         source = "\n" * start_line + code
-        if "test='skip'" in prefix:
+        if "test='skip'" in source:
+            # Doing this instead of check in 'prefix', because that will cause the markdown
+            # to not render properly. The side effect is that the user will see something like:
+            #
+            # # test='skip'
+            #
+            # as a comment in the code snippet, but eh.
             source = "__skip__"
         yield pytest.param(f"{path.stem}_{start_line}_{end_line}", source, id=f"{rel_path}:{start_line}-{end_line}")
 

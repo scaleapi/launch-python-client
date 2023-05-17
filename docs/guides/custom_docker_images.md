@@ -25,6 +25,7 @@ you can add `pip install fastapi` to the Dockerfile directly.
 Inside your project workspace, create a `server.py` file with these contents:
 
 ```py
+# test='skip'
 from fastapi import FastAPI
 
 from pydantic import BaseModel
@@ -65,6 +66,7 @@ Now you can upload your docker image as a Model Bundle, and then create a Model 
 
 
 ```py
+# test='skip'
 import os
 
 from launch import LaunchClient
