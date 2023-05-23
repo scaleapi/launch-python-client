@@ -33,7 +33,7 @@ from pydantic import BaseModel
 app = FastAPI()
 
 class MyRequestSchema(BaseModel):
-    inputs: str
+    url: str
 
 
 class MyResponseSchema(BaseModel):
@@ -42,10 +42,10 @@ class MyResponseSchema(BaseModel):
 def my_inference_fn(req: MyRequestSchema) -> MyResponseSchema:
     # This is an example inference function - you can instead import a function from your own codebase,
     # or shell out to the OS, etc.
-    resp = req.inputs + "_hello"
+    resp = req.url + "_hello"
     return MyResponseSchema(response=resp)
 
-@app.get("/predict")
+@app.post("/predict")
 async def predict(request: MyRequestSchema) -> MyResponseSchema:
     response = my_inference_fn(request)
     return response
@@ -91,7 +91,7 @@ client.create_model_bundle_from_runnable_image_v2(
         "--port",
         "5005",
         "--host",
-        "::1",
+        "::",
     ],
     readiness_initial_delay_seconds=120,
     env={},
