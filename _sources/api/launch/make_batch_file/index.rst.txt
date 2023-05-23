@@ -1,8 +1,0 @@
-:orphan:
-
-:py:mod:`launch.make_batch_file`
-================================
-
-.. py:module:: launch.make_batch_file
-
-
