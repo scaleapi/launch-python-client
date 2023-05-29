@@ -309,30 +309,28 @@ def my_load_model_fn(app_config):
     return my_model_batched
 
 
+BUNDLE_PARAMS_BASE = {
+    "load_predict_fn": my_load_predict_fn,
+    "load_model_fn": my_load_model_fn,
+    "requirements": ["pytest==7.2.1", "numpy"],
+    "request_schema": MyRequestSchema,
+    "response_schema": MyResponseSchema,
+    "pytorch_image_tag": "1.7.1-cuda11.0-cudnn8-runtime",
+}
+
 BUNDLE_PARAMS_SINGLE = {
     "model_bundle_name": "test-bundle-single",
-    "load_predict_fn": my_load_predict_fn,
-    "load_model_fn": my_load_model_fn,
-    "requirements": ["pytest==7.2.1", "numpy"],
-    "request_schema": MyRequestSchema,
-    "response_schema": MyResponseSchema,
-    "pytorch_image_tag": "1.7.1-cuda11.0-cudnn8-runtime",
     "app_config": {"mode": "single"},
 }
+
 BUNDLE_PARAMS_BATCHED = {
     "model_bundle_name": "test-bundle-batched",
-    "load_predict_fn": my_load_predict_fn,
-    "load_model_fn": my_load_model_fn,
-    "requirements": ["pytest==7.2.1", "numpy"],
-    "request_schema": MyRequestSchema,
-    "response_schema": MyResponseSchema,
-    "pytorch_image_tag": "1.7.1-cuda11.0-cudnn8-runtime",
     "app_config": {"mode": "batched"},
 }
 
 client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
-bundle_single = client.create_model_bundle_from_callable_v2(**BUNDLE_PARAMS_SINGLE)
-bundle_batch = client.create_model_bundle_from_callable_v2(**BUNDLE_PARAMS_BATCHED)
+bundle_single = client.create_model_bundle_from_callable_v2(**BUNDLE_PARAMS_BASE, **BUNDLE_PARAMS_SINGLE)
+bundle_batch = client.create_model_bundle_from_callable_v2(**BUNDLE_PARAMS_BASE, **BUNDLE_PARAMS_BATCHED)
 ```
 
 ## Updating Model Bundles
