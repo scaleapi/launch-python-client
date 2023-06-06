@@ -15,10 +15,10 @@ subsequent versions of this document will have native examples for non-Python bi
 For choice of web server, we recommend [FastAPI](https://fastapi.tiangolo.com/lo/) due to its speed and ergonomics.
 Any web server would work, although we give examples with FastAPI. 
 
-## Step 1: Install FastAPI
+## Step 1: Install Requirements
 
-You can add `fastapi` to the `requirements.txt` file that gets installed as part of your Dockerfile. Alternatively,
-you can add `pip install fastapi` to the Dockerfile directly.
+You can add `fastapi`  and `uvicorn` to the `requirements.txt` file that gets installed as part of your Dockerfile. Alternatively,
+you can add `pip install fastapi uvicorn` to the Dockerfile directly.
 
 ## Step 2: Set up a web server application
 
@@ -62,7 +62,7 @@ using AWS ECR, please make sure that the necessary cross-account permissions all
 
 ## Step 4: Deploy!
 
-Now you can upload your docker image as a Model Bundle, and then create a Model Endpoint referencing that Model Bundle.
+Now you can upload your docker image as a Model Bundle, and then create a Model Endpoint referencing that Model Bundle. Not that `path.to.your.server.file:app` in the command below should be referenced from the `WORKDIR` of your docker image.
 
 
 ```py
@@ -87,7 +87,7 @@ client.create_model_bundle_from_runnable_image_v2(
         "dumb-init",
         "--",
         "uvicorn",
-        "/path/in/docker/image/to/server.py",
+        "path.to.your.server.file:app",
         "--port",
         "5005",
         "--host",
@@ -106,7 +106,7 @@ client.create_model_endpoint(
     per_worker=1,
     memory="30Gi",
     storage="40Gi",
-    cpus=4,
+    cpus=4, # This must  be at least 2 because forwarding services consume 1 cpu.
     gpus=1,
     gpu_type="nvidia-ampere-a10",
     update_if_exists=True,
