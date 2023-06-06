@@ -296,6 +296,7 @@ class CreateModelEndpointV1Request(schemas.DictSchema):
                     return super().__getitem__(i)
 
             prewarm = schemas.BoolSchema
+            public_inference = schemas.BoolSchema
 
             class storage(
                 schemas.ComposedSchema,
@@ -386,6 +387,7 @@ class CreateModelEndpointV1Request(schemas.DictSchema):
                 "optimize_costs": optimize_costs,
                 "post_inference_hooks": post_inference_hooks,
                 "prewarm": prewarm,
+                "public_inference": public_inference,
                 "storage": storage,
             }
 
@@ -482,6 +484,10 @@ class CreateModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["public_inference"]) -> MetaOapg.properties.public_inference:
+        ...
+
+    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["storage"]) -> MetaOapg.properties.storage:
         ...
 
@@ -512,6 +518,7 @@ class CreateModelEndpointV1Request(schemas.DictSchema):
                 "optimize_costs",
                 "post_inference_hooks",
                 "prewarm",
+                "public_inference",
                 "storage",
             ],
             str,
@@ -612,6 +619,12 @@ class CreateModelEndpointV1Request(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["public_inference"]
+    ) -> typing.Union[MetaOapg.properties.public_inference, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["storage"]
     ) -> typing.Union[MetaOapg.properties.storage, schemas.Unset]:
         ...
@@ -643,6 +656,7 @@ class CreateModelEndpointV1Request(schemas.DictSchema):
                 "optimize_costs",
                 "post_inference_hooks",
                 "prewarm",
+                "public_inference",
                 "storage",
             ],
             str,
@@ -747,6 +761,7 @@ class CreateModelEndpointV1Request(schemas.DictSchema):
             MetaOapg.properties.post_inference_hooks, list, tuple, schemas.Unset
         ] = schemas.unset,
         prewarm: typing.Union[MetaOapg.properties.prewarm, bool, schemas.Unset] = schemas.unset,
+        public_inference: typing.Union[MetaOapg.properties.public_inference, bool, schemas.Unset] = schemas.unset,
         storage: typing.Union[
             MetaOapg.properties.storage,
             dict,
@@ -807,6 +822,7 @@ class CreateModelEndpointV1Request(schemas.DictSchema):
             optimize_costs=optimize_costs,
             post_inference_hooks=post_inference_hooks,
             prewarm=prewarm,
+            public_inference=public_inference,
             storage=storage,
             _configuration=_configuration,
             **kwargs,

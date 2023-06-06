@@ -149,6 +149,8 @@ class GetModelEndpointV1Response(schemas.DictSchema):
                 def __getitem__(self, i: int) -> MetaOapg.items:
                     return super().__getitem__(i)
 
+            public_inference = schemas.BoolSchema
+
             @staticmethod
             def resource_state() -> typing.Type["ModelEndpointResourceState"]:
                 return ModelEndpointResourceState
@@ -173,6 +175,7 @@ class GetModelEndpointV1Response(schemas.DictSchema):
                 "metadata": metadata,
                 "num_queued_items": num_queued_items,
                 "post_inference_hooks": post_inference_hooks,
+                "public_inference": public_inference,
                 "resource_state": resource_state,
                 "results_s3_bucket": results_s3_bucket,
             }
@@ -264,6 +267,10 @@ class GetModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["public_inference"]) -> MetaOapg.properties.public_inference:
+        ...
+
+    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["resource_state"]) -> "ModelEndpointResourceState":
         ...
 
@@ -299,6 +306,7 @@ class GetModelEndpointV1Response(schemas.DictSchema):
                 "metadata",
                 "num_queued_items",
                 "post_inference_hooks",
+                "public_inference",
                 "resource_state",
                 "results_s3_bucket",
             ],
@@ -400,6 +408,12 @@ class GetModelEndpointV1Response(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["public_inference"]
+    ) -> typing.Union[MetaOapg.properties.public_inference, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["resource_state"]
     ) -> typing.Union["ModelEndpointResourceState", schemas.Unset]:
         ...
@@ -436,6 +450,7 @@ class GetModelEndpointV1Response(schemas.DictSchema):
                 "metadata",
                 "num_queued_items",
                 "post_inference_hooks",
+                "public_inference",
                 "resource_state",
                 "results_s3_bucket",
             ],
@@ -499,6 +514,7 @@ class GetModelEndpointV1Response(schemas.DictSchema):
         post_inference_hooks: typing.Union[
             MetaOapg.properties.post_inference_hooks, list, tuple, schemas.Unset
         ] = schemas.unset,
+        public_inference: typing.Union[MetaOapg.properties.public_inference, bool, schemas.Unset] = schemas.unset,
         resource_state: typing.Union["ModelEndpointResourceState", schemas.Unset] = schemas.unset,
         results_s3_bucket: typing.Union[MetaOapg.properties.results_s3_bucket, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
@@ -540,6 +556,7 @@ class GetModelEndpointV1Response(schemas.DictSchema):
             metadata=metadata,
             num_queued_items=num_queued_items,
             post_inference_hooks=post_inference_hooks,
+            public_inference=public_inference,
             resource_state=resource_state,
             results_s3_bucket=results_s3_bucket,
             _configuration=_configuration,
