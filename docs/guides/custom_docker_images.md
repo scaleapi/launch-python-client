@@ -62,7 +62,7 @@ using AWS ECR, please make sure that the necessary cross-account permissions all
 
 ## Step 4: Deploy!
 
-Now you can upload your docker image as a Model Bundle, and then create a Model Endpoint referencing that Model Bundle. Not that `path.to.your.server.file:app` in the command below should be referenced from the `WORKDIR` of your docker image.
+Now you can upload your docker image as a Model Bundle, and then create a Model Endpoint referencing that Model Bundle. Note that `path.to.your.server.file:app` in the `command` section below should be relative to the `WORKDIR` of your docker image.
 
 
 ```py
