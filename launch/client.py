@@ -1239,6 +1239,7 @@ class LaunchClient:
         default_callback_auth_password: Optional[str] = None,
         default_callback_auth_cert: Optional[str] = None,
         default_callback_auth_key: Optional[str] = None,
+        public_inference: Optional[bool] = None,
         update_if_exists: bool = False,
         labels: Optional[Dict[str, str]] = None,
     ) -> Optional[Endpoint]:
@@ -1329,6 +1330,9 @@ class LaunchClient:
                 if default_callback_auth_kind is "mtls". This can be overridden in the task
                 parameters for each individual task.
 
+            public_inference: If ``True``, this endpoint will be available to all user IDs for
+                inference.
+
             update_if_exists: If ``True``, will attempt to update the endpoint if it exists.
                 Otherwise, will unconditionally try to create a new endpoint. Note that endpoint
                 names for a given user must be unique, so attempting to call this function with
@@ -1360,6 +1364,7 @@ class LaunchClient:
                 default_callback_auth_password=default_callback_auth_password,
                 default_callback_auth_cert=default_callback_auth_cert,
                 default_callback_auth_key=default_callback_auth_key,
+                public_inference=public_inference,
             )
             return existing_endpoint
         else:
@@ -1410,6 +1415,7 @@ class LaunchClient:
                     default_callback_url=default_callback_url,
                     default_callback_auth=default_callback_auth,
                     storage=storage,
+                    public_inference=public_inference,
                 )
                 create_model_endpoint_request = CreateModelEndpointV1Request(**payload)
                 response = api_instance.create_model_endpoint_v1_model_endpoints_post(
@@ -1448,6 +1454,7 @@ class LaunchClient:
         default_callback_auth_password: Optional[str] = None,
         default_callback_auth_cert: Optional[str] = None,
         default_callback_auth_key: Optional[str] = None,
+        public_inference: Optional[bool] = None,
     ) -> None:
         """
         Edits an existing model endpoint. Here are the fields that **cannot** be edited on an
@@ -1522,6 +1529,9 @@ class LaunchClient:
             default_callback_auth_key: The default callback auth key to use. This only applies
                 if default_callback_auth_kind is "mtls". This can be overridden in the task
                 parameters for each individual task.
+
+            public_inference: If ``True``, this endpoint will be available to all user IDs for
+                inference.
         """
         logger.info("Editing existing endpoint")
         with ApiClient(self.configuration) as api_client:
@@ -1580,6 +1590,7 @@ class LaunchClient:
                 default_callback_url=default_callback_url,
                 default_callback_auth=default_callback_auth,
                 storage=storage,
+                public_inference=public_inference,
             )
             update_model_endpoint_request = UpdateModelEndpointV1Request(**payload)
             path_params = frozendict({"model_endpoint_id": model_endpoint_id})
