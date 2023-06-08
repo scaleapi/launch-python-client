@@ -1593,6 +1593,18 @@ files = [
 ]
 
 [[package]]
+name = "sseclient-py"
+version = "1.7.2"
+description = "SSE client for Python"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "sseclient-py-1.7.2.tar.gz", hash = "sha256:ba3197d314766eccb72a1dda80b5fa14a0fbba07d796a287654c07edde88fe0f"},
+    {file = "sseclient_py-1.7.2-py2.py3-none-any.whl", hash = "sha256:a758653b13b78df42cdb696740635a26cb72ad433b75efb68dbbb163d099b6a9"},
+]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -1925,4 +1937,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "9ca208bbcf9ec3c68ce81884b7f3061263c3518ec13e2f684ca3b4dcf08b828d"
+content-hash = "b8d52b5275174170e4aa5f04054b0445758a031f7c2813410633669dacb51206"
