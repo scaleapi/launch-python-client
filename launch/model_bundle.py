@@ -46,6 +46,7 @@ class ModelBundleFlavorType(str, Enum):
     CLOUDPICKLE_ARTIFACT = "cloudpickle_artifact"
     ZIP_ARTIFACT = "zip_artifact"
     RUNNABLE_IMAGE = "runnable_image"
+    STREAMING_ENHANCED_RUNNABLE_IMAGE = "streaming_enhanced_runnable_image"
     TRITON_ENHANCED_RUNNABLE_IMAGE = "triton_enhanced_runnable_image"
 
 
@@ -122,6 +123,13 @@ class RunnableImageFlavor(RunnableImageLike):
     flavor: Literal[ModelBundleFlavorType.RUNNABLE_IMAGE]
 
 
+class StreamingEnhancedRunnableImageFlavor(RunnableImageLike):
+    """For deployments that expose a streaming route in a container."""
+
+    flavor: Literal[ModelBundleFlavorType.STREAMING_ENHANCED_RUNNABLE_IMAGE]
+    streaming_command: List[str]
+
+
 class TritonEnhancedRunnableImageFlavor(RunnableImageLike):
     """For runnable image models that require tritonserver running in a container."""
 
@@ -146,6 +154,7 @@ ModelBundleFlavors = Union[
     CloudpickleArtifactFlavor,
     ZipArtifactFlavor,
     RunnableImageFlavor,
+    StreamingEnhancedRunnableImageFlavor,
     TritonEnhancedRunnableImageFlavor,
 ]
 """Union type exhaustively representing all valid model bundle flavors.
@@ -154,6 +163,7 @@ Valid model bundle flavors are:
 - [`CloudpickleArtifactFlavor`](./#launch.model_bundle.CloudpickleArtifactFlavor)
 - [`ZipArtifactFlavor`](./#launch.model_bundle.ZipArtifactFlavor)
 - [`RunnableImageFlavor`](./#launch.model_bundle.RunnableImageFlavor)
+- [`StreamingEnhancedRunnableImageFlavor`](./#launch.model_bundle.StreamingEnhancedRunnableImageFlavor)
 - [`TritonEnhancedRunnableImageFlavor`](./#launch.model_bundle.TritonEnhancedRunnableImageFlavor)
 """
 
