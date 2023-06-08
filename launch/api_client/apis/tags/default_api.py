@@ -84,6 +84,9 @@ from launch.api_client.paths.v1_model_endpoints_model_endpoint_id.put import (
 from launch.api_client.paths.v1_model_endpoints_schema_json.get import (
     GetModelEndpointsSchemaV1ModelEndpointsSchemaJsonGet,
 )
+from launch.api_client.paths.v1_streaming_tasks.post import (
+    CreateStreamingInferenceTaskV1StreamingTasksPost,
+)
 from launch.api_client.paths.v1_sync_tasks.post import (
     CreateSyncInferenceTaskV1SyncTasksPost,
 )
@@ -114,6 +117,7 @@ class DefaultApi(
     CreateModelBundleV1ModelBundlesPost,
     CreateModelBundleV2ModelBundlesPost,
     CreateModelEndpointV1ModelEndpointsPost,
+    CreateStreamingInferenceTaskV1StreamingTasksPost,
     CreateSyncInferenceTaskV1SyncTasksPost,
     DeleteModelEndpointV1ModelEndpointsModelEndpointIdDelete,
     GetAsyncInferenceTaskV1AsyncTasksTaskIdGet,

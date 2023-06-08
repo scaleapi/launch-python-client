@@ -36,3 +36,6 @@ class ModelEndpointType(schemas.EnumBase, schemas.StrSchema):
     @schemas.classproperty
     def SYNC(cls):
         return cls("sync")
+    @schemas.classproperty
+    def STREAMING(cls):
+        return cls("streaming")

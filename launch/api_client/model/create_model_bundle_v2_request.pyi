@@ -56,6 +56,7 @@ class CreateModelBundleV2Request(schemas.DictSchema):
                             CloudpickleArtifactFlavor,
                             ZipArtifactFlavor,
                             RunnableImageFlavor,
+                            StreamingEnhancedRunnableImageFlavor,
                             TritonEnhancedRunnableImageFlavor,
                         ]
                 def __new__(
@@ -237,6 +238,9 @@ from launch_client.model.cloudpickle_artifact_flavor import (
     CloudpickleArtifactFlavor,
 )
 from launch_client.model.runnable_image_flavor import RunnableImageFlavor
+from launch_client.model.streaming_enhanced_runnable_image_flavor import (
+    StreamingEnhancedRunnableImageFlavor,
+)
 from launch_client.model.triton_enhanced_runnable_image_flavor import (
     TritonEnhancedRunnableImageFlavor,
 )

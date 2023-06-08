@@ -139,6 +139,9 @@ from launch.api_client.model.pytorch_framework import PytorchFramework
 from launch.api_client.model.request_schema import RequestSchema
 from launch.api_client.model.response_schema import ResponseSchema
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
+from launch.api_client.model.streaming_enhanced_runnable_image_flavor import (
+    StreamingEnhancedRunnableImageFlavor,
+)
 from launch.api_client.model.sync_endpoint_predict_v1_response import (
     SyncEndpointPredictV1Response,
 )
