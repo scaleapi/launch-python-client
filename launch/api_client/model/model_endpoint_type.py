@@ -36,6 +36,7 @@ class ModelEndpointType(schemas.EnumBase, schemas.StrSchema):
         enum_value_to_name = {
             "async": "ASYNC",
             "sync": "SYNC",
+            "streaming": "STREAMING",
         }
 
     @schemas.classproperty
@@ -45,3 +46,7 @@ class ModelEndpointType(schemas.EnumBase, schemas.StrSchema):
     @schemas.classproperty
     def SYNC(cls):
         return cls("sync")
+
+    @schemas.classproperty
+    def STREAMING(cls):
+        return cls("streaming")
