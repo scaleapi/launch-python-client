@@ -308,9 +308,9 @@ class EndpointResponseStream(Iterator):
         return EndpointResponse(
             client=None,
             status=data["status"],
-            result_url=data["result_url"],
-            result=data["result"],
-            traceback=data["traceback"],
+            result_url=data.get("result_url"),
+            result=data.get("result"),
+            traceback=data.get("traceback"),
         )
 
 
