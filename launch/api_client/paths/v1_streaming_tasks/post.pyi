@@ -63,7 +63,9 @@ SchemaFor200ResponseBodyApplicationJson = schemas.AnyTypeSchema
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor200ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 _response_for_200 = api_client.OpenApiResponse(
@@ -77,7 +79,9 @@ SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor422ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 _response_for_422 = api_client.OpenApiResponse(
@@ -92,7 +96,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_streaming_inference_task_v1_streaming_tasks_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -103,7 +109,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_streaming_inference_task_v1_streaming_tasks_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -114,7 +122,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_streaming_inference_task_v1_streaming_tasks_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
@@ -125,7 +135,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_streaming_inference_task_v1_streaming_tasks_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -135,7 +147,9 @@ class BaseApi(api_client.Api):
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def _create_streaming_inference_task_v1_streaming_tasks_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -212,7 +226,9 @@ class CreateStreamingInferenceTaskV1StreamingTasksPost(BaseApi):
     @typing.overload
     def create_streaming_inference_task_v1_streaming_tasks_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -223,7 +239,9 @@ class CreateStreamingInferenceTaskV1StreamingTasksPost(BaseApi):
     @typing.overload
     def create_streaming_inference_task_v1_streaming_tasks_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -234,7 +252,9 @@ class CreateStreamingInferenceTaskV1StreamingTasksPost(BaseApi):
     @typing.overload
     def create_streaming_inference_task_v1_streaming_tasks_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
@@ -245,7 +265,9 @@ class CreateStreamingInferenceTaskV1StreamingTasksPost(BaseApi):
     @typing.overload
     def create_streaming_inference_task_v1_streaming_tasks_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -255,7 +277,9 @@ class CreateStreamingInferenceTaskV1StreamingTasksPost(BaseApi):
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def create_streaming_inference_task_v1_streaming_tasks_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -279,7 +303,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -290,7 +316,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -301,7 +329,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
@@ -312,7 +342,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -322,7 +354,9 @@ class ApiForpost(BaseApi):
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,

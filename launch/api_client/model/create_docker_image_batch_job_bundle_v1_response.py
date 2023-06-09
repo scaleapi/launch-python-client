@@ -56,7 +56,9 @@ class CreateDockerImageBatchJobBundleV1Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["docker_image_batch_job_bundle_id",],
+            typing_extensions.Literal[
+                "docker_image_batch_job_bundle_id",
+            ],
             str,
         ],
     ):
@@ -76,7 +78,9 @@ class CreateDockerImageBatchJobBundleV1Response(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["docker_image_batch_job_bundle_id",],
+            typing_extensions.Literal[
+                "docker_image_batch_job_bundle_id",
+            ],
             str,
         ],
     ):

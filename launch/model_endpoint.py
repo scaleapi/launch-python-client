@@ -304,12 +304,13 @@ class EndpointResponseStream(Iterator):
     def __next__(self):
         """Uses server-sent events to iterate through the stream."""
         event = self.events.__next__()
+        data = json.loads(event.data)
         return EndpointResponse(
             client=None,
-            status=event.data["status"],
-            result_url=event.data["result_url"],
-            result=event.data["result"],
-            traceback=event.data["traceback"],
+            status=data["status"],
+            result_url=data["result_url"],
+            result=data["result"],
+            traceback=data["traceback"],
         )
 
 
