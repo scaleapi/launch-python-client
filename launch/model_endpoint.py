@@ -306,8 +306,11 @@ class EndpointResponseStream(Iterator):
         """Uses server-sent events to iterate through the stream."""
         event = self.events.__next__()
         data = json.loads(event.data)
-        result_str = data.get("result", "{}")
-        result = ast.literal_eval(result_str)
+        result_or_str = data.get("result", "{}")
+        if isinstance(result_or_str, str):
+            result = ast.literal_eval(result_or_str)
+        else:
+            result = result_or_str
         return EndpointResponse(
             client=None,
             status=data["status"],
