@@ -5,8 +5,9 @@ import uuid
 from abc import ABC, abstractmethod
 from collections import Counter
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Sequence
+from typing import Dict, Iterator, List, Optional, Sequence
 
+import sseclient
 from dataclasses_json import Undefined, dataclass_json
 from deprecation import deprecated
 from typing_extensions import Literal
@@ -284,6 +285,36 @@ class EndpointResponseFuture:
         raise TimeoutError
 
 
+class EndpointResponseStream(Iterator):
+    """
+    Represents a stream response from an Endpoint. This object is iterable and yields
+    ``EndpointResponse`` objects.
+
+    This object should not be directly instantiated by the user.
+    """
+
+    def __init__(self, response):
+        self.sse_client = sseclient.SSEClient(response)
+        self.events = self.sse_client.events()
+
+    def __iter__(self):
+        """Uses server-sent events to iterate through the stream."""
+        return self
+
+    def __next__(self):
+        """Uses server-sent events to iterate through the stream."""
+        event = self.events.__next__()
+        data = json.loads(event.data)
+        result = data.get("result", {})
+        return EndpointResponse(
+            client=None,
+            status=data["status"],
+            result_url=result.get("result_url", None),
+            result=result.get("result", None),
+            traceback=data.get("traceback"),
+        )
+
+
 class Endpoint(ABC):
     """An abstract class that represent any kind of endpoints in Scale Launch"""
 
@@ -374,6 +405,53 @@ class SyncEndpoint(Endpoint):
             result=raw_response.get("result", {}).get("result", None),
             traceback=raw_response.get("traceback", None),
         )
+
+
+class StreamingEndpoint(Endpoint):
+    """
+    A synchronous model endpoint.
+    """
+
+    def __init__(self, model_endpoint: ModelEndpoint, client):
+        """
+        Parameters:
+            model_endpoint: ModelEndpoint object.
+
+            client: A LaunchClient object
+        """
+        super().__init__(model_endpoint=model_endpoint, client=client)
+
+    def __str__(self):
+        return f"StreamingEndpoint <endpoint_name:{self.model_endpoint.name}>"
+
+    def __repr__(self):
+        return (
+            f"StreamingEndpoint(name='{self.model_endpoint.name}', "
+            f"bundle_name='{self.model_endpoint.bundle_name}', "
+            f"status='{self.model_endpoint.status}', "
+            f"resource_state='{json.dumps(self.model_endpoint.resource_state)}', "
+            f"deployment_state='{json.dumps(self.model_endpoint.deployment_state)}', "
+            f"endpoint_type='{self.model_endpoint.endpoint_type}', "
+            f"metadata='{self.model_endpoint.metadata}')"
+        )
+
+    def predict(self, request: EndpointRequest) -> EndpointResponseStream:
+        """
+        Runs a streaming prediction request.
+
+        Parameters:
+            request: The ``EndpointRequest`` object that contains the payload.
+
+        Returns:
+            An ``EndpointResponseStream`` object that can be used to iterate through the stream.
+        """
+        raw_response = self.client._streaming_request(  # pylint: disable=W0212
+            self.model_endpoint.name,
+            url=request.url,
+            args=request.args,
+            return_pickled=request.return_pickled,
+        )
+        return EndpointResponseStream(response=raw_response)
 
 
 class AsyncEndpoint(Endpoint):

@@ -51,6 +51,7 @@ types-frozendict = "^2.0.9"
 questionary = "^1.10.0"
 click = ">=7.1.2"  # type:
 urllib3 = "^1.26.7"
+sseclient-py = "^1.7.2"
 
 [tool.poetry.scripts]
 scale-launch = 'launch.cli.bin:entry_point'

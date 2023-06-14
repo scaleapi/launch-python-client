@@ -63,6 +63,9 @@ from launch.api_client.model.model_bundle_packaging_type import (
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
 from launch.api_client.model.pytorch_framework import PytorchFramework
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
+from launch.api_client.model.streaming_enhanced_runnable_image_flavor import (
+    StreamingEnhancedRunnableImageFlavor,
+)
 from launch.api_client.model.tensorflow_framework import TensorflowFramework
 from launch.api_client.model.triton_enhanced_runnable_image_flavor import (
     TritonEnhancedRunnableImageFlavor,
@@ -103,6 +106,7 @@ from launch.model_endpoint import (
     AsyncEndpoint,
     Endpoint,
     ModelEndpoint,
+    StreamingEndpoint,
     SyncEndpoint,
 )
 from launch.pydantic_schemas import get_model_definitions
@@ -212,7 +216,7 @@ class LaunchClient:
             self_hosted: True iff you are connecting to a self-hosted Scale Launch
         """
         self.connection = Connection(api_key, endpoint or SCALE_LAUNCH_ENDPOINT)
-        self.endpoint = endpoint
+        self.endpoint = endpoint or SCALE_LAUNCH_V1_ENDPOINT
         self.self_hosted = self_hosted
         self.upload_bundle_fn: Optional[Callable[[str, str], None]] = None
         self.upload_batch_csv_fn: Optional[Callable[[str, str], None]] = None
@@ -659,6 +663,88 @@ class LaunchClient:
                 repository=repository,
                 tag=tag,
                 command=command,
+                env=env,
+                protocol="http",
+                readiness_initial_delay_seconds=readiness_initial_delay_seconds,
+            )
+        )
+        create_model_bundle_request = CreateModelBundleV2Request(
+            **dict_not_none(
+                name=model_bundle_name,
+                schema_location=schema_location,
+                flavor=flavor,
+                metadata=metadata,
+            )
+        )
+
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.create_model_bundle_v2_model_bundles_post(
+                body=create_model_bundle_request,
+                skip_deserialization=True,
+            )
+            resp = CreateModelBundleV2Response.parse_raw(response.response.data)
+
+        return resp
+
+    def create_model_bundle_from_streaming_enhanced_runnable_image_v2(
+        self,
+        *,
+        model_bundle_name: str,
+        request_schema: Type[BaseModel],
+        response_schema: Type[BaseModel],
+        repository: str,
+        tag: str,
+        command: Optional[List[str]],
+        streaming_command: List[str],
+        env: Dict[str, str],
+        readiness_initial_delay_seconds: int,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> CreateModelBundleV2Response:
+        """
+        Create a model bundle from a runnable image. The specified ``command`` must start a process
+        that will listen for requests on port 5005 using HTTP.
+
+        Inference requests must be served at the `POST /predict` route while the `GET /readyz` route is a healthcheck.
+
+        Parameters:
+            model_bundle_name: The name of the model bundle you want to create.
+
+            request_schema: A Pydantic model that defines the request schema for the bundle.
+
+            response_schema: A Pydantic model that defines the response schema for the bundle.
+
+            repository: The name of the Docker repository for the runnable image.
+
+            tag: The tag for the runnable image.
+
+            command: The command that will be used to start the process that listens for requests if
+                this bundle is used as a SYNC or ASYNC endpoint.
+
+            streaming_command: The command that will be used to start the process that listens for
+                requests if this bundle is used as a STREAMING endpoint.
+
+            env: A dictionary of environment variables that will be passed to the bundle when it
+                is run.
+
+            readiness_initial_delay_seconds: The number of seconds to wait for the HTTP server to become ready and
+                successfully respond on its healthcheck.
+
+            metadata: Metadata to record with the bundle.
+
+        Returns:
+            An object containing the following keys:
+
+                - ``model_bundle_id``: The ID of the created model bundle.
+        """
+        schema_location = self._upload_schemas(request_schema=request_schema, response_schema=response_schema)
+        flavor = StreamingEnhancedRunnableImageFlavor(
+            **dict_not_none(
+                flavor="streaming_enhanced_runnable_image",
+                repository=repository,
+                tag=tag,
+                command=command,
+                streaming_command=streaming_command,
                 env=env,
                 protocol="http",
                 readiness_initial_delay_seconds=readiness_initial_delay_seconds,
@@ -1217,6 +1303,7 @@ class LaunchClient:
         # TODO check that a model bundle was created and no name collisions happened
         return ModelBundle(model_bundle_name)
 
+    # pylint: disable=too-many-branches
     def create_model_endpoint(
         self,
         *,
@@ -1299,7 +1386,7 @@ class LaunchClient:
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
 
-            endpoint_type: Either ``"sync"`` or ``"async"``.
+            endpoint_type: Either ``"sync"``, ``"async"``, or ``"streaming"``.
 
             high_priority: Either ``True`` or ``False``. Enabling this will allow the created
                 endpoint to leverage the shared pool of prewarmed nodes for faster spinup time.
@@ -1430,8 +1517,10 @@ class LaunchClient:
                 return AsyncEndpoint(model_endpoint=model_endpoint, client=self)
             elif endpoint_type == "sync":
                 return SyncEndpoint(model_endpoint=model_endpoint, client=self)
+            elif endpoint_type == "streaming":
+                return StreamingEndpoint(model_endpoint=model_endpoint, client=self)
             else:
-                raise ValueError("Endpoint should be one of the types 'sync' or 'async'")
+                raise ValueError("Endpoint should be one of the types 'sync', 'async', or 'streaming'")
 
     def edit_model_endpoint(
         self,
@@ -1626,8 +1715,10 @@ class LaunchClient:
             return AsyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
         elif resp["endpoint_type"] == "sync":
             return SyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
+        elif resp["endpoint_type"] == "streaming":
+            return StreamingEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
         else:
-            raise ValueError("Endpoint should be one of the types 'sync' or 'async'")
+            raise ValueError("Endpoint should be one of the types 'sync', 'async', or 'streaming'")
 
     def list_model_bundles(self) -> List[ModelBundle]:
         """
@@ -1727,7 +1818,15 @@ class LaunchClient:
             for endpoint in resp["model_endpoints"]
             if endpoint["endpoint_type"] == "sync"
         ]
-        return async_endpoints + sync_endpoints
+        streaming_endpoints: List[Endpoint] = [
+            StreamingEndpoint(
+                model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
+                client=self,
+            )
+            for endpoint in resp["model_endpoints"]
+            if endpoint["endpoint_type"] == "streaming"
+        ]
+        return async_endpoints + sync_endpoints + streaming_endpoints
 
     def delete_model_endpoint(self, model_endpoint: Union[ModelEndpoint, str]):
         """
@@ -1761,16 +1860,16 @@ class LaunchClient:
         resp = self.connection.get(route)
         return resp["content"]
 
-    def _sync_request(
+    def _streaming_request(
         self,
         endpoint_name: str,
         url: Optional[str] = None,
         args: Optional[Dict] = None,
         return_pickled: bool = False,
-    ) -> Dict[str, Any]:
+    ) -> requests.Response:
         """
-        Not recommended for use, instead use functions provided by SyncEndpoint Makes a request
-        to the Sync Model Endpoint at endpoint_id, and blocks until request completion or
+        Not recommended for use, instead use functions provided by StreamingEndpoint. Makes a
+        request to the Sync Model Endpoint at endpoint_id, and blocks until request completion or
         timeout. Endpoint at endpoint_id must be a SyncEndpoint, otherwise this request will fail.
 
         Parameters:
@@ -1792,31 +1891,18 @@ class LaunchClient:
             the file returned.
 
         Returns:
-            A dictionary with key either ``"result_url"`` or ``"result"``, depending on the value
-            of ``return_pickled``. If ``return_pickled`` is true, the key will be ``"result_url"``,
-            and the value is a signedUrl that contains a cloudpickled Python object,
-            the result of running inference on the model input.
-            Example output:
-                ``https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy``
-
-            Otherwise, if ``return_pickled`` is false, the key will be ``"result"``,
-            and the value is the output of the endpoint's ``predict`` function, serialized as json.
+            A requests.Response object.
         """
         validate_task_request(url=url, args=args)
         endpoint = self.get_model_endpoint(endpoint_name)
         endpoint_id = endpoint.model_endpoint.id  # type: ignore
-        with ApiClient(self.configuration) as api_client:
-            api_instance = DefaultApi(api_client)
-            payload = dict_not_none(return_pickled=return_pickled, url=url, args=args)
-            request = EndpointPredictV1Request(**payload)
-            query_params = frozendict({"model_endpoint_id": endpoint_id})
-            response = api_instance.create_sync_inference_task_v1_sync_tasks_post(  # type: ignore
-                body=request,
-                query_params=query_params,
-                skip_deserialization=True,
-            )
-            resp = json.loads(response.response.data)
-        return resp
+        payload = dict_not_none(return_pickled=return_pickled, url=url, args=args)
+        response = requests.post(
+            url=f"{self.configuration.host}/v1/streaming-tasks?model_endpoint_id={endpoint_id}",
+            json=payload,
+            auth=(self.configuration.username, self.configuration.password),
+        )
+        return response
 
     def _async_request(
         self,
