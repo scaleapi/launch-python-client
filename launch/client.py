@@ -695,7 +695,7 @@ class LaunchClient:
         response_schema: Type[BaseModel],
         repository: str,
         tag: str,
-        command: List[str],
+        command: Optional[List[str]],
         streaming_command: List[str],
         env: Dict[str, str],
         readiness_initial_delay_seconds: int,
