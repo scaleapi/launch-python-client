@@ -197,9 +197,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
         "response_schema": MyResponseSchema,
         "repository": "...",
         "tag": "...",
-        "command": [
-            ...
-        ],
+        "command": ...,
         "env": {
             "TEST_KEY": "test_value",
         },
@@ -232,9 +230,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
         "response_schema": MyResponseSchema,
         "repository": "...",
         "tag": "...",
-        "command": [
-            ...
-        ],
+        "command": ...,
         "env": {
             "TEST_KEY": "test_value",
         },
@@ -274,12 +270,8 @@ Each of these modes of creating a model bundle is called a "Flavor".
         "response_schema": MyResponseSchema,
         "repository": "...",
         "tag": "...",
-        "command": [ # optional; if provided, will also expose the /predict endpoint
-            ...
-        ],
-        "streaming_command": [ # required
-            ...
-        ],
+        "command": ..., # optional; if provided, will also expose the /predict endpoint
+        "streaming_command": ..., # required
         "env": {
             "TEST_KEY": "test_value",
         },
