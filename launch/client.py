@@ -1904,6 +1904,63 @@ class LaunchClient:
         )
         return response
 
+    def _sync_request(
+        self,
+        endpoint_name: str,
+        url: Optional[str] = None,
+        args: Optional[Dict] = None,
+        return_pickled: bool = False,
+    ) -> Dict[str, Any]:
+        """
+        Not recommended for use, instead use functions provided by SyncEndpoint Makes a request
+        to the Sync Model Endpoint at endpoint_id, and blocks until request completion or
+        timeout. Endpoint at endpoint_id must be a SyncEndpoint, otherwise this request will fail.
+
+        Parameters:
+            endpoint_name: The name of the endpoint to make the request to
+
+            url: A url that points to a file containing model input. Must be accessible by Scale
+            Launch, hence it needs to either be public or a signedURL. **Note**: the contents of
+            the file located at ``url`` are opened as a sequence of ``bytes`` and passed to the
+            predict function. If you instead want to pass the url itself as an input to the
+            predict function, see ``args``.
+
+            args: A dictionary of arguments to the ``predict`` function defined in your model
+            bundle. Must be json-serializable, i.e. composed of ``str``, ``int``, ``float``,
+            etc. If your ``predict`` function has signature ``predict(foo, bar)``, then args
+            should be a dictionary with keys ``foo`` and ``bar``. Exactly one of ``url`` and
+            ``args`` must be specified.
+
+            return_pickled: Whether the python object returned is pickled, or directly written to
+            the file returned.
+
+        Returns:
+            A dictionary with key either ``"result_url"`` or ``"result"``, depending on the value
+            of ``return_pickled``. If ``return_pickled`` is true, the key will be ``"result_url"``,
+            and the value is a signedUrl that contains a cloudpickled Python object,
+            the result of running inference on the model input.
+            Example output:
+                ``https://foo.s3.us-west-2.amazonaws.com/bar/baz/qux?xyzzy``
+
+            Otherwise, if ``return_pickled`` is false, the key will be ``"result"``,
+            and the value is the output of the endpoint's ``predict`` function, serialized as json.
+        """
+        validate_task_request(url=url, args=args)
+        endpoint = self.get_model_endpoint(endpoint_name)
+        endpoint_id = endpoint.model_endpoint.id  # type: ignore
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            payload = dict_not_none(return_pickled=return_pickled, url=url, args=args)
+            request = EndpointPredictV1Request(**payload)
+            query_params = frozendict({"model_endpoint_id": endpoint_id})
+            response = api_instance.create_sync_inference_task_v1_sync_tasks_post(  # type: ignore
+                body=request,
+                query_params=query_params,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+        return resp
+
     def _async_request(
         self,
         endpoint_name: str,
