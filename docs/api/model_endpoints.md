@@ -6,3 +6,4 @@ method and provide a `predict` function.
 
 ::: launch.model_endpoint.AsyncEndpoint
 ::: launch.model_endpoint.SyncEndpoint
+::: launch.model_endpoint.StreamingEndpoint

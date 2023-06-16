@@ -99,7 +99,7 @@ class ModelEndpoint:
 
 class EndpointRequest:
     """
-    Represents a single request to either a ``SyncEndpoint`` or ``AsyncEndpoint``.
+    Represents a single request to either a ``SyncEndpoint``, ``StreamingEndpoint``,  or ``AsyncEndpoint``.
 
     Parameters:
         url: A url to some file that can be read in to a ModelBundle's predict function. Can be an image, raw text, etc.

@@ -47,7 +47,9 @@ class UpdateDockerImageBatchJobV1Request(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["cancel",],
+            typing_extensions.Literal[
+                "cancel",
+            ],
             str,
         ],
     ):
@@ -60,7 +62,9 @@ class UpdateDockerImageBatchJobV1Request(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["cancel",],
+            typing_extensions.Literal[
+                "cancel",
+            ],
             str,
         ],
     ):

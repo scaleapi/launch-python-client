@@ -75,7 +75,9 @@ class ListModelBundlesV2Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["model_bundles",],
+            typing_extensions.Literal[
+                "model_bundles",
+            ],
             str,
         ],
     ):
@@ -93,7 +95,9 @@ class ListModelBundlesV2Response(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["model_bundles",],
+            typing_extensions.Literal[
+                "model_bundles",
+            ],
             str,
         ],
     ):

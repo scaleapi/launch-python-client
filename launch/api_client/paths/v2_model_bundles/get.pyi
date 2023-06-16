@@ -38,7 +38,9 @@ RequestOptionalQueryParams = typing_extensions.TypedDict(
             ModelNameSchema,
             str,
         ],
-        "order_by": typing.Union[OrderBySchema,],
+        "order_by": typing.Union[
+            OrderBySchema,
+        ],
     },
     total=False,
 )
@@ -63,7 +65,9 @@ SchemaFor200ResponseBodyApplicationJson = ListModelBundlesV2Response
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor200ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 _response_for_200 = api_client.OpenApiResponse(
@@ -77,7 +81,9 @@ SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor422ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 _response_for_422 = api_client.OpenApiResponse(
