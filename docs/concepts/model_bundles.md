@@ -269,7 +269,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
 
 
     BUNDLE_PARAMS = {
-        "model_bundle_name": "test-bundle",
+        "model_bundle_name": "test-streaming-bundle",
         "request_schema": MyRequestSchema,
         "response_schema": MyResponseSchema,
         "repository": "...",

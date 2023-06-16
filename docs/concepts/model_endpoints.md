@@ -101,7 +101,7 @@ from launch import LaunchClient
 client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
 endpoint = client.create_model_endpoint(
     endpoint_name="demo-endpoint-streaming",
-    model_bundle="test-bundle",
+    model_bundle="test-streaming-bundle",
     cpus=1,
     min_workers=1,
     endpoint_type="streaming",
