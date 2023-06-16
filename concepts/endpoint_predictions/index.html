@@ -408,6 +408,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream" class="md-nav__link">
+    EndpointResponseStream
+  </a>
+  
+    <nav class="md-nav" aria-label="EndpointResponseStream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream.__iter__" class="md-nav__link">
+    __iter__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream.__next__" class="md-nav__link">
+    __next__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -665,6 +692,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream" class="md-nav__link">
+    EndpointResponseStream
+  </a>
+  
+    <nav class="md-nav" aria-label="EndpointResponseStream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream.__iter__" class="md-nav__link">
+    __iter__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream.__next__" class="md-nav__link">
+    __next__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -683,7 +737,7 @@
 <h1 id="endpoint-predictions">Endpoint Predictions<a class="headerlink" href="#endpoint-predictions" title="Permanent link">&para;</a></h1>
 <p>Once endpoints have been created, users can send tasks to them to make
 predictions. The following code snippet shows how to send tasks to endpoints.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Sending a Task to an Async Endpoint</label><label for="__tabbed_1_2">Sending a Task to a Sync Endpoint</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Sending a Task to an Async Endpoint</label><label for="__tabbed_1_2">Sending a Task to a Sync Endpoint</label><label for="__tabbed_1_3">Sending a Task to a Streaming Endpoint</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">os</span>
@@ -704,6 +758,16 @@ predictions. The following code snippet shows how to send tasks to endpoints.</p
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">endpoint</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_model_endpoint</span><span class="p">(</span><span class="s2">&quot;demo-endpoint-sync&quot;</span><span class="p">)</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">response</span> <span class="o">=</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">EndpointRequest</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;hello&quot;</span><span class="p">}))</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span> <span class="nn">os</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span> <span class="nn">launch</span> <span class="kn">import</span> <span class="n">EndpointRequest</span><span class="p">,</span> <span class="n">LaunchClient</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">client</span> <span class="o">=</span> <span class="n">LaunchClient</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;LAUNCH_API_KEY&quot;</span><span class="p">))</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">endpoint</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_model_endpoint</span><span class="p">(</span><span class="s2">&quot;demo-endpoint-streaming&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">response</span> <span class="o">=</span> <span class="n">endpoint</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">EndpointRequest</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;hello&quot;</span><span class="p">}))</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
@@ -738,7 +802,7 @@ predictions. The following code snippet shows how to send tasks to endpoints.</p
   <div class="doc doc-contents first">
 
   
-      <p>Represents a single request to either a <code>SyncEndpoint</code> or <code>AsyncEndpoint</code>.</p>
+      <p>Represents a single request to either a <code>SyncEndpoint</code>, <code>StreamingEndpoint</code>,  or <code>AsyncEndpoint</code>.</p>
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1135,6 +1199,89 @@ depending on the value of <code>return_pickled</code> in the request.</p></td>
 
 
 
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="launch.model_endpoint.EndpointResponseStream" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">EndpointResponseStream</span>
+
+
+<a href="#launch.model_endpoint.EndpointResponseStream" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">EndpointResponseStream</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="typing.Iterator">Iterator</span></code></p>
+
+  
+      <p>Represents a stream response from an Endpoint. This object is iterable and yields
+<code>EndpointResponse</code> objects.</p>
+<p>This object should not be directly instantiated by the user.</p>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="launch.model_endpoint.EndpointResponseStream.__iter__" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">__iter__</span>
+
+
+<a href="#launch.model_endpoint.EndpointResponseStream.__iter__" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__iter__</span><span class="p">()</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Uses server-sent events to iterate through the stream.</p>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="launch.model_endpoint.EndpointResponseStream.__next__" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">__next__</span>
+
+
+<a href="#launch.model_endpoint.EndpointResponseStream.__next__" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__next__</span><span class="p">()</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Uses server-sent events to iterate through the stream.</p>
+
+  </div>
+
+</div>
 
 
 

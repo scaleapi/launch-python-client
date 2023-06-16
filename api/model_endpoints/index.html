@@ -526,6 +526,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#launch.model_endpoint.StreamingEndpoint" class="md-nav__link">
+    StreamingEndpoint
+  </a>
+  
+    <nav class="md-nav" aria-label="StreamingEndpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#launch.model_endpoint.StreamingEndpoint.predict" class="md-nav__link">
+    predict()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -681,6 +701,26 @@
         
           <li class="md-nav__item">
   <a href="#launch.model_endpoint.SyncEndpoint.predict" class="md-nav__link">
+    predict()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#launch.model_endpoint.StreamingEndpoint" class="md-nav__link">
+    StreamingEndpoint
+  </a>
+  
+    <nav class="md-nav" aria-label="StreamingEndpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#launch.model_endpoint.StreamingEndpoint.predict" class="md-nav__link">
     predict()
   </a>
   
@@ -1032,6 +1072,143 @@ Runs inference on the data items specified by urls. Returns a AsyncEndpointRespo
           <td>
               <em>required</em>
           </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="launch.model_endpoint.StreamingEndpoint" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">StreamingEndpoint</span>
+
+
+<a href="#launch.model_endpoint.StreamingEndpoint" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">StreamingEndpoint</span><span class="p">(</span><span class="n">model_endpoint</span><span class="p">:</span> <span class="n">ModelEndpoint</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="launch.model_endpoint.Endpoint">Endpoint</span></code></p>
+
+  
+      <p>A synchronous model endpoint.</p>
+
+  
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>model_endpoint</code></td>
+          <td>
+                <code><span title="launch.model_endpoint.ModelEndpoint">ModelEndpoint</span></code>
+          </td>
+          <td><p>ModelEndpoint object.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>client</code></td>
+          <td>
+          </td>
+          <td><p>A LaunchClient object</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="launch.model_endpoint.StreamingEndpoint.predict" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">predict</span>
+
+
+<a href="#launch.model_endpoint.StreamingEndpoint.predict" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">predict</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">EndpointRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EndpointResponseStream</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Runs a streaming prediction request.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>request</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="launch.model_endpoint.EndpointRequest" href="../../concepts/endpoint_predictions/#launch.model_endpoint.EndpointRequest">EndpointRequest</a></code>
+          </td>
+          <td><p>The <code>EndpointRequest</code> object that contains the payload.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="launch.model_endpoint.EndpointResponseStream" href="../../concepts/endpoint_predictions/#launch.model_endpoint.EndpointResponseStream">EndpointResponseStream</a></code>
+          </td>
+          <td><p>An <code>EndpointResponseStream</code> object that can be used to iterate through the stream.</p></td>
         </tr>
     </tbody>
   </table>

@@ -530,6 +530,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.create_model_bundle_from_streaming_enhanced_runnable_image_v2" class="md-nav__link">
+    create_model_bundle_from_streaming_enhanced_runnable_image_v2()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#launch.client.LaunchClient.create_model_bundle_from_triton_enhanced_runnable_image_v2" class="md-nav__link">
     create_model_bundle_from_triton_enhanced_runnable_image_v2()
   </a>
@@ -908,6 +915,13 @@
           <li class="md-nav__item">
   <a href="#launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2" class="md-nav__link">
     create_model_bundle_from_runnable_image_v2()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.client.LaunchClient.create_model_bundle_from_streaming_enhanced_runnable_image_v2" class="md-nav__link">
+    create_model_bundle_from_streaming_enhanced_runnable_image_v2()
   </a>
   
 </li>
@@ -2887,6 +2901,179 @@ successfully respond on its healthcheck.</p></td>
 
 
 
+<h3 id="launch.client.LaunchClient.create_model_bundle_from_streaming_enhanced_runnable_image_v2" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">create_model_bundle_from_streaming_enhanced_runnable_image_v2</span>
+
+
+<a href="#launch.client.LaunchClient.create_model_bundle_from_streaming_enhanced_runnable_image_v2" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">create_model_bundle_from_streaming_enhanced_runnable_image_v2</span><span class="p">(</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">model_bundle_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">request_schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">response_schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">repository</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">command</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">streaming_command</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">env</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">readiness_initial_delay_seconds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CreateModelBundleV2Response</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Create a model bundle from a runnable image. The specified <code>command</code> must start a process
+that will listen for requests on port 5005 using HTTP.</p>
+<p>Inference requests must be served at the <code>POST /predict</code> route while the <code>GET /readyz</code> route is a healthcheck.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>model_bundle_name</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The name of the model bundle you want to create.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>request_schema</code></td>
+          <td>
+                <code><span title="typing.Type">Type</span>[<span title="pydantic.BaseModel">BaseModel</span>]</code>
+          </td>
+          <td><p>A Pydantic model that defines the request schema for the bundle.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>response_schema</code></td>
+          <td>
+                <code><span title="typing.Type">Type</span>[<span title="pydantic.BaseModel">BaseModel</span>]</code>
+          </td>
+          <td><p>A Pydantic model that defines the response schema for the bundle.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repository</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The name of the Docker repository for the runnable image.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>tag</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The tag for the runnable image.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>command</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[str]]</code>
+          </td>
+          <td><p>The command that will be used to start the process that listens for requests if
+this bundle is used as a SYNC or ASYNC endpoint.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>streaming_command</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>The command that will be used to start the process that listens for
+requests if this bundle is used as a STREAMING endpoint.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>env</code></td>
+          <td>
+                <code><span title="typing.Dict">Dict</span>[str, str]</code>
+          </td>
+          <td><p>A dictionary of environment variables that will be passed to the bundle when it
+is run.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>readiness_initial_delay_seconds</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>The number of seconds to wait for the HTTP server to become ready and
+successfully respond on its healthcheck.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>metadata</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]]</code>
+          </td>
+          <td><p>Metadata to record with the bundle.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="launch.model_bundle.CreateModelBundleV2Response" href="../model_bundles/#launch.model_bundle.CreateModelBundleV2Response">CreateModelBundleV2Response</a></code>
+          </td>
+          <td><p>An object containing the following keys:</p>
+<ul>
+<li><code>model_bundle_id</code>: The ID of the created model bundle.</li>
+</ul></td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
 <h3 id="launch.client.LaunchClient.create_model_bundle_from_triton_enhanced_runnable_image_v2" class="doc doc-heading">
         <span class="doc doc-object-name doc-function-name">create_model_bundle_from_triton_enhanced_runnable_image_v2</span>
 
@@ -3158,9 +3345,10 @@ tritonserver's own healthcheck.</p></td>
 <a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">default_callback_auth_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">default_callback_auth_cert</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="n">default_callback_auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="n">update_if_exists</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Endpoint</span><span class="p">]</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="n">public_inference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    <span class="n">update_if_exists</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Endpoint</span><span class="p">]</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3317,7 +3505,7 @@ requested. Here are the supported values:</p>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Either <code>"sync"</code> or <code>"async"</code>.</p></td>
+          <td><p>Either <code>"sync"</code>, <code>"async"</code>, or <code>"streaming"</code>.</p></td>
           <td>
                 <code>&#39;sync&#39;</code>
           </td>
@@ -3411,6 +3599,17 @@ parameters for each individual task.</p></td>
           <td><p>The default callback auth key to use. This only applies
 if default_callback_auth_kind is "mtls". This can be overridden in the task
 parameters for each individual task.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>public_inference</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[bool]</code>
+          </td>
+          <td><p>If <code>True</code>, this endpoint will be available to all user IDs for
+inference.</p></td>
           <td>
                 <code>None</code>
           </td>
@@ -3541,8 +3740,9 @@ names for a given user must be unique, so attempting to call this function with
 <a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">default_callback_auth_username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="n">default_callback_auth_password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">default_callback_auth_cert</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">default_callback_auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="n">default_callback_auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="n">public_inference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -3773,6 +3973,17 @@ parameters for each individual task.</p></td>
           <td><p>The default callback auth key to use. This only applies
 if default_callback_auth_kind is "mtls". This can be overridden in the task
 parameters for each individual task.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>public_inference</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[bool]</code>
+          </td>
+          <td><p>If <code>True</code>, this endpoint will be available to all user IDs for
+inference.</p></td>
           <td>
                 <code>None</code>
           </td>

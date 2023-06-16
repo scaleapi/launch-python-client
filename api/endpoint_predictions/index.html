@@ -527,6 +527,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream" class="md-nav__link">
+    EndpointResponseStream
+  </a>
+  
+    <nav class="md-nav" aria-label="EndpointResponseStream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream.__iter__" class="md-nav__link">
+    __iter__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream.__next__" class="md-nav__link">
+    __next__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -665,6 +692,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream" class="md-nav__link">
+    EndpointResponseStream
+  </a>
+  
+    <nav class="md-nav" aria-label="EndpointResponseStream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream.__iter__" class="md-nav__link">
+    __iter__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#launch.model_endpoint.EndpointResponseStream.__next__" class="md-nav__link">
+    __next__()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -711,7 +765,7 @@
   <div class="doc doc-contents first">
 
   
-      <p>Represents a single request to either a <code>SyncEndpoint</code> or <code>AsyncEndpoint</code>.</p>
+      <p>Represents a single request to either a <code>SyncEndpoint</code>, <code>StreamingEndpoint</code>,  or <code>AsyncEndpoint</code>.</p>
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1104,6 +1158,89 @@ the method will block indefinitely until the response is ready.</p></td>
         </tr>
     </tbody>
   </table>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="launch.model_endpoint.EndpointResponseStream" class="doc doc-heading">
+        <span class="doc doc-object-name doc-class-name">EndpointResponseStream</span>
+
+
+<a href="#launch.model_endpoint.EndpointResponseStream" class="headerlink" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">EndpointResponseStream</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</code></pre></div>
+
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="typing.Iterator">Iterator</span></code></p>
+
+  
+      <p>Represents a stream response from an Endpoint. This object is iterable and yields
+<code>EndpointResponse</code> objects.</p>
+<p>This object should not be directly instantiated by the user.</p>
+
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="launch.model_endpoint.EndpointResponseStream.__iter__" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">__iter__</span>
+
+
+<a href="#launch.model_endpoint.EndpointResponseStream.__iter__" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__iter__</span><span class="p">()</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Uses server-sent events to iterate through the stream.</p>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="launch.model_endpoint.EndpointResponseStream.__next__" class="doc doc-heading">
+        <span class="doc doc-object-name doc-function-name">__next__</span>
+
+
+<a href="#launch.model_endpoint.EndpointResponseStream.__next__" class="headerlink" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="fm">__next__</span><span class="p">()</span>
+</code></pre></div>
+
+  <div class="doc doc-contents ">
+  
+      <p>Uses server-sent events to iterate through the stream.</p>
 
   </div>
 
