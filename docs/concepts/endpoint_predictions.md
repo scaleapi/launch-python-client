@@ -3,7 +3,6 @@
 Once endpoints have been created, users can send tasks to them to make
 predictions. The following code snippet shows how to send tasks to endpoints.
 
-
 === "Sending a Task to an Async Endpoint"
     ```py
     import os
@@ -35,7 +34,8 @@ predictions. The following code snippet shows how to send tasks to endpoints.
     client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
     endpoint = client.get_model_endpoint("demo-endpoint-streaming")
     response = endpoint.predict(request=EndpointRequest(args={"x": 2, "y": "hello"}))
-    print(response)
+    for chunk in response:
+        print(chunk)
     ```
 
 ::: launch.model_endpoint.EndpointRequest
