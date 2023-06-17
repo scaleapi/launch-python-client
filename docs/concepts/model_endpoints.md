@@ -140,6 +140,7 @@ client.edit_model_endpoint(
 ```
 
 ```py title="Deleting a Model Endpoint"
+import time
 import os
 from launch import LaunchClient
 
@@ -156,5 +157,6 @@ endpoint = client.create_model_endpoint(
         "product": "MY_PRODUCT",
     },
 )
+time.sleep(15)  # Wait for Launch to build the endpoint
 client.delete_model_endpoint(model_endpoint="demo-endpoint-tmp")
 ```
