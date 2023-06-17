@@ -398,13 +398,7 @@ class SyncEndpoint(Endpoint):
             return_pickled=request.return_pickled,
         )
         raw_response = {k: v for k, v in raw_response.items() if v is not None}
-        return EndpointResponse(
-            client=self.client,
-            status=raw_response.get("status"),
-            result_url=raw_response.get("result", {}).get("result_url", None),
-            result=raw_response.get("result", {}).get("result", None),
-            traceback=raw_response.get("traceback", None),
-        )
+        return EndpointResponse(client=self.client, **raw_response)
 
 
 class StreamingEndpoint(Endpoint):
