@@ -1,7 +1,7 @@
 # Model Bundles
 
 Model Bundles are deployable models that can be used to make predictions. They
-are created by packaging a model up into a deployable format. 
+are created by packaging a model up into a deployable format.
 
 ## Creating Model Bundles
 
@@ -9,7 +9,8 @@ There are five methods for creating model bundles:
 [`create_model_bundle_from_callable_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_callable_v2),
 [`create_model_bundle_from_dirs_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_dirs_v2),
 [`create_model_bundle_from_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_runnable_image_v2),
-[`create_model_bundle_from_triton_enhanced_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_triton_enhanced_runnable_image_v2), and [`create_model_bundle_from_streaming_enhanced_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_streaming_enhanced_runnable_image_v2).
+[`create_model_bundle_from_triton_enhanced_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_triton_enhanced_runnable_image_v2),
+and [`create_model_bundle_from_streaming_enhanced_runnable_image_v2`](/api/client/#launch.client.LaunchClient.create_model_bundle_from_streaming_enhanced_runnable_image_v2).
 
 The first directly pickles a user-specified `load_predict_fn`, a function which
 loads the model and returns a `predict_fn`, a function which takes in a request.
@@ -20,7 +21,8 @@ requests at port 5005 using HTTP and exposes `POST /predict` and
 `GET /readyz` endpoints.
 The fourth is a variant of the third that also starts an instance of the NVidia
 Triton framework for efficient model serving.
-The fifth is a variant of the third that responds with a stream of SSEs at `POST /stream` (the user can decide whether `POST /predict` is also exposed).
+The fifth is a variant of the third that responds with a stream of SSEs at `POST /stream` (the user
+can decide whether `POST /predict` is also exposed).
 
 Each of these modes of creating a model bundle is called a "Flavor".
 
@@ -56,7 +58,6 @@ Each of these modes of creating a model bundle is called a "Flavor".
 
     * You want to use a `RunnableImageFlavor`
     * You also want to support token streaming while the model is generating
-
 
 === "Creating From Callables"
     ```py
@@ -132,7 +133,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
     """)
 
     requirements_filename = os.path.join(directory, "requirements.txt")
-    with open(predict_filename, "w") as f:
+    with open(requirements_filename, "w") as f:
         f.write("""
     pytest==7.2.1
     numpy
@@ -157,13 +158,13 @@ Each of these modes of creating a model bundle is called a "Flavor".
         __root__: int
      
     BUNDLE_PARAMS = {
-        "model_bundle_name": "test-bundle",
+        "model_bundle_name": "test-bundle-from-dirs",
         "base_paths": [directory],
         "load_predict_fn_module_path": "predict.my_load_predict_fn",
         "load_model_fn_module_path": "model.my_load_model_fn",
         "request_schema": MyRequestSchema,
         "response_schema": MyResponseSchema,
-        "requirements_path": "requirements.txt",
+        "requirements_path": requirements_filename,
         "pytorch_image_tag": "1.7.1-cuda11.0-cudnn8-runtime",
     }
 
@@ -173,6 +174,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
     # Clean up files from demo
     os.remove(model_filename)
     os.remove(predict_filename)
+    os.remove(requirements_filename)
     os.rmdir(directory)
     ```
 
@@ -225,7 +227,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
 
 
     BUNDLE_PARAMS = {
-        "model_bundle_name": "test-bundle",
+        "model_bundle_name": "test-triton-bundle",
         "request_schema": MyRequestSchema,
         "response_schema": MyResponseSchema,
         "repository": "...",
@@ -270,8 +272,8 @@ Each of these modes of creating a model bundle is called a "Flavor".
         "response_schema": MyResponseSchema,
         "repository": "...",
         "tag": "...",
-        "command": ..., # optional; if provided, will also expose the /predict endpoint
-        "streaming_command": ..., # required
+        "command": ...,  # optional; if provided, will also expose the /predict endpoint
+        "streaming_command": ...,  # required
         "env": {
             "TEST_KEY": "test_value",
         },

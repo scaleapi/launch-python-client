@@ -25,6 +25,7 @@ batch_job = client.batch_async_request(
         {"x": 2, "y": "hello"},
         {"x": 3, "y": "world"},
     ],
+    gpus=0,
     labels={
         "team": "MY_TEAM",
         "product": "MY_PRODUCT",

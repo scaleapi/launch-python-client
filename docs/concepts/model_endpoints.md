@@ -10,7 +10,8 @@ of CPUs, amount of memory, GPU count, and type of GPU.
 Endpoints can be asynchronous, synchronous, or streaming. Asynchronous endpoints return
 a future immediately after receiving a request, and the future can be used to
 retrieve the prediction once it is ready. Synchronous endpoints return the
-prediction directly after receiving a request. Streaming endpoints are variants of synchronous endpoints that return a stream of SSEs instead of a single HTTP response.
+prediction directly after receiving a request. Streaming endpoints are variants of synchronous
+endpoints that return a stream of SSEs instead of a single HTTP response.
 
 !!! info
     # Choosing the right inference mode
@@ -90,7 +91,8 @@ endpoint = client.create_model_endpoint(
 
 ## Creating Streaming Model Endpoints
 
-Streaming model endpoints are variants of sync model endpoints that are useful for tasks with strict requirements on perceived latency. Streaming endpoints are more expensive than async endpoints.
+Streaming model endpoints are variants of sync model endpoints that are useful for tasks with strict
+requirements on perceived latency. Streaming endpoints are more expensive than async endpoints.
 !!! Note
     Streaming model endpoints require at least 1 `min_worker`.
 
@@ -104,6 +106,7 @@ endpoint = client.create_model_endpoint(
     model_bundle="test-streaming-bundle",
     cpus=1,
     min_workers=1,
+    per_worker=1,
     endpoint_type="streaming",
     update_if_exists=True,
     labels={
@@ -131,7 +134,7 @@ from launch import LaunchClient
 
 client = LaunchClient(api_key=os.getenv("LAUNCH_API_KEY"))
 client.edit_model_endpoint(
-    model_endpoint="demo-endpoint",
+    model_endpoint="demo-endpoint-sync",
     max_workers=2,
 )
 ```
