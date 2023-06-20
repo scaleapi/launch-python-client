@@ -1,6 +1,6 @@
 # Scale Launch
 
-[![CI](https://circleci.com/gh/scaleapi/launch-python-client.svg?style=svg&circle-token=eda1331496e2d7cbda8fb1787c610f02e8f9667a)](https://circleci.com/gh/scaleapi/launch-python-client)
+[![CI](https://circleci.com/gh/scaleapi/launch-python-client.svg)](https://circleci.com/gh/scaleapi/launch-python-client)
 [![pypi](https://img.shields.io/pypi/v/scale-launch.svg)](https://pypi.python.org/pypi/scale-launch)
 
 Simple, scalable, and high performance ML service deployment in python.
