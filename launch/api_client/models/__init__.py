@@ -54,6 +54,12 @@ from launch.api_client.model.create_docker_image_batch_job_v1_request import (
 from launch.api_client.model.create_docker_image_batch_job_v1_response import (
     CreateDockerImageBatchJobV1Response,
 )
+from launch.api_client.model.create_llm_model_endpoint_v1_request import (
+    CreateLLMModelEndpointV1Request,
+)
+from launch.api_client.model.create_llm_model_endpoint_v1_response import (
+    CreateLLMModelEndpointV1Response,
+)
 from launch.api_client.model.create_model_bundle_v1_request import (
     CreateModelBundleV1Request,
 )
@@ -108,6 +114,10 @@ from launch.api_client.model.list_model_bundles_v2_response import (
 from launch.api_client.model.list_model_endpoints_v1_response import (
     ListModelEndpointsV1Response,
 )
+from launch.api_client.model.llm_inference_framework import (
+    LLMInferenceFramework,
+)
+from launch.api_client.model.llm_source import LLMSource
 from launch.api_client.model.model_bundle_environment_params import (
     ModelBundleEnvironmentParams,
 )

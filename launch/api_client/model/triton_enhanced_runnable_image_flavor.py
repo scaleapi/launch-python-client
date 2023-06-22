@@ -106,17 +106,11 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
 
-                def __getitem__(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
-                def get_item_oapg(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
                 def __new__(
@@ -139,23 +133,18 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                     )
 
             readiness_initial_delay_seconds = schemas.IntSchema
+            route = schemas.StrSchema
             triton_memory = schemas.StrSchema
 
             class triton_model_replicas(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
 
-                def __getitem__(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
-                def get_item_oapg(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
                 def __new__(
@@ -190,6 +179,7 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                 "triton_num_cpu": triton_num_cpu,
                 "env": env,
                 "readiness_initial_delay_seconds": readiness_initial_delay_seconds,
+                "route": route,
                 "triton_memory": triton_memory,
                 "triton_model_replicas": triton_model_replicas,
                 "triton_readiness_initial_delay_seconds": triton_readiness_initial_delay_seconds,
@@ -252,6 +242,10 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
         ...
 
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["route"]) -> MetaOapg.properties.route:
+        ...
+
+    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["triton_memory"]) -> MetaOapg.properties.triton_memory:
         ...
 
@@ -289,6 +283,7 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                 "triton_num_cpu",
                 "env",
                 "readiness_initial_delay_seconds",
+                "route",
                 "triton_memory",
                 "triton_model_replicas",
                 "triton_readiness_initial_delay_seconds",
@@ -350,6 +345,12 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["route"]
+    ) -> typing.Union[MetaOapg.properties.route, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["triton_memory"]
     ) -> typing.Union[MetaOapg.properties.triton_memory, schemas.Unset]:
         ...
@@ -390,6 +391,7 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                 "triton_num_cpu",
                 "env",
                 "readiness_initial_delay_seconds",
+                "route",
                 "triton_memory",
                 "triton_model_replicas",
                 "triton_readiness_initial_delay_seconds",
@@ -445,15 +447,13 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
         readiness_initial_delay_seconds: typing.Union[
             MetaOapg.properties.readiness_initial_delay_seconds, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
+        route: typing.Union[MetaOapg.properties.route, str, schemas.Unset] = schemas.unset,
         triton_memory: typing.Union[MetaOapg.properties.triton_memory, str, schemas.Unset] = schemas.unset,
         triton_model_replicas: typing.Union[
             MetaOapg.properties.triton_model_replicas, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         triton_readiness_initial_delay_seconds: typing.Union[
-            MetaOapg.properties.triton_readiness_initial_delay_seconds,
-            decimal.Decimal,
-            int,
-            schemas.Unset,
+            MetaOapg.properties.triton_readiness_initial_delay_seconds, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
         triton_storage: typing.Union[MetaOapg.properties.triton_storage, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
@@ -487,6 +487,7 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
             triton_num_cpu=triton_num_cpu,
             env=env,
             readiness_initial_delay_seconds=readiness_initial_delay_seconds,
+            route=route,
             triton_memory=triton_memory,
             triton_model_replicas=triton_model_replicas,
             triton_readiness_initial_delay_seconds=triton_readiness_initial_delay_seconds,

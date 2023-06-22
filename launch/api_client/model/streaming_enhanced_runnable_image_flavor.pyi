@@ -36,40 +36,10 @@ class StreamingEnhancedRunnableImageFlavor(schemas.DictSchema):
             "protocol",
             "tag",
             "repository",
-            "command",
             "streaming_command",
         }
 
         class properties:
-            class command(schemas.ListSchema):
-                class MetaOapg:
-                    items = schemas.StrSchema
-                def __new__(
-                    cls,
-                    _arg: typing.Union[
-                        typing.Tuple[
-                            typing.Union[
-                                MetaOapg.items,
-                                str,
-                            ]
-                        ],
-                        typing.List[
-                            typing.Union[
-                                MetaOapg.items,
-                                str,
-                            ]
-                        ],
-                    ],
-                    _configuration: typing.Optional[schemas.Configuration] = None,
-                ) -> "command":
-                    return super().__new__(
-                        cls,
-                        _arg,
-                        _configuration=_configuration,
-                    )
-                def __getitem__(self, i: int) -> MetaOapg.items:
-                    return super().__getitem__(i)
-
             class flavor(schemas.EnumBase, schemas.StrSchema):
                 @schemas.classproperty
                 def STREAMING_ENHANCED_RUNNABLE_IMAGE(cls):
@@ -111,19 +81,42 @@ class StreamingEnhancedRunnableImageFlavor(schemas.DictSchema):
                     return super().__getitem__(i)
             tag = schemas.StrSchema
 
+            class command(schemas.ListSchema):
+                class MetaOapg:
+                    items = schemas.StrSchema
+                def __new__(
+                    cls,
+                    _arg: typing.Union[
+                        typing.Tuple[
+                            typing.Union[
+                                MetaOapg.items,
+                                str,
+                            ]
+                        ],
+                        typing.List[
+                            typing.Union[
+                                MetaOapg.items,
+                                str,
+                            ]
+                        ],
+                    ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> "command":
+                    return super().__new__(
+                        cls,
+                        _arg,
+                        _configuration=_configuration,
+                    )
+                def __getitem__(self, i: int) -> MetaOapg.items:
+                    return super().__getitem__(i)
+
             class env(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
-                def __getitem__(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
-                def get_item_oapg(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
                 def __new__(
                     cls,
@@ -144,25 +137,26 @@ class StreamingEnhancedRunnableImageFlavor(schemas.DictSchema):
                         **kwargs,
                     )
             readiness_initial_delay_seconds = schemas.IntSchema
+            route = schemas.StrSchema
+            streaming_route = schemas.StrSchema
             __annotations__ = {
-                "command": command,
                 "flavor": flavor,
                 "protocol": protocol,
                 "repository": repository,
                 "streaming_command": streaming_command,
                 "tag": tag,
+                "command": command,
                 "env": env,
                 "readiness_initial_delay_seconds": readiness_initial_delay_seconds,
+                "route": route,
+                "streaming_route": streaming_route,
             }
     flavor: MetaOapg.properties.flavor
     protocol: MetaOapg.properties.protocol
     tag: MetaOapg.properties.tag
     repository: MetaOapg.properties.repository
-    command: MetaOapg.properties.command
     streaming_command: MetaOapg.properties.streaming_command
 
-    @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["command"]) -> MetaOapg.properties.command: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["flavor"]) -> MetaOapg.properties.flavor: ...
     @typing.overload
@@ -176,33 +170,41 @@ class StreamingEnhancedRunnableImageFlavor(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["tag"]) -> MetaOapg.properties.tag: ...
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["command"]) -> MetaOapg.properties.command: ...
+    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["env"]) -> MetaOapg.properties.env: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["readiness_initial_delay_seconds"]
     ) -> MetaOapg.properties.readiness_initial_delay_seconds: ...
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["route"]) -> MetaOapg.properties.route: ...
+    @typing.overload
+    def __getitem__(
+        self, name: typing_extensions.Literal["streaming_route"]
+    ) -> MetaOapg.properties.streaming_route: ...
+    @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "command",
                 "flavor",
                 "protocol",
                 "repository",
                 "streaming_command",
                 "tag",
+                "command",
                 "env",
                 "readiness_initial_delay_seconds",
+                "route",
+                "streaming_route",
             ],
             str,
         ],
     ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
-    @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["command"]) -> MetaOapg.properties.command: ...
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["flavor"]) -> MetaOapg.properties.flavor: ...
     @typing.overload
@@ -217,6 +219,10 @@ class StreamingEnhancedRunnableImageFlavor(schemas.DictSchema):
     def get_item_oapg(self, name: typing_extensions.Literal["tag"]) -> MetaOapg.properties.tag: ...
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["command"]
+    ) -> typing.Union[MetaOapg.properties.command, schemas.Unset]: ...
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["env"]
     ) -> typing.Union[MetaOapg.properties.env, schemas.Unset]: ...
     @typing.overload
@@ -224,19 +230,29 @@ class StreamingEnhancedRunnableImageFlavor(schemas.DictSchema):
         self, name: typing_extensions.Literal["readiness_initial_delay_seconds"]
     ) -> typing.Union[MetaOapg.properties.readiness_initial_delay_seconds, schemas.Unset]: ...
     @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["route"]
+    ) -> typing.Union[MetaOapg.properties.route, schemas.Unset]: ...
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["streaming_route"]
+    ) -> typing.Union[MetaOapg.properties.streaming_route, schemas.Unset]: ...
+    @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "command",
                 "flavor",
                 "protocol",
                 "repository",
                 "streaming_command",
                 "tag",
+                "command",
                 "env",
                 "readiness_initial_delay_seconds",
+                "route",
+                "streaming_route",
             ],
             str,
         ],
@@ -264,20 +280,18 @@ class StreamingEnhancedRunnableImageFlavor(schemas.DictSchema):
             MetaOapg.properties.repository,
             str,
         ],
-        command: typing.Union[
-            MetaOapg.properties.command,
-            list,
-            tuple,
-        ],
         streaming_command: typing.Union[
             MetaOapg.properties.streaming_command,
             list,
             tuple,
         ],
+        command: typing.Union[MetaOapg.properties.command, list, tuple, schemas.Unset] = schemas.unset,
         env: typing.Union[MetaOapg.properties.env, dict, frozendict.frozendict, schemas.Unset] = schemas.unset,
         readiness_initial_delay_seconds: typing.Union[
             MetaOapg.properties.readiness_initial_delay_seconds, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
+        route: typing.Union[MetaOapg.properties.route, str, schemas.Unset] = schemas.unset,
+        streaming_route: typing.Union[MetaOapg.properties.streaming_route, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -303,10 +317,12 @@ class StreamingEnhancedRunnableImageFlavor(schemas.DictSchema):
             protocol=protocol,
             tag=tag,
             repository=repository,
-            command=command,
             streaming_command=streaming_command,
+            command=command,
             env=env,
             readiness_initial_delay_seconds=readiness_initial_delay_seconds,
+            route=route,
+            streaming_route=streaming_route,
             _configuration=_configuration,
             **kwargs,
         )
