@@ -48,6 +48,9 @@ from launch.api_client.paths.v1_docker_image_batch_jobs_batch_job_id.get import 
 from launch.api_client.paths.v1_docker_image_batch_jobs_batch_job_id.put import (
     UpdateDockerImageBatchJobV1DockerImageBatchJobsBatchJobIdPut,
 )
+from launch.api_client.paths.v1_llm_model_endpoints.get import (
+    ListModelEndpointsV1LlmModelEndpointsGet,
+)
 from launch.api_client.paths.v1_llm_model_endpoints.post import (
     CreateModelEndpointV1LlmModelEndpointsPost,
 )
@@ -142,6 +145,7 @@ class DefaultApi(
     ListDockerImageBatchJobModelBundlesV1DockerImageBatchJobBundlesGet,
     ListModelBundlesV1ModelBundlesGet,
     ListModelBundlesV2ModelBundlesGet,
+    ListModelEndpointsV1LlmModelEndpointsGet,
     ListModelEndpointsV1ModelEndpointsGet,
     UpdateBatchJobV1BatchJobsBatchJobIdPut,
     UpdateDockerImageBatchJobV1DockerImageBatchJobsBatchJobIdPut,

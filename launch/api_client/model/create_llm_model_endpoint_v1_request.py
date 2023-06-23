@@ -34,16 +34,17 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         required = {
             "metadata",
             "memory",
-            "model_name",
+            "num_shards",
             "cpus",
-            "inference_framework_image_tag",
             "max_workers",
             "gpu_type",
+            "labels",
+            "model_name",
+            "inference_framework_image_tag",
             "min_workers",
             "gpus",
             "name",
             "per_worker",
-            "labels",
         }
 
         class properties:
@@ -127,11 +128,17 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
 
-                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def __getitem__(
+                    self,
+                    name: typing.Union[str,],
+                ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
-                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def get_item_oapg(
+                    self,
+                    name: typing.Union[str,],
+                ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
                 def __new__(
@@ -228,6 +235,7 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             min_workers = schemas.IntSchema
             model_name = schemas.StrSchema
             name = schemas.StrSchema
+            num_shards = schemas.IntSchema
             per_worker = schemas.IntSchema
             billing_tags = schemas.DictSchema
 
@@ -404,7 +412,6 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
 
             prewarm = schemas.BoolSchema
             public_inference = schemas.BoolSchema
-            shard = schemas.IntSchema
 
             class source(
                 schemas.ComposedSchema,
@@ -550,6 +557,7 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                 "min_workers": min_workers,
                 "model_name": model_name,
                 "name": name,
+                "num_shards": num_shards,
                 "per_worker": per_worker,
                 "billing_tags": billing_tags,
                 "default_callback_auth": default_callback_auth,
@@ -561,23 +569,23 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                 "post_inference_hooks": post_inference_hooks,
                 "prewarm": prewarm,
                 "public_inference": public_inference,
-                "shard": shard,
                 "source": source,
                 "storage": storage,
             }
 
     metadata: MetaOapg.properties.metadata
     memory: MetaOapg.properties.memory
-    model_name: MetaOapg.properties.model_name
+    num_shards: MetaOapg.properties.num_shards
     cpus: MetaOapg.properties.cpus
-    inference_framework_image_tag: MetaOapg.properties.inference_framework_image_tag
     max_workers: MetaOapg.properties.max_workers
     gpu_type: "GpuType"
+    labels: MetaOapg.properties.labels
+    model_name: MetaOapg.properties.model_name
+    inference_framework_image_tag: MetaOapg.properties.inference_framework_image_tag
     min_workers: MetaOapg.properties.min_workers
     gpus: MetaOapg.properties.gpus
     name: MetaOapg.properties.name
     per_worker: MetaOapg.properties.per_worker
-    labels: MetaOapg.properties.labels
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["cpus"]) -> MetaOapg.properties.cpus:
@@ -623,6 +631,10 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["num_shards"]) -> MetaOapg.properties.num_shards:
         ...
 
     @typing.overload
@@ -676,10 +688,6 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["shard"]) -> MetaOapg.properties.shard:
-        ...
-
-    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["source"]) -> MetaOapg.properties.source:
         ...
 
@@ -706,6 +714,7 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                 "min_workers",
                 "model_name",
                 "name",
+                "num_shards",
                 "per_worker",
                 "billing_tags",
                 "default_callback_auth",
@@ -717,7 +726,6 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                 "post_inference_hooks",
                 "prewarm",
                 "public_inference",
-                "shard",
                 "source",
                 "storage",
             ],
@@ -771,6 +779,10 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name:
+        ...
+
+    @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["num_shards"]) -> MetaOapg.properties.num_shards:
         ...
 
     @typing.overload
@@ -839,12 +851,6 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(
-        self, name: typing_extensions.Literal["shard"]
-    ) -> typing.Union[MetaOapg.properties.shard, schemas.Unset]:
-        ...
-
-    @typing.overload
-    def get_item_oapg(
         self, name: typing_extensions.Literal["source"]
     ) -> typing.Union[MetaOapg.properties.source, schemas.Unset]:
         ...
@@ -874,6 +880,7 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                 "min_workers",
                 "model_name",
                 "name",
+                "num_shards",
                 "per_worker",
                 "billing_tags",
                 "default_callback_auth",
@@ -885,7 +892,6 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                 "post_inference_hooks",
                 "prewarm",
                 "public_inference",
-                "shard",
                 "source",
                 "storage",
             ],
@@ -924,9 +930,10 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             io.FileIO,
             io.BufferedReader,
         ],
-        model_name: typing.Union[
-            MetaOapg.properties.model_name,
-            str,
+        num_shards: typing.Union[
+            MetaOapg.properties.num_shards,
+            decimal.Decimal,
+            int,
         ],
         cpus: typing.Union[
             MetaOapg.properties.cpus,
@@ -947,16 +954,25 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             io.FileIO,
             io.BufferedReader,
         ],
-        inference_framework_image_tag: typing.Union[
-            MetaOapg.properties.inference_framework_image_tag,
-            str,
-        ],
         max_workers: typing.Union[
             MetaOapg.properties.max_workers,
             decimal.Decimal,
             int,
         ],
         gpu_type: "GpuType",
+        labels: typing.Union[
+            MetaOapg.properties.labels,
+            dict,
+            frozendict.frozendict,
+        ],
+        model_name: typing.Union[
+            MetaOapg.properties.model_name,
+            str,
+        ],
+        inference_framework_image_tag: typing.Union[
+            MetaOapg.properties.inference_framework_image_tag,
+            str,
+        ],
         min_workers: typing.Union[
             MetaOapg.properties.min_workers,
             decimal.Decimal,
@@ -975,11 +991,6 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             MetaOapg.properties.per_worker,
             decimal.Decimal,
             int,
-        ],
-        labels: typing.Union[
-            MetaOapg.properties.labels,
-            dict,
-            frozendict.frozendict,
         ],
         billing_tags: typing.Union[
             MetaOapg.properties.billing_tags, dict, frozendict.frozendict, schemas.Unset
@@ -1035,7 +1046,6 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ] = schemas.unset,
         prewarm: typing.Union[MetaOapg.properties.prewarm, bool, schemas.Unset] = schemas.unset,
         public_inference: typing.Union[MetaOapg.properties.public_inference, bool, schemas.Unset] = schemas.unset,
-        shard: typing.Union[MetaOapg.properties.shard, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         source: typing.Union[
             MetaOapg.properties.source,
             dict,
@@ -1099,16 +1109,17 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             *_args,
             metadata=metadata,
             memory=memory,
-            model_name=model_name,
+            num_shards=num_shards,
             cpus=cpus,
-            inference_framework_image_tag=inference_framework_image_tag,
             max_workers=max_workers,
             gpu_type=gpu_type,
+            labels=labels,
+            model_name=model_name,
+            inference_framework_image_tag=inference_framework_image_tag,
             min_workers=min_workers,
             gpus=gpus,
             name=name,
             per_worker=per_worker,
-            labels=labels,
             billing_tags=billing_tags,
             default_callback_auth=default_callback_auth,
             default_callback_url=default_callback_url,
@@ -1119,7 +1130,6 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             post_inference_hooks=post_inference_hooks,
             prewarm=prewarm,
             public_inference=public_inference,
-            shard=shard,
             source=source,
             storage=storage,
             _configuration=_configuration,
