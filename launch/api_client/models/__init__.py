@@ -27,6 +27,13 @@ from launch.api_client.model.clone_model_bundle_v2_request import (
 from launch.api_client.model.cloudpickle_artifact_flavor import (
     CloudpickleArtifactFlavor,
 )
+from launch.api_client.model.completion_output import CompletionOutput
+from launch.api_client.model.completion_sync_v1_request import (
+    CompletionSyncV1Request,
+)
+from launch.api_client.model.completion_sync_v1_response import (
+    CompletionSyncV1Response,
+)
 from launch.api_client.model.create_async_task_v1_response import (
     CreateAsyncTaskV1Response,
 )
@@ -53,6 +60,12 @@ from launch.api_client.model.create_docker_image_batch_job_v1_request import (
 )
 from launch.api_client.model.create_docker_image_batch_job_v1_response import (
     CreateDockerImageBatchJobV1Response,
+)
+from launch.api_client.model.create_llm_model_endpoint_v1_request import (
+    CreateLLMModelEndpointV1Request,
+)
+from launch.api_client.model.create_llm_model_endpoint_v1_response import (
+    CreateLLMModelEndpointV1Response,
 )
 from launch.api_client.model.create_model_bundle_v1_request import (
     CreateModelBundleV1Request,
@@ -91,6 +104,9 @@ from launch.api_client.model.get_batch_job_v1_response import (
 from launch.api_client.model.get_docker_image_batch_job_v1_response import (
     GetDockerImageBatchJobV1Response,
 )
+from launch.api_client.model.get_llm_model_endpoint_v1_response import (
+    GetLLMModelEndpointV1Response,
+)
 from launch.api_client.model.get_model_endpoint_v1_response import (
     GetModelEndpointV1Response,
 )
@@ -98,6 +114,9 @@ from launch.api_client.model.gpu_type import GpuType
 from launch.api_client.model.http_validation_error import HTTPValidationError
 from launch.api_client.model.list_docker_image_batch_job_bundle_v1_response import (
     ListDockerImageBatchJobBundleV1Response,
+)
+from launch.api_client.model.list_llm_model_endpoints_v1_response import (
+    ListLLMModelEndpointsV1Response,
 )
 from launch.api_client.model.list_model_bundles_v1_response import (
     ListModelBundlesV1Response,
@@ -108,6 +127,10 @@ from launch.api_client.model.list_model_bundles_v2_response import (
 from launch.api_client.model.list_model_endpoints_v1_response import (
     ListModelEndpointsV1Response,
 )
+from launch.api_client.model.llm_inference_framework import (
+    LLMInferenceFramework,
+)
+from launch.api_client.model.llm_source import LLMSource
 from launch.api_client.model.model_bundle_environment_params import (
     ModelBundleEnvironmentParams,
 )
