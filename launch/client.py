@@ -37,6 +37,9 @@ from launch.api_client.model.create_docker_image_batch_job_bundle_v1_request imp
 from launch.api_client.model.create_docker_image_batch_job_v1_request import (
     CreateDockerImageBatchJobV1Request,
 )
+from launch.api_client.model.create_llm_model_endpoint_v1_request import (
+    CreateLLMModelEndpointV1Request,
+)
 from launch.api_client.model.create_model_bundle_v1_request import (
     CreateModelBundleV1Request,
 )
@@ -51,6 +54,10 @@ from launch.api_client.model.endpoint_predict_v1_request import (
     EndpointPredictV1Request,
 )
 from launch.api_client.model.gpu_type import GpuType
+from launch.api_client.model.llm_inference_framework import (
+    LLMInferenceFramework,
+)
+from launch.api_client.model.llm_source import LLMSource
 from launch.api_client.model.model_bundle_environment_params import (
     ModelBundleEnvironmentParams,
 )
@@ -2515,6 +2522,242 @@ class LaunchClient:
             resp = json.loads(response.response.data)
 
         return resp
+
+    def create_llm_model_endpoint(
+        self,
+        endpoint_name: str,
+        # LLM specific fields
+        model_name: str,
+        inference_framework_image_tag: str,
+        source: LLMSource = LLMSource.HUGGING_FACE,
+        inference_framework: LLMInferenceFramework = LLMInferenceFramework.DEEPSPEED,
+        num_shards: int = 4,
+        # General endpoint fields
+        cpus: int = 32,
+        memory: str = "192Gi",
+        storage: Optional[str] = None,
+        gpus: int = 4,
+        min_workers: int = 0,
+        max_workers: int = 1,
+        per_worker: int = 10,
+        gpu_type: Optional[str] = "nvidia-ampere-a10",
+        endpoint_type: str = "sync",
+        high_priority: Optional[bool] = False,
+        post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
+        default_callback_url: Optional[str] = None,
+        default_callback_auth_kind: Optional[Literal["basic", "mtls"]] = None,
+        default_callback_auth_username: Optional[str] = None,
+        default_callback_auth_password: Optional[str] = None,
+        default_callback_auth_cert: Optional[str] = None,
+        default_callback_auth_key: Optional[str] = None,
+        public_inference: Optional[bool] = None,
+        update_if_exists: bool = False,
+        labels: Optional[Dict[str, str]] = None,
+    ):
+        """
+        Creates and registers a model endpoint in Scale Launch. The returned object is an
+        instance of type ``Endpoint``, which is a base class of either ``SyncEndpoint`` or
+        ``AsyncEndpoint``. This is the object to which you sent inference requests.
+
+        Parameters:
+            endpoint_name: The name of the model endpoint you want to create. The name
+                must be unique across all endpoints that you own.
+
+            model_name: name for the LLM. List can be found at
+                (TODO: add list of supported models)
+
+            inference_framework_image_tag: image tag for the inference framework.
+                (TODO: use latest image tag when unspecified)
+
+            source: source of the LLM. Currently only HuggingFace is supported.
+
+            inference_framework: inference framework for the LLM. Currently only DeepSpeed is supported.
+
+            num_shards: number of shards for the LLM. When bigger than 1, LLM will be sharded
+                to multiple GPUs. Number of GPUs must be larger than num_shards.
+
+            cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater
+                than or equal to 1.
+
+            memory: Amount of memory each worker should get, e.g. "4Gi", "512Mi", etc. This must
+                be a positive amount of memory.
+
+            storage: Amount of local ephemeral storage each worker should get, e.g. "4Gi",
+                "512Mi", etc. This must be a positive amount of storage.
+
+            gpus: Number of gpus each worker should get, e.g. 0, 1, etc.
+
+            min_workers: The minimum number of workers. Must be greater than or equal to 0. This
+                should be determined by computing the minimum throughput of your workload and
+                dividing it by the throughput of a single worker. This field must be at least ``1``
+                for synchronous endpoints.
+
+            max_workers: The maximum number of workers. Must be greater than or equal to 0,
+                and as well as greater than or equal to ``min_workers``. This should be determined by
+                computing the maximum throughput of your workload and dividing it by the throughput
+                of a single worker.
+
+            per_worker: The maximum number of concurrent requests that an individual worker can
+                service. Launch automatically scales the number of workers for the endpoint so that
+                each worker is processing ``per_worker`` requests, subject to the limits defined by
+                ``min_workers`` and ``max_workers``.
+
+                - If the average number of concurrent requests per worker is lower than
+                ``per_worker``, then the number of workers will be reduced. - Otherwise,
+                if the average number of concurrent requests per worker is higher than
+                ``per_worker``, then the number of workers will be increased to meet the elevated
+                traffic.
+
+                Here is our recommendation for computing ``per_worker``:
+
+                1. Compute ``min_workers`` and ``max_workers`` per your minimum and maximum
+                throughput requirements. 2. Determine a value for the maximum number of
+                concurrent requests in the workload. Divide this number by ``max_workers``. Doing
+                this ensures that the number of workers will "climb" to ``max_workers``.
+
+            gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu
+                requested. Here are the supported values:
+
+                - ``nvidia-tesla-t4``
+                - ``nvidia-ampere-a10``
+
+            endpoint_type: Either ``"sync"`` or ``"async"``.
+
+            high_priority: Either ``True`` or ``False``. Enabling this will allow the created
+                endpoint to leverage the shared pool of prewarmed nodes for faster spinup time.
+
+            post_inference_hooks: List of hooks to trigger after inference tasks are served.
+
+            default_callback_url: The default callback url to use for async endpoints.
+                This can be overridden in the task parameters for each individual task.
+                post_inference_hooks must contain "callback" for the callback to be triggered.
+
+            default_callback_auth_kind: The default callback auth kind to use for async endpoints.
+                Either "basic" or "mtls". This can be overridden in the task parameters for each
+                individual task.
+
+            default_callback_auth_username: The default callback auth username to use. This only
+                applies if default_callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_password: The default callback auth password to use. This only
+                applies if default_callback_auth_kind is "basic". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_cert: The default callback auth cert to use. This only applies
+                if default_callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
+            default_callback_auth_key: The default callback auth key to use. This only applies
+                if default_callback_auth_kind is "mtls". This can be overridden in the task
+                parameters for each individual task.
+
+            public_inference: If ``True``, this endpoint will be available to all user IDs for
+                inference.
+
+            update_if_exists: If ``True``, will attempt to update the endpoint if it exists.
+                Otherwise, will unconditionally try to create a new endpoint. Note that endpoint
+                names for a given user must be unique, so attempting to call this function with
+                ``update_if_exists=False`` for an existing endpoint will raise an error.
+
+            labels: An optional dictionary of key/value pairs to associate with this endpoint.
+
+        Returns:
+                A Endpoint object that can be used to make requests to the endpoint.
+
+        """
+        existing_endpoint = self.get_model_endpoint(endpoint_name)
+        if update_if_exists and existing_endpoint:
+            self.edit_model_endpoint(
+                model_endpoint=endpoint_name,
+                model_bundle=existing_endpoint.model_endpoint.bundle_name,
+                cpus=cpus,
+                memory=memory,
+                storage=storage,
+                gpus=gpus,
+                min_workers=min_workers,
+                max_workers=max_workers,
+                per_worker=per_worker,
+                gpu_type=gpu_type,
+                high_priority=high_priority,
+                default_callback_url=default_callback_url,
+                default_callback_auth_kind=default_callback_auth_kind,
+                default_callback_auth_username=default_callback_auth_username,
+                default_callback_auth_password=default_callback_auth_password,
+                default_callback_auth_cert=default_callback_auth_cert,
+                default_callback_auth_key=default_callback_auth_key,
+                public_inference=public_inference,
+            )
+            return existing_endpoint
+        else:
+            # Presumably, the user knows that the endpoint doesn't already exist, and so we can
+            # defer to the server to reject any duplicate creations.
+            logger.info("Creating new LLM endpoint")
+            with ApiClient(self.configuration) as api_client:
+                api_instance = DefaultApi(api_client)
+                post_inference_hooks_strs = None
+                if post_inference_hooks is not None:
+                    post_inference_hooks_strs = []
+                    for hook in post_inference_hooks:
+                        if isinstance(hook, PostInferenceHooks):
+                            post_inference_hooks_strs.append(hook.value)
+                        else:
+                            post_inference_hooks_strs.append(hook)
+
+                if default_callback_auth_kind is not None:
+                    default_callback_auth = CallbackAuth(
+                        **dict_not_none(
+                            kind=default_callback_auth_kind,
+                            username=default_callback_auth_username,
+                            password=default_callback_auth_password,
+                            cert=default_callback_auth_cert,
+                            key=default_callback_auth_key,
+                        )
+                    )
+                else:
+                    default_callback_auth = None
+
+                payload = dict_not_none(
+                    name=endpoint_name,
+                    model_name=model_name,
+                    source=source,
+                    inference_framework=inference_framework,
+                    inference_framework_image_tag=inference_framework_image_tag,
+                    num_shards=num_shards,
+                    cpus=cpus,
+                    endpoint_type=ModelEndpointType(endpoint_type),
+                    gpus=gpus,
+                    gpu_type=GpuType(gpu_type) if gpu_type is not None else None,
+                    labels=labels or {},
+                    max_workers=max_workers,
+                    memory=memory,
+                    metadata={},
+                    min_workers=min_workers,
+                    per_worker=per_worker,
+                    high_priority=high_priority,
+                    post_inference_hooks=post_inference_hooks_strs,
+                    default_callback_url=default_callback_url,
+                    default_callback_auth=default_callback_auth,
+                    storage=storage,
+                    public_inference=public_inference,
+                )
+                create_model_endpoint_request = CreateLLMModelEndpointV1Request(**payload)
+                response = api_instance.create_model_endpoint_v1_llm_model_endpoints_post(
+                    body=create_model_endpoint_request,
+                    skip_deserialization=True,
+                )
+                resp = json.loads(response.response.data)
+            endpoint_creation_task_id = resp.get("endpoint_creation_task_id", None)  # TODO probably throw on None
+            logger.info("Endpoint creation task id is %s", endpoint_creation_task_id)
+            model_endpoint = ModelEndpoint(
+                name=endpoint_name, bundle_name=f"{endpoint_name}-{str(inference_framework)}"
+            )
+            if endpoint_type == "async":
+                return AsyncEndpoint(model_endpoint=model_endpoint, client=self)
+            elif endpoint_type == "sync":
+                return SyncEndpoint(model_endpoint=model_endpoint, client=self)
+            else:
+                raise ValueError("Endpoint should be one of the types 'sync' or 'async'")
 
 
 def _zip_directory(zipf: ZipFile, path: str) -> None:

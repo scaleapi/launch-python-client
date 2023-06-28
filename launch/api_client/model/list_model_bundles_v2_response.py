@@ -46,7 +46,10 @@ class ListModelBundlesV2Response(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    _arg: typing.Union[typing.Tuple["ModelBundleV2Response"], typing.List["ModelBundleV2Response"]],
+                    _arg: typing.Union[
+                        typing.Tuple["ModelBundleV2Response"],
+                        typing.List["ModelBundleV2Response"],
+                    ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "model_bundles":
                     return super().__new__(

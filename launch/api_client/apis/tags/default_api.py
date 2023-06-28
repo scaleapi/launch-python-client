@@ -48,6 +48,15 @@ from launch.api_client.paths.v1_docker_image_batch_jobs_batch_job_id.get import 
 from launch.api_client.paths.v1_docker_image_batch_jobs_batch_job_id.put import (
     UpdateDockerImageBatchJobV1DockerImageBatchJobsBatchJobIdPut,
 )
+from launch.api_client.paths.v1_llm_completion_sync.post import (
+    CreateCompletionSyncTaskV1LlmCompletionSyncPost,
+)
+from launch.api_client.paths.v1_llm_model_endpoints.get import (
+    ListModelEndpointsV1LlmModelEndpointsGet,
+)
+from launch.api_client.paths.v1_llm_model_endpoints.post import (
+    CreateModelEndpointV1LlmModelEndpointsPost,
+)
 from launch.api_client.paths.v1_model_bundles.get import (
     ListModelBundlesV1ModelBundlesGet,
 )
@@ -112,10 +121,12 @@ class DefaultApi(
     CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost,
     CreateAsyncInferenceTaskV1AsyncTasksPost,
     CreateBatchJobV1BatchJobsPost,
+    CreateCompletionSyncTaskV1LlmCompletionSyncPost,
     CreateDockerImageBatchJobBundleV1DockerImageBatchJobBundlesPost,
     CreateDockerImageBatchJobV1DockerImageBatchJobsPost,
     CreateModelBundleV1ModelBundlesPost,
     CreateModelBundleV2ModelBundlesPost,
+    CreateModelEndpointV1LlmModelEndpointsPost,
     CreateModelEndpointV1ModelEndpointsPost,
     CreateStreamingInferenceTaskV1StreamingTasksPost,
     CreateSyncInferenceTaskV1SyncTasksPost,
@@ -138,6 +149,7 @@ class DefaultApi(
     ListDockerImageBatchJobModelBundlesV1DockerImageBatchJobBundlesGet,
     ListModelBundlesV1ModelBundlesGet,
     ListModelBundlesV2ModelBundlesGet,
+    ListModelEndpointsV1LlmModelEndpointsGet,
     ListModelEndpointsV1ModelEndpointsGet,
     UpdateBatchJobV1BatchJobsBatchJobIdPut,
     UpdateDockerImageBatchJobV1DockerImageBatchJobsBatchJobIdPut,
