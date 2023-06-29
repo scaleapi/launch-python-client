@@ -627,6 +627,8 @@ class LaunchClient:
         repository: str,
         tag: str,
         command: List[str],
+        healthcheck_route: Optional[str],
+        predict_route: Optional[str],
         env: Dict[str, str],
         readiness_initial_delay_seconds: int,
         metadata: Optional[Dict[str, Any]] = None,
@@ -650,6 +652,10 @@ class LaunchClient:
 
             command: The command that will be used to start the process that listens for requests.
 
+            predict_route: The endpoint route on the runnable image that will be called.
+
+            healthcheck_route: The healthcheck endpoint route on the runnable image.
+
             env: A dictionary of environment variables that will be passed to the bundle when it
                 is run.
 
@@ -670,6 +676,8 @@ class LaunchClient:
                 repository=repository,
                 tag=tag,
                 command=command,
+                healthcheck_route=healthcheck_route,
+                predict_route=predict_route,
                 env=env,
                 protocol="http",
                 readiness_initial_delay_seconds=readiness_initial_delay_seconds,
@@ -703,7 +711,10 @@ class LaunchClient:
         repository: str,
         tag: str,
         command: Optional[List[str]],
+        healthcheck_route: Optional[str],
+        predict_route: Optional[str],
         streaming_command: List[str],
+        streaming_predict_route: Optional[str],
         env: Dict[str, str],
         readiness_initial_delay_seconds: int,
         metadata: Optional[Dict[str, Any]] = None,
@@ -728,8 +739,16 @@ class LaunchClient:
             command: The command that will be used to start the process that listens for requests if
                 this bundle is used as a SYNC or ASYNC endpoint.
 
+            healthcheck_route: The healthcheck endpoint route on the runnable image.
+
+            predict_route: The endpoint route on the runnable image that will be called if this bundle is used as a SYNC
+                or ASYNC endpoint.
+
             streaming_command: The command that will be used to start the process that listens for
                 requests if this bundle is used as a STREAMING endpoint.
+
+            streaming_predict_route: The endpoint route on the runnable image that will be called if this bundle is used
+                as a STREAMING endpoint.
 
             env: A dictionary of environment variables that will be passed to the bundle when it
                 is run.
@@ -751,7 +770,10 @@ class LaunchClient:
                 repository=repository,
                 tag=tag,
                 command=command,
+                healthcheck_route=healthcheck_route,
+                predict_route=predict_route,
                 streaming_command=streaming_command,
+                streaming_predict_route=streaming_predict_route,
                 env=env,
                 protocol="http",
                 readiness_initial_delay_seconds=readiness_initial_delay_seconds,
@@ -785,6 +807,8 @@ class LaunchClient:
         repository: str,
         tag: str,
         command: List[str],
+        healthcheck_route: Optional[str],
+        predict_route: Optional[str],
         env: Dict[str, str],
         readiness_initial_delay_seconds: int,
         triton_model_repository: str,
@@ -814,6 +838,10 @@ class LaunchClient:
             tag: The tag for the runnable image.
 
             command: The command that will be used to start the process that listens for requests.
+
+            predict_route: The endpoint route on the runnable image that will be called.
+
+            healthcheck_route: The healthcheck endpoint route on the runnable image.
 
             env: A dictionary of environment variables that will be passed to the bundle when it
                 is run.
@@ -853,6 +881,8 @@ class LaunchClient:
                 repository=repository,
                 tag=tag,
                 command=command,
+                healthcheck_route=healthcheck_route,
+                predict_route=predict_route,
                 env=env,
                 protocol="http",
                 readiness_initial_delay_seconds=readiness_initial_delay_seconds,

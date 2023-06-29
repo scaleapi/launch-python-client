@@ -113,6 +113,8 @@ class RunnableImageFlavor(schemas.DictSchema):
                         _configuration=_configuration,
                         **kwargs,
                     )
+            healthcheck_route = schemas.StrSchema
+            predict_route = schemas.StrSchema
             readiness_initial_delay_seconds = schemas.IntSchema
             __annotations__ = {
                 "command": command,
@@ -121,6 +123,8 @@ class RunnableImageFlavor(schemas.DictSchema):
                 "repository": repository,
                 "tag": tag,
                 "env": env,
+                "healthcheck_route": healthcheck_route,
+                "predict_route": predict_route,
                 "readiness_initial_delay_seconds": readiness_initial_delay_seconds,
             }
     flavor: MetaOapg.properties.flavor
@@ -143,6 +147,12 @@ class RunnableImageFlavor(schemas.DictSchema):
     def __getitem__(self, name: typing_extensions.Literal["env"]) -> MetaOapg.properties.env: ...
     @typing.overload
     def __getitem__(
+        self, name: typing_extensions.Literal["healthcheck_route"]
+    ) -> MetaOapg.properties.healthcheck_route: ...
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["predict_route"]) -> MetaOapg.properties.predict_route: ...
+    @typing.overload
+    def __getitem__(
         self, name: typing_extensions.Literal["readiness_initial_delay_seconds"]
     ) -> MetaOapg.properties.readiness_initial_delay_seconds: ...
     @typing.overload
@@ -157,6 +167,8 @@ class RunnableImageFlavor(schemas.DictSchema):
                 "repository",
                 "tag",
                 "env",
+                "healthcheck_route",
+                "predict_route",
                 "readiness_initial_delay_seconds",
             ],
             str,
@@ -180,6 +192,14 @@ class RunnableImageFlavor(schemas.DictSchema):
     ) -> typing.Union[MetaOapg.properties.env, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["healthcheck_route"]
+    ) -> typing.Union[MetaOapg.properties.healthcheck_route, schemas.Unset]: ...
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["predict_route"]
+    ) -> typing.Union[MetaOapg.properties.predict_route, schemas.Unset]: ...
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["readiness_initial_delay_seconds"]
     ) -> typing.Union[MetaOapg.properties.readiness_initial_delay_seconds, schemas.Unset]: ...
     @typing.overload
@@ -194,6 +214,8 @@ class RunnableImageFlavor(schemas.DictSchema):
                 "repository",
                 "tag",
                 "env",
+                "healthcheck_route",
+                "predict_route",
                 "readiness_initial_delay_seconds",
             ],
             str,
@@ -228,6 +250,8 @@ class RunnableImageFlavor(schemas.DictSchema):
             tuple,
         ],
         env: typing.Union[MetaOapg.properties.env, dict, frozendict.frozendict, schemas.Unset] = schemas.unset,
+        healthcheck_route: typing.Union[MetaOapg.properties.healthcheck_route, str, schemas.Unset] = schemas.unset,
+        predict_route: typing.Union[MetaOapg.properties.predict_route, str, schemas.Unset] = schemas.unset,
         readiness_initial_delay_seconds: typing.Union[
             MetaOapg.properties.readiness_initial_delay_seconds,
             decimal.Decimal,
@@ -261,6 +285,8 @@ class RunnableImageFlavor(schemas.DictSchema):
             repository=repository,
             command=command,
             env=env,
+            healthcheck_route=healthcheck_route,
+            predict_route=predict_route,
             readiness_initial_delay_seconds=readiness_initial_delay_seconds,
             _configuration=_configuration,
             **kwargs,

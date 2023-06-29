@@ -138,6 +138,8 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                         **kwargs,
                     )
 
+            healthcheck_route = schemas.StrSchema
+            predict_route = schemas.StrSchema
             readiness_initial_delay_seconds = schemas.IntSchema
             triton_memory = schemas.StrSchema
 
@@ -189,6 +191,8 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                 "triton_model_repository": triton_model_repository,
                 "triton_num_cpu": triton_num_cpu,
                 "env": env,
+                "healthcheck_route": healthcheck_route,
+                "predict_route": predict_route,
                 "readiness_initial_delay_seconds": readiness_initial_delay_seconds,
                 "triton_memory": triton_memory,
                 "triton_model_replicas": triton_model_replicas,
@@ -247,6 +251,16 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
 
     @typing.overload
     def __getitem__(
+        self, name: typing_extensions.Literal["healthcheck_route"]
+    ) -> MetaOapg.properties.healthcheck_route:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["predict_route"]) -> MetaOapg.properties.predict_route:
+        ...
+
+    @typing.overload
+    def __getitem__(
         self, name: typing_extensions.Literal["readiness_initial_delay_seconds"]
     ) -> MetaOapg.properties.readiness_initial_delay_seconds:
         ...
@@ -288,6 +302,8 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                 "triton_model_repository",
                 "triton_num_cpu",
                 "env",
+                "healthcheck_route",
+                "predict_route",
                 "readiness_initial_delay_seconds",
                 "triton_memory",
                 "triton_model_replicas",
@@ -344,6 +360,18 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["healthcheck_route"]
+    ) -> typing.Union[MetaOapg.properties.healthcheck_route, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["predict_route"]
+    ) -> typing.Union[MetaOapg.properties.predict_route, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["readiness_initial_delay_seconds"]
     ) -> typing.Union[MetaOapg.properties.readiness_initial_delay_seconds, schemas.Unset]:
         ...
@@ -389,6 +417,8 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                 "triton_model_repository",
                 "triton_num_cpu",
                 "env",
+                "healthcheck_route",
+                "predict_route",
                 "readiness_initial_delay_seconds",
                 "triton_memory",
                 "triton_model_replicas",
@@ -442,6 +472,8 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
             float,
         ],
         env: typing.Union[MetaOapg.properties.env, dict, frozendict.frozendict, schemas.Unset] = schemas.unset,
+        healthcheck_route: typing.Union[MetaOapg.properties.healthcheck_route, str, schemas.Unset] = schemas.unset,
+        predict_route: typing.Union[MetaOapg.properties.predict_route, str, schemas.Unset] = schemas.unset,
         readiness_initial_delay_seconds: typing.Union[
             MetaOapg.properties.readiness_initial_delay_seconds,
             decimal.Decimal,
@@ -492,6 +524,8 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
             command=command,
             triton_num_cpu=triton_num_cpu,
             env=env,
+            healthcheck_route=healthcheck_route,
+            predict_route=predict_route,
             readiness_initial_delay_seconds=readiness_initial_delay_seconds,
             triton_memory=triton_memory,
             triton_model_replicas=triton_model_replicas,
