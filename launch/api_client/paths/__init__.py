@@ -20,6 +20,7 @@ class PathValues(str, enum.Enum):
     )
     V1_DOCKERIMAGEBATCHJOBS = "/v1/docker-image-batch-jobs"
     V1_DOCKERIMAGEBATCHJOBS_BATCH_JOB_ID = "/v1/docker-image-batch-jobs/{batch_job_id}"
+    V1_LLM_COMPLETIONSYNC = "/v1/llm/completion-sync"
     V1_LLM_MODELENDPOINTS = "/v1/llm/model-endpoints"
     V1_MODELBUNDLES = "/v1/model-bundles"
     V1_MODELBUNDLES_CLONEWITHCHANGES = "/v1/model-bundles/clone-with-changes"

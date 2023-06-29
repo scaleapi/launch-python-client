@@ -96,7 +96,10 @@ class CloneModelBundleV1Request(schemas.DictSchema):
             str,
         ],
         new_app_config: typing.Union[
-            MetaOapg.properties.new_app_config, dict, frozendict.frozendict, schemas.Unset
+            MetaOapg.properties.new_app_config,
+            dict,
+            frozendict.frozendict,
+            schemas.Unset,
         ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[

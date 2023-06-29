@@ -188,7 +188,11 @@ class CreateBatchJobV1Request(schemas.DictSchema):
             frozendict.frozendict,
         ],
         timeout_seconds: typing.Union[
-            MetaOapg.properties.timeout_seconds, decimal.Decimal, int, float, schemas.Unset
+            MetaOapg.properties.timeout_seconds,
+            decimal.Decimal,
+            int,
+            float,
+            schemas.Unset,
         ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[

@@ -131,7 +131,11 @@ class RESTClientObject(object):
             if method in ["POST", "PUT", "PATCH", "OPTIONS", "DELETE"]:
                 if "Content-Type" not in headers and body is None:
                     r = self.pool_manager.request(
-                        method, url, preload_content=not stream, timeout=timeout, headers=headers
+                        method,
+                        url,
+                        preload_content=not stream,
+                        timeout=timeout,
+                        headers=headers,
                     )
                 elif headers["Content-Type"] == "application/x-www-form-urlencoded":  # noqa: E501
                     r = self.pool_manager.request(
@@ -179,7 +183,13 @@ class RESTClientObject(object):
                     raise ApiException(status=0, reason=msg)
             # For `GET`, `HEAD`
             else:
-                r = self.pool_manager.request(method, url, preload_content=not stream, timeout=timeout, headers=headers)
+                r = self.pool_manager.request(
+                    method,
+                    url,
+                    preload_content=not stream,
+                    timeout=timeout,
+                    headers=headers,
+                )
         except urllib3.exceptions.SSLError as e:
             msg = "{0}\n{1}".format(type(e).__name__, str(e))
             raise ApiException(status=0, reason=msg)
@@ -208,13 +218,45 @@ class RESTClientObject(object):
         )
 
     def DELETE(self, url, headers=None, body=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
-        return self.request("DELETE", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields)
+        return self.request(
+            "DELETE",
+            url,
+            headers=headers,
+            stream=stream,
+            timeout=timeout,
+            body=body,
+            fields=fields,
+        )
 
     def POST(self, url, headers=None, body=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
-        return self.request("POST", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields)
+        return self.request(
+            "POST",
+            url,
+            headers=headers,
+            stream=stream,
+            timeout=timeout,
+            body=body,
+            fields=fields,
+        )
 
     def PUT(self, url, headers=None, body=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
-        return self.request("PUT", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields)
+        return self.request(
+            "PUT",
+            url,
+            headers=headers,
+            stream=stream,
+            timeout=timeout,
+            body=body,
+            fields=fields,
+        )
 
     def PATCH(self, url, headers=None, body=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
-        return self.request("PATCH", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields)
+        return self.request(
+            "PATCH",
+            url,
+            headers=headers,
+            stream=stream,
+            timeout=timeout,
+            body=body,
+            fields=fields,
+        )

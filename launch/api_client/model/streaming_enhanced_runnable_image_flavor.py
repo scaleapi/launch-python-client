@@ -381,7 +381,10 @@ class StreamingEnhancedRunnableImageFlavor(schemas.DictSchema):
         healthcheck_route: typing.Union[MetaOapg.properties.healthcheck_route, str, schemas.Unset] = schemas.unset,
         predict_route: typing.Union[MetaOapg.properties.predict_route, str, schemas.Unset] = schemas.unset,
         readiness_initial_delay_seconds: typing.Union[
-            MetaOapg.properties.readiness_initial_delay_seconds, decimal.Decimal, int, schemas.Unset
+            MetaOapg.properties.readiness_initial_delay_seconds,
+            decimal.Decimal,
+            int,
+            schemas.Unset,
         ] = schemas.unset,
         streaming_predict_route: typing.Union[
             MetaOapg.properties.streaming_predict_route, str, schemas.Unset
