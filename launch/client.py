@@ -2765,8 +2765,6 @@ class LaunchClient:
             else:
                 raise ValueError("Endpoint should be one of the types 'sync' or 'async'")
 
-            
-
     def list_llm_model_endpoints(self) -> List[Endpoint]:
         """
         Lists all LLM model endpoints that the user has access to.
@@ -2803,7 +2801,7 @@ class LaunchClient:
             if endpoint["spec"]["endpoint_type"] == "streaming"
         ]
         return async_endpoints + sync_endpoints + streaming_endpoints
-    
+
     def completion_sync(
         self,
         endpoint_name: str,
