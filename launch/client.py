@@ -28,6 +28,12 @@ from launch.api_client.model.clone_model_bundle_v2_request import (
 from launch.api_client.model.cloudpickle_artifact_flavor import (
     CloudpickleArtifactFlavor,
 )
+from launch.api_client.model.completion_sync_v1_request import (
+    CompletionSyncV1Request,
+)
+from launch.api_client.model.completion_sync_v1_response import (
+    CompletionSyncV1Response,
+)
 from launch.api_client.model.create_batch_job_v1_request import (
     CreateBatchJobV1Request,
 )
