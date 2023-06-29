@@ -28,6 +28,12 @@ from launch.api_client.model.clone_model_bundle_v2_request import (
 from launch.api_client.model.cloudpickle_artifact_flavor import (
     CloudpickleArtifactFlavor,
 )
+from launch.api_client.model.completion_sync_v1_request import (
+    CompletionSyncV1Request,
+)
+from launch.api_client.model.completion_sync_v1_response import (
+    CompletionSyncV1Response,
+)
 from launch.api_client.model.create_batch_job_v1_request import (
     CreateBatchJobV1Request,
 )
@@ -2788,6 +2794,77 @@ class LaunchClient:
                 return SyncEndpoint(model_endpoint=model_endpoint, client=self)
             else:
                 raise ValueError("Endpoint should be one of the types 'sync' or 'async'")
+
+    def list_llm_model_endpoints(self) -> List[Endpoint]:
+        """
+        Lists all LLM model endpoints that the user has access to.
+
+        Returns:
+            A list of ``ModelEndpoint`` objects.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.list_model_endpoints_v1_llm_model_endpoints_get(skip_deserialization=True)
+            resp = json.loads(response.response.data)
+        async_endpoints: List[Endpoint] = [
+            AsyncEndpoint(
+                model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
+                client=self,
+            )
+            for endpoint in resp["model_endpoints"]
+            if endpoint["spec"]["endpoint_type"] == "async"
+        ]
+        sync_endpoints: List[Endpoint] = [
+            SyncEndpoint(
+                model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
+                client=self,
+            )
+            for endpoint in resp["model_endpoints"]
+            if endpoint["spec"]["endpoint_type"] == "sync"
+        ]
+        streaming_endpoints: List[Endpoint] = [
+            StreamingEndpoint(
+                model_endpoint=ModelEndpoint.from_dict(endpoint),  # type: ignore
+                client=self,
+            )
+            for endpoint in resp["model_endpoints"]
+            if endpoint["spec"]["endpoint_type"] == "streaming"
+        ]
+        return async_endpoints + sync_endpoints + streaming_endpoints
+
+    def completion_sync(
+        self,
+        endpoint_name: str,
+        prompts: List[str],
+        max_new_tokens: int,
+        temperature: float,
+    ) -> CompletionSyncV1Response:
+        """
+        Run prompt completion on a sync LLM endpoint. Will fail if the endpoint is not sync.
+
+        Parameters:
+            endpoint_name: The name of the LLM endpoint to make the request to
+
+            prompts: The list of prompts to send to the endpoint
+
+            max_new_tokens: The maximum number of tokens to generate for each prompt
+
+            temperature: The temperature to use for sampling
+
+        Returns:
+            Response for prompt completion
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            request = CompletionSyncV1Request(max_new_tokens=max_new_tokens, prompts=prompts, temperature=temperature)
+            query_params = frozendict({"model_endpoint_name": endpoint_name})
+            response = api_instance.create_completion_sync_task_v1_llm_completion_sync_post(  # type: ignore
+                body=request,
+                query_params=query_params,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+        return resp
 
 
 def _zip_directory(zipf: ZipFile, path: str) -> None:
