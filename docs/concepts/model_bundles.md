@@ -113,8 +113,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
     directory = tempfile.mkdtemp()
     model_filename = os.path.join(directory, "model.py")
     with open(model_filename, "w") as f:
-        f.write("""
-    def my_load_model_fn():
+        f.write("""def my_load_model_fn(deserialized_config):
         def my_model(x):
             return x * 2
 
@@ -123,8 +122,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
 
     predict_filename = os.path.join(directory, "predict.py")
     with open(predict_filename, "w") as f:
-        f.write("""
-    def my_load_predict_fn(model):
+        f.write("""def my_load_predict_fn(deserialized_config, model):
         def returns_model_of_x_plus_len_of_y(x: int, y: str) -> int:
             assert isinstance(x, int) and isinstance(y, str)
             return model(x) + len(y)
@@ -137,9 +135,8 @@ Each of these modes of creating a model bundle is called a "Flavor".
         f.write("""
     pytest==7.2.1
     numpy
-    """
-        )
-     
+    """)
+
     """
     The directory structure should now look like
 
@@ -156,12 +153,17 @@ Each of these modes of creating a model bundle is called a "Flavor".
 
     class MyResponseSchema(BaseModel):
         __root__: int
-     
+
+    print(directory)
+    print(model_filename)
+    print(predict_filename)
+    print(requirements_filename)
+
     BUNDLE_PARAMS = {
         "model_bundle_name": "test-bundle-from-dirs",
         "base_paths": [directory],
-        "load_predict_fn_module_path": "predict.my_load_predict_fn",
-        "load_model_fn_module_path": "model.my_load_model_fn",
+        "load_predict_fn_module_path": f"{os.path.basename(directory)}.predict.my_load_predict_fn",
+        "load_model_fn_module_path": f"{os.path.basename(directory)}.model.my_load_model_fn",
         "request_schema": MyRequestSchema,
         "response_schema": MyResponseSchema,
         "requirements_path": requirements_filename,
