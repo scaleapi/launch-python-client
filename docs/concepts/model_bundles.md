@@ -202,6 +202,8 @@ Each of these modes of creating a model bundle is called a "Flavor".
         "repository": "...",
         "tag": "...",
         "command": ...,
+        "predict_route": "/predict",
+        "healthcheck_route": "/readyz",
         "env": {
             "TEST_KEY": "test_value",
         },
@@ -235,6 +237,8 @@ Each of these modes of creating a model bundle is called a "Flavor".
         "repository": "...",
         "tag": "...",
         "command": ...,
+        "predict_route": "/predict",
+        "healthcheck_route": "/readyz",
         "env": {
             "TEST_KEY": "test_value",
         },
@@ -275,7 +279,10 @@ Each of these modes of creating a model bundle is called a "Flavor".
         "repository": "...",
         "tag": "...",
         "command": ...,  # optional; if provided, will also expose the /predict endpoint
+        "predict_route": "/predict",
+        "healthcheck_route": "/readyz",
         "streaming_command": ...,  # required
+        "streaming_predict_route": "/stream",
         "env": {
             "TEST_KEY": "test_value",
         },

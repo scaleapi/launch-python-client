@@ -93,6 +93,8 @@ client.create_model_bundle_from_runnable_image_v2(
         "--host",
         "::",
     ],
+    predict_route="/predict",
+    healthcheck_route="/readyz",
     readiness_initial_delay_seconds=120,
     env={},
 )
