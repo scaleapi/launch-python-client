@@ -9,6 +9,7 @@ try:
         model_process_schema,
     )
 except ImportError:
+    # We assume this is due to the user having pydantic 2.x installed.
     from pydantic.v1.schema import (
         get_flat_models_from_models,
         model_process_schema,
