@@ -10,7 +10,7 @@ try:
     )
 except ImportError:
     # We assume this is due to the user having pydantic 2.x installed.
-    from pydantic.v1.schema import (
+    from pydantic.v1.schema import (  # type: ignore
         get_flat_models_from_models,
         model_process_schema,
     )
