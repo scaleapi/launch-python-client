@@ -2,7 +2,19 @@ from enum import Enum
 from typing import Any, Dict, Set, Type, Union
 
 from pydantic import BaseModel
-from pydantic.schema import get_flat_models_from_models, model_process_schema
+
+try:
+    from pydantic.schema import (
+        get_flat_models_from_models,
+        model_process_schema,
+    )
+except ImportError:
+    # We assume this is due to the user having pydantic 2.x installed.
+    from pydantic.v1.schema import (  # type: ignore
+        get_flat_models_from_models,
+        model_process_schema,
+    )
+
 
 REF_PREFIX = "#/components/schemas/"
 
