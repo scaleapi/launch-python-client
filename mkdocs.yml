@@ -44,6 +44,7 @@ nav:
       - concepts/callbacks.md
   - 'API Documentation':
     - api/client.md
+    - api/llms.md
     - api/model_bundles.md
     - api/model_endpoints.md
     - api/endpoint_predictions.md
