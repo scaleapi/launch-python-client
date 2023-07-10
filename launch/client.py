@@ -2699,7 +2699,7 @@ class LaunchClient:
             labels: An optional dictionary of key/value pairs to associate with this endpoint.
 
         Returns:
-                A Endpoint object that can be used to make requests to the endpoint.
+            A Endpoint object that can be used to make requests to the endpoint.
 
         """
         existing_endpoint = self.get_model_endpoint(endpoint_name)

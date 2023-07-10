@@ -7,8 +7,11 @@ from unittest.mock import MagicMock, Mock
 import pytest
 from _pytest.assertion.rewrite import AssertionRewritingHook
 
+from launch.api_client.model.completion_sync_v1_response import (
+    CompletionSyncV1Response,
+)
 from launch.model_bundle import ModelBundle
-from launch.model_endpoint import AsyncEndpoint, ModelEndpoint
+from launch.model_endpoint import AsyncEndpoint, ModelEndpoint, SyncEndpoint
 
 ROOT_DIR = Path(__file__).parent.parent
 
@@ -98,6 +101,20 @@ def mock_batch_job():
     return {"job_id": "test-batch-job", "status": "SUCCESS"}
 
 
+@pytest.fixture
+def mock_list_llm_model_endpoints():
+    mock = Mock(spec=SyncEndpoint)
+    mock.model_endpoint = Mock(spec=ModelEndpoint)
+    mock.model_endpoint.id = "test-endpoint"
+    mock.status = Mock(return_value="READY")
+    return [mock]
+
+
+@pytest.fixture
+def mock_completion_sync_response():
+    return CompletionSyncV1Response(status="SUCCESS", outputs=["Deep learning is a subnet of machine learning."])
+
+
 @pytest.mark.parametrize("module_name,source_code", generate_code_chunks("launch", "docs"))
 def test_docs_examples(
     module_name,
@@ -108,6 +125,7 @@ def test_docs_examples(
     mock_model_bundle,
     mock_async_endpoint,
     mock_batch_job,
+    mock_list_llm_model_endpoints,
 ):
     mocker.patch("launch.connection.Connection", MagicMock())
     mocker.patch("launch.client.DefaultApi", MagicMock())
@@ -120,6 +138,11 @@ def test_docs_examples(
     mocker.patch("launch.client.LaunchClient.create_model_bundle", MagicMock(return_value=mock_model_bundle))
     mocker.patch("launch.client.LaunchClient.create_model_endpoint", MagicMock(return_value=mock_async_endpoint))
     mocker.patch("launch.client.LaunchClient.get_batch_async_response", MagicMock(return_value=mock_batch_job))
+    mocker.patch(
+        "launch.client.LaunchClient.list_llm_model_endpoints", MagicMock(return_value=mock_list_llm_model_endpoints)
+    )
+    mocker.patch("launch.client.LaunchClient.create_llm_model_endpoint", MagicMock(return_value=mock_async_endpoint))
+    mocker.patch("launch.client.LaunchClient.completion_sync", MagicMock(return_value=mock_batch_job))
     mocker.patch("launch.client.Connection.make_request", MagicMock(return_value=mock_dictionary))
     mocker.patch("launch.client.requests", MagicMock())
     mocker.patch("pydantic.BaseModel.parse_raw", MagicMock())
