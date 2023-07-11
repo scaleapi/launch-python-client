@@ -18,19 +18,16 @@ from datetime import date, datetime  # noqa: F401
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
 import urllib3
+from launch_client import schemas  # noqa: F401
+from launch_client import api_client, exceptions
+from launch_client.model.completion_stream_v1_request import (
+    CompletionStreamV1Request,
+)
+from launch_client.model.completion_stream_v1_response import (
+    CompletionStreamV1Response,
+)
+from launch_client.model.http_validation_error import HTTPValidationError
 from urllib3._collections import HTTPHeaderDict
-
-from launch.api_client import schemas  # noqa: F401
-from launch.api_client import api_client, exceptions
-from launch.api_client.model.completion_sync_v1_request import (
-    CompletionSyncV1Request,
-)
-from launch.api_client.model.completion_sync_v1_response import (
-    CompletionSyncV1Response,
-)
-from launch.api_client.model.http_validation_error import HTTPValidationError
-
-from . import path
 
 # Query params
 ModelEndpointNameSchema = schemas.StrSchema
@@ -45,10 +42,8 @@ RequestRequiredQueryParams = typing_extensions.TypedDict(
 )
 RequestOptionalQueryParams = typing_extensions.TypedDict("RequestOptionalQueryParams", {}, total=False)
 
-
 class RequestQueryParams(RequestRequiredQueryParams, RequestOptionalQueryParams):
     pass
-
 
 request_query_model_endpoint_name = api_client.QueryParameter(
     name="model_endpoint_name",
@@ -58,27 +53,21 @@ request_query_model_endpoint_name = api_client.QueryParameter(
     explode=True,
 )
 # body param
-SchemaForRequestBodyApplicationJson = CompletionSyncV1Request
+SchemaForRequestBodyApplicationJson = CompletionStreamV1Request
 
-
-request_body_completion_sync_v1_request = api_client.RequestBody(
+request_body_completion_stream_v1_request = api_client.RequestBody(
     content={
         "application/json": api_client.MediaType(schema=SchemaForRequestBodyApplicationJson),
     },
     required=True,
 )
-_auth = [
-    "HTTPBasic",
-]
-SchemaFor200ResponseBodyApplicationJson = CompletionSyncV1Response
-
+SchemaFor200ResponseBodyApplicationJson = CompletionStreamV1Response
 
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
     body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
-
 
 _response_for_200 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor200,
@@ -88,13 +77,11 @@ _response_for_200 = api_client.OpenApiResponse(
 )
 SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 
-
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
     body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
-
 
 _response_for_422 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor422,
@@ -102,16 +89,11 @@ _response_for_422 = api_client.OpenApiResponse(
         "application/json": api_client.MediaType(schema=SchemaFor422ResponseBodyApplicationJson),
     },
 )
-_status_code_to_response = {
-    "200": _response_for_200,
-    "422": _response_for_422,
-}
 _all_accept_content_types = ("application/json",)
-
 
 class BaseApi(api_client.Api):
     @typing.overload
-    def _create_completion_sync_task_v1_llm_completion_sync_post_oapg(
+    def _create_completion_stream_task_v1_llm_completions_stream_post_oapg(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: typing_extensions.Literal["application/json"] = ...,
@@ -120,11 +102,9 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
-    def _create_completion_sync_task_v1_llm_completion_sync_post_oapg(
+    def _create_completion_stream_task_v1_llm_completions_stream_post_oapg(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = ...,
@@ -133,11 +113,9 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
-    def _create_completion_sync_task_v1_llm_completion_sync_post_oapg(
+    def _create_completion_stream_task_v1_llm_completions_stream_post_oapg(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
         skip_deserialization: typing_extensions.Literal[True],
@@ -146,11 +124,9 @@ class BaseApi(api_client.Api):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization:
-        ...
-
+    ) -> api_client.ApiResponseWithoutDeserialization: ...
     @typing.overload
-    def _create_completion_sync_task_v1_llm_completion_sync_post_oapg(
+    def _create_completion_stream_task_v1_llm_completions_stream_post_oapg(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = ...,
@@ -159,10 +135,8 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
-        ...
-
-    def _create_completion_sync_task_v1_llm_completion_sync_post_oapg(
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
+    def _create_completion_stream_task_v1_llm_completions_stream_post_oapg(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = "application/json",
@@ -173,7 +147,7 @@ class BaseApi(api_client.Api):
         skip_deserialization: bool = False,
     ):
         """
-        Create Completion Sync Task
+        Create Completion Stream Task
         :param skip_deserialization: If true then api_response.response will be set but
             api_response.body and api_response.headers will not be deserialized into schema
             class instances
@@ -204,7 +178,7 @@ class BaseApi(api_client.Api):
             )
         _fields = None
         _body = None
-        serialized_data = request_body_completion_sync_v1_request.serialize(body, content_type)
+        serialized_data = request_body_completion_stream_v1_request.serialize(body, content_type)
         _headers.add("Content-Type", content_type)
         if "fields" in serialized_data:
             _fields = serialized_data["fields"]
@@ -231,20 +205,15 @@ class BaseApi(api_client.Api):
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
-            raise exceptions.ApiException(
-                status=response.status,
-                reason=response.reason,
-                api_response=api_response,
-            )
+            raise exceptions.ApiException(status=response.status, reason=response.reason, api_response=api_response)
 
         return api_response
 
-
-class CreateCompletionSyncTaskV1LlmCompletionSyncPost(BaseApi):
+class CreateCompletionStreamTaskV1LlmCompletionsStreamPost(BaseApi):
     # this class is used by api classes that refer to endpoints with operationId fn names
 
     @typing.overload
-    def create_completion_sync_task_v1_llm_completion_sync_post(
+    def create_completion_stream_task_v1_llm_completions_stream_post(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: typing_extensions.Literal["application/json"] = ...,
@@ -253,11 +222,9 @@ class CreateCompletionSyncTaskV1LlmCompletionSyncPost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
-    def create_completion_sync_task_v1_llm_completion_sync_post(
+    def create_completion_stream_task_v1_llm_completions_stream_post(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = ...,
@@ -266,11 +233,9 @@ class CreateCompletionSyncTaskV1LlmCompletionSyncPost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
-    def create_completion_sync_task_v1_llm_completion_sync_post(
+    def create_completion_stream_task_v1_llm_completions_stream_post(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
         skip_deserialization: typing_extensions.Literal[True],
@@ -279,11 +244,9 @@ class CreateCompletionSyncTaskV1LlmCompletionSyncPost(BaseApi):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization:
-        ...
-
+    ) -> api_client.ApiResponseWithoutDeserialization: ...
     @typing.overload
-    def create_completion_sync_task_v1_llm_completion_sync_post(
+    def create_completion_stream_task_v1_llm_completions_stream_post(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = ...,
@@ -292,10 +255,8 @@ class CreateCompletionSyncTaskV1LlmCompletionSyncPost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
-        ...
-
-    def create_completion_sync_task_v1_llm_completion_sync_post(
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
+    def create_completion_stream_task_v1_llm_completions_stream_post(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
         content_type: str = "application/json",
@@ -305,7 +266,7 @@ class CreateCompletionSyncTaskV1LlmCompletionSyncPost(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return self._create_completion_sync_task_v1_llm_completion_sync_post_oapg(
+        return self._create_completion_stream_task_v1_llm_completions_stream_post_oapg(
             body=body,
             query_params=query_params,
             content_type=content_type,
@@ -314,7 +275,6 @@ class CreateCompletionSyncTaskV1LlmCompletionSyncPost(BaseApi):
             timeout=timeout,
             skip_deserialization=skip_deserialization,
         )
-
 
 class ApiForpost(BaseApi):
     # this class is used by api classes that refer to endpoints by path and http method names
@@ -329,9 +289,7 @@ class ApiForpost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
     def post(
         self,
@@ -342,9 +300,7 @@ class ApiForpost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
     def post(
         self,
@@ -355,9 +311,7 @@ class ApiForpost(BaseApi):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization:
-        ...
-
+    ) -> api_client.ApiResponseWithoutDeserialization: ...
     @typing.overload
     def post(
         self,
@@ -368,9 +322,7 @@ class ApiForpost(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
-        ...
-
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def post(
         self,
         body: typing.Union[SchemaForRequestBodyApplicationJson,],
@@ -381,7 +333,7 @@ class ApiForpost(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return self._create_completion_sync_task_v1_llm_completion_sync_post_oapg(
+        return self._create_completion_stream_task_v1_llm_completions_stream_post_oapg(
             body=body,
             query_params=query_params,
             content_type=content_type,

@@ -47,10 +47,7 @@ class CompletionSyncV1Response(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    _arg: typing.Union[
-                        typing.Tuple["CompletionOutput"],
-                        typing.List["CompletionOutput"],
-                    ],
+                    _arg: typing.Union[typing.Tuple["CompletionOutput"], typing.List["CompletionOutput"]],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "outputs":
                     return super().__new__(

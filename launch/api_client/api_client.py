@@ -659,10 +659,7 @@ class QueryParameter(ParameterBase, StyleFormSerializer):
             cast_in_data = self._json_encoder.default(cast_in_data)
             if self._content_type_is_json(content_type):
                 value = self._serialize_json(cast_in_data, eliminate_whitespace=True)
-                return self._to_dict(
-                    self.name,
-                    next(prefix_separator_iterator) + self.name + "=" + quote(value),
-                )
+                return self._to_dict(self.name, next(prefix_separator_iterator) + self.name + "=" + quote(value))
             raise NotImplementedError("Serialization of {} has not yet been implemented".format(content_type))
 
 
@@ -888,9 +885,7 @@ class OpenApiResponse(JSONDetector):
         return json.loads(response.data)
 
     @staticmethod
-    def __file_name_from_response_url(
-        response_url: typing.Optional[str],
-    ) -> typing.Optional[str]:
+    def __file_name_from_response_url(response_url: typing.Optional[str]) -> typing.Optional[str]:
         if response_url is None:
             return None
         url_path = urlparse(response_url).path
@@ -1212,39 +1207,15 @@ class ApiClient:
             return self.rest_client.HEAD(url, stream=stream, timeout=timeout, headers=headers)
         elif method == "OPTIONS":
             return self.rest_client.OPTIONS(
-                url,
-                headers=headers,
-                fields=fields,
-                stream=stream,
-                timeout=timeout,
-                body=body,
+                url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body
             )
         elif method == "POST":
-            return self.rest_client.POST(
-                url,
-                headers=headers,
-                fields=fields,
-                stream=stream,
-                timeout=timeout,
-                body=body,
-            )
+            return self.rest_client.POST(url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body)
         elif method == "PUT":
-            return self.rest_client.PUT(
-                url,
-                headers=headers,
-                fields=fields,
-                stream=stream,
-                timeout=timeout,
-                body=body,
-            )
+            return self.rest_client.PUT(url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body)
         elif method == "PATCH":
             return self.rest_client.PATCH(
-                url,
-                headers=headers,
-                fields=fields,
-                stream=stream,
-                timeout=timeout,
-                body=body,
+                url, headers=headers, fields=fields, stream=stream, timeout=timeout, body=body
             )
         elif method == "DELETE":
             return self.rest_client.DELETE(url, headers=headers, stream=stream, timeout=timeout, body=body)
@@ -1297,8 +1268,7 @@ class Api:
 
     @staticmethod
     def _verify_typed_dict_inputs_oapg(
-        cls: typing.Type[typing_extensions.TypedDict],
-        data: typing.Dict[str, typing.Any],
+        cls: typing.Type[typing_extensions.TypedDict], data: typing.Dict[str, typing.Any]
     ):
         """
         Ensures that:
@@ -1339,9 +1309,7 @@ class Api:
         if disallowed_additional_keys:
             raise ApiTypeError(
                 "{} got {} unexpected keyword arguments: {}".format(
-                    cls.__name__,
-                    len(disallowed_additional_keys),
-                    disallowed_additional_keys,
+                    cls.__name__, len(disallowed_additional_keys), disallowed_additional_keys
                 )
             )
 

@@ -28,6 +28,15 @@ from launch.api_client.model.cloudpickle_artifact_flavor import (
     CloudpickleArtifactFlavor,
 )
 from launch.api_client.model.completion_output import CompletionOutput
+from launch.api_client.model.completion_stream_output import (
+    CompletionStreamOutput,
+)
+from launch.api_client.model.completion_stream_v1_request import (
+    CompletionStreamV1Request,
+)
+from launch.api_client.model.completion_stream_v1_response import (
+    CompletionStreamV1Response,
+)
 from launch.api_client.model.completion_sync_v1_request import (
     CompletionSyncV1Request,
 )

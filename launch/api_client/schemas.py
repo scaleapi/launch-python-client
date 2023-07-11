@@ -345,17 +345,7 @@ class Schema:
         validation_metadata: ValidationMetadata,
     ) -> typing.Dict[
         typing.Tuple[typing.Union[str, int], ...],
-        typing.Set[
-            typing.Union[
-                "Schema",
-                str,
-                decimal.Decimal,
-                BoolClass,
-                NoneClass,
-                frozendict.frozendict,
-                tuple,
-            ]
-        ],
+        typing.Set[typing.Union["Schema", str, decimal.Decimal, BoolClass, NoneClass, frozendict.frozendict, tuple]],
     ]:
         """
         Schema _validate_oapg
@@ -386,15 +376,7 @@ class Schema:
     @staticmethod
     def _process_schema_classes_oapg(
         schema_classes: typing.Set[
-            typing.Union[
-                "Schema",
-                str,
-                decimal.Decimal,
-                BoolClass,
-                NoneClass,
-                frozendict.frozendict,
-                tuple,
-            ]
+            typing.Union["Schema", str, decimal.Decimal, BoolClass, NoneClass, frozendict.frozendict, tuple]
         ]
     ):
         """
@@ -869,14 +851,7 @@ if typing.TYPE_CHECKING:
 
     # qty 8
     class NoneFrozenDictTupleStrDecimalBoolFileBytesMixin(
-        NoneClass,
-        frozendict.frozendict,
-        tuple,
-        str,
-        decimal.Decimal,
-        BoolClass,
-        FileIO,
-        bytes,
+        NoneClass, frozendict.frozendict, tuple, str, decimal.Decimal, BoolClass, FileIO, bytes
     ):
         pass
 
@@ -1083,14 +1058,7 @@ else:
 
     # qty 6
     class NoneFrozenDictTupleStrDecimalBoolMixin:
-        _types = {
-            NoneClass,
-            frozendict.frozendict,
-            tuple,
-            str,
-            decimal.Decimal,
-            BoolClass,
-        }
+        _types = {NoneClass, frozendict.frozendict, tuple, str, decimal.Decimal, BoolClass}
 
     # qty 8
     class NoneFrozenDictTupleStrDecimalBoolFileBytesMixin:
@@ -1147,17 +1115,7 @@ class EnumBase:
         validation_metadata: ValidationMetadata,
     ) -> typing.Dict[
         typing.Tuple[typing.Union[str, int], ...],
-        typing.Set[
-            typing.Union[
-                "Schema",
-                str,
-                decimal.Decimal,
-                BoolClass,
-                NoneClass,
-                frozendict.frozendict,
-                tuple,
-            ]
-        ],
+        typing.Set[typing.Union["Schema", str, decimal.Decimal, BoolClass, NoneClass, frozendict.frozendict, tuple]],
     ]:
         """
         EnumBase _validate_oapg
@@ -1286,17 +1244,7 @@ class StrBase(ValidatorBase):
         validation_metadata: ValidationMetadata,
     ) -> typing.Dict[
         typing.Tuple[typing.Union[str, int], ...],
-        typing.Set[
-            typing.Union[
-                "Schema",
-                str,
-                decimal.Decimal,
-                BoolClass,
-                NoneClass,
-                frozendict.frozendict,
-                tuple,
-            ]
-        ],
+        typing.Set[typing.Union["Schema", str, decimal.Decimal, BoolClass, NoneClass, frozendict.frozendict, tuple]],
     ]:
         """
         StrBase _validate_oapg
@@ -1588,17 +1536,7 @@ class NumberBase(ValidatorBase):
         validation_metadata: ValidationMetadata,
     ) -> typing.Dict[
         typing.Tuple[typing.Union[str, int], ...],
-        typing.Set[
-            typing.Union[
-                "Schema",
-                str,
-                decimal.Decimal,
-                BoolClass,
-                NoneClass,
-                frozendict.frozendict,
-                tuple,
-            ]
-        ],
+        typing.Set[typing.Union["Schema", str, decimal.Decimal, BoolClass, NoneClass, frozendict.frozendict, tuple]],
     ]:
         """
         NumberBase _validate_oapg
@@ -1786,24 +1724,21 @@ class Discriminable:
         if hasattr(cls.MetaOapg, "all_of"):
             for allof_cls in cls.MetaOapg.all_of():
                 discriminated_cls = allof_cls.get_discriminated_class_oapg(
-                    disc_property_name=disc_property_name,
-                    disc_payload_value=disc_payload_value,
+                    disc_property_name=disc_property_name, disc_payload_value=disc_payload_value
                 )
                 if discriminated_cls is not None:
                     return discriminated_cls
         if hasattr(cls.MetaOapg, "one_of"):
             for oneof_cls in cls.MetaOapg.one_of():
                 discriminated_cls = oneof_cls.get_discriminated_class_oapg(
-                    disc_property_name=disc_property_name,
-                    disc_payload_value=disc_payload_value,
+                    disc_property_name=disc_property_name, disc_payload_value=disc_payload_value
                 )
                 if discriminated_cls is not None:
                     return discriminated_cls
         if hasattr(cls.MetaOapg, "any_of"):
             for anyof_cls in cls.MetaOapg.any_of():
                 discriminated_cls = anyof_cls.get_discriminated_class_oapg(
-                    disc_property_name=disc_property_name,
-                    disc_payload_value=disc_payload_value,
+                    disc_property_name=disc_property_name, disc_payload_value=disc_payload_value
                 )
                 if discriminated_cls is not None:
                     return discriminated_cls
@@ -2094,20 +2029,10 @@ def cast_to_allowed_types(
     from_server: bool,
     validated_path_to_schemas: typing.Dict[
         typing.Tuple[typing.Union[str, int], ...],
-        typing.Set[
-            typing.Union[
-                "Schema",
-                str,
-                decimal.Decimal,
-                BoolClass,
-                NoneClass,
-                frozendict.frozendict,
-                tuple,
-            ]
-        ],
+        typing.Set[typing.Union["Schema", str, decimal.Decimal, BoolClass, NoneClass, frozendict.frozendict, tuple]],
     ],
     path_to_item: typing.Tuple[typing.Union[str, int], ...] = tuple(["args[0]"]),
-) -> typing.Union[frozendict.frozendict, tuple, decimal.Decimal, str, bytes, BoolClass, NoneClass, FileIO,]:
+) -> typing.Union[frozendict.frozendict, tuple, decimal.Decimal, str, bytes, BoolClass, NoneClass, FileIO]:
     """
     Casts the input payload arg into the allowed types
     The input validated_path_to_schemas is mutated by running this function
@@ -2274,17 +2199,7 @@ class ComposedBase(Discriminable):
         validation_metadata: ValidationMetadata,
     ) -> typing.Dict[
         typing.Tuple[typing.Union[str, int], ...],
-        typing.Set[
-            typing.Union[
-                "Schema",
-                str,
-                decimal.Decimal,
-                BoolClass,
-                NoneClass,
-                frozendict.frozendict,
-                tuple,
-            ]
-        ],
+        typing.Set[typing.Union["Schema", str, decimal.Decimal, BoolClass, NoneClass, frozendict.frozendict, tuple]],
     ]:
         """
         ComposedBase _validate_oapg
@@ -2322,8 +2237,7 @@ class ComposedBase(Discriminable):
             cls._ensure_discriminator_value_present_oapg(disc_property_name, updated_vm, arg)
             # get discriminated_cls by looking at the dict in the current class
             discriminated_cls = cls.get_discriminated_class_oapg(
-                disc_property_name=disc_property_name,
-                disc_payload_value=arg[disc_property_name],
+                disc_property_name=disc_property_name, disc_payload_value=arg[disc_property_name]
             )
             if discriminated_cls is None:
                 raise ApiValueError(
@@ -2392,12 +2306,7 @@ class ComposedSchema(
     NoneFrozenDictTupleStrDecimalBoolMixin,
 ):
     @classmethod
-    def from_openapi_data_oapg(
-        cls,
-        *args: typing.Any,
-        _configuration: typing.Optional[Configuration] = None,
-        **kwargs,
-    ):
+    def from_openapi_data_oapg(cls, *args: typing.Any, _configuration: typing.Optional[Configuration] = None, **kwargs):
         if not args:
             if not kwargs:
                 raise ApiTypeError("{} is missing required input data in args or kwargs".format(cls.__name__))
@@ -2408,9 +2317,7 @@ class ComposedSchema(
 class ListSchema(ListBase, Schema, TupleMixin):
     @classmethod
     def from_openapi_data_oapg(
-        cls,
-        arg: typing.List[typing.Any],
-        _configuration: typing.Optional[Configuration] = None,
+        cls, arg: typing.List[typing.Any], _configuration: typing.Optional[Configuration] = None
     ):
         return super().from_openapi_data_oapg(arg, _configuration=_configuration)
 
@@ -2439,9 +2346,7 @@ class NumberSchema(NumberBase, Schema, DecimalMixin):
 
     @classmethod
     def from_openapi_data_oapg(
-        cls,
-        arg: typing.Union[int, float],
-        _configuration: typing.Optional[Configuration] = None,
+        cls, arg: typing.Union[int, float], _configuration: typing.Optional[Configuration] = None
     ):
         return super().from_openapi_data_oapg(arg, _configuration=_configuration)
 
@@ -2459,11 +2364,7 @@ class IntBase:
             return self._as_int
 
     @classmethod
-    def __validate_format(
-        cls,
-        arg: typing.Optional[decimal.Decimal],
-        validation_metadata: ValidationMetadata,
-    ):
+    def __validate_format(cls, arg: typing.Optional[decimal.Decimal], validation_metadata: ValidationMetadata):
         if isinstance(arg, decimal.Decimal):
             denominator = arg.as_integer_ratio()[-1]
             if denominator != 1:
@@ -2499,11 +2400,7 @@ class Int32Base:
     __inclusive_maximum = decimal.Decimal(2147483647)
 
     @classmethod
-    def __validate_format(
-        cls,
-        arg: typing.Optional[decimal.Decimal],
-        validation_metadata: ValidationMetadata,
-    ):
+    def __validate_format(cls, arg: typing.Optional[decimal.Decimal], validation_metadata: ValidationMetadata):
         if isinstance(arg, decimal.Decimal) and arg.as_tuple().exponent == 0:
             if not cls.__inclusive_minimum <= arg <= cls.__inclusive_maximum:
                 raise ApiValueError(
@@ -2532,11 +2429,7 @@ class Int64Base:
     __inclusive_maximum = decimal.Decimal(9223372036854775807)
 
     @classmethod
-    def __validate_format(
-        cls,
-        arg: typing.Optional[decimal.Decimal],
-        validation_metadata: ValidationMetadata,
-    ):
+    def __validate_format(cls, arg: typing.Optional[decimal.Decimal], validation_metadata: ValidationMetadata):
         if isinstance(arg, decimal.Decimal) and arg.as_tuple().exponent == 0:
             if not cls.__inclusive_minimum <= arg <= cls.__inclusive_maximum:
                 raise ApiValueError(
@@ -2565,11 +2458,7 @@ class Float32Base:
     __inclusive_maximum = decimal.Decimal(3.4028234663852886e38)
 
     @classmethod
-    def __validate_format(
-        cls,
-        arg: typing.Optional[decimal.Decimal],
-        validation_metadata: ValidationMetadata,
-    ):
+    def __validate_format(cls, arg: typing.Optional[decimal.Decimal], validation_metadata: ValidationMetadata):
         if isinstance(arg, decimal.Decimal):
             if not cls.__inclusive_minimum <= arg <= cls.__inclusive_maximum:
                 raise ApiValueError(
@@ -2600,11 +2489,7 @@ class Float64Base:
     __inclusive_maximum = decimal.Decimal(1.7976931348623157e308)
 
     @classmethod
-    def __validate_format(
-        cls,
-        arg: typing.Optional[decimal.Decimal],
-        validation_metadata: ValidationMetadata,
-    ):
+    def __validate_format(cls, arg: typing.Optional[decimal.Decimal], validation_metadata: ValidationMetadata):
         if isinstance(arg, decimal.Decimal):
             if not cls.__inclusive_minimum <= arg <= cls.__inclusive_maximum:
                 raise ApiValueError(
@@ -2719,11 +2604,7 @@ class BinarySchema(ComposedBase, BinaryBase, Schema, BinaryMixin):
                 FileSchema,
             ]
 
-    def __new__(
-        cls,
-        _arg: typing.Union[io.FileIO, io.BufferedReader, bytes],
-        **kwargs: Configuration,
-    ):
+    def __new__(cls, _arg: typing.Union[io.FileIO, io.BufferedReader, bytes], **kwargs: Configuration):
         return super().__new__(cls, _arg)
 
 
@@ -2826,8 +2707,7 @@ schema_type_classes = {
 
 @functools.lru_cache()
 def get_new_class(
-    class_name: str,
-    bases: typing.Tuple[typing.Type[typing.Union[Schema, typing.Any]], ...],
+    class_name: str, bases: typing.Tuple[typing.Type[typing.Union[Schema, typing.Any]], ...]
 ) -> typing.Type[Schema]:
     """
     Returns a new class that is made with the subclass bases

@@ -383,17 +383,11 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
         healthcheck_route: typing.Union[MetaOapg.properties.healthcheck_route, str, schemas.Unset] = schemas.unset,
         predict_route: typing.Union[MetaOapg.properties.predict_route, str, schemas.Unset] = schemas.unset,
         readiness_initial_delay_seconds: typing.Union[
-            MetaOapg.properties.readiness_initial_delay_seconds,
-            decimal.Decimal,
-            int,
-            schemas.Unset,
+            MetaOapg.properties.readiness_initial_delay_seconds, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
         triton_memory: typing.Union[MetaOapg.properties.triton_memory, str, schemas.Unset] = schemas.unset,
         triton_model_replicas: typing.Union[
-            MetaOapg.properties.triton_model_replicas,
-            dict,
-            frozendict.frozendict,
-            schemas.Unset,
+            MetaOapg.properties.triton_model_replicas, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         triton_readiness_initial_delay_seconds: typing.Union[
             MetaOapg.properties.triton_readiness_initial_delay_seconds,

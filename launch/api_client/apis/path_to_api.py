@@ -26,11 +26,17 @@ from launch.api_client.apis.paths.v1_docker_image_batch_jobs import (
 from launch.api_client.apis.paths.v1_docker_image_batch_jobs_batch_job_id import (
     V1DockerImageBatchJobsBatchJobId,
 )
-from launch.api_client.apis.paths.v1_llm_completion_sync import (
-    V1LlmCompletionSync,
+from launch.api_client.apis.paths.v1_llm_completions_stream import (
+    V1LlmCompletionsStream,
+)
+from launch.api_client.apis.paths.v1_llm_completions_sync import (
+    V1LlmCompletionsSync,
 )
 from launch.api_client.apis.paths.v1_llm_model_endpoints import (
     V1LlmModelEndpoints,
+)
+from launch.api_client.apis.paths.v1_llm_model_endpoints_model_endpoint_name import (
+    V1LlmModelEndpointsModelEndpointName,
 )
 from launch.api_client.apis.paths.v1_model_bundles import V1ModelBundles
 from launch.api_client.apis.paths.v1_model_bundles_clone_with_changes import (
@@ -81,8 +87,10 @@ PathToApi = typing_extensions.TypedDict(
         PathValues.V1_DOCKERIMAGEBATCHJOBBUNDLES_DOCKER_IMAGE_BATCH_JOB_BUNDLE_ID: V1DockerImageBatchJobBundlesDockerImageBatchJobBundleId,
         PathValues.V1_DOCKERIMAGEBATCHJOBS: V1DockerImageBatchJobs,
         PathValues.V1_DOCKERIMAGEBATCHJOBS_BATCH_JOB_ID: V1DockerImageBatchJobsBatchJobId,
-        PathValues.V1_LLM_COMPLETIONSYNC: V1LlmCompletionSync,
+        PathValues.V1_LLM_COMPLETIONSSTREAM: V1LlmCompletionsStream,
+        PathValues.V1_LLM_COMPLETIONSSYNC: V1LlmCompletionsSync,
         PathValues.V1_LLM_MODELENDPOINTS: V1LlmModelEndpoints,
+        PathValues.V1_LLM_MODELENDPOINTS_MODEL_ENDPOINT_NAME: V1LlmModelEndpointsModelEndpointName,
         PathValues.V1_MODELBUNDLES: V1ModelBundles,
         PathValues.V1_MODELBUNDLES_CLONEWITHCHANGES: V1ModelBundlesCloneWithChanges,
         PathValues.V1_MODELBUNDLES_LATEST: V1ModelBundlesLatest,
@@ -114,8 +122,10 @@ path_to_api = PathToApi(
         PathValues.V1_DOCKERIMAGEBATCHJOBBUNDLES_DOCKER_IMAGE_BATCH_JOB_BUNDLE_ID: V1DockerImageBatchJobBundlesDockerImageBatchJobBundleId,
         PathValues.V1_DOCKERIMAGEBATCHJOBS: V1DockerImageBatchJobs,
         PathValues.V1_DOCKERIMAGEBATCHJOBS_BATCH_JOB_ID: V1DockerImageBatchJobsBatchJobId,
-        PathValues.V1_LLM_COMPLETIONSYNC: V1LlmCompletionSync,
+        PathValues.V1_LLM_COMPLETIONSSTREAM: V1LlmCompletionsStream,
+        PathValues.V1_LLM_COMPLETIONSSYNC: V1LlmCompletionsSync,
         PathValues.V1_LLM_MODELENDPOINTS: V1LlmModelEndpoints,
+        PathValues.V1_LLM_MODELENDPOINTS_MODEL_ENDPOINT_NAME: V1LlmModelEndpointsModelEndpointName,
         PathValues.V1_MODELBUNDLES: V1ModelBundles,
         PathValues.V1_MODELBUNDLES_CLONEWITHCHANGES: V1ModelBundlesCloneWithChanges,
         PathValues.V1_MODELBUNDLES_LATEST: V1ModelBundlesLatest,

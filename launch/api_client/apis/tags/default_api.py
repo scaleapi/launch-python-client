@@ -48,14 +48,20 @@ from launch.api_client.paths.v1_docker_image_batch_jobs_batch_job_id.get import 
 from launch.api_client.paths.v1_docker_image_batch_jobs_batch_job_id.put import (
     UpdateDockerImageBatchJobV1DockerImageBatchJobsBatchJobIdPut,
 )
-from launch.api_client.paths.v1_llm_completion_sync.post import (
-    CreateCompletionSyncTaskV1LlmCompletionSyncPost,
+from launch.api_client.paths.v1_llm_completions_stream.post import (
+    CreateCompletionStreamTaskV1LlmCompletionsStreamPost,
+)
+from launch.api_client.paths.v1_llm_completions_sync.post import (
+    CreateCompletionSyncTaskV1LlmCompletionsSyncPost,
 )
 from launch.api_client.paths.v1_llm_model_endpoints.get import (
     ListModelEndpointsV1LlmModelEndpointsGet,
 )
 from launch.api_client.paths.v1_llm_model_endpoints.post import (
     CreateModelEndpointV1LlmModelEndpointsPost,
+)
+from launch.api_client.paths.v1_llm_model_endpoints_model_endpoint_name.get import (
+    GetModelEndpointV1LlmModelEndpointsModelEndpointNameGet,
 )
 from launch.api_client.paths.v1_model_bundles.get import (
     ListModelBundlesV1ModelBundlesGet,
@@ -121,7 +127,8 @@ class DefaultApi(
     CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost,
     CreateAsyncInferenceTaskV1AsyncTasksPost,
     CreateBatchJobV1BatchJobsPost,
-    CreateCompletionSyncTaskV1LlmCompletionSyncPost,
+    CreateCompletionStreamTaskV1LlmCompletionsStreamPost,
+    CreateCompletionSyncTaskV1LlmCompletionsSyncPost,
     CreateDockerImageBatchJobBundleV1DockerImageBatchJobBundlesPost,
     CreateDockerImageBatchJobV1DockerImageBatchJobsPost,
     CreateModelBundleV1ModelBundlesPost,
@@ -140,6 +147,7 @@ class DefaultApi(
     GetLatestModelBundleV2ModelBundlesLatestGet,
     GetModelBundleV1ModelBundlesModelBundleIdGet,
     GetModelBundleV2ModelBundlesModelBundleIdGet,
+    GetModelEndpointV1LlmModelEndpointsModelEndpointNameGet,
     GetModelEndpointV1ModelEndpointsModelEndpointIdGet,
     GetModelEndpointsApiV1ModelEndpointsApiGet,
     GetModelEndpointsSchemaV1ModelEndpointsSchemaJsonGet,

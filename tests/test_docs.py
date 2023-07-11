@@ -142,7 +142,7 @@ def test_docs_examples(
         "launch.client.LaunchClient.list_llm_model_endpoints", MagicMock(return_value=mock_list_llm_model_endpoints)
     )
     mocker.patch("launch.client.LaunchClient.create_llm_model_endpoint", MagicMock(return_value=mock_async_endpoint))
-    mocker.patch("launch.client.LaunchClient.completion_sync", MagicMock(return_value=mock_batch_job))
+    mocker.patch("launch.client.LaunchClient.completions_sync", MagicMock(return_value=mock_batch_job))
     mocker.patch("launch.client.Connection.make_request", MagicMock(return_value=mock_dictionary))
     mocker.patch("launch.client.requests", MagicMock())
     mocker.patch("pydantic.BaseModel.parse_raw", MagicMock())
