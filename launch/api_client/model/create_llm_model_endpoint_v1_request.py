@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -130,14 +129,18 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
 
                 def __getitem__(
                     self,
-                    name: typing.Union[str,],
+                    name: typing.Union[
+                        str,
+                    ],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
                 def get_item_oapg(
                     self,
-                    name: typing.Union[str,],
+                    name: typing.Union[
+                        str,
+                    ],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
@@ -610,7 +613,9 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["max_workers"]) -> MetaOapg.properties.max_workers:
+    def __getitem__(
+        self, name: typing_extensions.Literal["max_workers"]
+    ) -> MetaOapg.properties.max_workers:
         ...
 
     @typing.overload
@@ -618,15 +623,21 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata:
+    def __getitem__(
+        self, name: typing_extensions.Literal["metadata"]
+    ) -> MetaOapg.properties.metadata:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["min_workers"]) -> MetaOapg.properties.min_workers:
+    def __getitem__(
+        self, name: typing_extensions.Literal["min_workers"]
+    ) -> MetaOapg.properties.min_workers:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name:
+    def __getitem__(
+        self, name: typing_extensions.Literal["model_name"]
+    ) -> MetaOapg.properties.model_name:
         ...
 
     @typing.overload
@@ -634,19 +645,27 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["num_shards"]) -> MetaOapg.properties.num_shards:
+    def __getitem__(
+        self, name: typing_extensions.Literal["num_shards"]
+    ) -> MetaOapg.properties.num_shards:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["per_worker"]) -> MetaOapg.properties.per_worker:
+    def __getitem__(
+        self, name: typing_extensions.Literal["per_worker"]
+    ) -> MetaOapg.properties.per_worker:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["billing_tags"]) -> MetaOapg.properties.billing_tags:
+    def __getitem__(
+        self, name: typing_extensions.Literal["billing_tags"]
+    ) -> MetaOapg.properties.billing_tags:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["default_callback_auth"]) -> "CallbackAuth":
+    def __getitem__(
+        self, name: typing_extensions.Literal["default_callback_auth"]
+    ) -> "CallbackAuth":
         ...
 
     @typing.overload
@@ -656,11 +675,15 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["endpoint_type"]) -> MetaOapg.properties.endpoint_type:
+    def __getitem__(
+        self, name: typing_extensions.Literal["endpoint_type"]
+    ) -> MetaOapg.properties.endpoint_type:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["high_priority"]) -> MetaOapg.properties.high_priority:
+    def __getitem__(
+        self, name: typing_extensions.Literal["high_priority"]
+    ) -> MetaOapg.properties.high_priority:
         ...
 
     @typing.overload
@@ -670,7 +693,9 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["optimize_costs"]) -> MetaOapg.properties.optimize_costs:
+    def __getitem__(
+        self, name: typing_extensions.Literal["optimize_costs"]
+    ) -> MetaOapg.properties.optimize_costs:
         ...
 
     @typing.overload
@@ -680,11 +705,15 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["prewarm"]) -> MetaOapg.properties.prewarm:
+    def __getitem__(
+        self, name: typing_extensions.Literal["prewarm"]
+    ) -> MetaOapg.properties.prewarm:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["public_inference"]) -> MetaOapg.properties.public_inference:
+    def __getitem__(
+        self, name: typing_extensions.Literal["public_inference"]
+    ) -> MetaOapg.properties.public_inference:
         ...
 
     @typing.overload
@@ -692,7 +721,9 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["storage"]) -> MetaOapg.properties.storage:
+    def __getitem__(
+        self, name: typing_extensions.Literal["storage"]
+    ) -> MetaOapg.properties.storage:
         ...
 
     @typing.overload
@@ -754,27 +785,39 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["labels"]
+    ) -> MetaOapg.properties.labels:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["max_workers"]) -> MetaOapg.properties.max_workers:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["max_workers"]
+    ) -> MetaOapg.properties.max_workers:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["memory"]) -> MetaOapg.properties.memory:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["memory"]
+    ) -> MetaOapg.properties.memory:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["metadata"]
+    ) -> MetaOapg.properties.metadata:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["min_workers"]) -> MetaOapg.properties.min_workers:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["min_workers"]
+    ) -> MetaOapg.properties.min_workers:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["model_name"]
+    ) -> MetaOapg.properties.model_name:
         ...
 
     @typing.overload
@@ -782,11 +825,15 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["num_shards"]) -> MetaOapg.properties.num_shards:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["num_shards"]
+    ) -> MetaOapg.properties.num_shards:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["per_worker"]) -> MetaOapg.properties.per_worker:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["per_worker"]
+    ) -> MetaOapg.properties.per_worker:
         ...
 
     @typing.overload
@@ -1019,7 +1066,9 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             io.BufferedReader,
             schemas.Unset,
         ] = schemas.unset,
-        high_priority: typing.Union[MetaOapg.properties.high_priority, bool, schemas.Unset] = schemas.unset,
+        high_priority: typing.Union[
+            MetaOapg.properties.high_priority, bool, schemas.Unset
+        ] = schemas.unset,
         inference_framework: typing.Union[
             MetaOapg.properties.inference_framework,
             dict,
@@ -1040,12 +1089,16 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             io.BufferedReader,
             schemas.Unset,
         ] = schemas.unset,
-        optimize_costs: typing.Union[MetaOapg.properties.optimize_costs, bool, schemas.Unset] = schemas.unset,
+        optimize_costs: typing.Union[
+            MetaOapg.properties.optimize_costs, bool, schemas.Unset
+        ] = schemas.unset,
         post_inference_hooks: typing.Union[
             MetaOapg.properties.post_inference_hooks, list, tuple, schemas.Unset
         ] = schemas.unset,
         prewarm: typing.Union[MetaOapg.properties.prewarm, bool, schemas.Unset] = schemas.unset,
-        public_inference: typing.Union[MetaOapg.properties.public_inference, bool, schemas.Unset] = schemas.unset,
+        public_inference: typing.Union[
+            MetaOapg.properties.public_inference, bool, schemas.Unset
+        ] = schemas.unset,
         source: typing.Union[
             MetaOapg.properties.source,
             dict,
@@ -1139,8 +1192,6 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
 
 from launch.api_client.model.callback_auth import CallbackAuth
 from launch.api_client.model.gpu_type import GpuType
-from launch.api_client.model.llm_inference_framework import (
-    LLMInferenceFramework,
-)
+from launch.api_client.model.llm_inference_framework import LLMInferenceFramework
 from launch.api_client.model.llm_source import LLMSource
 from launch.api_client.model.model_endpoint_type import ModelEndpointType

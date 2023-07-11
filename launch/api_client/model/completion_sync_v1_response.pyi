@@ -45,8 +45,7 @@ class CompletionSyncV1Response(schemas.DictSchema):
                 def __new__(
                     cls,
                     _arg: typing.Union[
-                        typing.Tuple["CompletionOutput"],
-                        typing.List["CompletionOutput"],
+                        typing.Tuple["CompletionOutput"], typing.List["CompletionOutput"]
                     ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "outputs":
@@ -70,11 +69,15 @@ class CompletionSyncV1Response(schemas.DictSchema):
     status: "TaskStatus"
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["outputs"]) -> MetaOapg.properties.outputs: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["outputs"]
+    ) -> MetaOapg.properties.outputs: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["status"]) -> "TaskStatus": ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["traceback"]) -> MetaOapg.properties.traceback: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["traceback"]
+    ) -> MetaOapg.properties.traceback: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -91,7 +94,9 @@ class CompletionSyncV1Response(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["outputs"]) -> MetaOapg.properties.outputs: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["outputs"]
+    ) -> MetaOapg.properties.outputs: ...
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "TaskStatus": ...
     @typing.overload
@@ -99,7 +104,9 @@ class CompletionSyncV1Response(schemas.DictSchema):
         self, name: typing_extensions.Literal["traceback"]
     ) -> typing.Union[MetaOapg.properties.traceback, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

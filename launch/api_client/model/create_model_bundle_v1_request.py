@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -105,11 +104,15 @@ class CreateModelBundleV1Request(schemas.DictSchema):
     env_params: "ModelBundleEnvironmentParams"
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["env_params"]) -> "ModelBundleEnvironmentParams":
+    def __getitem__(
+        self, name: typing_extensions.Literal["env_params"]
+    ) -> "ModelBundleEnvironmentParams":
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["location"]) -> MetaOapg.properties.location:
+    def __getitem__(
+        self, name: typing_extensions.Literal["location"]
+    ) -> MetaOapg.properties.location:
         ...
 
     @typing.overload
@@ -117,23 +120,33 @@ class CreateModelBundleV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["packaging_type"]) -> "ModelBundlePackagingType":
+    def __getitem__(
+        self, name: typing_extensions.Literal["packaging_type"]
+    ) -> "ModelBundlePackagingType":
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["requirements"]) -> MetaOapg.properties.requirements:
+    def __getitem__(
+        self, name: typing_extensions.Literal["requirements"]
+    ) -> MetaOapg.properties.requirements:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["app_config"]) -> MetaOapg.properties.app_config:
+    def __getitem__(
+        self, name: typing_extensions.Literal["app_config"]
+    ) -> MetaOapg.properties.app_config:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata:
+    def __getitem__(
+        self, name: typing_extensions.Literal["metadata"]
+    ) -> MetaOapg.properties.metadata:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["schema_location"]) -> MetaOapg.properties.schema_location:
+    def __getitem__(
+        self, name: typing_extensions.Literal["schema_location"]
+    ) -> MetaOapg.properties.schema_location:
         ...
 
     @typing.overload
@@ -160,11 +173,15 @@ class CreateModelBundleV1Request(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["env_params"]) -> "ModelBundleEnvironmentParams":
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["env_params"]
+    ) -> "ModelBundleEnvironmentParams":
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["location"]) -> MetaOapg.properties.location:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["location"]
+    ) -> MetaOapg.properties.location:
         ...
 
     @typing.overload
@@ -172,11 +189,15 @@ class CreateModelBundleV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["packaging_type"]) -> "ModelBundlePackagingType":
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["packaging_type"]
+    ) -> "ModelBundlePackagingType":
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["requirements"]) -> MetaOapg.properties.requirements:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["requirements"]
+    ) -> MetaOapg.properties.requirements:
         ...
 
     @typing.overload
@@ -246,7 +267,9 @@ class CreateModelBundleV1Request(schemas.DictSchema):
         metadata: typing.Union[
             MetaOapg.properties.metadata, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
-        schema_location: typing.Union[MetaOapg.properties.schema_location, str, schemas.Unset] = schemas.unset,
+        schema_location: typing.Union[
+            MetaOapg.properties.schema_location, str, schemas.Unset
+        ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -281,9 +304,5 @@ class CreateModelBundleV1Request(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.model_bundle_environment_params import (
-    ModelBundleEnvironmentParams,
-)
-from launch.api_client.model.model_bundle_packaging_type import (
-    ModelBundlePackagingType,
-)
+from launch.api_client.model.model_bundle_environment_params import ModelBundleEnvironmentParams
+from launch.api_client.model.model_bundle_packaging_type import ModelBundlePackagingType

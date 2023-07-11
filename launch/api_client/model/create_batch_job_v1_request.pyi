@@ -45,13 +45,17 @@ class CreateBatchJobV1Request(schemas.DictSchema):
                     additional_properties = schemas.StrSchema
                 def __getitem__(
                     self,
-                    name: typing.Union[str,],
+                    name: typing.Union[
+                        str,
+                    ],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
                 def get_item_oapg(
                     self,
-                    name: typing.Union[str,],
+                    name: typing.Union[
+                        str,
+                    ],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
                 def __new__(
@@ -96,17 +100,25 @@ class CreateBatchJobV1Request(schemas.DictSchema):
     labels: MetaOapg.properties.labels
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["input_path"]) -> MetaOapg.properties.input_path: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["input_path"]
+    ) -> MetaOapg.properties.input_path: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["labels"]
+    ) -> MetaOapg.properties.labels: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["model_bundle_id"]
     ) -> MetaOapg.properties.model_bundle_id: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["resource_requests"]) -> "CreateBatchJobResourceRequests": ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["resource_requests"]
+    ) -> "CreateBatchJobResourceRequests": ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["serialization_format"]) -> "BatchJobSerializationFormat": ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["serialization_format"]
+    ) -> "BatchJobSerializationFormat": ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["timeout_seconds"]
@@ -130,9 +142,13 @@ class CreateBatchJobV1Request(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["input_path"]) -> MetaOapg.properties.input_path: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["input_path"]
+    ) -> MetaOapg.properties.input_path: ...
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["labels"]
+    ) -> MetaOapg.properties.labels: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["model_bundle_id"]
@@ -150,7 +166,9 @@ class CreateBatchJobV1Request(schemas.DictSchema):
         self, name: typing_extensions.Literal["timeout_seconds"]
     ) -> typing.Union[MetaOapg.properties.timeout_seconds, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -188,11 +206,7 @@ class CreateBatchJobV1Request(schemas.DictSchema):
             frozendict.frozendict,
         ],
         timeout_seconds: typing.Union[
-            MetaOapg.properties.timeout_seconds,
-            decimal.Decimal,
-            int,
-            float,
-            schemas.Unset,
+            MetaOapg.properties.timeout_seconds, decimal.Decimal, int, float, schemas.Unset
         ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
@@ -225,9 +239,5 @@ class CreateBatchJobV1Request(schemas.DictSchema):
             **kwargs,
         )
 
-from launch_client.model.batch_job_serialization_format import (
-    BatchJobSerializationFormat,
-)
-from launch_client.model.create_batch_job_resource_requests import (
-    CreateBatchJobResourceRequests,
-)
+from launch_client.model.batch_job_serialization_format import BatchJobSerializationFormat
+from launch_client.model.create_batch_job_resource_requests import CreateBatchJobResourceRequests

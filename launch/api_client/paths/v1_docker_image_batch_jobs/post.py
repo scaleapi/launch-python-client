@@ -18,8 +18,6 @@ from datetime import date, datetime  # noqa: F401
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
 import urllib3
-from urllib3._collections import HTTPHeaderDict
-
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
 from launch.api_client.model.create_docker_image_batch_job_v1_request import (
@@ -29,6 +27,7 @@ from launch.api_client.model.create_docker_image_batch_job_v1_response import (
     CreateDockerImageBatchJobV1Response,
 )
 from launch.api_client.model.http_validation_error import HTTPValidationError
+from urllib3._collections import HTTPHeaderDict
 
 from . import path
 
@@ -51,7 +50,9 @@ SchemaFor200ResponseBodyApplicationJson = CreateDockerImageBatchJobV1Response
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor200ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 
@@ -67,7 +68,9 @@ SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor422ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 
@@ -88,7 +91,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_docker_image_batch_job_v1_docker_image_batch_jobs_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -100,7 +105,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_docker_image_batch_job_v1_docker_image_batch_jobs_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -112,7 +119,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_docker_image_batch_job_v1_docker_image_batch_jobs_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -124,7 +133,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_docker_image_batch_job_v1_docker_image_batch_jobs_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -135,7 +146,9 @@ class BaseApi(api_client.Api):
 
     def _create_docker_image_batch_job_v1_docker_image_batch_jobs_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -162,7 +175,9 @@ class BaseApi(api_client.Api):
             )
         _fields = None
         _body = None
-        serialized_data = request_body_create_docker_image_batch_job_v1_request.serialize(body, content_type)
+        serialized_data = request_body_create_docker_image_batch_job_v1_request.serialize(
+            body, content_type
+        )
         _headers.add("Content-Type", content_type)
         if "fields" in serialized_data:
             _fields = serialized_data["fields"]
@@ -184,15 +199,15 @@ class BaseApi(api_client.Api):
         else:
             response_for_status = _status_code_to_response.get(str(response.status))
             if response_for_status:
-                api_response = response_for_status.deserialize(response, self.api_client.configuration)
+                api_response = response_for_status.deserialize(
+                    response, self.api_client.configuration
+                )
             else:
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
             raise exceptions.ApiException(
-                status=response.status,
-                reason=response.reason,
-                api_response=api_response,
+                status=response.status, reason=response.reason, api_response=api_response
             )
 
         return api_response
@@ -204,7 +219,9 @@ class CreateDockerImageBatchJobV1DockerImageBatchJobsPost(BaseApi):
     @typing.overload
     def create_docker_image_batch_job_v1_docker_image_batch_jobs_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -216,7 +233,9 @@ class CreateDockerImageBatchJobV1DockerImageBatchJobsPost(BaseApi):
     @typing.overload
     def create_docker_image_batch_job_v1_docker_image_batch_jobs_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -228,7 +247,9 @@ class CreateDockerImageBatchJobV1DockerImageBatchJobsPost(BaseApi):
     @typing.overload
     def create_docker_image_batch_job_v1_docker_image_batch_jobs_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -240,7 +261,9 @@ class CreateDockerImageBatchJobV1DockerImageBatchJobsPost(BaseApi):
     @typing.overload
     def create_docker_image_batch_job_v1_docker_image_batch_jobs_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -251,7 +274,9 @@ class CreateDockerImageBatchJobV1DockerImageBatchJobsPost(BaseApi):
 
     def create_docker_image_batch_job_v1_docker_image_batch_jobs_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -274,7 +299,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -286,7 +313,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -298,7 +327,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -310,7 +341,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -321,7 +354,9 @@ class ApiForpost(BaseApi):
 
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,

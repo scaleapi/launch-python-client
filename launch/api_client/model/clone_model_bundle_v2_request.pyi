@@ -49,7 +49,9 @@ class CloneModelBundleV2Request(schemas.DictSchema):
         self, name: typing_extensions.Literal["original_model_bundle_id"]
     ) -> MetaOapg.properties.original_model_bundle_id: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["new_app_config"]) -> MetaOapg.properties.new_app_config: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["new_app_config"]
+    ) -> MetaOapg.properties.new_app_config: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -73,7 +75,9 @@ class CloneModelBundleV2Request(schemas.DictSchema):
         self, name: typing_extensions.Literal["new_app_config"]
     ) -> typing.Union[MetaOapg.properties.new_app_config, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -96,10 +100,7 @@ class CloneModelBundleV2Request(schemas.DictSchema):
             str,
         ],
         new_app_config: typing.Union[
-            MetaOapg.properties.new_app_config,
-            dict,
-            frozendict.frozendict,
-            schemas.Unset,
+            MetaOapg.properties.new_app_config, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[

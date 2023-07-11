@@ -21,9 +21,7 @@ import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
 from launch_client.model.http_validation_error import HTTPValidationError
-from launch_client.model.list_model_bundles_v2_response import (
-    ListModelBundlesV2Response,
-)
+from launch_client.model.list_model_bundles_v2_response import ListModelBundlesV2Response
 from launch_client.model.model_bundle_order_by import ModelBundleOrderBy
 from urllib3._collections import HTTPHeaderDict
 
@@ -38,7 +36,9 @@ RequestOptionalQueryParams = typing_extensions.TypedDict(
             ModelNameSchema,
             str,
         ],
-        "order_by": typing.Union[OrderBySchema,],
+        "order_by": typing.Union[
+            OrderBySchema,
+        ],
     },
     total=False,
 )
@@ -63,7 +63,9 @@ SchemaFor200ResponseBodyApplicationJson = ListModelBundlesV2Response
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor200ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 _response_for_200 = api_client.OpenApiResponse(
@@ -77,7 +79,9 @@ SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor422ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 _response_for_422 = api_client.OpenApiResponse(
@@ -167,15 +171,15 @@ class BaseApi(api_client.Api):
         else:
             response_for_status = _status_code_to_response.get(str(response.status))
             if response_for_status:
-                api_response = response_for_status.deserialize(response, self.api_client.configuration)
+                api_response = response_for_status.deserialize(
+                    response, self.api_client.configuration
+                )
             else:
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
             raise exceptions.ApiException(
-                status=response.status,
-                reason=response.reason,
-                api_response=api_response,
+                status=response.status, reason=response.reason, api_response=api_response
             )
 
         return api_response

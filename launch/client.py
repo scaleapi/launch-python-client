@@ -28,6 +28,12 @@ from launch.api_client.model.clone_model_bundle_v2_request import (
 from launch.api_client.model.cloudpickle_artifact_flavor import (
     CloudpickleArtifactFlavor,
 )
+from launch.api_client.model.completion_stream_v1_request import (
+    CompletionStreamV1Request,
+)
+from launch.api_client.model.completion_stream_v1_response import (
+    CompletionStreamV1Response,
+)
 from launch.api_client.model.completion_sync_v1_request import (
     CompletionSyncV1Request,
 )
@@ -2832,7 +2838,32 @@ class LaunchClient:
         ]
         return async_endpoints + sync_endpoints + streaming_endpoints
 
-    def completion_sync(
+    def get_llm_model_endpoint(self, endpoint_name: str) -> Optional[Union[AsyncEndpoint, SyncEndpoint, StreamingEndpoint]]:
+        """
+        Gets a model endpoint associated with a name that the user has access to.
+
+        Parameters:
+            endpoint_name: The name of the endpoint to retrieve.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"model_endpoint_name": endpoint_name})
+            response = api_instance.get_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_get(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+
+        if resp["spec"]["endpoint_type"] == "async":
+            return AsyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
+        elif resp["spec"]["endpoint_type"] == "sync":
+            return SyncEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
+        elif resp["spec"]["endpoint_type"] == "streaming":
+            return StreamingEndpoint(ModelEndpoint.from_dict(resp), client=self)  # type: ignore
+        else:
+            raise ValueError("Endpoint should be one of the types 'sync', 'async', or 'streaming'")
+
+    def completions_sync(
         self,
         endpoint_name: str,
         prompts: List[str],
@@ -2858,7 +2889,7 @@ class LaunchClient:
             api_instance = DefaultApi(api_client)
             request = CompletionSyncV1Request(max_new_tokens=max_new_tokens, prompts=prompts, temperature=temperature)
             query_params = frozendict({"model_endpoint_name": endpoint_name})
-            response = api_instance.create_completion_sync_task_v1_llm_completion_sync_post(  # type: ignore
+            response = api_instance.create_completion_sync_task_v1_llm_completions_sync_post(  # type: ignore
                 body=request,
                 query_params=query_params,
                 skip_deserialization=True,

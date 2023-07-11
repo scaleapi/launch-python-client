@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -54,7 +53,9 @@ class CloneModelBundleV2Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["new_app_config"]) -> MetaOapg.properties.new_app_config:
+    def __getitem__(
+        self, name: typing_extensions.Literal["new_app_config"]
+    ) -> MetaOapg.properties.new_app_config:
         ...
 
     @typing.overload
@@ -113,10 +114,7 @@ class CloneModelBundleV2Request(schemas.DictSchema):
             str,
         ],
         new_app_config: typing.Union[
-            MetaOapg.properties.new_app_config,
-            dict,
-            frozendict.frozendict,
-            schemas.Unset,
+            MetaOapg.properties.new_app_config, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[

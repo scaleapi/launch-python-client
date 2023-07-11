@@ -18,17 +18,12 @@ from datetime import date, datetime  # noqa: F401
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
 import urllib3
-from urllib3._collections import HTTPHeaderDict
-
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
-from launch.api_client.model.create_async_task_v1_response import (
-    CreateAsyncTaskV1Response,
-)
-from launch.api_client.model.endpoint_predict_v1_request import (
-    EndpointPredictV1Request,
-)
+from launch.api_client.model.create_async_task_v1_response import CreateAsyncTaskV1Response
+from launch.api_client.model.endpoint_predict_v1_request import EndpointPredictV1Request
 from launch.api_client.model.http_validation_error import HTTPValidationError
+from urllib3._collections import HTTPHeaderDict
 
 from . import path
 
@@ -43,7 +38,9 @@ RequestRequiredQueryParams = typing_extensions.TypedDict(
         ],
     },
 )
-RequestOptionalQueryParams = typing_extensions.TypedDict("RequestOptionalQueryParams", {}, total=False)
+RequestOptionalQueryParams = typing_extensions.TypedDict(
+    "RequestOptionalQueryParams", {}, total=False
+)
 
 
 class RequestQueryParams(RequestRequiredQueryParams, RequestOptionalQueryParams):
@@ -76,7 +73,9 @@ SchemaFor200ResponseBodyApplicationJson = CreateAsyncTaskV1Response
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor200ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 
@@ -92,7 +91,9 @@ SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor422ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 
@@ -113,7 +114,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_async_inference_task_v1_async_tasks_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -126,7 +129,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_async_inference_task_v1_async_tasks_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -139,7 +144,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_async_inference_task_v1_async_tasks_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
@@ -152,7 +159,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _create_async_inference_task_v1_async_tasks_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -164,7 +173,9 @@ class BaseApi(api_client.Api):
 
     def _create_async_inference_task_v1_async_tasks_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -226,15 +237,15 @@ class BaseApi(api_client.Api):
         else:
             response_for_status = _status_code_to_response.get(str(response.status))
             if response_for_status:
-                api_response = response_for_status.deserialize(response, self.api_client.configuration)
+                api_response = response_for_status.deserialize(
+                    response, self.api_client.configuration
+                )
             else:
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
             raise exceptions.ApiException(
-                status=response.status,
-                reason=response.reason,
-                api_response=api_response,
+                status=response.status, reason=response.reason, api_response=api_response
             )
 
         return api_response
@@ -246,7 +257,9 @@ class CreateAsyncInferenceTaskV1AsyncTasksPost(BaseApi):
     @typing.overload
     def create_async_inference_task_v1_async_tasks_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -259,7 +272,9 @@ class CreateAsyncInferenceTaskV1AsyncTasksPost(BaseApi):
     @typing.overload
     def create_async_inference_task_v1_async_tasks_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -272,7 +287,9 @@ class CreateAsyncInferenceTaskV1AsyncTasksPost(BaseApi):
     @typing.overload
     def create_async_inference_task_v1_async_tasks_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
@@ -285,7 +302,9 @@ class CreateAsyncInferenceTaskV1AsyncTasksPost(BaseApi):
     @typing.overload
     def create_async_inference_task_v1_async_tasks_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -297,7 +316,9 @@ class CreateAsyncInferenceTaskV1AsyncTasksPost(BaseApi):
 
     def create_async_inference_task_v1_async_tasks_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -322,7 +343,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -335,7 +358,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -348,7 +373,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
@@ -361,7 +388,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -373,7 +402,9 @@ class ApiForpost(BaseApi):
 
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         query_params: RequestQueryParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,

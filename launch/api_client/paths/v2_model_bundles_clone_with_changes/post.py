@@ -18,17 +18,12 @@ from datetime import date, datetime  # noqa: F401
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
 import urllib3
-from urllib3._collections import HTTPHeaderDict
-
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
-from launch.api_client.model.clone_model_bundle_v2_request import (
-    CloneModelBundleV2Request,
-)
-from launch.api_client.model.create_model_bundle_v2_response import (
-    CreateModelBundleV2Response,
-)
+from launch.api_client.model.clone_model_bundle_v2_request import CloneModelBundleV2Request
+from launch.api_client.model.create_model_bundle_v2_response import CreateModelBundleV2Response
 from launch.api_client.model.http_validation_error import HTTPValidationError
+from urllib3._collections import HTTPHeaderDict
 
 from . import path
 
@@ -51,7 +46,9 @@ SchemaFor200ResponseBodyApplicationJson = CreateModelBundleV2Response
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor200ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 
@@ -67,7 +64,9 @@ SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor422ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 
@@ -88,7 +87,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -100,7 +101,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -112,7 +115,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -124,7 +129,9 @@ class BaseApi(api_client.Api):
     @typing.overload
     def _clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -135,7 +142,9 @@ class BaseApi(api_client.Api):
 
     def _clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -184,15 +193,15 @@ class BaseApi(api_client.Api):
         else:
             response_for_status = _status_code_to_response.get(str(response.status))
             if response_for_status:
-                api_response = response_for_status.deserialize(response, self.api_client.configuration)
+                api_response = response_for_status.deserialize(
+                    response, self.api_client.configuration
+                )
             else:
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
             raise exceptions.ApiException(
-                status=response.status,
-                reason=response.reason,
-                api_response=api_response,
+                status=response.status, reason=response.reason, api_response=api_response
             )
 
         return api_response
@@ -204,7 +213,9 @@ class CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost(BaseApi):
     @typing.overload
     def clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -216,7 +227,9 @@ class CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost(BaseApi):
     @typing.overload
     def clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -228,7 +241,9 @@ class CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost(BaseApi):
     @typing.overload
     def clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -240,7 +255,9 @@ class CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost(BaseApi):
     @typing.overload
     def clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -251,7 +268,9 @@ class CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost(BaseApi):
 
     def clone_model_bundle_with_changes_v2_model_bundles_clone_with_changes_post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -274,7 +293,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: typing_extensions.Literal["application/json"] = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -286,7 +307,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -298,7 +321,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         skip_deserialization: typing_extensions.Literal[True],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -310,7 +335,9 @@ class ApiForpost(BaseApi):
     @typing.overload
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = ...,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -321,7 +348,9 @@ class ApiForpost(BaseApi):
 
     def post(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
+        body: typing.Union[
+            SchemaForRequestBodyApplicationJson,
+        ],
         content_type: str = "application/json",
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
