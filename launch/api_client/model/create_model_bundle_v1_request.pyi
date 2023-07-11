@@ -237,5 +237,9 @@ class CreateModelBundleV1Request(schemas.DictSchema):
             **kwargs,
         )
 
-from launch_client.model.model_bundle_environment_params import ModelBundleEnvironmentParams
-from launch_client.model.model_bundle_packaging_type import ModelBundlePackagingType
+from launch_client.model.model_bundle_environment_params import (
+    ModelBundleEnvironmentParams,
+)
+from launch_client.model.model_bundle_packaging_type import (
+    ModelBundlePackagingType,
+)

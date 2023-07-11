@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -351,7 +352,9 @@ class ModelBundleV2Response(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.cloudpickle_artifact_flavor import CloudpickleArtifactFlavor
+from launch.api_client.model.cloudpickle_artifact_flavor import (
+    CloudpickleArtifactFlavor,
+)
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
 from launch.api_client.model.streaming_enhanced_runnable_image_flavor import (
     StreamingEnhancedRunnableImageFlavor,

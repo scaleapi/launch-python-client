@@ -20,8 +20,12 @@ import typing_extensions  # noqa: F401
 import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
-from launch_client.model.completion_stream_v1_request import CompletionStreamV1Request
-from launch_client.model.completion_stream_v1_response import CompletionStreamV1Response
+from launch_client.model.completion_stream_v1_request import (
+    CompletionStreamV1Request,
+)
+from launch_client.model.completion_stream_v1_response import (
+    CompletionStreamV1Response,
+)
 from launch_client.model.http_validation_error import HTTPValidationError
 from urllib3._collections import HTTPHeaderDict
 

@@ -25,6 +25,9 @@ from urllib.parse import quote, urlparse
 import frozendict
 import typing_extensions
 import urllib3
+from urllib3._collections import HTTPHeaderDict
+from urllib3.fields import RequestField as RequestFieldBase
+
 from launch.api_client import rest
 from launch.api_client.configuration import Configuration
 from launch.api_client.exceptions import ApiTypeError, ApiValueError
@@ -40,8 +43,6 @@ from launch.api_client.schemas import (
     none_type,
     unset,
 )
-from urllib3._collections import HTTPHeaderDict
-from urllib3.fields import RequestField as RequestFieldBase
 
 
 class RequestField(RequestFieldBase):

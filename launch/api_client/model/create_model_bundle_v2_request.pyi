@@ -234,7 +234,9 @@ class CreateModelBundleV2Request(schemas.DictSchema):
             **kwargs,
         )
 
-from launch_client.model.cloudpickle_artifact_flavor import CloudpickleArtifactFlavor
+from launch_client.model.cloudpickle_artifact_flavor import (
+    CloudpickleArtifactFlavor,
+)
 from launch_client.model.runnable_image_flavor import RunnableImageFlavor
 from launch_client.model.streaming_enhanced_runnable_image_flavor import (
     StreamingEnhancedRunnableImageFlavor,

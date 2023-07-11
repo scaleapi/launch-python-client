@@ -21,8 +21,12 @@ import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
 from launch_client.model.http_validation_error import HTTPValidationError
-from launch_client.model.update_batch_job_v1_request import UpdateBatchJobV1Request
-from launch_client.model.update_batch_job_v1_response import UpdateBatchJobV1Response
+from launch_client.model.update_batch_job_v1_request import (
+    UpdateBatchJobV1Request,
+)
+from launch_client.model.update_batch_job_v1_response import (
+    UpdateBatchJobV1Response,
+)
 from urllib3._collections import HTTPHeaderDict
 
 # Path params
