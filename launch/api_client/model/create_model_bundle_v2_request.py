@@ -129,15 +129,11 @@ class CreateModelBundleV2Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["schema_location"]
-    ) -> MetaOapg.properties.schema_location:
+    def __getitem__(self, name: typing_extensions.Literal["schema_location"]) -> MetaOapg.properties.schema_location:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["metadata"]
-    ) -> MetaOapg.properties.metadata:
+    def __getitem__(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata:
         ...
 
     @typing.overload
@@ -160,9 +156,7 @@ class CreateModelBundleV2Request(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["flavor"]
-    ) -> MetaOapg.properties.flavor:
+    def get_item_oapg(self, name: typing_extensions.Literal["flavor"]) -> MetaOapg.properties.flavor:
         ...
 
     @typing.overload
@@ -170,9 +164,7 @@ class CreateModelBundleV2Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["schema_location"]
-    ) -> MetaOapg.properties.schema_location:
+    def get_item_oapg(self, name: typing_extensions.Literal["schema_location"]) -> MetaOapg.properties.schema_location:
         ...
 
     @typing.overload

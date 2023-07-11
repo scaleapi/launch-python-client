@@ -86,9 +86,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["inference_framework"]
-    ) -> "LLMInferenceFramework":
+    def __getitem__(self, name: typing_extensions.Literal["inference_framework"]) -> "LLMInferenceFramework":
         ...
 
     @typing.overload
@@ -98,9 +96,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_name"]
-    ) -> MetaOapg.properties.model_name:
+    def __getitem__(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name:
         ...
 
     @typing.overload
@@ -108,9 +104,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["num_shards"]
-    ) -> MetaOapg.properties.num_shards:
+    def __getitem__(self, name: typing_extensions.Literal["num_shards"]) -> MetaOapg.properties.num_shards:
         ...
 
     @typing.overload
@@ -149,9 +143,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["inference_framework"]
-    ) -> "LLMInferenceFramework":
+    def get_item_oapg(self, name: typing_extensions.Literal["inference_framework"]) -> "LLMInferenceFramework":
         ...
 
     @typing.overload
@@ -161,9 +153,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["model_name"]
-    ) -> MetaOapg.properties.model_name:
+    def get_item_oapg(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name:
         ...
 
     @typing.overload
@@ -171,9 +161,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["num_shards"]
-    ) -> MetaOapg.properties.num_shards:
+    def get_item_oapg(self, name: typing_extensions.Literal["num_shards"]) -> MetaOapg.properties.num_shards:
         ...
 
     @typing.overload
@@ -181,9 +169,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["spec"]
-    ) -> "GetModelEndpointV1Response":
+    def get_item_oapg(self, name: typing_extensions.Literal["spec"]) -> "GetModelEndpointV1Response":
         ...
 
     @typing.overload

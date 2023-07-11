@@ -75,17 +75,13 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
                     additional_properties = schemas.StrSchema
                 def __getitem__(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
                 def get_item_oapg(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
                 def __new__(
@@ -140,13 +136,9 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
     command: MetaOapg.properties.command
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["command"]
-    ) -> MetaOapg.properties.command: ...
+    def __getitem__(self, name: typing_extensions.Literal["command"]) -> MetaOapg.properties.command: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at: ...
+    def __getitem__(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["env"]) -> MetaOapg.properties.env: ...
     @typing.overload
@@ -156,31 +148,21 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
         self, name: typing_extensions.Literal["image_repository"]
     ) -> MetaOapg.properties.image_repository: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["image_tag"]
-    ) -> MetaOapg.properties.image_tag: ...
+    def __getitem__(self, name: typing_extensions.Literal["image_tag"]) -> MetaOapg.properties.image_tag: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["cpus"]) -> MetaOapg.properties.cpus: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["gpu_type"]
-    ) -> MetaOapg.properties.gpu_type: ...
+    def __getitem__(self, name: typing_extensions.Literal["gpu_type"]) -> MetaOapg.properties.gpu_type: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["gpus"]) -> MetaOapg.properties.gpus: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["memory"]
-    ) -> MetaOapg.properties.memory: ...
+    def __getitem__(self, name: typing_extensions.Literal["memory"]) -> MetaOapg.properties.memory: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["mount_location"]
-    ) -> MetaOapg.properties.mount_location: ...
+    def __getitem__(self, name: typing_extensions.Literal["mount_location"]) -> MetaOapg.properties.mount_location: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["storage"]
-    ) -> MetaOapg.properties.storage: ...
+    def __getitem__(self, name: typing_extensions.Literal["storage"]) -> MetaOapg.properties.storage: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -207,13 +189,9 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["command"]
-    ) -> MetaOapg.properties.command: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["command"]) -> MetaOapg.properties.command: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at: ...
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["env"]) -> MetaOapg.properties.env: ...
     @typing.overload
@@ -223,13 +201,9 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
         self, name: typing_extensions.Literal["image_repository"]
     ) -> MetaOapg.properties.image_repository: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["image_tag"]
-    ) -> MetaOapg.properties.image_tag: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["image_tag"]) -> MetaOapg.properties.image_tag: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["name"]
-    ) -> MetaOapg.properties.name: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["cpus"]
@@ -255,9 +229,7 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
         self, name: typing_extensions.Literal["storage"]
     ) -> typing.Union[MetaOapg.properties.storage, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -319,13 +291,9 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
         ],
         cpus: typing.Union[MetaOapg.properties.cpus, str, schemas.Unset] = schemas.unset,
         gpu_type: typing.Union[MetaOapg.properties.gpu_type, str, schemas.Unset] = schemas.unset,
-        gpus: typing.Union[
-            MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset
-        ] = schemas.unset,
+        gpus: typing.Union[MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         memory: typing.Union[MetaOapg.properties.memory, str, schemas.Unset] = schemas.unset,
-        mount_location: typing.Union[
-            MetaOapg.properties.mount_location, str, schemas.Unset
-        ] = schemas.unset,
+        mount_location: typing.Union[MetaOapg.properties.mount_location, str, schemas.Unset] = schemas.unset,
         storage: typing.Union[MetaOapg.properties.storage, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[

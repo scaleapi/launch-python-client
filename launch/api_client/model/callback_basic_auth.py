@@ -64,15 +64,11 @@ class CallbackBasicAuth(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["password"]
-    ) -> MetaOapg.properties.password:
+    def __getitem__(self, name: typing_extensions.Literal["password"]) -> MetaOapg.properties.password:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["username"]
-    ) -> MetaOapg.properties.username:
+    def __getitem__(self, name: typing_extensions.Literal["username"]) -> MetaOapg.properties.username:
         ...
 
     @typing.overload
@@ -98,15 +94,11 @@ class CallbackBasicAuth(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["password"]
-    ) -> MetaOapg.properties.password:
+    def get_item_oapg(self, name: typing_extensions.Literal["password"]) -> MetaOapg.properties.password:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["username"]
-    ) -> MetaOapg.properties.username:
+    def get_item_oapg(self, name: typing_extensions.Literal["username"]) -> MetaOapg.properties.username:
         ...
 
     @typing.overload

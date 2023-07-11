@@ -165,9 +165,7 @@ class ModelBundleV2Response(schemas.DictSchema):
     id: MetaOapg.properties.id
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at:
+    def __getitem__(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at:
         ...
 
     @typing.overload
@@ -179,9 +177,7 @@ class ModelBundleV2Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["metadata"]
-    ) -> MetaOapg.properties.metadata:
+    def __getitem__(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata:
         ...
 
     @typing.overload
@@ -195,9 +191,7 @@ class ModelBundleV2Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["schema_location"]
-    ) -> MetaOapg.properties.schema_location:
+    def __getitem__(self, name: typing_extensions.Literal["schema_location"]) -> MetaOapg.properties.schema_location:
         ...
 
     @typing.overload
@@ -223,15 +217,11 @@ class ModelBundleV2Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at:
+    def get_item_oapg(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["flavor"]
-    ) -> MetaOapg.properties.flavor:
+    def get_item_oapg(self, name: typing_extensions.Literal["flavor"]) -> MetaOapg.properties.flavor:
         ...
 
     @typing.overload
@@ -239,9 +229,7 @@ class ModelBundleV2Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["metadata"]
-    ) -> MetaOapg.properties.metadata:
+    def get_item_oapg(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata:
         ...
 
     @typing.overload
@@ -329,9 +317,7 @@ class ModelBundleV2Response(schemas.DictSchema):
             MetaOapg.properties.id,
             str,
         ],
-        schema_location: typing.Union[
-            MetaOapg.properties.schema_location, str, schemas.Unset
-        ] = schemas.unset,
+        schema_location: typing.Union[MetaOapg.properties.schema_location, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

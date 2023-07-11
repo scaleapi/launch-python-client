@@ -58,9 +58,7 @@ class PytorchFramework(schemas.DictSchema):
     framework_type: MetaOapg.properties.framework_type
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["framework_type"]
-    ) -> MetaOapg.properties.framework_type:
+    def __getitem__(self, name: typing_extensions.Literal["framework_type"]) -> MetaOapg.properties.framework_type:
         ...
 
     @typing.overload
@@ -87,9 +85,7 @@ class PytorchFramework(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["framework_type"]
-    ) -> MetaOapg.properties.framework_type:
+    def get_item_oapg(self, name: typing_extensions.Literal["framework_type"]) -> MetaOapg.properties.framework_type:
         ...
 
     @typing.overload

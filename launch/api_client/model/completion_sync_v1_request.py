@@ -84,21 +84,15 @@ class CompletionSyncV1Request(schemas.DictSchema):
     prompts: MetaOapg.properties.prompts
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["max_new_tokens"]
-    ) -> MetaOapg.properties.max_new_tokens:
+    def __getitem__(self, name: typing_extensions.Literal["max_new_tokens"]) -> MetaOapg.properties.max_new_tokens:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["prompts"]
-    ) -> MetaOapg.properties.prompts:
+    def __getitem__(self, name: typing_extensions.Literal["prompts"]) -> MetaOapg.properties.prompts:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["temperature"]
-    ) -> MetaOapg.properties.temperature:
+    def __getitem__(self, name: typing_extensions.Literal["temperature"]) -> MetaOapg.properties.temperature:
         ...
 
     @typing.overload
@@ -120,21 +114,15 @@ class CompletionSyncV1Request(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["max_new_tokens"]
-    ) -> MetaOapg.properties.max_new_tokens:
+    def get_item_oapg(self, name: typing_extensions.Literal["max_new_tokens"]) -> MetaOapg.properties.max_new_tokens:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["prompts"]
-    ) -> MetaOapg.properties.prompts:
+    def get_item_oapg(self, name: typing_extensions.Literal["prompts"]) -> MetaOapg.properties.prompts:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["temperature"]
-    ) -> MetaOapg.properties.temperature:
+    def get_item_oapg(self, name: typing_extensions.Literal["temperature"]) -> MetaOapg.properties.temperature:
         ...
 
     @typing.overload

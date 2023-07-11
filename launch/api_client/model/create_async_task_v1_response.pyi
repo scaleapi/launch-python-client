@@ -41,36 +41,26 @@ class CreateAsyncTaskV1Response(schemas.DictSchema):
     task_id: MetaOapg.properties.task_id
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["task_id"]
-    ) -> MetaOapg.properties.task_id: ...
+    def __getitem__(self, name: typing_extensions.Literal["task_id"]) -> MetaOapg.properties.task_id: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "task_id",
-            ],
+            typing_extensions.Literal["task_id",],
             str,
         ],
     ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["task_id"]
-    ) -> MetaOapg.properties.task_id: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["task_id"]) -> MetaOapg.properties.task_id: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "task_id",
-            ],
+            typing_extensions.Literal["task_id",],
             str,
         ],
     ):

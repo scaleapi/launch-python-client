@@ -28,12 +28,6 @@ from launch.api_client.model.clone_model_bundle_v2_request import (
 from launch.api_client.model.cloudpickle_artifact_flavor import (
     CloudpickleArtifactFlavor,
 )
-from launch.api_client.model.completion_stream_v1_request import (
-    CompletionStreamV1Request,
-)
-from launch.api_client.model.completion_stream_v1_response import (
-    CompletionStreamV1Response,
-)
 from launch.api_client.model.completion_sync_v1_request import (
     CompletionSyncV1Request,
 )
@@ -2838,7 +2832,9 @@ class LaunchClient:
         ]
         return async_endpoints + sync_endpoints + streaming_endpoints
 
-    def get_llm_model_endpoint(self, endpoint_name: str) -> Optional[Union[AsyncEndpoint, SyncEndpoint, StreamingEndpoint]]:
+    def get_llm_model_endpoint(
+        self, endpoint_name: str
+    ) -> Optional[Union[AsyncEndpoint, SyncEndpoint, StreamingEndpoint]]:
         """
         Gets a model endpoint associated with a name that the user has access to.
 
