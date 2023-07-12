@@ -95,8 +95,9 @@ from launch.constants import (
     BATCH_TASK_INPUT_SIGNED_URL_PATH,
     ENDPOINT_PATH,
     MODEL_BUNDLE_SIGNED_URL_PATH,
-    SCALE_LAUNCH_ENDPOINT,
-    SCALE_LAUNCH_V1_ENDPOINT,
+    DEFAULT_SCALE_ENDPOINT,
+    HOSTED_INFERENCE_PATH,
+    LAUNCH_PATH,
 )
 from launch.docker_image_batch_job_bundle import (
     CreateDockerImageBatchJobBundleResponse,
@@ -228,15 +229,15 @@ class LaunchClient:
             endpoint: The Scale Launch Endpoint (this should not need to be changed)
             self_hosted: True iff you are connecting to a self-hosted Scale Launch
         """
-        self.connection = Connection(api_key, endpoint or SCALE_LAUNCH_ENDPOINT)
-        self.endpoint = endpoint or SCALE_LAUNCH_V1_ENDPOINT
+        self.endpoint = endpoint or DEFAULT_SCALE_ENDPOINT
+        self.connection = Connection(api_key, self.endpoint + HOSTED_INFERENCE_PATH)
         self.self_hosted = self_hosted
         self.upload_bundle_fn: Optional[Callable[[str, str], None]] = None
         self.upload_batch_csv_fn: Optional[Callable[[str, str], None]] = None
         self.bundle_location_fn: Optional[Callable[[], str]] = None
         self.batch_csv_location_fn: Optional[Callable[[], str]] = None
         self.configuration = Configuration(
-            host=endpoint or SCALE_LAUNCH_V1_ENDPOINT,
+            host=self.endpoint + LAUNCH_PATH,
             discard_unknown_keys=True,
             username=api_key,
             password="",
