@@ -93,11 +93,11 @@ from launch.api_client.model.zip_artifact_flavor import ZipArtifactFlavor
 from launch.connection import Connection
 from launch.constants import (
     BATCH_TASK_INPUT_SIGNED_URL_PATH,
-    ENDPOINT_PATH,
-    MODEL_BUNDLE_SIGNED_URL_PATH,
     DEFAULT_SCALE_ENDPOINT,
+    ENDPOINT_PATH,
     HOSTED_INFERENCE_PATH,
     LAUNCH_PATH,
+    MODEL_BUNDLE_SIGNED_URL_PATH,
 )
 from launch.docker_image_batch_job_bundle import (
     CreateDockerImageBatchJobBundleResponse,
