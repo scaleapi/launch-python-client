@@ -1958,6 +1958,7 @@ class LaunchClient:
             url=f"{self.configuration.host}/v1/streaming-tasks?model_endpoint_id={endpoint_id}",
             json=payload,
             auth=(self.configuration.username, self.configuration.password),
+            stream=True,
         )
         return response
 
@@ -2934,6 +2935,7 @@ class LaunchClient:
             url=f"{self.configuration.host}/v1/llm/completions-stream?model_endpoint_name={endpoint_name}",
             json=request,
             auth=(self.configuration.username, self.configuration.password),
+            stream=True,
         )
         sse_client = sseclient.SSEClient(response)
         events = sse_client.events()
