@@ -5,11 +5,22 @@ import os
 import shutil
 import tempfile
 from io import StringIO
-from typing import Any, Callable, Dict, List, Optional, Type, TypeVar, Union
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Iterable,
+    List,
+    Optional,
+    Type,
+    TypeVar,
+    Union,
+)
 from zipfile import ZipFile
 
 import cloudpickle
 import requests
+import sseclient
 import yaml
 from deprecation import deprecated
 from frozendict import frozendict
@@ -27,6 +38,9 @@ from launch.api_client.model.clone_model_bundle_v2_request import (
 )
 from launch.api_client.model.cloudpickle_artifact_flavor import (
     CloudpickleArtifactFlavor,
+)
+from launch.api_client.model.completion_stream_v1_response import (
+    CompletionStreamV1Response,
 )
 from launch.api_client.model.completion_sync_v1_request import (
     CompletionSyncV1Request,
@@ -2892,6 +2906,39 @@ class LaunchClient:
             )
             resp = json.loads(response.response.data)
         return resp
+
+    def completions_stream(
+        self,
+        endpoint_name: str,
+        prompt: str,
+        max_new_tokens: int,
+        temperature: float,
+    ) -> Iterable[CompletionStreamV1Response]:
+        """
+        Run prompt completion on an LLM endpoint in streaming fashion. Will fail if endpoint does not support streaming.
+
+        Parameters:
+            endpoint_name: The name of the LLM endpoint to make the request to
+
+            prompt: The prompt to send to the endpoint
+
+            max_new_tokens: The maximum number of tokens to generate for each prompt
+
+            temperature: The temperature to use for sampling
+
+        Returns:
+            Iterable responses for prompt completion
+        """
+        request = {"max_new_tokens": max_new_tokens, "prompt": prompt, "temperature": temperature}
+        response = requests.post(
+            url=f"{self.configuration.host}/v1/llm/completions-stream?model_endpoint_name={endpoint_name}",
+            json=request,
+            auth=(self.configuration.username, self.configuration.password),
+        )
+        sse_client = sseclient.SSEClient(response)
+        events = sse_client.events()
+        for event in events:
+            yield json.loads(event.data)
 
 
 def _zip_directory(zipf: ZipFile, path: str) -> None:
