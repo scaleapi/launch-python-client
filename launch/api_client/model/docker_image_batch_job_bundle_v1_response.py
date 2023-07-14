@@ -120,6 +120,7 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
             gpus = schemas.IntSchema
             memory = schemas.StrSchema
             mount_location = schemas.StrSchema
+            public = schemas.BoolSchema
             storage = schemas.StrSchema
             __annotations__ = {
                 "command": command,
@@ -134,6 +135,7 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
                 "gpus": gpus,
                 "memory": memory,
                 "mount_location": mount_location,
+                "public": public,
                 "storage": storage,
             }
 
@@ -194,6 +196,10 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["public"]) -> MetaOapg.properties.public:
+        ...
+
+    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["storage"]) -> MetaOapg.properties.storage:
         ...
 
@@ -217,6 +223,7 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
                 "gpus",
                 "memory",
                 "mount_location",
+                "public",
                 "storage",
             ],
             str,
@@ -287,6 +294,12 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["public"]
+    ) -> typing.Union[MetaOapg.properties.public, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["storage"]
     ) -> typing.Union[MetaOapg.properties.storage, schemas.Unset]:
         ...
@@ -311,6 +324,7 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
                 "gpus",
                 "memory",
                 "mount_location",
+                "public",
                 "storage",
             ],
             str,
@@ -360,6 +374,7 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
         gpus: typing.Union[MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         memory: typing.Union[MetaOapg.properties.memory, str, schemas.Unset] = schemas.unset,
         mount_location: typing.Union[MetaOapg.properties.mount_location, str, schemas.Unset] = schemas.unset,
+        public: typing.Union[MetaOapg.properties.public, bool, schemas.Unset] = schemas.unset,
         storage: typing.Union[MetaOapg.properties.storage, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
@@ -394,6 +409,7 @@ class DockerImageBatchJobBundleV1Response(schemas.DictSchema):
             gpus=gpus,
             memory=memory,
             mount_location=mount_location,
+            public=public,
             storage=storage,
             _configuration=_configuration,
             **kwargs,

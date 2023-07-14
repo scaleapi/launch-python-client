@@ -54,6 +54,18 @@ from launch.api_client.paths.v1_llm_completions_stream.post import (
 from launch.api_client.paths.v1_llm_completions_sync.post import (
     CreateCompletionSyncTaskV1LlmCompletionsSyncPost,
 )
+from launch.api_client.paths.v1_llm_fine_tunes.get import (
+    ListFineTuneJobsV1LlmFineTunesGet,
+)
+from launch.api_client.paths.v1_llm_fine_tunes.post import (
+    CreateFineTuneJobV1LlmFineTunesPost,
+)
+from launch.api_client.paths.v1_llm_fine_tunes_fine_tune_id.get import (
+    GetFineTuneJobV1LlmFineTunesFineTuneIdGet,
+)
+from launch.api_client.paths.v1_llm_fine_tunes_fine_tune_id_cancel.put import (
+    CancelFineTuneJobV1LlmFineTunesFineTuneIdCancelPut,
+)
 from launch.api_client.paths.v1_llm_model_endpoints.get import (
     ListModelEndpointsV1LlmModelEndpointsGet,
 )
@@ -123,6 +135,7 @@ from launch.api_client.paths.v2_model_bundles_model_bundle_id.get import (
 
 
 class DefaultApi(
+    CancelFineTuneJobV1LlmFineTunesFineTuneIdCancelPut,
     CloneModelBundleWithChangesV1ModelBundlesCloneWithChangesPost,
     CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost,
     CreateAsyncInferenceTaskV1AsyncTasksPost,
@@ -131,6 +144,7 @@ class DefaultApi(
     CreateCompletionSyncTaskV1LlmCompletionsSyncPost,
     CreateDockerImageBatchJobBundleV1DockerImageBatchJobBundlesPost,
     CreateDockerImageBatchJobV1DockerImageBatchJobsPost,
+    CreateFineTuneJobV1LlmFineTunesPost,
     CreateModelBundleV1ModelBundlesPost,
     CreateModelBundleV2ModelBundlesPost,
     CreateModelEndpointV1LlmModelEndpointsPost,
@@ -142,6 +156,7 @@ class DefaultApi(
     GetBatchJobV1BatchJobsBatchJobIdGet,
     GetDockerImageBatchJobModelBundleV1DockerImageBatchJobBundlesDockerImageBatchJobBundleIdGet,
     GetDockerImageBatchJobV1DockerImageBatchJobsBatchJobIdGet,
+    GetFineTuneJobV1LlmFineTunesFineTuneIdGet,
     GetLatestDockerImageBatchJobBundleV1DockerImageBatchJobBundlesLatestGet,
     GetLatestModelBundleV1ModelBundlesLatestGet,
     GetLatestModelBundleV2ModelBundlesLatestGet,
@@ -155,6 +170,7 @@ class DefaultApi(
     HealthcheckHealthzGet,
     HealthcheckReadyzGet,
     ListDockerImageBatchJobModelBundlesV1DockerImageBatchJobBundlesGet,
+    ListFineTuneJobsV1LlmFineTunesGet,
     ListModelBundlesV1ModelBundlesGet,
     ListModelBundlesV2ModelBundlesGet,
     ListModelEndpointsV1LlmModelEndpointsGet,
