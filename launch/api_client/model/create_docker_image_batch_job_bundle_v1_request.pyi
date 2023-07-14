@@ -102,6 +102,7 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
                         **kwargs,
                     )
             mount_location = schemas.StrSchema
+            public = schemas.BoolSchema
 
             class resource_requests(
                 schemas.ComposedSchema,
@@ -171,6 +172,7 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
                 "name": name,
                 "env": env,
                 "mount_location": mount_location,
+                "public": public,
                 "resource_requests": resource_requests,
             }
     image_repository: MetaOapg.properties.image_repository
@@ -193,6 +195,8 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["mount_location"]) -> MetaOapg.properties.mount_location: ...
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["public"]) -> MetaOapg.properties.public: ...
+    @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["resource_requests"]
     ) -> MetaOapg.properties.resource_requests: ...
@@ -208,6 +212,7 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
                 "name",
                 "env",
                 "mount_location",
+                "public",
                 "resource_requests",
             ],
             str,
@@ -235,6 +240,10 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
     ) -> typing.Union[MetaOapg.properties.mount_location, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["public"]
+    ) -> typing.Union[MetaOapg.properties.public, schemas.Unset]: ...
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["resource_requests"]
     ) -> typing.Union[MetaOapg.properties.resource_requests, schemas.Unset]: ...
     @typing.overload
@@ -249,6 +258,7 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
                 "name",
                 "env",
                 "mount_location",
+                "public",
                 "resource_requests",
             ],
             str,
@@ -280,6 +290,7 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
         ],
         env: typing.Union[MetaOapg.properties.env, dict, frozendict.frozendict, schemas.Unset] = schemas.unset,
         mount_location: typing.Union[MetaOapg.properties.mount_location, str, schemas.Unset] = schemas.unset,
+        public: typing.Union[MetaOapg.properties.public, bool, schemas.Unset] = schemas.unset,
         resource_requests: typing.Union[
             MetaOapg.properties.resource_requests,
             dict,
@@ -327,6 +338,7 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
             command=command,
             env=env,
             mount_location=mount_location,
+            public=public,
             resource_requests=resource_requests,
             _configuration=_configuration,
             **kwargs,
