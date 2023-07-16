@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -51,9 +52,7 @@ class CompletionStreamOutput(schemas.DictSchema):
     text: MetaOapg.properties.text
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["finished"]
-    ) -> MetaOapg.properties.finished:
+    def __getitem__(self, name: typing_extensions.Literal["finished"]) -> MetaOapg.properties.finished:
         ...
 
     @typing.overload
@@ -92,9 +91,7 @@ class CompletionStreamOutput(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["finished"]
-    ) -> MetaOapg.properties.finished:
+    def get_item_oapg(self, name: typing_extensions.Literal["finished"]) -> MetaOapg.properties.finished:
         ...
 
     @typing.overload

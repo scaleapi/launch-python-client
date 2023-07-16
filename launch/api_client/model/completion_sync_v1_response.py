@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -46,9 +47,7 @@ class CompletionSyncV1Response(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    _arg: typing.Union[
-                        typing.Tuple["CompletionOutput"], typing.List["CompletionOutput"]
-                    ],
+                    _arg: typing.Union[typing.Tuple["CompletionOutput"], typing.List["CompletionOutput"]],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "outputs":
                     return super().__new__(
@@ -75,9 +74,7 @@ class CompletionSyncV1Response(schemas.DictSchema):
     status: "TaskStatus"
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["outputs"]
-    ) -> MetaOapg.properties.outputs:
+    def __getitem__(self, name: typing_extensions.Literal["outputs"]) -> MetaOapg.properties.outputs:
         ...
 
     @typing.overload
@@ -85,9 +82,7 @@ class CompletionSyncV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["traceback"]
-    ) -> MetaOapg.properties.traceback:
+    def __getitem__(self, name: typing_extensions.Literal["traceback"]) -> MetaOapg.properties.traceback:
         ...
 
     @typing.overload
@@ -109,9 +104,7 @@ class CompletionSyncV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["outputs"]
-    ) -> MetaOapg.properties.outputs:
+    def get_item_oapg(self, name: typing_extensions.Literal["outputs"]) -> MetaOapg.properties.outputs:
         ...
 
     @typing.overload
