@@ -2981,12 +2981,14 @@ class LaunchClient:
         if hyperparameters is None:
             hyperparameters = {}
         create_fine_tune_job_request = CreateFineTuneJobRequest(
-            training_file=training_file,
-            validation_file=validation_file,
-            suffix=suffix,
-            model=model,
-            fine_tuning_method=fine_tuning_method,
-            hyperparameters=hyperparameters,
+            **dict_not_none(
+                model=model,
+                training_file=training_file,
+                validation_file=validation_file,
+                fine_tuning_method=fine_tuning_method,
+                hyperparameters=hyperparameters,
+                suffix=suffix,
+            )
         )
 
         with ApiClient(self.configuration) as api_client:
