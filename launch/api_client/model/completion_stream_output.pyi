@@ -49,7 +49,9 @@ class CompletionStreamOutput(schemas.DictSchema):
     text: MetaOapg.properties.text
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["finished"]) -> MetaOapg.properties.finished: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["finished"]
+    ) -> MetaOapg.properties.finished: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["text"]) -> MetaOapg.properties.text: ...
     @typing.overload
@@ -77,9 +79,13 @@ class CompletionStreamOutput(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["finished"]) -> MetaOapg.properties.finished: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["finished"]
+    ) -> MetaOapg.properties.finished: ...
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["text"]) -> MetaOapg.properties.text: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["text"]
+    ) -> MetaOapg.properties.text: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["num_completion_tokens"]
@@ -89,7 +95,9 @@ class CompletionStreamOutput(schemas.DictSchema):
         self, name: typing_extensions.Literal["num_prompt_tokens"]
     ) -> typing.Union[MetaOapg.properties.num_prompt_tokens, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -73,7 +72,10 @@ class CompletionSyncV1Request(schemas.DictSchema):
                 def __getitem__(self, i: int) -> MetaOapg.items:
                     return super().__getitem__(i)
 
-            temperature = schemas.NumberSchema
+            class temperature(schemas.NumberSchema):
+                class MetaOapg:
+                    inclusive_maximum = 1.0
+
             __annotations__ = {
                 "max_new_tokens": max_new_tokens,
                 "prompts": prompts,
@@ -85,15 +87,21 @@ class CompletionSyncV1Request(schemas.DictSchema):
     prompts: MetaOapg.properties.prompts
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["max_new_tokens"]) -> MetaOapg.properties.max_new_tokens:
+    def __getitem__(
+        self, name: typing_extensions.Literal["max_new_tokens"]
+    ) -> MetaOapg.properties.max_new_tokens:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["prompts"]) -> MetaOapg.properties.prompts:
+    def __getitem__(
+        self, name: typing_extensions.Literal["prompts"]
+    ) -> MetaOapg.properties.prompts:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["temperature"]) -> MetaOapg.properties.temperature:
+    def __getitem__(
+        self, name: typing_extensions.Literal["temperature"]
+    ) -> MetaOapg.properties.temperature:
         ...
 
     @typing.overload
@@ -115,15 +123,21 @@ class CompletionSyncV1Request(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["max_new_tokens"]) -> MetaOapg.properties.max_new_tokens:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["max_new_tokens"]
+    ) -> MetaOapg.properties.max_new_tokens:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["prompts"]) -> MetaOapg.properties.prompts:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["prompts"]
+    ) -> MetaOapg.properties.prompts:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["temperature"]) -> MetaOapg.properties.temperature:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["temperature"]
+    ) -> MetaOapg.properties.temperature:
         ...
 
     @typing.overload

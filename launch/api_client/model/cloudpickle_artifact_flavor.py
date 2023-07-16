@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -176,27 +175,39 @@ class CloudpickleArtifactFlavor(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["framework"]) -> MetaOapg.properties.framework:
+    def __getitem__(
+        self, name: typing_extensions.Literal["framework"]
+    ) -> MetaOapg.properties.framework:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["load_model_fn"]) -> MetaOapg.properties.load_model_fn:
+    def __getitem__(
+        self, name: typing_extensions.Literal["load_model_fn"]
+    ) -> MetaOapg.properties.load_model_fn:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["load_predict_fn"]) -> MetaOapg.properties.load_predict_fn:
+    def __getitem__(
+        self, name: typing_extensions.Literal["load_predict_fn"]
+    ) -> MetaOapg.properties.load_predict_fn:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["location"]) -> MetaOapg.properties.location:
+    def __getitem__(
+        self, name: typing_extensions.Literal["location"]
+    ) -> MetaOapg.properties.location:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["requirements"]) -> MetaOapg.properties.requirements:
+    def __getitem__(
+        self, name: typing_extensions.Literal["requirements"]
+    ) -> MetaOapg.properties.requirements:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["app_config"]) -> MetaOapg.properties.app_config:
+    def __getitem__(
+        self, name: typing_extensions.Literal["app_config"]
+    ) -> MetaOapg.properties.app_config:
         ...
 
     @typing.overload
@@ -222,27 +233,39 @@ class CloudpickleArtifactFlavor(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["flavor"]) -> MetaOapg.properties.flavor:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["flavor"]
+    ) -> MetaOapg.properties.flavor:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["framework"]) -> MetaOapg.properties.framework:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["framework"]
+    ) -> MetaOapg.properties.framework:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["load_model_fn"]) -> MetaOapg.properties.load_model_fn:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["load_model_fn"]
+    ) -> MetaOapg.properties.load_model_fn:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["load_predict_fn"]) -> MetaOapg.properties.load_predict_fn:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["load_predict_fn"]
+    ) -> MetaOapg.properties.load_predict_fn:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["location"]) -> MetaOapg.properties.location:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["location"]
+    ) -> MetaOapg.properties.location:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["requirements"]) -> MetaOapg.properties.requirements:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["requirements"]
+    ) -> MetaOapg.properties.requirements:
         ...
 
     @typing.overload

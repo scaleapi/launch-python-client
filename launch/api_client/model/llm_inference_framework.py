@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -35,8 +34,13 @@ class LLMInferenceFramework(schemas.EnumBase, schemas.StrSchema):
     class MetaOapg:
         enum_value_to_name = {
             "deepspeed": "DEEPSPEED",
+            "text_generation_inference": "TEXT_GENERATION_INFERENCE",
         }
 
     @schemas.classproperty
     def DEEPSPEED(cls):
         return cls("deepspeed")
+
+    @schemas.classproperty
+    def TEXT_GENERATION_INFERENCE(cls):
+        return cls("text_generation_inference")

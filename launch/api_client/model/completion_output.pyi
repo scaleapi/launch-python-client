@@ -30,21 +30,19 @@ class CompletionOutput(schemas.DictSchema):
 
     class MetaOapg:
         required = {
-            "num_prompt_tokens",
             "num_completion_tokens",
             "text",
         }
 
         class properties:
             num_completion_tokens = schemas.IntSchema
-            num_prompt_tokens = schemas.IntSchema
             text = schemas.StrSchema
+            num_prompt_tokens = schemas.IntSchema
             __annotations__ = {
                 "num_completion_tokens": num_completion_tokens,
-                "num_prompt_tokens": num_prompt_tokens,
                 "text": text,
+                "num_prompt_tokens": num_prompt_tokens,
             }
-    num_prompt_tokens: MetaOapg.properties.num_prompt_tokens
     num_completion_tokens: MetaOapg.properties.num_completion_tokens
     text: MetaOapg.properties.text
 
@@ -53,11 +51,11 @@ class CompletionOutput(schemas.DictSchema):
         self, name: typing_extensions.Literal["num_completion_tokens"]
     ) -> MetaOapg.properties.num_completion_tokens: ...
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["text"]) -> MetaOapg.properties.text: ...
+    @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["num_prompt_tokens"]
     ) -> MetaOapg.properties.num_prompt_tokens: ...
-    @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["text"]) -> MetaOapg.properties.text: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -65,8 +63,8 @@ class CompletionOutput(schemas.DictSchema):
         name: typing.Union[
             typing_extensions.Literal[
                 "num_completion_tokens",
-                "num_prompt_tokens",
                 "text",
+                "num_prompt_tokens",
             ],
             str,
         ],
@@ -79,19 +77,23 @@ class CompletionOutput(schemas.DictSchema):
     ) -> MetaOapg.properties.num_completion_tokens: ...
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["text"]
+    ) -> MetaOapg.properties.text: ...
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["num_prompt_tokens"]
-    ) -> MetaOapg.properties.num_prompt_tokens: ...
+    ) -> typing.Union[MetaOapg.properties.num_prompt_tokens, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["text"]) -> MetaOapg.properties.text: ...
-    @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
             typing_extensions.Literal[
                 "num_completion_tokens",
-                "num_prompt_tokens",
                 "text",
+                "num_prompt_tokens",
             ],
             str,
         ],
@@ -103,11 +105,6 @@ class CompletionOutput(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        num_prompt_tokens: typing.Union[
-            MetaOapg.properties.num_prompt_tokens,
-            decimal.Decimal,
-            int,
-        ],
         num_completion_tokens: typing.Union[
             MetaOapg.properties.num_completion_tokens,
             decimal.Decimal,
@@ -117,6 +114,9 @@ class CompletionOutput(schemas.DictSchema):
             MetaOapg.properties.text,
             str,
         ],
+        num_prompt_tokens: typing.Union[
+            MetaOapg.properties.num_prompt_tokens, decimal.Decimal, int, schemas.Unset
+        ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -138,9 +138,9 @@ class CompletionOutput(schemas.DictSchema):
         return super().__new__(
             cls,
             *_args,
-            num_prompt_tokens=num_prompt_tokens,
             num_completion_tokens=num_completion_tokens,
             text=text,
+            num_prompt_tokens=num_prompt_tokens,
             _configuration=_configuration,
             **kwargs,
         )

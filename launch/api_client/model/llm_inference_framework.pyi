@@ -33,3 +33,6 @@ class LLMInferenceFramework(schemas.EnumBase, schemas.StrSchema):
     @schemas.classproperty
     def DEEPSPEED(cls):
         return cls("deepspeed")
+    @schemas.classproperty
+    def TEXT_GENERATION_INFERENCE(cls):
+        return cls("text_generation_inference")
