@@ -2953,32 +2953,38 @@ class LaunchClient:
 
     def create_fine_tune_job(
         self,
+        model: str,
         training_file: str,
-        validation_file: str,
-        model_name: str,
-        base_model: str,
-        fine_tuning_method: str,
-        hyperparameters: Dict[str, str],
+        validation_file: Optional[str] = None,
+        fine_tuning_method: Optional[str] = None,
+        hyperparameters: Optional[Dict[str, str]] = None,
+        suffix: str = None,
     ) -> CreateFineTuneJobResponse:
         """
         Create a fine-tuning job
 
         Parameters:
-            training_file: Path to file of training dataset
-            validation_file: Path to file of validation dataset
-            model_name: Name of the fine-tuned model
-            base_model: Base model to train from
-            fine_tuning_method: Fine-tuning method
-            hyperparameters: Hyperparameters
+            model: Identifier of base model to train from.
+            training_file: Path to file of training dataset.
+                Dataset must be a csv with columns 'prompt' and 'response'.
+            validation_file: Path to file of validation dataset.
+                Has the same format as training_file. If not provided, we will generate a split
+                from the training dataset.
+            fine_tuning_method: Fine-tuning method. Currently unused,
+                but when different techniques are implemented we will expose this field.
+            hyperparameters: Hyperparameters to pass in to training job.
+            suffix: Optional user-provided identifier suffix for the fine-tuned model.
 
         Returns:
             CreateFineTuneJobResponse: ID of the created fine-tuning job
         """
+        if hyperparameters is None:
+            hyperparameters = {}
         create_fine_tune_job_request = CreateFineTuneJobRequest(
             training_file=training_file,
             validation_file=validation_file,
-            model_name=model_name,
-            base_model=base_model,
+            suffix=suffix,
+            model=model,
             fine_tuning_method=fine_tuning_method,
             hyperparameters=hyperparameters,
         )

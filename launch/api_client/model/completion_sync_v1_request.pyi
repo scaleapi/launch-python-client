@@ -68,7 +68,9 @@ class CompletionSyncV1Request(schemas.DictSchema):
                     )
                 def __getitem__(self, i: int) -> MetaOapg.items:
                     return super().__getitem__(i)
-            temperature = schemas.NumberSchema
+
+            class temperature(schemas.NumberSchema):
+                pass
             __annotations__ = {
                 "max_new_tokens": max_new_tokens,
                 "prompts": prompts,

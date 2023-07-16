@@ -40,7 +40,9 @@ class CompletionStreamV1Request(schemas.DictSchema):
         class properties:
             max_new_tokens = schemas.IntSchema
             prompt = schemas.StrSchema
-            temperature = schemas.NumberSchema
+
+            class temperature(schemas.NumberSchema):
+                pass
             __annotations__ = {
                 "max_new_tokens": max_new_tokens,
                 "prompt": prompt,

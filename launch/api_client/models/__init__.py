@@ -183,6 +183,7 @@ from launch.api_client.model.model_endpoint_resource_state import (
 from launch.api_client.model.model_endpoint_status import ModelEndpointStatus
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
 from launch.api_client.model.pytorch_framework import PytorchFramework
+from launch.api_client.model.quantization import Quantization
 from launch.api_client.model.request_schema import RequestSchema
 from launch.api_client.model.response_schema import ResponseSchema
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor

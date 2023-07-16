@@ -31,17 +31,11 @@ class CreateFineTuneJobRequest(schemas.DictSchema):
     class MetaOapg:
         required = {
             "training_file",
-            "base_model",
-            "fine_tuning_method",
-            "model_name",
-            "validation_file",
             "hyperparameters",
+            "model",
         }
 
         class properties:
-            base_model = schemas.StrSchema
-            fine_tuning_method = schemas.StrSchema
-
             class hyperparameters(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
@@ -74,38 +68,31 @@ class CreateFineTuneJobRequest(schemas.DictSchema):
                         _configuration=_configuration,
                         **kwargs,
                     )
-            model_name = schemas.StrSchema
+            model = schemas.StrSchema
             training_file = schemas.StrSchema
+            suffix = schemas.StrSchema
             validation_file = schemas.StrSchema
             __annotations__ = {
-                "base_model": base_model,
-                "fine_tuning_method": fine_tuning_method,
                 "hyperparameters": hyperparameters,
-                "model_name": model_name,
+                "model": model,
                 "training_file": training_file,
+                "suffix": suffix,
                 "validation_file": validation_file,
             }
     training_file: MetaOapg.properties.training_file
-    base_model: MetaOapg.properties.base_model
-    fine_tuning_method: MetaOapg.properties.fine_tuning_method
-    model_name: MetaOapg.properties.model_name
-    validation_file: MetaOapg.properties.validation_file
     hyperparameters: MetaOapg.properties.hyperparameters
+    model: MetaOapg.properties.model
 
-    @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["base_model"]) -> MetaOapg.properties.base_model: ...
-    @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["fine_tuning_method"]
-    ) -> MetaOapg.properties.fine_tuning_method: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["hyperparameters"]
     ) -> MetaOapg.properties.hyperparameters: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name: ...
+    def __getitem__(self, name: typing_extensions.Literal["model"]) -> MetaOapg.properties.model: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["training_file"]) -> MetaOapg.properties.training_file: ...
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["suffix"]) -> MetaOapg.properties.suffix: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["validation_file"]
@@ -116,11 +103,10 @@ class CreateFineTuneJobRequest(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "base_model",
-                "fine_tuning_method",
                 "hyperparameters",
-                "model_name",
+                "model",
                 "training_file",
+                "suffix",
                 "validation_file",
             ],
             str,
@@ -129,34 +115,31 @@ class CreateFineTuneJobRequest(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["base_model"]) -> MetaOapg.properties.base_model: ...
-    @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["fine_tuning_method"]
-    ) -> MetaOapg.properties.fine_tuning_method: ...
-    @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["hyperparameters"]
     ) -> MetaOapg.properties.hyperparameters: ...
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["model"]) -> MetaOapg.properties.model: ...
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["training_file"]) -> MetaOapg.properties.training_file: ...
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["suffix"]
+    ) -> typing.Union[MetaOapg.properties.suffix, schemas.Unset]: ...
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["validation_file"]
-    ) -> MetaOapg.properties.validation_file: ...
+    ) -> typing.Union[MetaOapg.properties.validation_file, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "base_model",
-                "fine_tuning_method",
                 "hyperparameters",
-                "model_name",
+                "model",
                 "training_file",
+                "suffix",
                 "validation_file",
             ],
             str,
@@ -173,27 +156,17 @@ class CreateFineTuneJobRequest(schemas.DictSchema):
             MetaOapg.properties.training_file,
             str,
         ],
-        base_model: typing.Union[
-            MetaOapg.properties.base_model,
-            str,
-        ],
-        fine_tuning_method: typing.Union[
-            MetaOapg.properties.fine_tuning_method,
-            str,
-        ],
-        model_name: typing.Union[
-            MetaOapg.properties.model_name,
-            str,
-        ],
-        validation_file: typing.Union[
-            MetaOapg.properties.validation_file,
-            str,
-        ],
         hyperparameters: typing.Union[
             MetaOapg.properties.hyperparameters,
             dict,
             frozendict.frozendict,
         ],
+        model: typing.Union[
+            MetaOapg.properties.model,
+            str,
+        ],
+        suffix: typing.Union[MetaOapg.properties.suffix, str, schemas.Unset] = schemas.unset,
+        validation_file: typing.Union[MetaOapg.properties.validation_file, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -216,11 +189,10 @@ class CreateFineTuneJobRequest(schemas.DictSchema):
             cls,
             *_args,
             training_file=training_file,
-            base_model=base_model,
-            fine_tuning_method=fine_tuning_method,
-            model_name=model_name,
-            validation_file=validation_file,
             hyperparameters=hyperparameters,
+            model=model,
+            suffix=suffix,
+            validation_file=validation_file,
             _configuration=_configuration,
             **kwargs,
         )

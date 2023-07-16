@@ -42,7 +42,11 @@ class CompletionStreamV1Request(schemas.DictSchema):
         class properties:
             max_new_tokens = schemas.IntSchema
             prompt = schemas.StrSchema
-            temperature = schemas.NumberSchema
+
+            class temperature(schemas.NumberSchema):
+                class MetaOapg:
+                    inclusive_maximum = 1.0
+
             __annotations__ = {
                 "max_new_tokens": max_new_tokens,
                 "prompt": prompt,

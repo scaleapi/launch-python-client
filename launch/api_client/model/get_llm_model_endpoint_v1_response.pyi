@@ -57,6 +57,9 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             @staticmethod
             def spec() -> typing.Type["GetModelEndpointV1Response"]:
                 return GetModelEndpointV1Response
+            @staticmethod
+            def quantize() -> typing.Type["Quantization"]:
+                return Quantization
             __annotations__ = {
                 "id": id,
                 "inference_framework": inference_framework,
@@ -66,6 +69,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
                 "num_shards": num_shards,
                 "source": source,
                 "spec": spec,
+                "quantize": quantize,
             }
     inference_framework: "LLMInferenceFramework"
     model_name: MetaOapg.properties.model_name
@@ -95,6 +99,8 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["spec"]) -> "GetModelEndpointV1Response": ...
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["quantize"]) -> "Quantization": ...
+    @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
         self,
@@ -108,6 +114,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
                 "num_shards",
                 "source",
                 "spec",
+                "quantize",
             ],
             str,
         ],
@@ -133,6 +140,10 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["spec"]) -> "GetModelEndpointV1Response": ...
     @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["quantize"]
+    ) -> typing.Union["Quantization", schemas.Unset]: ...
+    @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
@@ -146,6 +157,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
                 "num_shards",
                 "source",
                 "spec",
+                "quantize",
             ],
             str,
         ],
@@ -181,6 +193,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ],
         source: "LLMSource",
         spec: "GetModelEndpointV1Response",
+        quantize: typing.Union["Quantization", schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -210,6 +223,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             id=id,
             source=source,
             spec=spec,
+            quantize=quantize,
             _configuration=_configuration,
             **kwargs,
         )
@@ -219,3 +233,4 @@ from launch_client.model.get_model_endpoint_v1_response import (
 )
 from launch_client.model.llm_inference_framework import LLMInferenceFramework
 from launch_client.model.llm_source import LLMSource
+from launch_client.model.quantization import Quantization
