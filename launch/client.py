@@ -2964,15 +2964,16 @@ class LaunchClient:
         Create a fine-tuning job
 
         Parameters:
-            model: Identifier of base model to train from
+            model: Identifier of base model to train from.
             training_file: Path to file of training dataset.
                 Dataset must be a csv with columns 'prompt' and 'response'.
             validation_file: Path to file of validation dataset.
-                Has the same format as training_file. If not provided,
+                Has the same format as training_file. If not provided, we will generate a split
+                from the training dataset.
             fine_tuning_method: Fine-tuning method. Currently unused,
                 but when different techniques are implemented we will expose this field.
             hyperparameters: Hyperparameters to pass in to training job.
-            suffix: Optional user-provided identifier suffix for the fine-tuned model
+            suffix: Optional user-provided identifier suffix for the fine-tuned model.
 
         Returns:
             CreateFineTuneJobResponse: ID of the created fine-tuning job
