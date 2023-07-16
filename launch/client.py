@@ -2956,9 +2956,9 @@ class LaunchClient:
         model: str,
         training_file: str,
         validation_file: Optional[str] = None,
-        suffix: str = None,
         fine_tuning_method: Optional[str] = None,
         hyperparameters: Optional[Dict[str, str]] = None,
+        suffix: str = None,
     ) -> CreateFineTuneJobResponse:
         """
         Create a fine-tuning job
@@ -2969,10 +2969,10 @@ class LaunchClient:
                 Dataset must be a csv with columns 'prompt' and 'response'.
             validation_file: Path to file of validation dataset.
                 Has the same format as training_file. If not provided,
-            suffix: Optional user-provided identifier suffix for the fine-tuned model
             fine_tuning_method: Fine-tuning method. Currently unused,
                 but when different techniques are implemented we will expose this field.
             hyperparameters: Hyperparameters to pass in to training job.
+            suffix: Optional user-provided identifier suffix for the fine-tuned model
 
         Returns:
             CreateFineTuneJobResponse: ID of the created fine-tuning job
