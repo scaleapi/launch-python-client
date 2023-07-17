@@ -260,7 +260,7 @@ class LaunchClient:
         self.bundle_location_fn: Optional[Callable[[], str]] = None
         self.batch_csv_location_fn: Optional[Callable[[], str]] = None
         self.configuration = Configuration(
-            host=self.endpoint + SCALE_LAUNCH_V1_PATH,
+            host=self.endpoint + SCALE_LAUNCH_V1_PATH if endpoint is None else self.endpoint,
             discard_unknown_keys=True,
             username=api_key,
             password="",
