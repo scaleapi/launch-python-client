@@ -112,7 +112,9 @@ def mock_list_llm_model_endpoints():
 
 @pytest.fixture
 def mock_completions_sync():
-    return CompletionSyncV1Response(status="SUCCESS", outputs=["Deep learning is a subnet of machine learning."])
+    return CompletionSyncV1Response(
+        output="Deep learning is a subnet of machine learning.", request_id="test-request-id"
+    )
 
 
 @pytest.mark.parametrize("module_name,source_code", generate_code_chunks("launch", "docs"))
