@@ -8,7 +8,7 @@ BATCH_TASK_PATH = "batch_job"
 BATCH_TASK_RESULTS_PATH = "batch_job"
 RESULT_PATH = "result"
 DEFAULT_SCALE_ENDPOINT = "https://api.scale.com"
-HOSTED_INFERENCE_PATH = "/v1/hosted_inference"
-LAUNCH_PATH = "/v1/launch"
+SCALE_LAUNCH_V0_PATH = "/v1/hosted_inference"
+SCALE_LAUNCH_V1_PATH = "/v1/launch"
 
 DEFAULT_NETWORK_TIMEOUT_SEC = 120
