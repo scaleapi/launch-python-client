@@ -20,8 +20,8 @@ import typing_extensions  # noqa: F401
 import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
-from launch_client.model.cancel_fine_tune_job_response import (
-    CancelFineTuneJobResponse,
+from launch_client.model.cancel_fine_tune_response import (
+    CancelFineTuneResponse,
 )
 from launch_client.model.http_validation_error import HTTPValidationError
 from urllib3._collections import HTTPHeaderDict
@@ -48,7 +48,7 @@ request_path_fine_tune_id = api_client.PathParameter(
     schema=FineTuneIdSchema,
     required=True,
 )
-SchemaFor200ResponseBodyApplicationJson = CancelFineTuneJobResponse
+SchemaFor200ResponseBodyApplicationJson = CancelFineTuneResponse
 
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
@@ -80,7 +80,7 @@ _all_accept_content_types = ("application/json",)
 
 class BaseApi(api_client.Api):
     @typing.overload
-    def _cancel_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
+    def _cancel_fine_tune_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -89,7 +89,7 @@ class BaseApi(api_client.Api):
         skip_deserialization: typing_extensions.Literal[False] = ...,
     ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
-    def _cancel_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
+    def _cancel_fine_tune_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
         self,
         skip_deserialization: typing_extensions.Literal[True],
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -98,7 +98,7 @@ class BaseApi(api_client.Api):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
     ) -> api_client.ApiResponseWithoutDeserialization: ...
     @typing.overload
-    def _cancel_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
+    def _cancel_fine_tune_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -106,7 +106,7 @@ class BaseApi(api_client.Api):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
-    def _cancel_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
+    def _cancel_fine_tune_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -115,7 +115,7 @@ class BaseApi(api_client.Api):
         skip_deserialization: bool = False,
     ):
         """
-        Cancel Fine Tune Job
+        Cancel Fine Tune
         :param skip_deserialization: If true then api_response.response will be set but
             api_response.body and api_response.headers will not be deserialized into schema
             class instances
@@ -163,11 +163,11 @@ class BaseApi(api_client.Api):
 
         return api_response
 
-class CancelFineTuneJobV1LlmFineTunesFineTuneIdCancelPut(BaseApi):
+class CancelFineTuneV1LlmFineTunesFineTuneIdCancelPut(BaseApi):
     # this class is used by api classes that refer to endpoints with operationId fn names
 
     @typing.overload
-    def cancel_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_cancel_put(
+    def cancel_fine_tune_v1_llm_fine_tunes_fine_tune_id_cancel_put(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -176,7 +176,7 @@ class CancelFineTuneJobV1LlmFineTunesFineTuneIdCancelPut(BaseApi):
         skip_deserialization: typing_extensions.Literal[False] = ...,
     ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
-    def cancel_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_cancel_put(
+    def cancel_fine_tune_v1_llm_fine_tunes_fine_tune_id_cancel_put(
         self,
         skip_deserialization: typing_extensions.Literal[True],
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -185,7 +185,7 @@ class CancelFineTuneJobV1LlmFineTunesFineTuneIdCancelPut(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
     ) -> api_client.ApiResponseWithoutDeserialization: ...
     @typing.overload
-    def cancel_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_cancel_put(
+    def cancel_fine_tune_v1_llm_fine_tunes_fine_tune_id_cancel_put(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -193,7 +193,7 @@ class CancelFineTuneJobV1LlmFineTunesFineTuneIdCancelPut(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
-    def cancel_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_cancel_put(
+    def cancel_fine_tune_v1_llm_fine_tunes_fine_tune_id_cancel_put(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -201,7 +201,7 @@ class CancelFineTuneJobV1LlmFineTunesFineTuneIdCancelPut(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return self._cancel_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
+        return self._cancel_fine_tune_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
             path_params=path_params,
             accept_content_types=accept_content_types,
             stream=stream,
@@ -247,7 +247,7 @@ class ApiForput(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return self._cancel_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
+        return self._cancel_fine_tune_v1_llm_fine_tunes_fine_tune_id_cancel_put_oapg(
             path_params=path_params,
             accept_content_types=accept_content_types,
             stream=stream,

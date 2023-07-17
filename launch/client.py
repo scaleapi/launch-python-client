@@ -57,8 +57,8 @@ from launch.api_client.model.create_docker_image_batch_job_bundle_v1_request imp
 from launch.api_client.model.create_docker_image_batch_job_v1_request import (
     CreateDockerImageBatchJobV1Request,
 )
-from launch.api_client.model.create_fine_tune_job_request import (
-    CreateFineTuneJobRequest,
+from launch.api_client.model.create_fine_tune_request import (
+    CreateFineTuneRequest,
 )
 from launch.api_client.model.create_llm_model_endpoint_v1_request import (
     CreateLLMModelEndpointV1Request,
@@ -121,11 +121,11 @@ from launch.docker_image_batch_job_bundle import (
     ListDockerImageBatchJobBundleResponse,
 )
 from launch.find_packages import find_packages_from_imports, get_imports
-from launch.fine_tune_job import (
-    CancelFineTuneJobResponse,
-    CreateFineTuneJobResponse,
-    GetFineTuneJobResponse,
-    ListFineTuneJobResponse,
+from launch.fine_tune import (
+    CancelFineTuneResponse,
+    CreateFineTuneResponse,
+    GetFineTuneResponse,
+    ListFineTunesResponse,
 )
 from launch.hooks import PostInferenceHooks
 from launch.make_batch_file import (
@@ -2951,7 +2951,7 @@ class LaunchClient:
         for event in events:
             yield json.loads(event.data)
 
-    def create_fine_tune_job(
+    def create_fine_tune(
         self,
         model: str,
         training_file: str,
@@ -2959,9 +2959,9 @@ class LaunchClient:
         fine_tuning_method: Optional[str] = None,
         hyperparameters: Optional[Dict[str, str]] = None,
         suffix: str = None,
-    ) -> CreateFineTuneJobResponse:
+    ) -> CreateFineTuneResponse:
         """
-        Create a fine-tuning job
+        Create a fine-tune
 
         Parameters:
             model: Identifier of base model to train from.
@@ -2976,11 +2976,11 @@ class LaunchClient:
             suffix: Optional user-provided identifier suffix for the fine-tuned model.
 
         Returns:
-            CreateFineTuneJobResponse: ID of the created fine-tuning job
+            CreateFineTuneResponse: ID of the created fine-tune
         """
         if hyperparameters is None:
             hyperparameters = {}
-        create_fine_tune_job_request = CreateFineTuneJobRequest(
+        create_fine_tune_request = CreateFineTuneRequest(
             **dict_not_none(
                 model=model,
                 training_file=training_file,
@@ -2993,77 +2993,77 @@ class LaunchClient:
 
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            response = api_instance.create_fine_tune_job_v1_llm_fine_tunes_post(
-                body=create_fine_tune_job_request,
+            response = api_instance.create_fine_tune_v1_llm_fine_tunes_post(
+                body=create_fine_tune_request,
                 skip_deserialization=True,
             )
-            resp = CreateFineTuneJobResponse.parse_raw(response.response.data)
+            resp = CreateFineTuneResponse.parse_raw(response.response.data)
 
         return resp
 
-    def get_fine_tune_job(
+    def get_fine_tune(
         self,
         fine_tune_id: str,
-    ) -> GetFineTuneJobResponse:
+    ) -> GetFineTuneResponse:
         """
-        Get status of a fine-tuning job
+        Get status of a fine-tune
 
         Parameters:
-            fine_tune_id: ID of the fine-tuning job
+            fine_tune_id: ID of the fine-tune
 
         Returns:
-            GetFineTuneJobResponse: ID and status of the requested job
+            GetFineTuneResponse: ID and status of the requested fine-tune
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"fine_tune_id": fine_tune_id})
-            response = api_instance.get_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_get(  # type: ignore
+            response = api_instance.get_fine_tune_v1_llm_fine_tunes_fine_tune_id_get(  # type: ignore
                 path_params=path_params,
                 skip_deserialization=True,
             )
-            resp = GetFineTuneJobResponse.parse_raw(response.response.data)
+            resp = GetFineTuneResponse.parse_raw(response.response.data)
 
         return resp
 
-    def list_fine_tune_jobs(
+    def list_fine_tunes(
         self,
-    ) -> ListFineTuneJobResponse:
+    ) -> ListFineTunesResponse:
         """
-        List fine-tuning jobs
+        List fine-tunes
 
         Returns:
-            ListFineTuneJobResponse: list of all fine-tuning jobs and their statuses
+            ListFineTunesResponse: list of all fine-tunes and their statuses
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            response = api_instance.list_fine_tune_jobs_v1_llm_fine_tunes_get(  # type: ignore
+            response = api_instance.list_fine_tunes_v1_llm_fine_tunes_get(  # type: ignore
                 skip_deserialization=True,
             )
-            resp = ListFineTuneJobResponse.parse_raw(response.response.data)
+            resp = ListFineTunesResponse.parse_raw(response.response.data)
 
         return resp
 
-    def cancel_fine_tune_job(
+    def cancel_fine_tune(
         self,
         fine_tune_id: str,
-    ) -> CancelFineTuneJobResponse:
+    ) -> CancelFineTuneResponse:
         """
-        Cancel a fine-tuning job
+        Cancel a fine-tune
 
         Parameters:
-            fine_tune_id: ID of the fine-tuning job
+            fine_tune_id: ID of the fine-tune
 
         Returns:
-            CancelFineTuneJobResponse: whether the cancellation was successful
+            CancelFineTuneResponse: whether the cancellation was successful
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"fine_tune_id": fine_tune_id})
-            response = api_instance.cancel_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_cancel_put(  # type: ignore
+            response = api_instance.cancel_fine_tune_v1_llm_fine_tunes_fine_tune_id_cancel_put(  # type: ignore
                 path_params=path_params,
                 skip_deserialization=True,
             )
-            resp = CancelFineTuneJobResponse.parse_raw(response.response.data)
+            resp = CancelFineTuneResponse.parse_raw(response.response.data)
 
         return resp
 

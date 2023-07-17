@@ -18,8 +18,8 @@ from launch.api_client.model.batch_job_status import BatchJobStatus
 from launch.api_client.model.callback_auth import CallbackAuth
 from launch.api_client.model.callback_basic_auth import CallbackBasicAuth
 from launch.api_client.model.callbackm_tls_auth import CallbackmTLSAuth
-from launch.api_client.model.cancel_fine_tune_job_response import (
-    CancelFineTuneJobResponse,
+from launch.api_client.model.cancel_fine_tune_response import (
+    CancelFineTuneResponse,
 )
 from launch.api_client.model.clone_model_bundle_v1_request import (
     CloneModelBundleV1Request,
@@ -73,11 +73,11 @@ from launch.api_client.model.create_docker_image_batch_job_v1_request import (
 from launch.api_client.model.create_docker_image_batch_job_v1_response import (
     CreateDockerImageBatchJobV1Response,
 )
-from launch.api_client.model.create_fine_tune_job_request import (
-    CreateFineTuneJobRequest,
+from launch.api_client.model.create_fine_tune_request import (
+    CreateFineTuneRequest,
 )
-from launch.api_client.model.create_fine_tune_job_response import (
-    CreateFineTuneJobResponse,
+from launch.api_client.model.create_fine_tune_response import (
+    CreateFineTuneResponse,
 )
 from launch.api_client.model.create_llm_model_endpoint_v1_request import (
     CreateLLMModelEndpointV1Request,
@@ -122,9 +122,7 @@ from launch.api_client.model.get_batch_job_v1_response import (
 from launch.api_client.model.get_docker_image_batch_job_v1_response import (
     GetDockerImageBatchJobV1Response,
 )
-from launch.api_client.model.get_fine_tune_job_response import (
-    GetFineTuneJobResponse,
-)
+from launch.api_client.model.get_fine_tune_response import GetFineTuneResponse
 from launch.api_client.model.get_llm_model_endpoint_v1_response import (
     GetLLMModelEndpointV1Response,
 )
@@ -136,8 +134,8 @@ from launch.api_client.model.http_validation_error import HTTPValidationError
 from launch.api_client.model.list_docker_image_batch_job_bundle_v1_response import (
     ListDockerImageBatchJobBundleV1Response,
 )
-from launch.api_client.model.list_fine_tune_job_response import (
-    ListFineTuneJobResponse,
+from launch.api_client.model.list_fine_tunes_response import (
+    ListFineTunesResponse,
 )
 from launch.api_client.model.list_llm_model_endpoints_v1_response import (
     ListLLMModelEndpointsV1Response,

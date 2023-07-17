@@ -41,10 +41,7 @@ class ListFineTunesResponse(schemas.DictSchema):
                         return GetFineTuneResponse
                 def __new__(
                     cls,
-                    _arg: typing.Union[
-                        typing.Tuple["GetFineTuneResponse"],
-                        typing.List["GetFineTuneResponse"],
-                    ],
+                    _arg: typing.Union[typing.Tuple["GetFineTuneResponse"], typing.List["GetFineTuneResponse"]],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "jobs":
                     return super().__new__(

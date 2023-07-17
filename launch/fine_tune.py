@@ -14,23 +14,23 @@ class BatchJobStatus(str, Enum):
     TIMEOUT = "TIMEOUT"
 
 
-class CreateFineTuneJobResponse(BaseModel):
+class CreateFineTuneResponse(BaseModel):
     fine_tune_id: str
     """ID of the created fine-tuning job"""
 
 
-class GetFineTuneJobResponse(BaseModel):
+class GetFineTuneResponse(BaseModel):
     fine_tune_id: str
     """ID of the requested job"""
     status: BatchJobStatus
     """Status of the requested job"""
 
 
-class ListFineTuneJobResponse(BaseModel):
-    jobs: List[GetFineTuneJobResponse]
+class ListFineTunesResponse(BaseModel):
+    jobs: List[GetFineTuneResponse]
     """List of fine-tuning jobs and their statuses"""
 
 
-class CancelFineTuneJobResponse(BaseModel):
+class CancelFineTuneResponse(BaseModel):
     success: bool
     """Whether cancellation was successful"""
