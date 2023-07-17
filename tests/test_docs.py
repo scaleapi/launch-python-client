@@ -7,6 +7,7 @@ from unittest.mock import MagicMock, Mock
 import pytest
 from _pytest.assertion.rewrite import AssertionRewritingHook
 
+from launch.api_client.model.completion_output import CompletionOutput
 from launch.api_client.model.completion_sync_v1_response import (
     CompletionSyncV1Response,
 )
@@ -113,7 +114,8 @@ def mock_list_llm_model_endpoints():
 @pytest.fixture
 def mock_completions_sync():
     return CompletionSyncV1Response(
-        output="Deep learning is a subnet of machine learning.", request_id="test-request-id"
+        output=CompletionOutput(text="Deep learning is a subnet of machine learning.", num_completion_tokens=9),
+        request_id="test-request-id",
     )
 
 
