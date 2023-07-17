@@ -2886,7 +2886,7 @@ class LaunchClient:
     def completions_sync(
         self,
         endpoint_name: str,
-        prompts: List[str],
+        prompt: str,
         max_new_tokens: int,
         temperature: float,
     ) -> CompletionSyncV1Response:
@@ -2896,7 +2896,7 @@ class LaunchClient:
         Parameters:
             endpoint_name: The name of the LLM endpoint to make the request to
 
-            prompts: The list of prompts to send to the endpoint
+            prompt: The completion prompt to send to the endpoint
 
             max_new_tokens: The maximum number of tokens to generate for each prompt
 
@@ -2907,7 +2907,7 @@ class LaunchClient:
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            request = CompletionSyncV1Request(max_new_tokens=max_new_tokens, prompts=prompts, temperature=temperature)
+            request = CompletionSyncV1Request(max_new_tokens=max_new_tokens, prompt=prompt, temperature=temperature)
             query_params = frozendict({"model_endpoint_name": endpoint_name})
             response = api_instance.create_completion_sync_task_v1_llm_completions_sync_post(  # type: ignore
                 body=request,

@@ -34,37 +34,29 @@ class CompletionStreamV1Response(schemas.DictSchema):
 
     class MetaOapg:
         required = {
-            "status",
+            "request_id",
         }
 
         class properties:
-            @staticmethod
-            def status() -> typing.Type["TaskStatus"]:
-                return TaskStatus
+            request_id = schemas.StrSchema
 
             @staticmethod
             def output() -> typing.Type["CompletionStreamOutput"]:
                 return CompletionStreamOutput
 
-            traceback = schemas.StrSchema
             __annotations__ = {
-                "status": status,
+                "request_id": request_id,
                 "output": output,
-                "traceback": traceback,
             }
 
-    status: "TaskStatus"
+    request_id: MetaOapg.properties.request_id
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["status"]) -> "TaskStatus":
+    def __getitem__(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id:
         ...
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["output"]) -> "CompletionStreamOutput":
-        ...
-
-    @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["traceback"]) -> MetaOapg.properties.traceback:
         ...
 
     @typing.overload
@@ -75,9 +67,8 @@ class CompletionStreamV1Response(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "status",
+                "request_id",
                 "output",
-                "traceback",
             ],
             str,
         ],
@@ -86,19 +77,13 @@ class CompletionStreamV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "TaskStatus":
+    def get_item_oapg(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id:
         ...
 
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["output"]
     ) -> typing.Union["CompletionStreamOutput", schemas.Unset]:
-        ...
-
-    @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["traceback"]
-    ) -> typing.Union[MetaOapg.properties.traceback, schemas.Unset]:
         ...
 
     @typing.overload
@@ -109,9 +94,8 @@ class CompletionStreamV1Response(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "status",
+                "request_id",
                 "output",
-                "traceback",
             ],
             str,
         ],
@@ -124,9 +108,11 @@ class CompletionStreamV1Response(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        status: "TaskStatus",
+        request_id: typing.Union[
+            MetaOapg.properties.request_id,
+            str,
+        ],
         output: typing.Union["CompletionStreamOutput", schemas.Unset] = schemas.unset,
-        traceback: typing.Union[MetaOapg.properties.traceback, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -148,9 +134,8 @@ class CompletionStreamV1Response(schemas.DictSchema):
         return super().__new__(
             cls,
             *_args,
-            status=status,
+            request_id=request_id,
             output=output,
-            traceback=traceback,
             _configuration=_configuration,
             **kwargs,
         )
@@ -159,4 +144,3 @@ class CompletionStreamV1Response(schemas.DictSchema):
 from launch.api_client.model.completion_stream_output import (
     CompletionStreamOutput,
 )
-from launch.api_client.model.task_status import TaskStatus

@@ -7,6 +7,7 @@ from unittest.mock import MagicMock, Mock
 import pytest
 from _pytest.assertion.rewrite import AssertionRewritingHook
 
+from launch.api_client.model.completion_output import CompletionOutput
 from launch.api_client.model.completion_sync_v1_response import (
     CompletionSyncV1Response,
 )
@@ -111,8 +112,11 @@ def mock_list_llm_model_endpoints():
 
 
 @pytest.fixture
-def mock_completion_sync_response():
-    return CompletionSyncV1Response(status="SUCCESS", outputs=["Deep learning is a subnet of machine learning."])
+def mock_completions_sync():
+    return CompletionSyncV1Response(
+        output=CompletionOutput(text="Deep learning is a subnet of machine learning.", num_completion_tokens=9),
+        request_id="test-request-id",
+    )
 
 
 @pytest.mark.parametrize("module_name,source_code", generate_code_chunks("launch", "docs"))
@@ -126,6 +130,7 @@ def test_docs_examples(
     mock_async_endpoint,
     mock_batch_job,
     mock_list_llm_model_endpoints,
+    mock_completions_sync,
 ):
     mocker.patch("launch.connection.Connection", MagicMock())
     mocker.patch("launch.client.DefaultApi", MagicMock())
@@ -142,7 +147,7 @@ def test_docs_examples(
         "launch.client.LaunchClient.list_llm_model_endpoints", MagicMock(return_value=mock_list_llm_model_endpoints)
     )
     mocker.patch("launch.client.LaunchClient.create_llm_model_endpoint", MagicMock(return_value=mock_async_endpoint))
-    mocker.patch("launch.client.LaunchClient.completions_sync", MagicMock(return_value=mock_batch_job))
+    mocker.patch("launch.client.LaunchClient.completions_sync", MagicMock(return_value=mock_completions_sync))
     mocker.patch("launch.client.Connection.make_request", MagicMock(return_value=mock_dictionary))
     mocker.patch("launch.client.requests", MagicMock())
     mocker.patch("pydantic.BaseModel.parse_raw", MagicMock())

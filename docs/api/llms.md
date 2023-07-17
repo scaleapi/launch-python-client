@@ -37,6 +37,6 @@ client.create_llm_model_endpoint(
 
 # Wait for the endpoint to be ready
 
-output = client.completions_sync(endpoint_name, prompts=["What is Deep Learning?"], max_new_tokens=10, temperature=0)
+output = client.completions_sync(endpoint_name, prompt="What is Deep Learning?", max_new_tokens=10, temperature=0)
 print(output)
 ```
