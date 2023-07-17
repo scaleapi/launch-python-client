@@ -34,55 +34,29 @@ class CompletionSyncV1Response(schemas.DictSchema):
 
     class MetaOapg:
         required = {
-            "outputs",
-            "status",
+            "request_id",
         }
 
         class properties:
-            class outputs(schemas.ListSchema):
-                class MetaOapg:
-                    @staticmethod
-                    def items() -> typing.Type["CompletionOutput"]:
-                        return CompletionOutput
-
-                def __new__(
-                    cls,
-                    _arg: typing.Union[typing.Tuple["CompletionOutput"], typing.List["CompletionOutput"]],
-                    _configuration: typing.Optional[schemas.Configuration] = None,
-                ) -> "outputs":
-                    return super().__new__(
-                        cls,
-                        _arg,
-                        _configuration=_configuration,
-                    )
-
-                def __getitem__(self, i: int) -> "CompletionOutput":
-                    return super().__getitem__(i)
+            request_id = schemas.StrSchema
 
             @staticmethod
-            def status() -> typing.Type["TaskStatus"]:
-                return TaskStatus
+            def output() -> typing.Type["CompletionOutput"]:
+                return CompletionOutput
 
-            traceback = schemas.StrSchema
             __annotations__ = {
-                "outputs": outputs,
-                "status": status,
-                "traceback": traceback,
+                "request_id": request_id,
+                "output": output,
             }
 
-    outputs: MetaOapg.properties.outputs
-    status: "TaskStatus"
+    request_id: MetaOapg.properties.request_id
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["outputs"]) -> MetaOapg.properties.outputs:
+    def __getitem__(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["status"]) -> "TaskStatus":
-        ...
-
-    @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["traceback"]) -> MetaOapg.properties.traceback:
+    def __getitem__(self, name: typing_extensions.Literal["output"]) -> "CompletionOutput":
         ...
 
     @typing.overload
@@ -93,9 +67,8 @@ class CompletionSyncV1Response(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "outputs",
-                "status",
-                "traceback",
+                "request_id",
+                "output",
             ],
             str,
         ],
@@ -104,17 +77,13 @@ class CompletionSyncV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["outputs"]) -> MetaOapg.properties.outputs:
-        ...
-
-    @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "TaskStatus":
+    def get_item_oapg(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id:
         ...
 
     @typing.overload
     def get_item_oapg(
-        self, name: typing_extensions.Literal["traceback"]
-    ) -> typing.Union[MetaOapg.properties.traceback, schemas.Unset]:
+        self, name: typing_extensions.Literal["output"]
+    ) -> typing.Union["CompletionOutput", schemas.Unset]:
         ...
 
     @typing.overload
@@ -125,9 +94,8 @@ class CompletionSyncV1Response(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "outputs",
-                "status",
-                "traceback",
+                "request_id",
+                "output",
             ],
             str,
         ],
@@ -140,13 +108,11 @@ class CompletionSyncV1Response(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        outputs: typing.Union[
-            MetaOapg.properties.outputs,
-            list,
-            tuple,
+        request_id: typing.Union[
+            MetaOapg.properties.request_id,
+            str,
         ],
-        status: "TaskStatus",
-        traceback: typing.Union[MetaOapg.properties.traceback, str, schemas.Unset] = schemas.unset,
+        output: typing.Union["CompletionOutput", schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -168,13 +134,11 @@ class CompletionSyncV1Response(schemas.DictSchema):
         return super().__new__(
             cls,
             *_args,
-            outputs=outputs,
-            status=status,
-            traceback=traceback,
+            request_id=request_id,
+            output=output,
             _configuration=_configuration,
             **kwargs,
         )
 
 
 from launch.api_client.model.completion_output import CompletionOutput
-from launch.api_client.model.task_status import TaskStatus

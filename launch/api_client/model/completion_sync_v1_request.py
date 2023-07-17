@@ -36,42 +36,12 @@ class CompletionSyncV1Request(schemas.DictSchema):
         required = {
             "max_new_tokens",
             "temperature",
-            "prompts",
+            "prompt",
         }
 
         class properties:
             max_new_tokens = schemas.IntSchema
-
-            class prompts(schemas.ListSchema):
-                class MetaOapg:
-                    items = schemas.StrSchema
-
-                def __new__(
-                    cls,
-                    _arg: typing.Union[
-                        typing.Tuple[
-                            typing.Union[
-                                MetaOapg.items,
-                                str,
-                            ]
-                        ],
-                        typing.List[
-                            typing.Union[
-                                MetaOapg.items,
-                                str,
-                            ]
-                        ],
-                    ],
-                    _configuration: typing.Optional[schemas.Configuration] = None,
-                ) -> "prompts":
-                    return super().__new__(
-                        cls,
-                        _arg,
-                        _configuration=_configuration,
-                    )
-
-                def __getitem__(self, i: int) -> MetaOapg.items:
-                    return super().__getitem__(i)
+            prompt = schemas.StrSchema
 
             class temperature(schemas.NumberSchema):
                 class MetaOapg:
@@ -79,20 +49,20 @@ class CompletionSyncV1Request(schemas.DictSchema):
 
             __annotations__ = {
                 "max_new_tokens": max_new_tokens,
-                "prompts": prompts,
+                "prompt": prompt,
                 "temperature": temperature,
             }
 
     max_new_tokens: MetaOapg.properties.max_new_tokens
     temperature: MetaOapg.properties.temperature
-    prompts: MetaOapg.properties.prompts
+    prompt: MetaOapg.properties.prompt
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["max_new_tokens"]) -> MetaOapg.properties.max_new_tokens:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["prompts"]) -> MetaOapg.properties.prompts:
+    def __getitem__(self, name: typing_extensions.Literal["prompt"]) -> MetaOapg.properties.prompt:
         ...
 
     @typing.overload
@@ -108,7 +78,7 @@ class CompletionSyncV1Request(schemas.DictSchema):
         name: typing.Union[
             typing_extensions.Literal[
                 "max_new_tokens",
-                "prompts",
+                "prompt",
                 "temperature",
             ],
             str,
@@ -122,7 +92,7 @@ class CompletionSyncV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["prompts"]) -> MetaOapg.properties.prompts:
+    def get_item_oapg(self, name: typing_extensions.Literal["prompt"]) -> MetaOapg.properties.prompt:
         ...
 
     @typing.overload
@@ -138,7 +108,7 @@ class CompletionSyncV1Request(schemas.DictSchema):
         name: typing.Union[
             typing_extensions.Literal[
                 "max_new_tokens",
-                "prompts",
+                "prompt",
                 "temperature",
             ],
             str,
@@ -163,10 +133,9 @@ class CompletionSyncV1Request(schemas.DictSchema):
             int,
             float,
         ],
-        prompts: typing.Union[
-            MetaOapg.properties.prompts,
-            list,
-            tuple,
+        prompt: typing.Union[
+            MetaOapg.properties.prompt,
+            str,
         ],
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
@@ -191,7 +160,7 @@ class CompletionSyncV1Request(schemas.DictSchema):
             *_args,
             max_new_tokens=max_new_tokens,
             temperature=temperature,
-            prompts=prompts,
+            prompt=prompt,
             _configuration=_configuration,
             **kwargs,
         )
