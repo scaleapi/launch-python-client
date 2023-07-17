@@ -20,9 +20,7 @@ import typing_extensions  # noqa: F401
 import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
-from launch_client.model.get_fine_tune_job_response import (
-    GetFineTuneJobResponse,
-)
+from launch_client.model.get_fine_tune_response import GetFineTuneResponse
 from launch_client.model.http_validation_error import HTTPValidationError
 from urllib3._collections import HTTPHeaderDict
 
@@ -48,7 +46,7 @@ request_path_fine_tune_id = api_client.PathParameter(
     schema=FineTuneIdSchema,
     required=True,
 )
-SchemaFor200ResponseBodyApplicationJson = GetFineTuneJobResponse
+SchemaFor200ResponseBodyApplicationJson = GetFineTuneResponse
 
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
@@ -80,7 +78,7 @@ _all_accept_content_types = ("application/json",)
 
 class BaseApi(api_client.Api):
     @typing.overload
-    def _get_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_get_oapg(
+    def _get_fine_tune_v1_llm_fine_tunes_fine_tune_id_get_oapg(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -89,7 +87,7 @@ class BaseApi(api_client.Api):
         skip_deserialization: typing_extensions.Literal[False] = ...,
     ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
-    def _get_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_get_oapg(
+    def _get_fine_tune_v1_llm_fine_tunes_fine_tune_id_get_oapg(
         self,
         skip_deserialization: typing_extensions.Literal[True],
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -98,7 +96,7 @@ class BaseApi(api_client.Api):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
     ) -> api_client.ApiResponseWithoutDeserialization: ...
     @typing.overload
-    def _get_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_get_oapg(
+    def _get_fine_tune_v1_llm_fine_tunes_fine_tune_id_get_oapg(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -106,7 +104,7 @@ class BaseApi(api_client.Api):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
-    def _get_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_get_oapg(
+    def _get_fine_tune_v1_llm_fine_tunes_fine_tune_id_get_oapg(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -115,7 +113,7 @@ class BaseApi(api_client.Api):
         skip_deserialization: bool = False,
     ):
         """
-        Get Fine Tune Job
+        Get Fine Tune
         :param skip_deserialization: If true then api_response.response will be set but
             api_response.body and api_response.headers will not be deserialized into schema
             class instances
@@ -163,11 +161,11 @@ class BaseApi(api_client.Api):
 
         return api_response
 
-class GetFineTuneJobV1LlmFineTunesFineTuneIdGet(BaseApi):
+class GetFineTuneV1LlmFineTunesFineTuneIdGet(BaseApi):
     # this class is used by api classes that refer to endpoints with operationId fn names
 
     @typing.overload
-    def get_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_get(
+    def get_fine_tune_v1_llm_fine_tunes_fine_tune_id_get(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -176,7 +174,7 @@ class GetFineTuneJobV1LlmFineTunesFineTuneIdGet(BaseApi):
         skip_deserialization: typing_extensions.Literal[False] = ...,
     ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
-    def get_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_get(
+    def get_fine_tune_v1_llm_fine_tunes_fine_tune_id_get(
         self,
         skip_deserialization: typing_extensions.Literal[True],
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -185,7 +183,7 @@ class GetFineTuneJobV1LlmFineTunesFineTuneIdGet(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
     ) -> api_client.ApiResponseWithoutDeserialization: ...
     @typing.overload
-    def get_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_get(
+    def get_fine_tune_v1_llm_fine_tunes_fine_tune_id_get(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -193,7 +191,7 @@ class GetFineTuneJobV1LlmFineTunesFineTuneIdGet(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
-    def get_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_get(
+    def get_fine_tune_v1_llm_fine_tunes_fine_tune_id_get(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -201,7 +199,7 @@ class GetFineTuneJobV1LlmFineTunesFineTuneIdGet(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return self._get_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_get_oapg(
+        return self._get_fine_tune_v1_llm_fine_tunes_fine_tune_id_get_oapg(
             path_params=path_params,
             accept_content_types=accept_content_types,
             stream=stream,
@@ -247,7 +245,7 @@ class ApiForget(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return self._get_fine_tune_job_v1_llm_fine_tunes_fine_tune_id_get_oapg(
+        return self._get_fine_tune_v1_llm_fine_tunes_fine_tune_id_get_oapg(
             path_params=path_params,
             accept_content_types=accept_content_types,
             stream=stream,

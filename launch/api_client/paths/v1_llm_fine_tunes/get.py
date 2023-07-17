@@ -22,8 +22,8 @@ from urllib3._collections import HTTPHeaderDict
 
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
-from launch.api_client.model.list_fine_tune_job_response import (
-    ListFineTuneJobResponse,
+from launch.api_client.model.list_fine_tunes_response import (
+    ListFineTunesResponse,
 )
 
 from . import path
@@ -31,7 +31,7 @@ from . import path
 _auth = [
     "HTTPBasic",
 ]
-SchemaFor200ResponseBodyApplicationJson = ListFineTuneJobResponse
+SchemaFor200ResponseBodyApplicationJson = ListFineTunesResponse
 
 
 @dataclass
@@ -55,7 +55,7 @@ _all_accept_content_types = ("application/json",)
 
 class BaseApi(api_client.Api):
     @typing.overload
-    def _list_fine_tune_jobs_v1_llm_fine_tunes_get_oapg(
+    def _list_fine_tunes_v1_llm_fine_tunes_get_oapg(
         self,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -65,7 +65,7 @@ class BaseApi(api_client.Api):
         ...
 
     @typing.overload
-    def _list_fine_tune_jobs_v1_llm_fine_tunes_get_oapg(
+    def _list_fine_tunes_v1_llm_fine_tunes_get_oapg(
         self,
         skip_deserialization: typing_extensions.Literal[True],
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -75,7 +75,7 @@ class BaseApi(api_client.Api):
         ...
 
     @typing.overload
-    def _list_fine_tune_jobs_v1_llm_fine_tunes_get_oapg(
+    def _list_fine_tunes_v1_llm_fine_tunes_get_oapg(
         self,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -84,7 +84,7 @@ class BaseApi(api_client.Api):
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
         ...
 
-    def _list_fine_tune_jobs_v1_llm_fine_tunes_get_oapg(
+    def _list_fine_tunes_v1_llm_fine_tunes_get_oapg(
         self,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -92,7 +92,7 @@ class BaseApi(api_client.Api):
         skip_deserialization: bool = False,
     ):
         """
-        List Fine Tune Jobs
+        List Fine Tunes
         :param skip_deserialization: If true then api_response.response will be set but
             api_response.body and api_response.headers will not be deserialized into schema
             class instances
@@ -129,11 +129,11 @@ class BaseApi(api_client.Api):
         return api_response
 
 
-class ListFineTuneJobsV1LlmFineTunesGet(BaseApi):
+class ListFineTunesV1LlmFineTunesGet(BaseApi):
     # this class is used by api classes that refer to endpoints with operationId fn names
 
     @typing.overload
-    def list_fine_tune_jobs_v1_llm_fine_tunes_get(
+    def list_fine_tunes_v1_llm_fine_tunes_get(
         self,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -143,7 +143,7 @@ class ListFineTuneJobsV1LlmFineTunesGet(BaseApi):
         ...
 
     @typing.overload
-    def list_fine_tune_jobs_v1_llm_fine_tunes_get(
+    def list_fine_tunes_v1_llm_fine_tunes_get(
         self,
         skip_deserialization: typing_extensions.Literal[True],
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
@@ -153,7 +153,7 @@ class ListFineTuneJobsV1LlmFineTunesGet(BaseApi):
         ...
 
     @typing.overload
-    def list_fine_tune_jobs_v1_llm_fine_tunes_get(
+    def list_fine_tunes_v1_llm_fine_tunes_get(
         self,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
@@ -162,14 +162,14 @@ class ListFineTuneJobsV1LlmFineTunesGet(BaseApi):
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
         ...
 
-    def list_fine_tune_jobs_v1_llm_fine_tunes_get(
+    def list_fine_tunes_v1_llm_fine_tunes_get(
         self,
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return self._list_fine_tune_jobs_v1_llm_fine_tunes_get_oapg(
+        return self._list_fine_tunes_v1_llm_fine_tunes_get_oapg(
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
@@ -217,7 +217,7 @@ class ApiForget(BaseApi):
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return self._list_fine_tune_jobs_v1_llm_fine_tunes_get_oapg(
+        return self._list_fine_tunes_v1_llm_fine_tunes_get_oapg(
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
