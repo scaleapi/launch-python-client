@@ -66,6 +66,9 @@ from launch.api_client.paths.v1_llm_fine_tunes_fine_tune_id.get import (
 from launch.api_client.paths.v1_llm_fine_tunes_fine_tune_id_cancel.put import (
     CancelFineTuneV1LlmFineTunesFineTuneIdCancelPut,
 )
+from launch.api_client.paths.v1_llm_fine_tunes_fine_tune_id_events.get import (
+    GetFineTuneEventsV1LlmFineTunesFineTuneIdEventsGet,
+)
 from launch.api_client.paths.v1_llm_model_endpoints.get import (
     ListModelEndpointsV1LlmModelEndpointsGet,
 )
@@ -156,6 +159,7 @@ class DefaultApi(
     GetBatchJobV1BatchJobsBatchJobIdGet,
     GetDockerImageBatchJobModelBundleV1DockerImageBatchJobBundlesDockerImageBatchJobBundleIdGet,
     GetDockerImageBatchJobV1DockerImageBatchJobsBatchJobIdGet,
+    GetFineTuneEventsV1LlmFineTunesFineTuneIdEventsGet,
     GetFineTuneV1LlmFineTunesFineTuneIdGet,
     GetLatestDockerImageBatchJobBundleV1DockerImageBatchJobBundlesLatestGet,
     GetLatestModelBundleV1ModelBundlesLatestGet,

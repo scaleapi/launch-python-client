@@ -122,6 +122,9 @@ from launch.api_client.model.get_batch_job_v1_response import (
 from launch.api_client.model.get_docker_image_batch_job_v1_response import (
     GetDockerImageBatchJobV1Response,
 )
+from launch.api_client.model.get_fine_tune_events_response import (
+    GetFineTuneEventsResponse,
+)
 from launch.api_client.model.get_fine_tune_response import GetFineTuneResponse
 from launch.api_client.model.get_llm_model_endpoint_v1_response import (
     GetLLMModelEndpointV1Response,
@@ -149,6 +152,7 @@ from launch.api_client.model.list_model_bundles_v2_response import (
 from launch.api_client.model.list_model_endpoints_v1_response import (
     ListModelEndpointsV1Response,
 )
+from launch.api_client.model.llm_fine_tune_event import LLMFineTuneEvent
 from launch.api_client.model.llm_inference_framework import (
     LLMInferenceFramework,
 )
