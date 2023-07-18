@@ -25,6 +25,7 @@ class PathValues(str, enum.Enum):
     V1_LLM_FINETUNES = "/v1/llm/fine-tunes"
     V1_LLM_FINETUNES_FINE_TUNE_ID = "/v1/llm/fine-tunes/{fine_tune_id}"
     V1_LLM_FINETUNES_FINE_TUNE_ID_CANCEL = "/v1/llm/fine-tunes/{fine_tune_id}/cancel"
+    V1_LLM_FINETUNES_FINE_TUNE_ID_EVENTS = "/v1/llm/fine-tunes/{fine_tune_id}/events"
     V1_LLM_MODELENDPOINTS = "/v1/llm/model-endpoints"
     V1_LLM_MODELENDPOINTS_MODEL_ENDPOINT_NAME = "/v1/llm/model-endpoints/{model_endpoint_name}"
     V1_MODELBUNDLES = "/v1/model-bundles"

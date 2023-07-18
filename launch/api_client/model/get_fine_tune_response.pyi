@@ -37,20 +37,84 @@ class GetFineTuneResponse(schemas.DictSchema):
         class properties:
             fine_tune_id = schemas.StrSchema
 
-            @staticmethod
-            def status() -> typing.Type["BatchJobStatus"]:
-                return BatchJobStatus
+            class status(
+                schemas.ComposedSchema,
+            ):
+                class MetaOapg:
+                    @classmethod
+                    @functools.lru_cache()
+                    def all_of(cls):
+                        # we need this here to make our import statements work
+                        # we must store _composed_schemas in here so the code is only run
+                        # when we invoke this method. If we kept this at the class
+                        # level we would get an error because the class level
+                        # code would be run when this module is imported, and these composed
+                        # classes don't exist yet because their module has not finished
+                        # loading
+                        return [
+                            BatchJobStatus,
+                        ]
+                def __new__(
+                    cls,
+                    *_args: typing.Union[
+                        dict,
+                        frozendict.frozendict,
+                        str,
+                        date,
+                        datetime,
+                        uuid.UUID,
+                        int,
+                        float,
+                        decimal.Decimal,
+                        bool,
+                        None,
+                        list,
+                        tuple,
+                        bytes,
+                        io.FileIO,
+                        io.BufferedReader,
+                    ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                    **kwargs: typing.Union[
+                        schemas.AnyTypeSchema,
+                        dict,
+                        frozendict.frozendict,
+                        str,
+                        date,
+                        datetime,
+                        uuid.UUID,
+                        int,
+                        float,
+                        decimal.Decimal,
+                        None,
+                        list,
+                        tuple,
+                        bytes,
+                    ],
+                ) -> "status":
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                        **kwargs,
+                    )
+            fine_tuned_model = schemas.StrSchema
             __annotations__ = {
                 "fine_tune_id": fine_tune_id,
                 "status": status,
+                "fine_tuned_model": fine_tuned_model,
             }
     fine_tune_id: MetaOapg.properties.fine_tune_id
-    status: "BatchJobStatus"
+    status: MetaOapg.properties.status
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["fine_tune_id"]) -> MetaOapg.properties.fine_tune_id: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus": ...
+    def __getitem__(self, name: typing_extensions.Literal["status"]) -> MetaOapg.properties.status: ...
+    @typing.overload
+    def __getitem__(
+        self, name: typing_extensions.Literal["fine_tuned_model"]
+    ) -> MetaOapg.properties.fine_tuned_model: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -59,6 +123,7 @@ class GetFineTuneResponse(schemas.DictSchema):
             typing_extensions.Literal[
                 "fine_tune_id",
                 "status",
+                "fine_tuned_model",
             ],
             str,
         ],
@@ -68,7 +133,11 @@ class GetFineTuneResponse(schemas.DictSchema):
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["fine_tune_id"]) -> MetaOapg.properties.fine_tune_id: ...
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus": ...
+    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> MetaOapg.properties.status: ...
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["fine_tuned_model"]
+    ) -> typing.Union[MetaOapg.properties.fine_tuned_model, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
@@ -77,6 +146,7 @@ class GetFineTuneResponse(schemas.DictSchema):
             typing_extensions.Literal[
                 "fine_tune_id",
                 "status",
+                "fine_tuned_model",
             ],
             str,
         ],
@@ -92,7 +162,26 @@ class GetFineTuneResponse(schemas.DictSchema):
             MetaOapg.properties.fine_tune_id,
             str,
         ],
-        status: "BatchJobStatus",
+        status: typing.Union[
+            MetaOapg.properties.status,
+            dict,
+            frozendict.frozendict,
+            str,
+            date,
+            datetime,
+            uuid.UUID,
+            int,
+            float,
+            decimal.Decimal,
+            bool,
+            None,
+            list,
+            tuple,
+            bytes,
+            io.FileIO,
+            io.BufferedReader,
+        ],
+        fine_tuned_model: typing.Union[MetaOapg.properties.fine_tuned_model, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -116,6 +205,7 @@ class GetFineTuneResponse(schemas.DictSchema):
             *_args,
             fine_tune_id=fine_tune_id,
             status=status,
+            fine_tuned_model=fine_tuned_model,
             _configuration=_configuration,
             **kwargs,
         )

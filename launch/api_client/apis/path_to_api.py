@@ -39,6 +39,9 @@ from launch.api_client.apis.paths.v1_llm_fine_tunes_fine_tune_id import (
 from launch.api_client.apis.paths.v1_llm_fine_tunes_fine_tune_id_cancel import (
     V1LlmFineTunesFineTuneIdCancel,
 )
+from launch.api_client.apis.paths.v1_llm_fine_tunes_fine_tune_id_events import (
+    V1LlmFineTunesFineTuneIdEvents,
+)
 from launch.api_client.apis.paths.v1_llm_model_endpoints import (
     V1LlmModelEndpoints,
 )
@@ -99,6 +102,7 @@ PathToApi = typing_extensions.TypedDict(
         PathValues.V1_LLM_FINETUNES: V1LlmFineTunes,
         PathValues.V1_LLM_FINETUNES_FINE_TUNE_ID: V1LlmFineTunesFineTuneId,
         PathValues.V1_LLM_FINETUNES_FINE_TUNE_ID_CANCEL: V1LlmFineTunesFineTuneIdCancel,
+        PathValues.V1_LLM_FINETUNES_FINE_TUNE_ID_EVENTS: V1LlmFineTunesFineTuneIdEvents,
         PathValues.V1_LLM_MODELENDPOINTS: V1LlmModelEndpoints,
         PathValues.V1_LLM_MODELENDPOINTS_MODEL_ENDPOINT_NAME: V1LlmModelEndpointsModelEndpointName,
         PathValues.V1_MODELBUNDLES: V1ModelBundles,
@@ -137,6 +141,7 @@ path_to_api = PathToApi(
         PathValues.V1_LLM_FINETUNES: V1LlmFineTunes,
         PathValues.V1_LLM_FINETUNES_FINE_TUNE_ID: V1LlmFineTunesFineTuneId,
         PathValues.V1_LLM_FINETUNES_FINE_TUNE_ID_CANCEL: V1LlmFineTunesFineTuneIdCancel,
+        PathValues.V1_LLM_FINETUNES_FINE_TUNE_ID_EVENTS: V1LlmFineTunesFineTuneIdEvents,
         PathValues.V1_LLM_MODELENDPOINTS: V1LlmModelEndpoints,
         PathValues.V1_LLM_MODELENDPOINTS_MODEL_ENDPOINT_NAME: V1LlmModelEndpointsModelEndpointName,
         PathValues.V1_MODELBUNDLES: V1ModelBundles,
