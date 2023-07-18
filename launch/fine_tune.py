@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -12,6 +12,12 @@ class BatchJobStatus(str, Enum):
     CANCELLED = "CANCELLED"
     UNDEFINED = "UNDEFINED"
     TIMEOUT = "TIMEOUT"
+
+
+class LLMFineTuneEvent(BaseModel):
+    timestamp: Optional[float] = None
+    message: str
+    level: str
 
 
 class CreateFineTuneResponse(BaseModel):
@@ -34,3 +40,7 @@ class ListFineTunesResponse(BaseModel):
 class CancelFineTuneResponse(BaseModel):
     success: bool
     """Whether cancellation was successful"""
+
+
+class GetFineTuneEventsResponse(BaseModel):
+    events: List[LLMFineTuneEvent]

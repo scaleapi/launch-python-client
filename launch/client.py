@@ -125,6 +125,7 @@ from launch.find_packages import find_packages_from_imports, get_imports
 from launch.fine_tune import (
     CancelFineTuneResponse,
     CreateFineTuneResponse,
+    GetFineTuneEventsResponse,
     GetFineTuneResponse,
     ListFineTunesResponse,
 )
@@ -3066,6 +3067,26 @@ class LaunchClient:
             )
             resp = CancelFineTuneResponse.parse_raw(response.response.data)
 
+        return resp
+
+    def get_fine_tune_events(self, fine_tune_id: str) -> GetFineTuneEventsResponse:
+        """
+        Get list of fine-tune events
+
+        Parameters:
+            fine_tune_id: ID of the fine-tune
+
+        Returns:
+            GetFineTuneEventsResponse: a list of all the events of the fine-tune
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"fine_tune_id": fine_tune_id})
+            response = api_instance.get_fine_tune_events_v1_llm_fine_tunes_fine_tune_id_events_get(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = GetFineTuneEventsResponse.parse_raw(response.response.data)
         return resp
 
 
