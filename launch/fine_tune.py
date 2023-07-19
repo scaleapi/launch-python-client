@@ -28,6 +28,11 @@ class CreateFineTuneResponse(BaseModel):
 class GetFineTuneResponse(BaseModel):
     fine_tune_id: str
     """ID of the requested job"""
+    fine_tuned_model: Optional[str]
+    """
+    Name of the resulting fine-tuned model. This can be plugged into the
+    Completion API ones the fine-tune is complete
+    """
     status: BatchJobStatus
     """Status of the requested job"""
 
