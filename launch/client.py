@@ -121,6 +121,13 @@ from launch.docker_image_batch_job_bundle import (
     DockerImageBatchJobBundleResponse,
     ListDockerImageBatchJobBundleResponse,
 )
+from launch.file import (
+    DeleteFileResponse,
+    GetFileContentResponse,
+    GetFileResponse,
+    ListFilesResponse,
+    UploadFileResponse,
+)
 from launch.find_packages import find_packages_from_imports, get_imports
 from launch.fine_tune import (
     CancelFineTuneResponse,
@@ -3087,6 +3094,122 @@ class LaunchClient:
                 skip_deserialization=True,
             )
             resp = GetFineTuneEventsResponse.parse_raw(response.response.data)
+        return resp
+
+    def upload_file(
+        self,
+        file_path: str,
+    ) -> UploadFileResponse:
+        """
+        Upload a file
+
+        Parameters:
+            file_path: Path to a local file to upload.
+
+        Returns:
+            UploadFileResponse: ID of the created file
+        """
+        with open(file_path, "rb") as file:
+            files = {"file": file}
+
+            with ApiClient(self.configuration) as api_client:
+                api_instance = DefaultApi(api_client)
+                response = api_instance.upload_file_v1_files_post(
+                    body=files,
+                    skip_deserialization=True,
+                )
+                resp = UploadFileResponse.parse_raw(response.response.data)
+
+        return resp
+
+    def get_file(
+        self,
+        file_id: str,
+    ) -> GetFileResponse:
+        """
+        Get metadata about a file
+
+        Parameters:
+            file_id: ID of the file
+
+        Returns:
+            GetFileResponse: ID, filename, and size of the requested file
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"file_id": file_id})
+            response = api_instance.get_file_v1_files_file_id_get(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = GetFileResponse.parse_raw(response.response.data)
+
+        return resp
+
+    def list_files(
+        self,
+    ) -> ListFilesResponse:
+        """
+        List files
+
+        Returns:
+            ListFilesResponse: list of all files (ID, filename, and size)
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            response = api_instance.list_files_v1_files_get(  # type: ignore
+                skip_deserialization=True,
+            )
+            resp = ListFilesResponse.parse_raw(response.response.data)
+
+        return resp
+
+    def delete_file(
+        self,
+        file_id: str,
+    ) -> DeleteFileResponse:
+        """
+        Delete a file
+
+        Parameters:
+            file_id: ID of the file
+
+        Returns:
+            DeleteFileResponse: whether the deletion was successful
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"file_id": file_id})
+            response = api_instance.delete_file_v1_files_file_id_delete(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = DeleteFileResponse.parse_raw(response.response.data)
+
+        return resp
+
+    def get_file_content(
+        self,
+        file_id: str,
+    ) -> GetFileContentResponse:
+        """
+        Get a file's content
+
+        Parameters:
+            file_id: ID of the file
+
+        Returns:
+            GetFileContentResponse: ID and content of the requested file
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"file_id": file_id})
+            response = api_instance.get_file_content_v1_files_file_id_content_get(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = GetFileContentResponse.parse_raw(response.response.data)
+
         return resp
 
 
