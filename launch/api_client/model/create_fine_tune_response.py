@@ -32,19 +32,19 @@ class CreateFineTuneResponse(schemas.DictSchema):
 
     class MetaOapg:
         required = {
-            "fine_tune_id",
+            "id",
         }
 
         class properties:
-            fine_tune_id = schemas.StrSchema
+            id = schemas.StrSchema
             __annotations__ = {
-                "fine_tune_id": fine_tune_id,
+                "id": id,
             }
 
-    fine_tune_id: MetaOapg.properties.fine_tune_id
+    id: MetaOapg.properties.id
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["fine_tune_id"]) -> MetaOapg.properties.fine_tune_id:
+    def __getitem__(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id:
         ...
 
     @typing.overload
@@ -54,7 +54,7 @@ class CreateFineTuneResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["fine_tune_id",],
+            typing_extensions.Literal["id",],
             str,
         ],
     ):
@@ -62,7 +62,7 @@ class CreateFineTuneResponse(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["fine_tune_id"]) -> MetaOapg.properties.fine_tune_id:
+    def get_item_oapg(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id:
         ...
 
     @typing.overload
@@ -72,7 +72,7 @@ class CreateFineTuneResponse(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["fine_tune_id",],
+            typing_extensions.Literal["id",],
             str,
         ],
     ):
@@ -84,8 +84,8 @@ class CreateFineTuneResponse(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        fine_tune_id: typing.Union[
-            MetaOapg.properties.fine_tune_id,
+        id: typing.Union[
+            MetaOapg.properties.id,
             str,
         ],
         _configuration: typing.Optional[schemas.Configuration] = None,
@@ -109,7 +109,7 @@ class CreateFineTuneResponse(schemas.DictSchema):
         return super().__new__(
             cls,
             *_args,
-            fine_tune_id=fine_tune_id,
+            id=id,
             _configuration=_configuration,
             **kwargs,
         )

@@ -32,12 +32,12 @@ class GetFineTuneResponse(schemas.DictSchema):
 
     class MetaOapg:
         required = {
-            "fine_tune_id",
+            "id",
             "status",
         }
 
         class properties:
-            fine_tune_id = schemas.StrSchema
+            id = schemas.StrSchema
 
             class status(
                 schemas.ComposedSchema,
@@ -104,16 +104,16 @@ class GetFineTuneResponse(schemas.DictSchema):
 
             fine_tuned_model = schemas.StrSchema
             __annotations__ = {
-                "fine_tune_id": fine_tune_id,
+                "id": id,
                 "status": status,
                 "fine_tuned_model": fine_tuned_model,
             }
 
-    fine_tune_id: MetaOapg.properties.fine_tune_id
+    id: MetaOapg.properties.id
     status: MetaOapg.properties.status
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["fine_tune_id"]) -> MetaOapg.properties.fine_tune_id:
+    def __getitem__(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id:
         ...
 
     @typing.overload
@@ -132,7 +132,7 @@ class GetFineTuneResponse(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "fine_tune_id",
+                "id",
                 "status",
                 "fine_tuned_model",
             ],
@@ -143,7 +143,7 @@ class GetFineTuneResponse(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["fine_tune_id"]) -> MetaOapg.properties.fine_tune_id:
+    def get_item_oapg(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id:
         ...
 
     @typing.overload
@@ -164,7 +164,7 @@ class GetFineTuneResponse(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "fine_tune_id",
+                "id",
                 "status",
                 "fine_tuned_model",
             ],
@@ -179,8 +179,8 @@ class GetFineTuneResponse(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        fine_tune_id: typing.Union[
-            MetaOapg.properties.fine_tune_id,
+        id: typing.Union[
+            MetaOapg.properties.id,
             str,
         ],
         status: typing.Union[
@@ -224,7 +224,7 @@ class GetFineTuneResponse(schemas.DictSchema):
         return super().__new__(
             cls,
             *_args,
-            fine_tune_id=fine_tune_id,
+            id=id,
             status=status,
             fine_tuned_model=fine_tuned_model,
             _configuration=_configuration,

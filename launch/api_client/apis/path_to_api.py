@@ -26,11 +26,6 @@ from launch.api_client.apis.paths.v1_docker_image_batch_jobs import (
 from launch.api_client.apis.paths.v1_docker_image_batch_jobs_batch_job_id import (
     V1DockerImageBatchJobsBatchJobId,
 )
-from launch.api_client.apis.paths.v1_files import V1Files
-from launch.api_client.apis.paths.v1_files_file_id import V1FilesFileId
-from launch.api_client.apis.paths.v1_files_file_id_content import (
-    V1FilesFileIdContent,
-)
 from launch.api_client.apis.paths.v1_llm_completions_stream import (
     V1LlmCompletionsStream,
 )
@@ -102,9 +97,6 @@ PathToApi = typing_extensions.TypedDict(
         PathValues.V1_DOCKERIMAGEBATCHJOBBUNDLES_DOCKER_IMAGE_BATCH_JOB_BUNDLE_ID: V1DockerImageBatchJobBundlesDockerImageBatchJobBundleId,
         PathValues.V1_DOCKERIMAGEBATCHJOBS: V1DockerImageBatchJobs,
         PathValues.V1_DOCKERIMAGEBATCHJOBS_BATCH_JOB_ID: V1DockerImageBatchJobsBatchJobId,
-        PathValues.V1_FILES: V1Files,
-        PathValues.V1_FILES_FILE_ID: V1FilesFileId,
-        PathValues.V1_FILES_FILE_ID_CONTENT: V1FilesFileIdContent,
         PathValues.V1_LLM_COMPLETIONSSTREAM: V1LlmCompletionsStream,
         PathValues.V1_LLM_COMPLETIONSSYNC: V1LlmCompletionsSync,
         PathValues.V1_LLM_FINETUNES: V1LlmFineTunes,
@@ -144,9 +136,6 @@ path_to_api = PathToApi(
         PathValues.V1_DOCKERIMAGEBATCHJOBBUNDLES_DOCKER_IMAGE_BATCH_JOB_BUNDLE_ID: V1DockerImageBatchJobBundlesDockerImageBatchJobBundleId,
         PathValues.V1_DOCKERIMAGEBATCHJOBS: V1DockerImageBatchJobs,
         PathValues.V1_DOCKERIMAGEBATCHJOBS_BATCH_JOB_ID: V1DockerImageBatchJobsBatchJobId,
-        PathValues.V1_FILES: V1Files,
-        PathValues.V1_FILES_FILE_ID: V1FilesFileId,
-        PathValues.V1_FILES_FILE_ID_CONTENT: V1FilesFileIdContent,
         PathValues.V1_LLM_COMPLETIONSSTREAM: V1LlmCompletionsStream,
         PathValues.V1_LLM_COMPLETIONSSYNC: V1LlmCompletionsSync,
         PathValues.V1_LLM_FINETUNES: V1LlmFineTunes,
