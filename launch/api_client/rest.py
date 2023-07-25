@@ -16,7 +16,7 @@ from urllib.parse import urlencode
 
 import certifi
 import urllib3
-from launch.api_client.exceptions import ApiException, ApiValueError
+from launch_client.exceptions import ApiException, ApiValueError
 from urllib3._collections import HTTPHeaderDict
 
 logger = logging.getLogger(__name__)

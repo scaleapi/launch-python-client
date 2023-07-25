@@ -19,7 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch.api_client import schemas  # noqa: F401
+from launch_client import schemas  # noqa: F401
 
 
 class CreateModelBundleV2Request(schemas.DictSchema):
@@ -265,12 +265,12 @@ class CreateModelBundleV2Request(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.cloudpickle_artifact_flavor import CloudpickleArtifactFlavor
-from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
-from launch.api_client.model.streaming_enhanced_runnable_image_flavor import (
+from launch_client.model.cloudpickle_artifact_flavor import CloudpickleArtifactFlavor
+from launch_client.model.runnable_image_flavor import RunnableImageFlavor
+from launch_client.model.streaming_enhanced_runnable_image_flavor import (
     StreamingEnhancedRunnableImageFlavor,
 )
-from launch.api_client.model.triton_enhanced_runnable_image_flavor import (
+from launch_client.model.triton_enhanced_runnable_image_flavor import (
     TritonEnhancedRunnableImageFlavor,
 )
-from launch.api_client.model.zip_artifact_flavor import ZipArtifactFlavor
+from launch_client.model.zip_artifact_flavor import ZipArtifactFlavor

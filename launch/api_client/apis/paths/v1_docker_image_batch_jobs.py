@@ -1,4 +1,4 @@
-from launch.api_client.paths.v1_docker_image_batch_jobs.post import ApiForpost
+from launch_client.paths.v1_docker_image_batch_jobs.post import ApiForpost
 
 
 class V1DockerImageBatchJobs(

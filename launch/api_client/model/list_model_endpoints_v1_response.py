@@ -19,7 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch.api_client import schemas  # noqa: F401
+from launch_client import schemas  # noqa: F401
 
 
 class ListModelEndpointsV1Response(schemas.DictSchema):
@@ -145,4 +145,4 @@ class ListModelEndpointsV1Response(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.get_model_endpoint_v1_response import GetModelEndpointV1Response
+from launch_client.model.get_model_endpoint_v1_response import GetModelEndpointV1Response

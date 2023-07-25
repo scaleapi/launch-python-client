@@ -19,7 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch.api_client import schemas  # noqa: F401
+from launch_client import schemas  # noqa: F401
 
 
 class ZipArtifactFlavor(schemas.DictSchema):
@@ -377,6 +377,6 @@ class ZipArtifactFlavor(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.custom_framework import CustomFramework
-from launch.api_client.model.pytorch_framework import PytorchFramework
-from launch.api_client.model.tensorflow_framework import TensorflowFramework
+from launch_client.model.custom_framework import CustomFramework
+from launch_client.model.pytorch_framework import PytorchFramework
+from launch_client.model.tensorflow_framework import TensorflowFramework

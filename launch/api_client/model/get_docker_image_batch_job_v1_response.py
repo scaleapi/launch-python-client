@@ -19,7 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch.api_client import schemas  # noqa: F401
+from launch_client import schemas  # noqa: F401
 
 
 class GetDockerImageBatchJobV1Response(schemas.DictSchema):
@@ -118,4 +118,4 @@ class GetDockerImageBatchJobV1Response(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.batch_job_status import BatchJobStatus
+from launch_client.model.batch_job_status import BatchJobStatus

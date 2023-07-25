@@ -14,13 +14,13 @@
 __version__ = "1.1.2"
 
 # import ApiClient
-from launch.api_client.api_client import ApiClient
+from launch_client.api_client import ApiClient
 
 # import Configuration
-from launch.api_client.configuration import Configuration
+from launch_client.configuration import Configuration
 
 # import exceptions
-from launch.api_client.exceptions import (
+from launch_client.exceptions import (
     ApiAttributeError,
     ApiException,
     ApiKeyError,

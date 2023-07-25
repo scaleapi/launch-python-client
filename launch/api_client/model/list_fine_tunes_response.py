@@ -19,7 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch.api_client import schemas  # noqa: F401
+from launch_client import schemas  # noqa: F401
 
 
 class ListFineTunesResponse(schemas.DictSchema):
@@ -140,4 +140,4 @@ class ListFineTunesResponse(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.get_fine_tune_response import GetFineTuneResponse
+from launch_client.model.get_fine_tune_response import GetFineTuneResponse

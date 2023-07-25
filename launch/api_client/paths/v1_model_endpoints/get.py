@@ -18,11 +18,11 @@ from datetime import date, datetime  # noqa: F401
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
 import urllib3
-from launch.api_client import schemas  # noqa: F401
-from launch.api_client import api_client, exceptions
-from launch.api_client.model.http_validation_error import HTTPValidationError
-from launch.api_client.model.list_model_endpoints_v1_response import ListModelEndpointsV1Response
-from launch.api_client.model.model_endpoint_order_by import ModelEndpointOrderBy
+from launch_client import schemas  # noqa: F401
+from launch_client import api_client, exceptions
+from launch_client.model.http_validation_error import HTTPValidationError
+from launch_client.model.list_model_endpoints_v1_response import ListModelEndpointsV1Response
+from launch_client.model.model_endpoint_order_by import ModelEndpointOrderBy
 from urllib3._collections import HTTPHeaderDict
 
 from . import path

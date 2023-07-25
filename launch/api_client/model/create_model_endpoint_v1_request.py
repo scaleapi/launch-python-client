@@ -19,7 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch.api_client import schemas  # noqa: F401
+from launch_client import schemas  # noqa: F401
 
 
 class CreateModelEndpointV1Request(schemas.DictSchema):
@@ -880,6 +880,6 @@ class CreateModelEndpointV1Request(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.callback_auth import CallbackAuth
-from launch.api_client.model.gpu_type import GpuType
-from launch.api_client.model.model_endpoint_type import ModelEndpointType
+from launch_client.model.callback_auth import CallbackAuth
+from launch_client.model.gpu_type import GpuType
+from launch_client.model.model_endpoint_type import ModelEndpointType

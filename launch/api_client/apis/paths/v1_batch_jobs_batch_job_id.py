@@ -1,5 +1,5 @@
-from launch.api_client.paths.v1_batch_jobs_batch_job_id.get import ApiForget
-from launch.api_client.paths.v1_batch_jobs_batch_job_id.put import ApiForput
+from launch_client.paths.v1_batch_jobs_batch_job_id.get import ApiForget
+from launch_client.paths.v1_batch_jobs_batch_job_id.put import ApiForput
 
 
 class V1BatchJobsBatchJobId(

@@ -21,8 +21,8 @@ from datetime import date, datetime, timedelta  # noqa: F401
 
 import frozendict
 from dateutil.parser.isoparser import _takes_ascii, isoparser
-from launch.api_client.configuration import Configuration
-from launch.api_client.exceptions import ApiTypeError, ApiValueError
+from launch_client.configuration import Configuration
+from launch_client.exceptions import ApiTypeError, ApiValueError
 
 
 class Unset(object):
