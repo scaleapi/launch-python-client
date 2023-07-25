@@ -21,12 +21,12 @@ class LLMFineTuneEvent(BaseModel):
 
 
 class CreateFineTuneResponse(BaseModel):
-    fine_tune_id: str
+    id: str
     """ID of the created fine-tuning job"""
 
 
 class GetFineTuneResponse(BaseModel):
-    fine_tune_id: str
+    id: str
     """ID of the requested job"""
     fine_tuned_model: Optional[str]
     """
