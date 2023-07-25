@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class CallbackBasicAuth(schemas.DictSchema):
@@ -64,15 +65,11 @@ class CallbackBasicAuth(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["password"]
-    ) -> MetaOapg.properties.password:
+    def __getitem__(self, name: typing_extensions.Literal["password"]) -> MetaOapg.properties.password:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["username"]
-    ) -> MetaOapg.properties.username:
+    def __getitem__(self, name: typing_extensions.Literal["username"]) -> MetaOapg.properties.username:
         ...
 
     @typing.overload
@@ -98,15 +95,11 @@ class CallbackBasicAuth(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["password"]
-    ) -> MetaOapg.properties.password:
+    def get_item_oapg(self, name: typing_extensions.Literal["password"]) -> MetaOapg.properties.password:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["username"]
-    ) -> MetaOapg.properties.username:
+    def get_item_oapg(self, name: typing_extensions.Literal["username"]) -> MetaOapg.properties.username:
         ...
 
     @typing.overload

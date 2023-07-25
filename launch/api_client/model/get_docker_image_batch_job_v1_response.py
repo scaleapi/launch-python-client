@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class GetDockerImageBatchJobV1Response(schemas.DictSchema):
@@ -56,9 +57,7 @@ class GetDockerImageBatchJobV1Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "status",
-            ],
+            typing_extensions.Literal["status",],
             str,
         ],
     ):
@@ -76,9 +75,7 @@ class GetDockerImageBatchJobV1Response(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "status",
-            ],
+            typing_extensions.Literal["status",],
             str,
         ],
     ):
@@ -118,4 +115,4 @@ class GetDockerImageBatchJobV1Response(schemas.DictSchema):
         )
 
 
-from launch_client.model.batch_job_status import BatchJobStatus
+from launch.api_client.model.batch_job_status import BatchJobStatus

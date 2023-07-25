@@ -1,4 +1,4 @@
-from launch_client.paths.v1_model_endpoints_api.get import ApiForget
+from launch.api_client.paths.v1_model_endpoints_api.get import ApiForget
 
 
 class V1ModelEndpointsApi(

@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class ListModelEndpointsV1Response(schemas.DictSchema):
@@ -65,9 +66,7 @@ class ListModelEndpointsV1Response(schemas.DictSchema):
     model_endpoints: MetaOapg.properties.model_endpoints
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_endpoints"]
-    ) -> MetaOapg.properties.model_endpoints:
+    def __getitem__(self, name: typing_extensions.Literal["model_endpoints"]) -> MetaOapg.properties.model_endpoints:
         ...
 
     @typing.overload
@@ -77,9 +76,7 @@ class ListModelEndpointsV1Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_endpoints",
-            ],
+            typing_extensions.Literal["model_endpoints",],
             str,
         ],
     ):
@@ -87,9 +84,7 @@ class ListModelEndpointsV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["model_endpoints"]
-    ) -> MetaOapg.properties.model_endpoints:
+    def get_item_oapg(self, name: typing_extensions.Literal["model_endpoints"]) -> MetaOapg.properties.model_endpoints:
         ...
 
     @typing.overload
@@ -99,9 +94,7 @@ class ListModelEndpointsV1Response(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_endpoints",
-            ],
+            typing_extensions.Literal["model_endpoints",],
             str,
         ],
     ):
@@ -145,4 +138,6 @@ class ListModelEndpointsV1Response(schemas.DictSchema):
         )
 
 
-from launch_client.model.get_model_endpoint_v1_response import GetModelEndpointV1Response
+from launch.api_client.model.get_model_endpoint_v1_response import (
+    GetModelEndpointV1Response,
+)

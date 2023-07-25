@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class ZipArtifactFlavor(schemas.DictSchema):
@@ -175,9 +176,7 @@ class ZipArtifactFlavor(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["framework"]
-    ) -> MetaOapg.properties.framework:
+    def __getitem__(self, name: typing_extensions.Literal["framework"]) -> MetaOapg.properties.framework:
         ...
 
     @typing.overload
@@ -193,21 +192,15 @@ class ZipArtifactFlavor(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["location"]
-    ) -> MetaOapg.properties.location:
+    def __getitem__(self, name: typing_extensions.Literal["location"]) -> MetaOapg.properties.location:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["requirements"]
-    ) -> MetaOapg.properties.requirements:
+    def __getitem__(self, name: typing_extensions.Literal["requirements"]) -> MetaOapg.properties.requirements:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["app_config"]
-    ) -> MetaOapg.properties.app_config:
+    def __getitem__(self, name: typing_extensions.Literal["app_config"]) -> MetaOapg.properties.app_config:
         ...
 
     @typing.overload
@@ -233,15 +226,11 @@ class ZipArtifactFlavor(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["flavor"]
-    ) -> MetaOapg.properties.flavor:
+    def get_item_oapg(self, name: typing_extensions.Literal["flavor"]) -> MetaOapg.properties.flavor:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["framework"]
-    ) -> MetaOapg.properties.framework:
+    def get_item_oapg(self, name: typing_extensions.Literal["framework"]) -> MetaOapg.properties.framework:
         ...
 
     @typing.overload
@@ -257,15 +246,11 @@ class ZipArtifactFlavor(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["location"]
-    ) -> MetaOapg.properties.location:
+    def get_item_oapg(self, name: typing_extensions.Literal["location"]) -> MetaOapg.properties.location:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["requirements"]
-    ) -> MetaOapg.properties.requirements:
+    def get_item_oapg(self, name: typing_extensions.Literal["requirements"]) -> MetaOapg.properties.requirements:
         ...
 
     @typing.overload
@@ -377,6 +362,6 @@ class ZipArtifactFlavor(schemas.DictSchema):
         )
 
 
-from launch_client.model.custom_framework import CustomFramework
-from launch_client.model.pytorch_framework import PytorchFramework
-from launch_client.model.tensorflow_framework import TensorflowFramework
+from launch.api_client.model.custom_framework import CustomFramework
+from launch.api_client.model.pytorch_framework import PytorchFramework
+from launch.api_client.model.tensorflow_framework import TensorflowFramework

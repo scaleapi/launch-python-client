@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class DeleteModelEndpointV1Response(schemas.DictSchema):
@@ -43,9 +44,7 @@ class DeleteModelEndpointV1Response(schemas.DictSchema):
     deleted: MetaOapg.properties.deleted
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["deleted"]
-    ) -> MetaOapg.properties.deleted:
+    def __getitem__(self, name: typing_extensions.Literal["deleted"]) -> MetaOapg.properties.deleted:
         ...
 
     @typing.overload
@@ -55,9 +54,7 @@ class DeleteModelEndpointV1Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "deleted",
-            ],
+            typing_extensions.Literal["deleted",],
             str,
         ],
     ):
@@ -65,9 +62,7 @@ class DeleteModelEndpointV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["deleted"]
-    ) -> MetaOapg.properties.deleted:
+    def get_item_oapg(self, name: typing_extensions.Literal["deleted"]) -> MetaOapg.properties.deleted:
         ...
 
     @typing.overload
@@ -77,9 +72,7 @@ class DeleteModelEndpointV1Response(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "deleted",
-            ],
+            typing_extensions.Literal["deleted",],
             str,
         ],
     ):

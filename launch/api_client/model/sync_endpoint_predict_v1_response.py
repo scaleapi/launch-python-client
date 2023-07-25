@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class SyncEndpointPredictV1Response(schemas.DictSchema):
@@ -58,9 +59,7 @@ class SyncEndpointPredictV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["traceback"]
-    ) -> MetaOapg.properties.traceback:
+    def __getitem__(self, name: typing_extensions.Literal["traceback"]) -> MetaOapg.properties.traceback:
         ...
 
     @typing.overload
@@ -171,4 +170,4 @@ class SyncEndpointPredictV1Response(schemas.DictSchema):
         )
 
 
-from launch_client.model.task_status import TaskStatus
+from launch.api_client.model.task_status import TaskStatus

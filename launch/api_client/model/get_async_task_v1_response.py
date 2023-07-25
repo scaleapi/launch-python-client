@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class GetAsyncTaskV1Response(schemas.DictSchema):
@@ -58,9 +59,7 @@ class GetAsyncTaskV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["task_id"]
-    ) -> MetaOapg.properties.task_id:
+    def __getitem__(self, name: typing_extensions.Literal["task_id"]) -> MetaOapg.properties.task_id:
         ...
 
     @typing.overload
@@ -68,9 +67,7 @@ class GetAsyncTaskV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["traceback"]
-    ) -> MetaOapg.properties.traceback:
+    def __getitem__(self, name: typing_extensions.Literal["traceback"]) -> MetaOapg.properties.traceback:
         ...
 
     @typing.overload
@@ -97,9 +94,7 @@ class GetAsyncTaskV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["task_id"]
-    ) -> MetaOapg.properties.task_id:
+    def get_item_oapg(self, name: typing_extensions.Literal["task_id"]) -> MetaOapg.properties.task_id:
         ...
 
     @typing.overload
@@ -194,4 +189,4 @@ class GetAsyncTaskV1Response(schemas.DictSchema):
         )
 
 
-from launch_client.model.task_status import TaskStatus
+from launch.api_client.model.task_status import TaskStatus

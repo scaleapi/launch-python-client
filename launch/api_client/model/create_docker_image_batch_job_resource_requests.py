@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class CreateDockerImageBatchJobResourceRequests(schemas.DictSchema):
@@ -269,9 +270,7 @@ class CreateDockerImageBatchJobResourceRequests(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["storage"]
-    ) -> MetaOapg.properties.storage:
+    def __getitem__(self, name: typing_extensions.Literal["storage"]) -> MetaOapg.properties.storage:
         ...
 
     @typing.overload
@@ -301,9 +300,7 @@ class CreateDockerImageBatchJobResourceRequests(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["gpu_type"]
-    ) -> typing.Union["GpuType", schemas.Unset]:
+    def get_item_oapg(self, name: typing_extensions.Literal["gpu_type"]) -> typing.Union["GpuType", schemas.Unset]:
         ...
 
     @typing.overload
@@ -370,9 +367,7 @@ class CreateDockerImageBatchJobResourceRequests(schemas.DictSchema):
             schemas.Unset,
         ] = schemas.unset,
         gpu_type: typing.Union["GpuType", schemas.Unset] = schemas.unset,
-        gpus: typing.Union[
-            MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset
-        ] = schemas.unset,
+        gpus: typing.Union[MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         memory: typing.Union[
             MetaOapg.properties.memory,
             dict,
@@ -444,4 +439,4 @@ class CreateDockerImageBatchJobResourceRequests(schemas.DictSchema):
         )
 
 
-from launch_client.model.gpu_type import GpuType
+from launch.api_client.model.gpu_type import GpuType

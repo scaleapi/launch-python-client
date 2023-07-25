@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
@@ -41,18 +42,14 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
 
                 def __getitem__(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
                 def get_item_oapg(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
@@ -169,9 +166,7 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["job_config"]
-    ) -> MetaOapg.properties.job_config:
+    def __getitem__(self, name: typing_extensions.Literal["job_config"]) -> MetaOapg.properties.job_config:
         ...
 
     @typing.overload
@@ -201,9 +196,7 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["labels"]
-    ) -> MetaOapg.properties.labels:
+    def get_item_oapg(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels:
         ...
 
     @typing.overload
@@ -320,6 +313,6 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
         )
 
 
-from launch_client.model.create_docker_image_batch_job_resource_requests import (
+from launch.api_client.model.create_docker_image_batch_job_resource_requests import (
     CreateDockerImageBatchJobResourceRequests,
 )

@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class UpdateModelEndpointV1Request(schemas.DictSchema):
@@ -128,18 +129,14 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
 
                 def __getitem__(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
                 def get_item_oapg(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
@@ -371,9 +368,7 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
             }
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["billing_tags"]
-    ) -> MetaOapg.properties.billing_tags:
+    def __getitem__(self, name: typing_extensions.Literal["billing_tags"]) -> MetaOapg.properties.billing_tags:
         ...
 
     @typing.overload
@@ -381,9 +376,7 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["default_callback_auth"]
-    ) -> "CallbackAuth":
+    def __getitem__(self, name: typing_extensions.Literal["default_callback_auth"]) -> "CallbackAuth":
         ...
 
     @typing.overload
@@ -401,9 +394,7 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["high_priority"]
-    ) -> MetaOapg.properties.high_priority:
+    def __getitem__(self, name: typing_extensions.Literal["high_priority"]) -> MetaOapg.properties.high_priority:
         ...
 
     @typing.overload
@@ -411,9 +402,7 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["max_workers"]
-    ) -> MetaOapg.properties.max_workers:
+    def __getitem__(self, name: typing_extensions.Literal["max_workers"]) -> MetaOapg.properties.max_workers:
         ...
 
     @typing.overload
@@ -421,33 +410,23 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["metadata"]
-    ) -> MetaOapg.properties.metadata:
+    def __getitem__(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["min_workers"]
-    ) -> MetaOapg.properties.min_workers:
+    def __getitem__(self, name: typing_extensions.Literal["min_workers"]) -> MetaOapg.properties.min_workers:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_bundle_id"]
-    ) -> MetaOapg.properties.model_bundle_id:
+    def __getitem__(self, name: typing_extensions.Literal["model_bundle_id"]) -> MetaOapg.properties.model_bundle_id:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["optimize_costs"]
-    ) -> MetaOapg.properties.optimize_costs:
+    def __getitem__(self, name: typing_extensions.Literal["optimize_costs"]) -> MetaOapg.properties.optimize_costs:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["per_worker"]
-    ) -> MetaOapg.properties.per_worker:
+    def __getitem__(self, name: typing_extensions.Literal["per_worker"]) -> MetaOapg.properties.per_worker:
         ...
 
     @typing.overload
@@ -457,21 +436,15 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["prewarm"]
-    ) -> MetaOapg.properties.prewarm:
+    def __getitem__(self, name: typing_extensions.Literal["prewarm"]) -> MetaOapg.properties.prewarm:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["public_inference"]
-    ) -> MetaOapg.properties.public_inference:
+    def __getitem__(self, name: typing_extensions.Literal["public_inference"]) -> MetaOapg.properties.public_inference:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["storage"]
-    ) -> MetaOapg.properties.storage:
+    def __getitem__(self, name: typing_extensions.Literal["storage"]) -> MetaOapg.properties.storage:
         ...
 
     @typing.overload
@@ -533,9 +506,7 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["gpu_type"]
-    ) -> typing.Union["GpuType", schemas.Unset]:
+    def get_item_oapg(self, name: typing_extensions.Literal["gpu_type"]) -> typing.Union["GpuType", schemas.Unset]:
         ...
 
     @typing.overload
@@ -689,18 +660,10 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
             MetaOapg.properties.default_callback_url, str, schemas.Unset
         ] = schemas.unset,
         gpu_type: typing.Union["GpuType", schemas.Unset] = schemas.unset,
-        gpus: typing.Union[
-            MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset
-        ] = schemas.unset,
-        high_priority: typing.Union[
-            MetaOapg.properties.high_priority, bool, schemas.Unset
-        ] = schemas.unset,
-        labels: typing.Union[
-            MetaOapg.properties.labels, dict, frozendict.frozendict, schemas.Unset
-        ] = schemas.unset,
-        max_workers: typing.Union[
-            MetaOapg.properties.max_workers, decimal.Decimal, int, schemas.Unset
-        ] = schemas.unset,
+        gpus: typing.Union[MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset] = schemas.unset,
+        high_priority: typing.Union[MetaOapg.properties.high_priority, bool, schemas.Unset] = schemas.unset,
+        labels: typing.Union[MetaOapg.properties.labels, dict, frozendict.frozendict, schemas.Unset] = schemas.unset,
+        max_workers: typing.Union[MetaOapg.properties.max_workers, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         memory: typing.Union[
             MetaOapg.properties.memory,
             dict,
@@ -724,25 +687,15 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         metadata: typing.Union[
             MetaOapg.properties.metadata, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
-        min_workers: typing.Union[
-            MetaOapg.properties.min_workers, decimal.Decimal, int, schemas.Unset
-        ] = schemas.unset,
-        model_bundle_id: typing.Union[
-            MetaOapg.properties.model_bundle_id, str, schemas.Unset
-        ] = schemas.unset,
-        optimize_costs: typing.Union[
-            MetaOapg.properties.optimize_costs, bool, schemas.Unset
-        ] = schemas.unset,
-        per_worker: typing.Union[
-            MetaOapg.properties.per_worker, decimal.Decimal, int, schemas.Unset
-        ] = schemas.unset,
+        min_workers: typing.Union[MetaOapg.properties.min_workers, decimal.Decimal, int, schemas.Unset] = schemas.unset,
+        model_bundle_id: typing.Union[MetaOapg.properties.model_bundle_id, str, schemas.Unset] = schemas.unset,
+        optimize_costs: typing.Union[MetaOapg.properties.optimize_costs, bool, schemas.Unset] = schemas.unset,
+        per_worker: typing.Union[MetaOapg.properties.per_worker, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         post_inference_hooks: typing.Union[
             MetaOapg.properties.post_inference_hooks, list, tuple, schemas.Unset
         ] = schemas.unset,
         prewarm: typing.Union[MetaOapg.properties.prewarm, bool, schemas.Unset] = schemas.unset,
-        public_inference: typing.Union[
-            MetaOapg.properties.public_inference, bool, schemas.Unset
-        ] = schemas.unset,
+        public_inference: typing.Union[MetaOapg.properties.public_inference, bool, schemas.Unset] = schemas.unset,
         storage: typing.Union[
             MetaOapg.properties.storage,
             dict,
@@ -808,5 +761,5 @@ class UpdateModelEndpointV1Request(schemas.DictSchema):
         )
 
 
-from launch_client.model.callback_auth import CallbackAuth
-from launch_client.model.gpu_type import GpuType
+from launch.api_client.model.callback_auth import CallbackAuth
+from launch.api_client.model.gpu_type import GpuType

@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class CreateBatchJobResourceRequests(schemas.DictSchema):
@@ -270,9 +271,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["max_workers"]
-    ) -> MetaOapg.properties.max_workers:
+    def __getitem__(self, name: typing_extensions.Literal["max_workers"]) -> MetaOapg.properties.max_workers:
         ...
 
     @typing.overload
@@ -280,15 +279,11 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["per_worker"]
-    ) -> MetaOapg.properties.per_worker:
+    def __getitem__(self, name: typing_extensions.Literal["per_worker"]) -> MetaOapg.properties.per_worker:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["storage"]
-    ) -> MetaOapg.properties.storage:
+    def __getitem__(self, name: typing_extensions.Literal["storage"]) -> MetaOapg.properties.storage:
         ...
 
     @typing.overload
@@ -320,9 +315,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["gpu_type"]
-    ) -> typing.Union["GpuType", schemas.Unset]:
+    def get_item_oapg(self, name: typing_extensions.Literal["gpu_type"]) -> typing.Union["GpuType", schemas.Unset]:
         ...
 
     @typing.overload
@@ -403,12 +396,8 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
             schemas.Unset,
         ] = schemas.unset,
         gpu_type: typing.Union["GpuType", schemas.Unset] = schemas.unset,
-        gpus: typing.Union[
-            MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset
-        ] = schemas.unset,
-        max_workers: typing.Union[
-            MetaOapg.properties.max_workers, decimal.Decimal, int, schemas.Unset
-        ] = schemas.unset,
+        gpus: typing.Union[MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset] = schemas.unset,
+        max_workers: typing.Union[MetaOapg.properties.max_workers, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         memory: typing.Union[
             MetaOapg.properties.memory,
             dict,
@@ -429,9 +418,7 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
             io.BufferedReader,
             schemas.Unset,
         ] = schemas.unset,
-        per_worker: typing.Union[
-            MetaOapg.properties.per_worker, decimal.Decimal, int, schemas.Unset
-        ] = schemas.unset,
+        per_worker: typing.Union[MetaOapg.properties.per_worker, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         storage: typing.Union[
             MetaOapg.properties.storage,
             dict,
@@ -485,4 +472,4 @@ class CreateBatchJobResourceRequests(schemas.DictSchema):
         )
 
 
-from launch_client.model.gpu_type import GpuType
+from launch.api_client.model.gpu_type import GpuType

@@ -19,7 +19,8 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-from launch_client import schemas  # noqa: F401
+
+from launch.api_client import schemas  # noqa: F401
 
 
 class ModelBundleV2Response(schemas.DictSchema):
@@ -165,9 +166,7 @@ class ModelBundleV2Response(schemas.DictSchema):
     id: MetaOapg.properties.id
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at:
+    def __getitem__(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at:
         ...
 
     @typing.overload
@@ -179,9 +178,7 @@ class ModelBundleV2Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["metadata"]
-    ) -> MetaOapg.properties.metadata:
+    def __getitem__(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata:
         ...
 
     @typing.overload
@@ -195,9 +192,7 @@ class ModelBundleV2Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["schema_location"]
-    ) -> MetaOapg.properties.schema_location:
+    def __getitem__(self, name: typing_extensions.Literal["schema_location"]) -> MetaOapg.properties.schema_location:
         ...
 
     @typing.overload
@@ -223,15 +218,11 @@ class ModelBundleV2Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at:
+    def get_item_oapg(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["flavor"]
-    ) -> MetaOapg.properties.flavor:
+    def get_item_oapg(self, name: typing_extensions.Literal["flavor"]) -> MetaOapg.properties.flavor:
         ...
 
     @typing.overload
@@ -239,9 +230,7 @@ class ModelBundleV2Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["metadata"]
-    ) -> MetaOapg.properties.metadata:
+    def get_item_oapg(self, name: typing_extensions.Literal["metadata"]) -> MetaOapg.properties.metadata:
         ...
 
     @typing.overload
@@ -329,9 +318,7 @@ class ModelBundleV2Response(schemas.DictSchema):
             MetaOapg.properties.id,
             str,
         ],
-        schema_location: typing.Union[
-            MetaOapg.properties.schema_location, str, schemas.Unset
-        ] = schemas.unset,
+        schema_location: typing.Union[MetaOapg.properties.schema_location, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -365,12 +352,14 @@ class ModelBundleV2Response(schemas.DictSchema):
         )
 
 
-from launch_client.model.cloudpickle_artifact_flavor import CloudpickleArtifactFlavor
-from launch_client.model.runnable_image_flavor import RunnableImageFlavor
-from launch_client.model.streaming_enhanced_runnable_image_flavor import (
+from launch.api_client.model.cloudpickle_artifact_flavor import (
+    CloudpickleArtifactFlavor,
+)
+from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
+from launch.api_client.model.streaming_enhanced_runnable_image_flavor import (
     StreamingEnhancedRunnableImageFlavor,
 )
-from launch_client.model.triton_enhanced_runnable_image_flavor import (
+from launch.api_client.model.triton_enhanced_runnable_image_flavor import (
     TritonEnhancedRunnableImageFlavor,
 )
-from launch_client.model.zip_artifact_flavor import ZipArtifactFlavor
+from launch.api_client.model.zip_artifact_flavor import ZipArtifactFlavor
