@@ -41,7 +41,9 @@ class ListFineTunesResponse(schemas.DictSchema):
                         return GetFineTuneResponse
                 def __new__(
                     cls,
-                    _arg: typing.Union[typing.Tuple["GetFineTuneResponse"], typing.List["GetFineTuneResponse"]],
+                    _arg: typing.Union[
+                        typing.Tuple["GetFineTuneResponse"], typing.List["GetFineTuneResponse"]
+                    ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "jobs":
                     return super().__new__(
@@ -63,20 +65,28 @@ class ListFineTunesResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["jobs",],
+            typing_extensions.Literal[
+                "jobs",
+            ],
             str,
         ],
     ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["jobs"]) -> MetaOapg.properties.jobs: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["jobs"]
+    ) -> MetaOapg.properties.jobs: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["jobs",],
+            typing_extensions.Literal[
+                "jobs",
+            ],
             str,
         ],
     ):

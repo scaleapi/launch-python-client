@@ -16,9 +16,8 @@ from urllib.parse import urlencode
 
 import certifi
 import urllib3
-from urllib3._collections import HTTPHeaderDict
-
 from launch.api_client.exceptions import ApiException, ApiValueError
+from urllib3._collections import HTTPHeaderDict
 
 logger = logging.getLogger(__name__)
 
@@ -179,7 +178,9 @@ class RESTClientObject(object):
                     raise ApiException(status=0, reason=msg)
             # For `GET`, `HEAD`
             else:
-                r = self.pool_manager.request(method, url, preload_content=not stream, timeout=timeout, headers=headers)
+                r = self.pool_manager.request(
+                    method, url, preload_content=not stream, timeout=timeout, headers=headers
+                )
         except urllib3.exceptions.SSLError as e:
             msg = "{0}\n{1}".format(type(e).__name__, str(e))
             raise ApiException(status=0, reason=msg)
@@ -190,13 +191,23 @@ class RESTClientObject(object):
 
         return r
 
-    def GET(self, url, headers=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
-        return self.request("GET", url, headers=headers, stream=stream, timeout=timeout, fields=fields)
+    def GET(
+        self, url, headers=None, stream=False, timeout=None, fields=None
+    ) -> urllib3.HTTPResponse:
+        return self.request(
+            "GET", url, headers=headers, stream=stream, timeout=timeout, fields=fields
+        )
 
-    def HEAD(self, url, headers=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
-        return self.request("HEAD", url, headers=headers, stream=stream, timeout=timeout, fields=fields)
+    def HEAD(
+        self, url, headers=None, stream=False, timeout=None, fields=None
+    ) -> urllib3.HTTPResponse:
+        return self.request(
+            "HEAD", url, headers=headers, stream=stream, timeout=timeout, fields=fields
+        )
 
-    def OPTIONS(self, url, headers=None, body=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
+    def OPTIONS(
+        self, url, headers=None, body=None, stream=False, timeout=None, fields=None
+    ) -> urllib3.HTTPResponse:
         return self.request(
             "OPTIONS",
             url,
@@ -207,14 +218,30 @@ class RESTClientObject(object):
             fields=fields,
         )
 
-    def DELETE(self, url, headers=None, body=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
-        return self.request("DELETE", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields)
+    def DELETE(
+        self, url, headers=None, body=None, stream=False, timeout=None, fields=None
+    ) -> urllib3.HTTPResponse:
+        return self.request(
+            "DELETE", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields
+        )
 
-    def POST(self, url, headers=None, body=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
-        return self.request("POST", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields)
+    def POST(
+        self, url, headers=None, body=None, stream=False, timeout=None, fields=None
+    ) -> urllib3.HTTPResponse:
+        return self.request(
+            "POST", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields
+        )
 
-    def PUT(self, url, headers=None, body=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
-        return self.request("PUT", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields)
+    def PUT(
+        self, url, headers=None, body=None, stream=False, timeout=None, fields=None
+    ) -> urllib3.HTTPResponse:
+        return self.request(
+            "PUT", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields
+        )
 
-    def PATCH(self, url, headers=None, body=None, stream=False, timeout=None, fields=None) -> urllib3.HTTPResponse:
-        return self.request("PATCH", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields)
+    def PATCH(
+        self, url, headers=None, body=None, stream=False, timeout=None, fields=None
+    ) -> urllib3.HTTPResponse:
+        return self.request(
+            "PATCH", url, headers=headers, stream=stream, timeout=timeout, body=body, fields=fields
+        )

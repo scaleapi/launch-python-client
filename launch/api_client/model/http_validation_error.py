@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -40,7 +39,9 @@ class HTTPValidationError(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    _arg: typing.Union[typing.Tuple["ValidationError"], typing.List["ValidationError"]],
+                    _arg: typing.Union[
+                        typing.Tuple["ValidationError"], typing.List["ValidationError"]
+                    ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "detail":
                     return super().__new__(
@@ -67,7 +68,9 @@ class HTTPValidationError(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["detail",],
+            typing_extensions.Literal[
+                "detail",
+            ],
             str,
         ],
     ):
@@ -87,7 +90,9 @@ class HTTPValidationError(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["detail",],
+            typing_extensions.Literal[
+                "detail",
+            ],
             str,
         ],
     ):
@@ -99,7 +104,9 @@ class HTTPValidationError(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        detail: typing.Union[MetaOapg.properties.detail, list, tuple, schemas.Unset] = schemas.unset,
+        detail: typing.Union[
+            MetaOapg.properties.detail, list, tuple, schemas.Unset
+        ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

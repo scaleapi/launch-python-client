@@ -54,7 +54,9 @@ class GetBatchJobV1Response(schemas.DictSchema):
     status: "BatchJobStatus"
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["duration"]) -> MetaOapg.properties.duration: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["duration"]
+    ) -> MetaOapg.properties.duration: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus": ...
     @typing.overload
@@ -66,7 +68,9 @@ class GetBatchJobV1Response(schemas.DictSchema):
         self, name: typing_extensions.Literal["num_tasks_pending"]
     ) -> MetaOapg.properties.num_tasks_pending: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["result"]) -> MetaOapg.properties.result: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["result"]
+    ) -> MetaOapg.properties.result: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -85,7 +89,9 @@ class GetBatchJobV1Response(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["duration"]) -> MetaOapg.properties.duration: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["duration"]
+    ) -> MetaOapg.properties.duration: ...
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus": ...
     @typing.overload
@@ -101,7 +107,9 @@ class GetBatchJobV1Response(schemas.DictSchema):
         self, name: typing_extensions.Literal["result"]
     ) -> typing.Union[MetaOapg.properties.result, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

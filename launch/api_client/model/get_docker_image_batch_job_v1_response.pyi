@@ -49,7 +49,9 @@ class GetDockerImageBatchJobV1Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["status",],
+            typing_extensions.Literal[
+                "status",
+            ],
             str,
         ],
     ):
@@ -58,11 +60,15 @@ class GetDockerImageBatchJobV1Response(schemas.DictSchema):
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus": ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["status",],
+            typing_extensions.Literal[
+                "status",
+            ],
             str,
         ],
     ):
