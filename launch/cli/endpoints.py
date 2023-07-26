@@ -83,7 +83,7 @@ def list_endpoints(ctx: click.Context, name: Optional[str], orderby, descending:
                     str((servable_endpoint.model_endpoint.deployment_state or {}).get("available_workers", "")),
                     str((servable_endpoint.model_endpoint.deployment_state or {}).get("unavailable_workers", "")),
                     str((servable_endpoint.model_endpoint.resource_state or {}).get("gpus", "0")),
-                    servable_endpoint.model_endpoint.metadata or "{}",
+                    str(servable_endpoint.model_endpoint.metadata or {}),
                 )
                 endpoint_rows.append(row)
 
