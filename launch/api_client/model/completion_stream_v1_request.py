@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -57,9 +58,7 @@ class CompletionStreamV1Request(schemas.DictSchema):
     prompt: MetaOapg.properties.prompt
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["max_new_tokens"]
-    ) -> MetaOapg.properties.max_new_tokens:
+    def __getitem__(self, name: typing_extensions.Literal["max_new_tokens"]) -> MetaOapg.properties.max_new_tokens:
         ...
 
     @typing.overload
@@ -67,9 +66,7 @@ class CompletionStreamV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["temperature"]
-    ) -> MetaOapg.properties.temperature:
+    def __getitem__(self, name: typing_extensions.Literal["temperature"]) -> MetaOapg.properties.temperature:
         ...
 
     @typing.overload
@@ -91,21 +88,15 @@ class CompletionStreamV1Request(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["max_new_tokens"]
-    ) -> MetaOapg.properties.max_new_tokens:
+    def get_item_oapg(self, name: typing_extensions.Literal["max_new_tokens"]) -> MetaOapg.properties.max_new_tokens:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["prompt"]
-    ) -> MetaOapg.properties.prompt:
+    def get_item_oapg(self, name: typing_extensions.Literal["prompt"]) -> MetaOapg.properties.prompt:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["temperature"]
-    ) -> MetaOapg.properties.temperature:
+    def get_item_oapg(self, name: typing_extensions.Literal["temperature"]) -> MetaOapg.properties.temperature:
         ...
 
     @typing.overload
