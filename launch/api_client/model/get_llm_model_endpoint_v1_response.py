@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -85,7 +84,9 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["inference_framework"]) -> "LLMInferenceFramework":
+    def __getitem__(
+        self, name: typing_extensions.Literal["inference_framework"]
+    ) -> "LLMInferenceFramework":
         ...
 
     @typing.overload
@@ -103,11 +104,15 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name:
+    def __getitem__(
+        self, name: typing_extensions.Literal["model_name"]
+    ) -> MetaOapg.properties.model_name:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["num_shards"]) -> MetaOapg.properties.num_shards:
+    def __getitem__(
+        self, name: typing_extensions.Literal["num_shards"]
+    ) -> MetaOapg.properties.num_shards:
         ...
 
     @typing.overload
@@ -147,7 +152,9 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["inference_framework"]) -> "LLMInferenceFramework":
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["inference_framework"]
+    ) -> "LLMInferenceFramework":
         ...
 
     @typing.overload
@@ -177,7 +184,9 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["quantize"]) -> typing.Union["Quantization", schemas.Unset]:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["quantize"]
+    ) -> typing.Union["Quantization", schemas.Unset]:
         ...
 
     @typing.overload
@@ -228,8 +237,12 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         inference_framework_image_tag: typing.Union[
             MetaOapg.properties.inference_framework_image_tag, str, schemas.Unset
         ] = schemas.unset,
-        model_name: typing.Union[MetaOapg.properties.model_name, str, schemas.Unset] = schemas.unset,
-        num_shards: typing.Union[MetaOapg.properties.num_shards, decimal.Decimal, int, schemas.Unset] = schemas.unset,
+        model_name: typing.Union[
+            MetaOapg.properties.model_name, str, schemas.Unset
+        ] = schemas.unset,
+        num_shards: typing.Union[
+            MetaOapg.properties.num_shards, decimal.Decimal, int, schemas.Unset
+        ] = schemas.unset,
         quantize: typing.Union["Quantization", schemas.Unset] = schemas.unset,
         spec: typing.Union["GetModelEndpointV1Response", schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
@@ -267,11 +280,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.get_model_endpoint_v1_response import (
-    GetModelEndpointV1Response,
-)
-from launch.api_client.model.llm_inference_framework import (
-    LLMInferenceFramework,
-)
+from launch.api_client.model.get_model_endpoint_v1_response import GetModelEndpointV1Response
+from launch.api_client.model.llm_inference_framework import LLMInferenceFramework
 from launch.api_client.model.llm_source import LLMSource
 from launch.api_client.model.quantization import Quantization
