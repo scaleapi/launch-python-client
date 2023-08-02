@@ -90,6 +90,9 @@ from launch.api_client.model.model_bundle_framework_type import (
 from launch.api_client.model.model_bundle_packaging_type import (
     ModelBundlePackagingType,
 )
+from launch.api_client.model.model_download_response import (
+    ModelDownloadResponse,
+)
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
 from launch.api_client.model.pytorch_framework import PytorchFramework
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
@@ -3204,11 +3207,34 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"file_id": file_id})
-            response = api_instance.get_file_content_v1_files_file_id_content_get(  # type: ignore
+            response = api_instance.get_file_v1_files_file_id_get(  # type: ignore
                 path_params=path_params,
                 skip_deserialization=True,
             )
             resp = GetFileContentResponse.parse_raw(response.response.data)
+
+        return resp
+
+    def download_model_weights(self, model_name: str, download_format: str = "huggingface") -> ModelDownloadResponse:
+        """
+        download a finetuned model
+
+        Parameters:
+            model_name: name of the model to download
+            format: format of the model to download
+
+        Returns:
+            ModelDownloadResponse: the url with the link to download the model
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"model_name": model_name, "format": format})  # should this be
+            # TODO: fix this endpoint to make sure it works
+            response = api_instance.download_model_endpoint_v1_llm_model_endpoints_post(  # type: ignore
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = ModelDownloadResponse.parse_raw(response.response.data)
 
         return resp
 

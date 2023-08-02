@@ -50,6 +50,9 @@ from launch.api_client.apis.paths.v1_llm_fine_tunes_fine_tune_id_events import (
 from launch.api_client.apis.paths.v1_llm_model_endpoints import (
     V1LlmModelEndpoints,
 )
+from launch.api_client.apis.paths.v1_llm_model_endpoints_download import (
+    V1LlmModelEndpointsDownload,
+)
 from launch.api_client.apis.paths.v1_llm_model_endpoints_model_endpoint_name import (
     V1LlmModelEndpointsModelEndpointName,
 )
@@ -72,9 +75,6 @@ from launch.api_client.apis.paths.v1_model_endpoints_model_endpoint_id import (
 )
 from launch.api_client.apis.paths.v1_model_endpoints_schema_json import (
     V1ModelEndpointsSchemaJson,
-)
-from launch.api_client.apis.paths.v1_model_endpointsdownload import (
-    V1ModelEndpointsdownload,
 )
 from launch.api_client.apis.paths.v1_streaming_tasks import V1StreamingTasks
 from launch.api_client.apis.paths.v1_sync_tasks import V1SyncTasks
@@ -115,6 +115,7 @@ PathToApi = typing_extensions.TypedDict(
         PathValues.V1_LLM_FINETUNES_FINE_TUNE_ID_CANCEL: V1LlmFineTunesFineTuneIdCancel,
         PathValues.V1_LLM_FINETUNES_FINE_TUNE_ID_EVENTS: V1LlmFineTunesFineTuneIdEvents,
         PathValues.V1_LLM_MODELENDPOINTS: V1LlmModelEndpoints,
+        PathValues.V1_LLM_MODELENDPOINTS_DOWNLOAD: V1LlmModelEndpointsDownload,
         PathValues.V1_LLM_MODELENDPOINTS_MODEL_ENDPOINT_NAME: V1LlmModelEndpointsModelEndpointName,
         PathValues.V1_MODELBUNDLES: V1ModelBundles,
         PathValues.V1_MODELBUNDLES_CLONEWITHCHANGES: V1ModelBundlesCloneWithChanges,
@@ -124,7 +125,6 @@ PathToApi = typing_extensions.TypedDict(
         PathValues.V1_MODELENDPOINTSAPI: V1ModelEndpointsApi,
         PathValues.V1_MODELENDPOINTSSCHEMA_JSON: V1ModelEndpointsSchemaJson,
         PathValues.V1_MODELENDPOINTS_MODEL_ENDPOINT_ID: V1ModelEndpointsModelEndpointId,
-        PathValues.V1_MODELENDPOINTSDOWNLOAD: V1ModelEndpointsdownload,
         PathValues.V1_STREAMINGTASKS: V1StreamingTasks,
         PathValues.V1_SYNCTASKS: V1SyncTasks,
         PathValues.V2_MODELBUNDLES: V2ModelBundles,
@@ -158,6 +158,7 @@ path_to_api = PathToApi(
         PathValues.V1_LLM_FINETUNES_FINE_TUNE_ID_CANCEL: V1LlmFineTunesFineTuneIdCancel,
         PathValues.V1_LLM_FINETUNES_FINE_TUNE_ID_EVENTS: V1LlmFineTunesFineTuneIdEvents,
         PathValues.V1_LLM_MODELENDPOINTS: V1LlmModelEndpoints,
+        PathValues.V1_LLM_MODELENDPOINTS_DOWNLOAD: V1LlmModelEndpointsDownload,
         PathValues.V1_LLM_MODELENDPOINTS_MODEL_ENDPOINT_NAME: V1LlmModelEndpointsModelEndpointName,
         PathValues.V1_MODELBUNDLES: V1ModelBundles,
         PathValues.V1_MODELBUNDLES_CLONEWITHCHANGES: V1ModelBundlesCloneWithChanges,
@@ -167,7 +168,6 @@ path_to_api = PathToApi(
         PathValues.V1_MODELENDPOINTSAPI: V1ModelEndpointsApi,
         PathValues.V1_MODELENDPOINTSSCHEMA_JSON: V1ModelEndpointsSchemaJson,
         PathValues.V1_MODELENDPOINTS_MODEL_ENDPOINT_ID: V1ModelEndpointsModelEndpointId,
-        PathValues.V1_MODELENDPOINTSDOWNLOAD: V1ModelEndpointsdownload,
         PathValues.V1_STREAMINGTASKS: V1StreamingTasks,
         PathValues.V1_SYNCTASKS: V1SyncTasks,
         PathValues.V2_MODELBUNDLES: V2ModelBundles,

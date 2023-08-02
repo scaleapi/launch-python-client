@@ -33,22 +33,22 @@ class ModelDownloadRequest(schemas.DictSchema):
     class MetaOapg:
         required = {
             "model_name",
-            "format",
+            "download_format",
         }
 
         class properties:
-            format = schemas.StrSchema
+            download_format = schemas.StrSchema
             model_name = schemas.StrSchema
             __annotations__ = {
-                "format": format,
+                "download_format": download_format,
                 "model_name": model_name,
             }
 
     model_name: MetaOapg.properties.model_name
-    format: MetaOapg.properties.format
+    download_format: MetaOapg.properties.download_format
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["format"]) -> MetaOapg.properties.format:
+    def __getitem__(self, name: typing_extensions.Literal["download_format"]) -> MetaOapg.properties.download_format:
         ...
 
     @typing.overload
@@ -63,7 +63,7 @@ class ModelDownloadRequest(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "format",
+                "download_format",
                 "model_name",
             ],
             str,
@@ -73,7 +73,7 @@ class ModelDownloadRequest(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["format"]) -> MetaOapg.properties.format:
+    def get_item_oapg(self, name: typing_extensions.Literal["download_format"]) -> MetaOapg.properties.download_format:
         ...
 
     @typing.overload
@@ -88,7 +88,7 @@ class ModelDownloadRequest(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "format",
+                "download_format",
                 "model_name",
             ],
             str,
@@ -106,8 +106,8 @@ class ModelDownloadRequest(schemas.DictSchema):
             MetaOapg.properties.model_name,
             str,
         ],
-        format: typing.Union[
-            MetaOapg.properties.format,
+        download_format: typing.Union[
+            MetaOapg.properties.download_format,
             str,
         ],
         _configuration: typing.Optional[schemas.Configuration] = None,
@@ -132,7 +132,7 @@ class ModelDownloadRequest(schemas.DictSchema):
             cls,
             *_args,
             model_name=model_name,
-            format=format,
+            download_format=download_format,
             _configuration=_configuration,
             **kwargs,
         )

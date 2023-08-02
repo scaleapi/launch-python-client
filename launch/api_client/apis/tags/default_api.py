@@ -86,6 +86,9 @@ from launch.api_client.paths.v1_llm_model_endpoints.get import (
 from launch.api_client.paths.v1_llm_model_endpoints.post import (
     CreateModelEndpointV1LlmModelEndpointsPost,
 )
+from launch.api_client.paths.v1_llm_model_endpoints_download.post import (
+    DownloadModelEndpointV1LlmModelEndpointsDownloadPost,
+)
 from launch.api_client.paths.v1_llm_model_endpoints_model_endpoint_name.get import (
     GetModelEndpointV1LlmModelEndpointsModelEndpointNameGet,
 )
@@ -124,9 +127,6 @@ from launch.api_client.paths.v1_model_endpoints_model_endpoint_id.put import (
 )
 from launch.api_client.paths.v1_model_endpoints_schema_json.get import (
     GetModelEndpointsSchemaV1ModelEndpointsSchemaJsonGet,
-)
-from launch.api_client.paths.v1_model_endpointsdownload.post import (
-    DownloadModelEndpointV1ModelEndpointsDownloadPost,
 )
 from launch.api_client.paths.v1_streaming_tasks.post import (
     CreateStreamingInferenceTaskV1StreamingTasksPost,
@@ -170,7 +170,7 @@ class DefaultApi(
     CreateSyncInferenceTaskV1SyncTasksPost,
     DeleteFileV1FilesFileIdDelete,
     DeleteModelEndpointV1ModelEndpointsModelEndpointIdDelete,
-    DownloadModelEndpointV1ModelEndpointsDownloadPost,
+    DownloadModelEndpointV1LlmModelEndpointsDownloadPost,
     GetAsyncInferenceTaskV1AsyncTasksTaskIdGet,
     GetBatchJobV1BatchJobsBatchJobIdGet,
     GetDockerImageBatchJobModelBundleV1DockerImageBatchJobBundlesDockerImageBatchJobBundleIdGet,
