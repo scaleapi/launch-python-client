@@ -3221,17 +3221,16 @@ class LaunchClient:
 
         Parameters:
             model_name: name of the model to download
-            format: format of the model to download
+            download_format: format of the model to download
 
         Returns:
             ModelDownloadResponse: the url with the link to download the model
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            path_params = frozendict({"model_name": model_name, "format": format})  # should this be
-            # TODO: fix this endpoint to make sure it works
+            request_body = {"model_name": model_name, "download_format": download_format}
             response = api_instance.download_model_endpoint_v1_llm_model_endpoints_post(  # type: ignore
-                path_params=path_params,
+                body=request_body,
                 skip_deserialization=True,
             )
             resp = ModelDownloadResponse.parse_raw(response.response.data)
