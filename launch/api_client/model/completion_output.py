@@ -39,9 +39,31 @@ class CompletionOutput(schemas.DictSchema):
         class properties:
             num_completion_tokens = schemas.IntSchema
             text = schemas.StrSchema
+
+            class tokens(schemas.ListSchema):
+                class MetaOapg:
+                    @staticmethod
+                    def items() -> typing.Type["TokenOutput"]:
+                        return TokenOutput
+
+                def __new__(
+                    cls,
+                    _arg: typing.Union[typing.Tuple["TokenOutput"], typing.List["TokenOutput"]],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> "tokens":
+                    return super().__new__(
+                        cls,
+                        _arg,
+                        _configuration=_configuration,
+                    )
+
+                def __getitem__(self, i: int) -> "TokenOutput":
+                    return super().__getitem__(i)
+
             __annotations__ = {
                 "num_completion_tokens": num_completion_tokens,
                 "text": text,
+                "tokens": tokens,
             }
 
     num_completion_tokens: MetaOapg.properties.num_completion_tokens
@@ -58,6 +80,10 @@ class CompletionOutput(schemas.DictSchema):
         ...
 
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["tokens"]) -> MetaOapg.properties.tokens:
+        ...
+
+    @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema:
         ...
 
@@ -67,6 +93,7 @@ class CompletionOutput(schemas.DictSchema):
             typing_extensions.Literal[
                 "num_completion_tokens",
                 "text",
+                "tokens",
             ],
             str,
         ],
@@ -85,6 +112,12 @@ class CompletionOutput(schemas.DictSchema):
         ...
 
     @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["tokens"]
+    ) -> typing.Union[MetaOapg.properties.tokens, schemas.Unset]:
+        ...
+
+    @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
@@ -94,6 +127,7 @@ class CompletionOutput(schemas.DictSchema):
             typing_extensions.Literal[
                 "num_completion_tokens",
                 "text",
+                "tokens",
             ],
             str,
         ],
@@ -115,6 +149,7 @@ class CompletionOutput(schemas.DictSchema):
             MetaOapg.properties.text,
             str,
         ],
+        tokens: typing.Union[MetaOapg.properties.tokens, list, tuple, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -138,6 +173,10 @@ class CompletionOutput(schemas.DictSchema):
             *_args,
             num_completion_tokens=num_completion_tokens,
             text=text,
+            tokens=tokens,
             _configuration=_configuration,
             **kwargs,
         )
+
+
+from launch.api_client.model.token_output import TokenOutput
