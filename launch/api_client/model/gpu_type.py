@@ -36,7 +36,8 @@ class GpuType(schemas.EnumBase, schemas.StrSchema):
         enum_value_to_name = {
             "nvidia-tesla-t4": "TESLAT4",
             "nvidia-ampere-a10": "AMPEREA10",
-            "nvidia-a100": "A100",
+            "nvidia-ampere-a100": "AMPEREA100",
+            "nvidia-ampere-a100e": "AMPEREA100E",
         }
 
     @schemas.classproperty
@@ -48,5 +49,9 @@ class GpuType(schemas.EnumBase, schemas.StrSchema):
         return cls("nvidia-ampere-a10")
 
     @schemas.classproperty
-    def A100(cls):
-        return cls("nvidia-a100")
+    def AMPEREA100(cls):
+        return cls("nvidia-ampere-a100")
+
+    @schemas.classproperty
+    def AMPEREA100E(cls):
+        return cls("nvidia-ampere-a100e")

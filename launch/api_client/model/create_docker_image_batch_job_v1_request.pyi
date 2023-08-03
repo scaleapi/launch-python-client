@@ -69,6 +69,7 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
             docker_image_batch_job_bundle_id = schemas.StrSchema
             docker_image_batch_job_bundle_name = schemas.StrSchema
             job_config = schemas.DictSchema
+            override_job_max_runtime_s = schemas.IntSchema
 
             class resource_requests(
                 schemas.ComposedSchema,
@@ -136,6 +137,7 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
                 "docker_image_batch_job_bundle_id": docker_image_batch_job_bundle_id,
                 "docker_image_batch_job_bundle_name": docker_image_batch_job_bundle_name,
                 "job_config": job_config,
+                "override_job_max_runtime_s": override_job_max_runtime_s,
                 "resource_requests": resource_requests,
             }
     labels: MetaOapg.properties.labels
@@ -154,6 +156,10 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
     def __getitem__(self, name: typing_extensions.Literal["job_config"]) -> MetaOapg.properties.job_config: ...
     @typing.overload
     def __getitem__(
+        self, name: typing_extensions.Literal["override_job_max_runtime_s"]
+    ) -> MetaOapg.properties.override_job_max_runtime_s: ...
+    @typing.overload
+    def __getitem__(
         self, name: typing_extensions.Literal["resource_requests"]
     ) -> MetaOapg.properties.resource_requests: ...
     @typing.overload
@@ -166,6 +172,7 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
                 "docker_image_batch_job_bundle_id",
                 "docker_image_batch_job_bundle_name",
                 "job_config",
+                "override_job_max_runtime_s",
                 "resource_requests",
             ],
             str,
@@ -189,6 +196,10 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
     ) -> typing.Union[MetaOapg.properties.job_config, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["override_job_max_runtime_s"]
+    ) -> typing.Union[MetaOapg.properties.override_job_max_runtime_s, schemas.Unset]: ...
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["resource_requests"]
     ) -> typing.Union[MetaOapg.properties.resource_requests, schemas.Unset]: ...
     @typing.overload
@@ -201,6 +212,7 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
                 "docker_image_batch_job_bundle_id",
                 "docker_image_batch_job_bundle_name",
                 "job_config",
+                "override_job_max_runtime_s",
                 "resource_requests",
             ],
             str,
@@ -226,6 +238,9 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
         ] = schemas.unset,
         job_config: typing.Union[
             MetaOapg.properties.job_config, dict, frozendict.frozendict, schemas.Unset
+        ] = schemas.unset,
+        override_job_max_runtime_s: typing.Union[
+            MetaOapg.properties.override_job_max_runtime_s, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
         resource_requests: typing.Union[
             MetaOapg.properties.resource_requests,
@@ -272,6 +287,7 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
             docker_image_batch_job_bundle_id=docker_image_batch_job_bundle_id,
             docker_image_batch_job_bundle_name=docker_image_batch_job_bundle_name,
             job_config=job_config,
+            override_job_max_runtime_s=override_job_max_runtime_s,
             resource_requests=resource_requests,
             _configuration=_configuration,
             **kwargs,

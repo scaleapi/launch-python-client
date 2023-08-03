@@ -37,5 +37,8 @@ class GpuType(schemas.EnumBase, schemas.StrSchema):
     def AMPEREA10(cls):
         return cls("nvidia-ampere-a10")
     @schemas.classproperty
-    def A100(cls):
-        return cls("nvidia-a100")
+    def AMPEREA100(cls):
+        return cls("nvidia-ampere-a100")
+    @schemas.classproperty
+    def AMPEREA100E(cls):
+        return cls("nvidia-ampere-a100e")
