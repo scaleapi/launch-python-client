@@ -2898,7 +2898,7 @@ class LaunchClient:
         prompt: str,
         max_new_tokens: int,
         temperature: float,
-        stop_sequences: Optional[List[str]] = [],
+        stop_sequences: Optional[List[str]] = None,
         return_token_log_probs: Optional[bool] = False,
     ) -> CompletionSyncV1Response:
         """
@@ -2926,7 +2926,7 @@ class LaunchClient:
                 max_new_tokens=max_new_tokens,
                 prompt=prompt,
                 temperature=temperature,
-                stop_sequences=stop_sequences,
+                stop_sequences=stop_sequences if stop_sequences is not None else [],
                 return_token_log_probs=return_token_log_probs,
             )
             query_params = frozendict({"model_endpoint_name": endpoint_name})
