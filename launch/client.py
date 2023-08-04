@@ -2898,6 +2898,8 @@ class LaunchClient:
         prompt: str,
         max_new_tokens: int,
         temperature: float,
+        stop_sequences: Optional[List[str]] = [],
+        return_token_log_probs: Optional[bool] = False,
     ) -> CompletionSyncV1Response:
         """
         Run prompt completion on a sync LLM endpoint. Will fail if the endpoint is not sync.
@@ -2911,12 +2913,22 @@ class LaunchClient:
 
             temperature: The temperature to use for sampling
 
+            stop_sequences: List of sequences to stop the completion at
+
+            return_token_log_probs: Whether to return the log probabilities of the tokens
+
         Returns:
             Response for prompt completion
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            request = CompletionSyncV1Request(max_new_tokens=max_new_tokens, prompt=prompt, temperature=temperature)
+            request = CompletionSyncV1Request(
+                max_new_tokens=max_new_tokens,
+                prompt=prompt,
+                temperature=temperature,
+                stop_sequences=stop_sequences,
+                return_token_log_probs=return_token_log_probs,
+            )
             query_params = frozendict({"model_endpoint_name": endpoint_name})
             response = api_instance.create_completion_sync_task_v1_llm_completions_sync_post(  # type: ignore
                 body=request,
@@ -2932,6 +2944,8 @@ class LaunchClient:
         prompt: str,
         max_new_tokens: int,
         temperature: float,
+        stop_sequences: Optional[List[str]] = None,
+        return_token_log_probs: Optional[bool] = False,
     ) -> Iterable[CompletionStreamV1Response]:
         """
         Run prompt completion on an LLM endpoint in streaming fashion. Will fail if endpoint does not support streaming.
@@ -2945,10 +2959,20 @@ class LaunchClient:
 
             temperature: The temperature to use for sampling
 
+            stop_sequences: List of sequences to stop the completion at
+
+            return_token_log_probs: Whether to return the log probabilities of the tokens
+
         Returns:
             Iterable responses for prompt completion
         """
-        request = {"max_new_tokens": max_new_tokens, "prompt": prompt, "temperature": temperature}
+        request = {
+            "max_new_tokens": max_new_tokens,
+            "prompt": prompt,
+            "temperature": temperature,
+            "stop_sequences": stop_sequences,
+            "return_token_log_probs": return_token_log_probs,
+        }
         response = requests.post(
             url=f"{self.configuration.host}/v1/llm/completions-stream?model_endpoint_name={endpoint_name}",
             json=request,
