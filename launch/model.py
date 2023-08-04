@@ -6,10 +6,10 @@ from pydantic import BaseModel, Field
 class ModelDownloadRequest(BaseModel):
     """Request object for downloading a model."""
 
-    owner: str = Field(..., description="Owner ID.")
-    """ID of the model owner."""
     model_name: str = Field(..., description="Model name.")
     """Model name."""
+    download_format: str = Field(..., description="Download format.")
+    """Desired download format (default=huggingface)."""
 
 
 class ModelDownloadResponse(BaseModel):
