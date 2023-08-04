@@ -90,9 +90,6 @@ from launch.api_client.model.model_bundle_framework_type import (
 from launch.api_client.model.model_bundle_packaging_type import (
     ModelBundlePackagingType,
 )
-from launch.api_client.model.model_download_response import (
-    ModelDownloadResponse,
-)
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
 from launch.api_client.model.pytorch_framework import PytorchFramework
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
@@ -144,6 +141,7 @@ from launch.make_batch_file import (
     make_batch_input_dict_file,
     make_batch_input_file,
 )
+from launch.model import ModelDownloadResponse
 from launch.model_bundle import (
     CreateModelBundleV2Response,
     ListModelBundlesV2Response,
@@ -3229,7 +3227,7 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             request_body = {"model_name": model_name, "download_format": download_format}
-            response = api_instance.download_model_endpoint_v1_llm_model_endpoints_post(  # type: ignore
+            response = api_instance.download_model_endpoint_v1_llm_model_endpoints_download_post(  # type: ignore
                 body=request_body,
                 skip_deserialization=True,
             )

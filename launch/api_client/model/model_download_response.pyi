@@ -30,37 +30,64 @@ class ModelDownloadResponse(schemas.DictSchema):
 
     class MetaOapg:
         required = {
-            "url",
+            "urls",
         }
 
         class properties:
-            url = schemas.StrSchema
+            class urls(schemas.ListSchema):
+                class MetaOapg:
+                    items = schemas.StrSchema
+                def __new__(
+                    cls,
+                    _arg: typing.Union[
+                        typing.Tuple[
+                            typing.Union[
+                                MetaOapg.items,
+                                str,
+                            ]
+                        ],
+                        typing.List[
+                            typing.Union[
+                                MetaOapg.items,
+                                str,
+                            ]
+                        ],
+                    ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> "urls":
+                    return super().__new__(
+                        cls,
+                        _arg,
+                        _configuration=_configuration,
+                    )
+                def __getitem__(self, i: int) -> MetaOapg.items:
+                    return super().__getitem__(i)
             __annotations__ = {
-                "url": url,
+                "urls": urls,
             }
-    url: MetaOapg.properties.url
+    urls: MetaOapg.properties.urls
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["url"]) -> MetaOapg.properties.url: ...
+    def __getitem__(self, name: typing_extensions.Literal["urls"]) -> MetaOapg.properties.urls: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["url",],
+            typing_extensions.Literal["urls",],
             str,
         ],
     ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["url"]) -> MetaOapg.properties.url: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["urls"]) -> MetaOapg.properties.urls: ...
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["url",],
+            typing_extensions.Literal["urls",],
             str,
         ],
     ):
@@ -71,9 +98,10 @@ class ModelDownloadResponse(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        url: typing.Union[
-            MetaOapg.properties.url,
-            str,
+        urls: typing.Union[
+            MetaOapg.properties.urls,
+            list,
+            tuple,
         ],
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
@@ -96,7 +124,7 @@ class ModelDownloadResponse(schemas.DictSchema):
         return super().__new__(
             cls,
             *_args,
-            url=url,
+            urls=urls,
             _configuration=_configuration,
             **kwargs,
         )

@@ -153,12 +153,14 @@ class CreateFineTuneRequest(schemas.DictSchema):
             training_file = schemas.StrSchema
             suffix = schemas.StrSchema
             validation_file = schemas.StrSchema
+            wandb_config = schemas.DictSchema
             __annotations__ = {
                 "hyperparameters": hyperparameters,
                 "model": model,
                 "training_file": training_file,
                 "suffix": suffix,
                 "validation_file": validation_file,
+                "wandb_config": wandb_config,
             }
     training_file: MetaOapg.properties.training_file
     hyperparameters: MetaOapg.properties.hyperparameters
@@ -179,6 +181,8 @@ class CreateFineTuneRequest(schemas.DictSchema):
         self, name: typing_extensions.Literal["validation_file"]
     ) -> MetaOapg.properties.validation_file: ...
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["wandb_config"]) -> MetaOapg.properties.wandb_config: ...
+    @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
         self,
@@ -189,6 +193,7 @@ class CreateFineTuneRequest(schemas.DictSchema):
                 "training_file",
                 "suffix",
                 "validation_file",
+                "wandb_config",
             ],
             str,
         ],
@@ -212,6 +217,10 @@ class CreateFineTuneRequest(schemas.DictSchema):
         self, name: typing_extensions.Literal["validation_file"]
     ) -> typing.Union[MetaOapg.properties.validation_file, schemas.Unset]: ...
     @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["wandb_config"]
+    ) -> typing.Union[MetaOapg.properties.wandb_config, schemas.Unset]: ...
+    @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
@@ -222,6 +231,7 @@ class CreateFineTuneRequest(schemas.DictSchema):
                 "training_file",
                 "suffix",
                 "validation_file",
+                "wandb_config",
             ],
             str,
         ],
@@ -248,6 +258,9 @@ class CreateFineTuneRequest(schemas.DictSchema):
         ],
         suffix: typing.Union[MetaOapg.properties.suffix, str, schemas.Unset] = schemas.unset,
         validation_file: typing.Union[MetaOapg.properties.validation_file, str, schemas.Unset] = schemas.unset,
+        wandb_config: typing.Union[
+            MetaOapg.properties.wandb_config, dict, frozendict.frozendict, schemas.Unset
+        ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -274,6 +287,7 @@ class CreateFineTuneRequest(schemas.DictSchema):
             model=model,
             suffix=suffix,
             validation_file=validation_file,
+            wandb_config=wandb_config,
             _configuration=_configuration,
             **kwargs,
         )

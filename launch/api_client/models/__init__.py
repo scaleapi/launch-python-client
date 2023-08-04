@@ -210,6 +210,7 @@ from launch.api_client.model.sync_endpoint_predict_v1_response import (
 )
 from launch.api_client.model.task_status import TaskStatus
 from launch.api_client.model.tensorflow_framework import TensorflowFramework
+from launch.api_client.model.token_output import TokenOutput
 from launch.api_client.model.triton_enhanced_runnable_image_flavor import (
     TritonEnhancedRunnableImageFlavor,
 )
