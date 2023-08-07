@@ -34,6 +34,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             "name",
             "id",
             "source",
+            "status",
         }
 
         class properties:
@@ -47,6 +48,9 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             @staticmethod
             def source() -> typing.Type["LLMSource"]:
                 return LLMSource
+            @staticmethod
+            def status() -> typing.Type["ModelEndpointStatus"]:
+                return ModelEndpointStatus
             inference_framework_image_tag = schemas.StrSchema
             model_name = schemas.StrSchema
             num_shards = schemas.IntSchema
@@ -62,6 +66,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
                 "inference_framework": inference_framework,
                 "name": name,
                 "source": source,
+                "status": status,
                 "inference_framework_image_tag": inference_framework_image_tag,
                 "model_name": model_name,
                 "num_shards": num_shards,
@@ -72,6 +77,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
     name: MetaOapg.properties.name
     id: MetaOapg.properties.id
     source: "LLMSource"
+    status: "ModelEndpointStatus"
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
@@ -81,6 +87,8 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
     def __getitem__(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["source"]) -> "LLMSource": ...
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["status"]) -> "ModelEndpointStatus": ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["inference_framework_image_tag"]
@@ -103,6 +111,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
                 "inference_framework",
                 "name",
                 "source",
+                "status",
                 "inference_framework_image_tag",
                 "model_name",
                 "num_shards",
@@ -122,6 +131,8 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
     def get_item_oapg(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["source"]) -> "LLMSource": ...
+    @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "ModelEndpointStatus": ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["inference_framework_image_tag"]
@@ -152,6 +163,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
                 "inference_framework",
                 "name",
                 "source",
+                "status",
                 "inference_framework_image_tag",
                 "model_name",
                 "num_shards",
@@ -178,6 +190,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             str,
         ],
         source: "LLMSource",
+        status: "ModelEndpointStatus",
         inference_framework_image_tag: typing.Union[
             MetaOapg.properties.inference_framework_image_tag, str, schemas.Unset
         ] = schemas.unset,
@@ -210,6 +223,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             name=name,
             id=id,
             source=source,
+            status=status,
             inference_framework_image_tag=inference_framework_image_tag,
             model_name=model_name,
             num_shards=num_shards,
@@ -224,4 +238,5 @@ from launch_client.model.get_model_endpoint_v1_response import (
 )
 from launch_client.model.llm_inference_framework import LLMInferenceFramework
 from launch_client.model.llm_source import LLMSource
+from launch_client.model.model_endpoint_status import ModelEndpointStatus
 from launch_client.model.quantization import Quantization
