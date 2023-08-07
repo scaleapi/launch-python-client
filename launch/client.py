@@ -1386,7 +1386,7 @@ class LaunchClient:
         model_bundle: Union[ModelBundle, str],
         cpus: int = 3,
         memory: str = "8Gi",
-        storage: Optional[str] = None,
+        storage: str = "16Gi",
         gpus: int = 0,
         min_workers: int = 1,
         max_workers: int = 1,
