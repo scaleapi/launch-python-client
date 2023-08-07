@@ -2991,6 +2991,7 @@ class LaunchClient:
         validation_file: Optional[str] = None,
         fine_tuning_method: Optional[str] = None,
         hyperparameters: Optional[Dict[str, str]] = None,
+        wandb_config: Optional[Dict[str, Any]] = None,
         suffix: str = None,
     ) -> CreateFineTuneResponse:
         """
@@ -3006,6 +3007,7 @@ class LaunchClient:
             fine_tuning_method: Fine-tuning method. Currently unused,
                 but when different techniques are implemented we will expose this field.
             hyperparameters: Hyperparameters to pass in to training job.
+            wandb_config: Configuration for Weights and Biases. `api_key` must be provided which is the API key.
             suffix: Optional user-provided identifier suffix for the fine-tuned model.
 
         Returns:
@@ -3020,6 +3022,7 @@ class LaunchClient:
                 validation_file=validation_file,
                 fine_tuning_method=fine_tuning_method,
                 hyperparameters=hyperparameters,
+                wandb_config=wandb_config,
                 suffix=suffix,
             )
         )
