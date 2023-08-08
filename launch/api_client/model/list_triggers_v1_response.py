@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -134,4 +135,6 @@ class ListTriggersV1Response(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.get_trigger_v1_response import GetTriggerV1Response
+from launch.api_client.model.get_trigger_v1_response import (
+    GetTriggerV1Response,
+)

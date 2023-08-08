@@ -18,6 +18,8 @@ from datetime import date, datetime  # noqa: F401
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
 import urllib3
+from urllib3._collections import HTTPHeaderDict
+
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
 from launch.api_client.model.http_validation_error import HTTPValidationError
@@ -25,7 +27,6 @@ from launch.api_client.model.list_docker_image_batch_job_bundle_v1_response impo
     ListDockerImageBatchJobBundleV1Response,
 )
 from launch.api_client.model.model_bundle_order_by import ModelBundleOrderBy
-from urllib3._collections import HTTPHeaderDict
 
 from . import path
 

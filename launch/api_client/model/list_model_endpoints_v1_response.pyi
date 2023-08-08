@@ -125,4 +125,6 @@ class ListModelEndpointsV1Response(schemas.DictSchema):
             **kwargs,
         )
 
-from launch_client.model.get_model_endpoint_v1_response import GetModelEndpointV1Response
+from launch_client.model.get_model_endpoint_v1_response import (
+    GetModelEndpointV1Response,
+)

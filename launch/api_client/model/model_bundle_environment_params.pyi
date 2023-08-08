@@ -159,4 +159,6 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
             **kwargs,
         )
 
-from launch_client.model.model_bundle_framework_type import ModelBundleFrameworkType
+from launch_client.model.model_bundle_framework_type import (
+    ModelBundleFrameworkType,
+)

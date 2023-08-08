@@ -20,7 +20,9 @@ import typing_extensions  # noqa: F401
 import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
-from launch_client.model.create_llm_model_endpoint_v1_request import CreateLLMModelEndpointV1Request
+from launch_client.model.create_llm_model_endpoint_v1_request import (
+    CreateLLMModelEndpointV1Request,
+)
 from launch_client.model.create_llm_model_endpoint_v1_response import (
     CreateLLMModelEndpointV1Response,
 )

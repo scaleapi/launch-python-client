@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -136,4 +137,6 @@ class ListModelBundlesV1Response(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.model_bundle_v1_response import ModelBundleV1Response
+from launch.api_client.model.model_bundle_v1_response import (
+    ModelBundleV1Response,
+)

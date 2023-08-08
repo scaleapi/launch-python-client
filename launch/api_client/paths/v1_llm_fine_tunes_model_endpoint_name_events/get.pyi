@@ -20,7 +20,9 @@ import typing_extensions  # noqa: F401
 import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
-from launch_client.model.get_fine_tune_events_response import GetFineTuneEventsResponse
+from launch_client.model.get_fine_tune_events_response import (
+    GetFineTuneEventsResponse,
+)
 from launch_client.model.http_validation_error import HTTPValidationError
 from urllib3._collections import HTTPHeaderDict
 

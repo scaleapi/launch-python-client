@@ -16,6 +16,7 @@ import sys
 from http import client as http_client
 
 import urllib3
+
 from launch.api_client.exceptions import ApiValueError
 
 JSON_SCHEMA_VALIDATION_KEYWORDS = {
