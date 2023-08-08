@@ -3007,7 +3007,7 @@ class LaunchClient:
             fine_tuning_method: Fine-tuning method. Currently unused,
                 but when different techniques are implemented we will expose this field.
             hyperparameters: Hyperparameters to pass in to training job.
-            wandb_config: Configuration for Weights and Biases. 
+            wandb_config: Configuration for Weights and Biases.
                 To enable set `hyperparameters["report_to"]` to `wandb`.
                 `api_key` must be provided which is the API key.
             suffix: Optional user-provided identifier suffix for the fine-tuned model.
