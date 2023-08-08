@@ -47,7 +47,9 @@ class CreateFineTuneResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["id",],
+            typing_extensions.Literal[
+                "id",
+            ],
             str,
         ],
     ):
@@ -56,11 +58,15 @@ class CreateFineTuneResponse(schemas.DictSchema):
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["id",],
+            typing_extensions.Literal[
+                "id",
+            ],
             str,
         ],
     ):

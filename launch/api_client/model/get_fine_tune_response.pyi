@@ -110,7 +110,9 @@ class GetFineTuneResponse(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["status"]) -> MetaOapg.properties.status: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["status"]
+    ) -> MetaOapg.properties.status: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["fine_tuned_model"]
@@ -133,13 +135,17 @@ class GetFineTuneResponse(schemas.DictSchema):
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> MetaOapg.properties.status: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["status"]
+    ) -> MetaOapg.properties.status: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["fine_tuned_model"]
     ) -> typing.Union[MetaOapg.properties.fine_tuned_model, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -181,7 +187,9 @@ class GetFineTuneResponse(schemas.DictSchema):
             io.FileIO,
             io.BufferedReader,
         ],
-        fine_tuned_model: typing.Union[MetaOapg.properties.fine_tuned_model, str, schemas.Unset] = schemas.unset,
+        fine_tuned_model: typing.Union[
+            MetaOapg.properties.fine_tuned_model, str, schemas.Unset
+        ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

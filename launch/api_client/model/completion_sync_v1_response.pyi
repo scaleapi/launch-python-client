@@ -48,7 +48,9 @@ class CompletionSyncV1Response(schemas.DictSchema):
     request_id: MetaOapg.properties.request_id
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["request_id"]
+    ) -> MetaOapg.properties.request_id: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["output"]) -> "CompletionOutput": ...
     @typing.overload
@@ -66,13 +68,17 @@ class CompletionSyncV1Response(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["request_id"]
+    ) -> MetaOapg.properties.request_id: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["output"]
     ) -> typing.Union["CompletionOutput", schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -44,7 +43,9 @@ class CreateAsyncTaskV1Response(schemas.DictSchema):
     task_id: MetaOapg.properties.task_id
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["task_id"]) -> MetaOapg.properties.task_id:
+    def __getitem__(
+        self, name: typing_extensions.Literal["task_id"]
+    ) -> MetaOapg.properties.task_id:
         ...
 
     @typing.overload
@@ -54,7 +55,9 @@ class CreateAsyncTaskV1Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["task_id",],
+            typing_extensions.Literal[
+                "task_id",
+            ],
             str,
         ],
     ):
@@ -62,7 +65,9 @@ class CreateAsyncTaskV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["task_id"]) -> MetaOapg.properties.task_id:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["task_id"]
+    ) -> MetaOapg.properties.task_id:
         ...
 
     @typing.overload
@@ -72,7 +77,9 @@ class CreateAsyncTaskV1Response(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["task_id",],
+            typing_extensions.Literal[
+                "task_id",
+            ],
             str,
         ],
     ):

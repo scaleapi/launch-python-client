@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -46,7 +45,9 @@ class ListFilesResponse(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    _arg: typing.Union[typing.Tuple["GetFileResponse"], typing.List["GetFileResponse"]],
+                    _arg: typing.Union[
+                        typing.Tuple["GetFileResponse"], typing.List["GetFileResponse"]
+                    ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "files":
                     return super().__new__(
@@ -75,7 +76,9 @@ class ListFilesResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["files",],
+            typing_extensions.Literal[
+                "files",
+            ],
             str,
         ],
     ):
@@ -93,7 +96,9 @@ class ListFilesResponse(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["files",],
+            typing_extensions.Literal[
+                "files",
+            ],
             str,
         ],
     ):

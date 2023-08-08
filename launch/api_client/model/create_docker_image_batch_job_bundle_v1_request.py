@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -80,14 +79,18 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
 
                 def __getitem__(
                     self,
-                    name: typing.Union[str,],
+                    name: typing.Union[
+                        str,
+                    ],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
                 def get_item_oapg(
                     self,
-                    name: typing.Union[str,],
+                    name: typing.Union[
+                        str,
+                    ],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
@@ -193,15 +196,21 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
     command: MetaOapg.properties.command
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["command"]) -> MetaOapg.properties.command:
+    def __getitem__(
+        self, name: typing_extensions.Literal["command"]
+    ) -> MetaOapg.properties.command:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["image_repository"]) -> MetaOapg.properties.image_repository:
+    def __getitem__(
+        self, name: typing_extensions.Literal["image_repository"]
+    ) -> MetaOapg.properties.image_repository:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["image_tag"]) -> MetaOapg.properties.image_tag:
+    def __getitem__(
+        self, name: typing_extensions.Literal["image_tag"]
+    ) -> MetaOapg.properties.image_tag:
         ...
 
     @typing.overload
@@ -213,7 +222,9 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["mount_location"]) -> MetaOapg.properties.mount_location:
+    def __getitem__(
+        self, name: typing_extensions.Literal["mount_location"]
+    ) -> MetaOapg.properties.mount_location:
         ...
 
     @typing.overload
@@ -250,7 +261,9 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["command"]) -> MetaOapg.properties.command:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["command"]
+    ) -> MetaOapg.properties.command:
         ...
 
     @typing.overload
@@ -260,7 +273,9 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["image_tag"]) -> MetaOapg.properties.image_tag:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["image_tag"]
+    ) -> MetaOapg.properties.image_tag:
         ...
 
     @typing.overload
@@ -336,8 +351,12 @@ class CreateDockerImageBatchJobBundleV1Request(schemas.DictSchema):
             list,
             tuple,
         ],
-        env: typing.Union[MetaOapg.properties.env, dict, frozendict.frozendict, schemas.Unset] = schemas.unset,
-        mount_location: typing.Union[MetaOapg.properties.mount_location, str, schemas.Unset] = schemas.unset,
+        env: typing.Union[
+            MetaOapg.properties.env, dict, frozendict.frozendict, schemas.Unset
+        ] = schemas.unset,
+        mount_location: typing.Union[
+            MetaOapg.properties.mount_location, str, schemas.Unset
+        ] = schemas.unset,
         public: typing.Union[MetaOapg.properties.public, bool, schemas.Unset] = schemas.unset,
         resource_requests: typing.Union[
             MetaOapg.properties.resource_requests,

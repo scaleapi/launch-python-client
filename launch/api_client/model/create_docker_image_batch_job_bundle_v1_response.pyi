@@ -49,7 +49,9 @@ class CreateDockerImageBatchJobBundleV1Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["docker_image_batch_job_bundle_id",],
+            typing_extensions.Literal[
+                "docker_image_batch_job_bundle_id",
+            ],
             str,
         ],
     ):
@@ -60,11 +62,15 @@ class CreateDockerImageBatchJobBundleV1Response(schemas.DictSchema):
         self, name: typing_extensions.Literal["docker_image_batch_job_bundle_id"]
     ) -> MetaOapg.properties.docker_image_batch_job_bundle_id: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["docker_image_batch_job_bundle_id",],
+            typing_extensions.Literal[
+                "docker_image_batch_job_bundle_id",
+            ],
             str,
         ],
     ):
