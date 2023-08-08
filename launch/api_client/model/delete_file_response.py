@@ -45,9 +45,7 @@ class DeleteFileResponse(schemas.DictSchema):
     deleted: MetaOapg.properties.deleted
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["deleted"]
-    ) -> MetaOapg.properties.deleted:
+    def __getitem__(self, name: typing_extensions.Literal["deleted"]) -> MetaOapg.properties.deleted:
         ...
 
     @typing.overload
@@ -57,9 +55,7 @@ class DeleteFileResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "deleted",
-            ],
+            typing_extensions.Literal["deleted",],
             str,
         ],
     ):
@@ -67,9 +63,7 @@ class DeleteFileResponse(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["deleted"]
-    ) -> MetaOapg.properties.deleted:
+    def get_item_oapg(self, name: typing_extensions.Literal["deleted"]) -> MetaOapg.properties.deleted:
         ...
 
     @typing.overload
@@ -79,9 +73,7 @@ class DeleteFileResponse(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "deleted",
-            ],
+            typing_extensions.Literal["deleted",],
             str,
         ],
     ):

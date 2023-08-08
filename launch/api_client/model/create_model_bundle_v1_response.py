@@ -45,9 +45,7 @@ class CreateModelBundleV1Response(schemas.DictSchema):
     model_bundle_id: MetaOapg.properties.model_bundle_id
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_bundle_id"]
-    ) -> MetaOapg.properties.model_bundle_id:
+    def __getitem__(self, name: typing_extensions.Literal["model_bundle_id"]) -> MetaOapg.properties.model_bundle_id:
         ...
 
     @typing.overload
@@ -57,9 +55,7 @@ class CreateModelBundleV1Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_bundle_id",
-            ],
+            typing_extensions.Literal["model_bundle_id",],
             str,
         ],
     ):
@@ -67,9 +63,7 @@ class CreateModelBundleV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["model_bundle_id"]
-    ) -> MetaOapg.properties.model_bundle_id:
+    def get_item_oapg(self, name: typing_extensions.Literal["model_bundle_id"]) -> MetaOapg.properties.model_bundle_id:
         ...
 
     @typing.overload
@@ -79,9 +73,7 @@ class CreateModelBundleV1Response(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_bundle_id",
-            ],
+            typing_extensions.Literal["model_bundle_id",],
             str,
         ],
     ):

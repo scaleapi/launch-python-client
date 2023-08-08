@@ -43,9 +43,7 @@ class ListDockerImageBatchJobsV1Response(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    _arg: typing.Union[
-                        typing.Tuple["DockerImageBatchJob"], typing.List["DockerImageBatchJob"]
-                    ],
+                    _arg: typing.Union[typing.Tuple["DockerImageBatchJob"], typing.List["DockerImageBatchJob"]],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "jobs":
                     return super().__new__(
@@ -74,9 +72,7 @@ class ListDockerImageBatchJobsV1Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "jobs",
-            ],
+            typing_extensions.Literal["jobs",],
             str,
         ],
     ):
@@ -94,9 +90,7 @@ class ListDockerImageBatchJobsV1Response(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "jobs",
-            ],
+            typing_extensions.Literal["jobs",],
             str,
         ],
     ):

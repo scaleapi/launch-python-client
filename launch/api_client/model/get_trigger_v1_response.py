@@ -56,18 +56,14 @@ class GetTriggerV1Response(schemas.DictSchema):
 
                 def __getitem__(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
                 def get_item_oapg(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
@@ -111,21 +107,15 @@ class GetTriggerV1Response(schemas.DictSchema):
     created_by: MetaOapg.properties.created_by
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at:
+    def __getitem__(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["created_by"]
-    ) -> MetaOapg.properties.created_by:
+    def __getitem__(self, name: typing_extensions.Literal["created_by"]) -> MetaOapg.properties.created_by:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["cron_schedule"]
-    ) -> MetaOapg.properties.cron_schedule:
+    def __getitem__(self, name: typing_extensions.Literal["cron_schedule"]) -> MetaOapg.properties.cron_schedule:
         ...
 
     @typing.overload
@@ -183,21 +173,15 @@ class GetTriggerV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at:
+    def get_item_oapg(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["created_by"]
-    ) -> MetaOapg.properties.created_by:
+    def get_item_oapg(self, name: typing_extensions.Literal["created_by"]) -> MetaOapg.properties.created_by:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["cron_schedule"]
-    ) -> MetaOapg.properties.cron_schedule:
+    def get_item_oapg(self, name: typing_extensions.Literal["cron_schedule"]) -> MetaOapg.properties.cron_schedule:
         ...
 
     @typing.overload

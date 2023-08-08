@@ -76,9 +76,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["inference_framework"]
-    ) -> "LLMInferenceFramework": ...
+    def __getitem__(self, name: typing_extensions.Literal["inference_framework"]) -> "LLMInferenceFramework": ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
@@ -88,19 +86,13 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         self, name: typing_extensions.Literal["inference_framework_image_tag"]
     ) -> MetaOapg.properties.inference_framework_image_tag: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_name"]
-    ) -> MetaOapg.properties.model_name: ...
+    def __getitem__(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["num_shards"]
-    ) -> MetaOapg.properties.num_shards: ...
+    def __getitem__(self, name: typing_extensions.Literal["num_shards"]) -> MetaOapg.properties.num_shards: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["quantize"]) -> "Quantization": ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["spec"]
-    ) -> "GetModelEndpointV1Response": ...
+    def __getitem__(self, name: typing_extensions.Literal["spec"]) -> "GetModelEndpointV1Response": ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -125,13 +117,9 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["inference_framework"]
-    ) -> "LLMInferenceFramework": ...
+    def get_item_oapg(self, name: typing_extensions.Literal["inference_framework"]) -> "LLMInferenceFramework": ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["name"]
-    ) -> MetaOapg.properties.name: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["source"]) -> "LLMSource": ...
     @typing.overload
@@ -155,9 +143,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         self, name: typing_extensions.Literal["spec"]
     ) -> typing.Union["GetModelEndpointV1Response", schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -195,12 +181,8 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         inference_framework_image_tag: typing.Union[
             MetaOapg.properties.inference_framework_image_tag, str, schemas.Unset
         ] = schemas.unset,
-        model_name: typing.Union[
-            MetaOapg.properties.model_name, str, schemas.Unset
-        ] = schemas.unset,
-        num_shards: typing.Union[
-            MetaOapg.properties.num_shards, decimal.Decimal, int, schemas.Unset
-        ] = schemas.unset,
+        model_name: typing.Union[MetaOapg.properties.model_name, str, schemas.Unset] = schemas.unset,
+        num_shards: typing.Union[MetaOapg.properties.num_shards, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         quantize: typing.Union["Quantization", schemas.Unset] = schemas.unset,
         spec: typing.Union["GetModelEndpointV1Response", schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,

@@ -51,9 +51,7 @@ class CompletionSyncV1Response(schemas.DictSchema):
     request_id: MetaOapg.properties.request_id
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["request_id"]
-    ) -> MetaOapg.properties.request_id:
+    def __getitem__(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id:
         ...
 
     @typing.overload
@@ -78,9 +76,7 @@ class CompletionSyncV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["request_id"]
-    ) -> MetaOapg.properties.request_id:
+    def get_item_oapg(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id:
         ...
 
     @typing.overload

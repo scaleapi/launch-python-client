@@ -57,18 +57,14 @@ class DockerImageBatchJob(schemas.DictSchema):
 
                 def __getitem__(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
                 def get_item_oapg(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
@@ -111,15 +107,11 @@ class DockerImageBatchJob(schemas.DictSchema):
     status: "BatchJobStatus"
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at:
+    def __getitem__(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["created_by"]
-    ) -> MetaOapg.properties.created_by:
+    def __getitem__(self, name: typing_extensions.Literal["created_by"]) -> MetaOapg.properties.created_by:
         ...
 
     @typing.overload
@@ -135,15 +127,11 @@ class DockerImageBatchJob(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["annotations"]
-    ) -> MetaOapg.properties.annotations:
+    def __getitem__(self, name: typing_extensions.Literal["annotations"]) -> MetaOapg.properties.annotations:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["completed_at"]
-    ) -> MetaOapg.properties.completed_at:
+    def __getitem__(self, name: typing_extensions.Literal["completed_at"]) -> MetaOapg.properties.completed_at:
         ...
 
     @typing.overload
@@ -176,15 +164,11 @@ class DockerImageBatchJob(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["created_at"]
-    ) -> MetaOapg.properties.created_at:
+    def get_item_oapg(self, name: typing_extensions.Literal["created_at"]) -> MetaOapg.properties.created_at:
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["created_by"]
-    ) -> MetaOapg.properties.created_by:
+    def get_item_oapg(self, name: typing_extensions.Literal["created_by"]) -> MetaOapg.properties.created_by:
         ...
 
     @typing.overload
@@ -266,9 +250,7 @@ class DockerImageBatchJob(schemas.DictSchema):
         annotations: typing.Union[
             MetaOapg.properties.annotations, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
-        completed_at: typing.Union[
-            MetaOapg.properties.completed_at, str, datetime, schemas.Unset
-        ] = schemas.unset,
+        completed_at: typing.Union[MetaOapg.properties.completed_at, str, datetime, schemas.Unset] = schemas.unset,
         override_job_max_runtime_s: typing.Union[
             MetaOapg.properties.override_job_max_runtime_s, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,

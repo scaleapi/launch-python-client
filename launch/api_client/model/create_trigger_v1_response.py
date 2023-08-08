@@ -43,9 +43,7 @@ class CreateTriggerV1Response(schemas.DictSchema):
     trigger_id: MetaOapg.properties.trigger_id
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["trigger_id"]
-    ) -> MetaOapg.properties.trigger_id:
+    def __getitem__(self, name: typing_extensions.Literal["trigger_id"]) -> MetaOapg.properties.trigger_id:
         ...
 
     @typing.overload
@@ -55,9 +53,7 @@ class CreateTriggerV1Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "trigger_id",
-            ],
+            typing_extensions.Literal["trigger_id",],
             str,
         ],
     ):
@@ -65,9 +61,7 @@ class CreateTriggerV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["trigger_id"]
-    ) -> MetaOapg.properties.trigger_id:
+    def get_item_oapg(self, name: typing_extensions.Literal["trigger_id"]) -> MetaOapg.properties.trigger_id:
         ...
 
     @typing.overload
@@ -77,9 +71,7 @@ class CreateTriggerV1Response(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "trigger_id",
-            ],
+            typing_extensions.Literal["trigger_id",],
             str,
         ],
     ):

@@ -53,9 +53,7 @@ class GetFileResponse(schemas.DictSchema):
     id: MetaOapg.properties.id
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["filename"]
-    ) -> MetaOapg.properties.filename:
+    def __getitem__(self, name: typing_extensions.Literal["filename"]) -> MetaOapg.properties.filename:
         ...
 
     @typing.overload
@@ -85,9 +83,7 @@ class GetFileResponse(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["filename"]
-    ) -> MetaOapg.properties.filename:
+    def get_item_oapg(self, name: typing_extensions.Literal["filename"]) -> MetaOapg.properties.filename:
         ...
 
     @typing.overload

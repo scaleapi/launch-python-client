@@ -53,9 +53,7 @@ class CloneModelBundleV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["new_app_config"]
-    ) -> MetaOapg.properties.new_app_config:
+    def __getitem__(self, name: typing_extensions.Literal["new_app_config"]) -> MetaOapg.properties.new_app_config:
         ...
 
     @typing.overload

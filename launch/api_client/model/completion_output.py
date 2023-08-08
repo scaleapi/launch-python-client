@@ -148,9 +148,7 @@ class CompletionOutput(schemas.DictSchema):
             MetaOapg.properties.text,
             str,
         ],
-        tokens: typing.Union[
-            MetaOapg.properties.tokens, list, tuple, schemas.Unset
-        ] = schemas.unset,
+        tokens: typing.Union[MetaOapg.properties.tokens, list, tuple, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

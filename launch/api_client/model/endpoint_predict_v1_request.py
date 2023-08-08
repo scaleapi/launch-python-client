@@ -59,21 +59,15 @@ class EndpointPredictV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["callback_url"]
-    ) -> MetaOapg.properties.callback_url:
+    def __getitem__(self, name: typing_extensions.Literal["callback_url"]) -> MetaOapg.properties.callback_url:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["cloudpickle"]
-    ) -> MetaOapg.properties.cloudpickle:
+    def __getitem__(self, name: typing_extensions.Literal["cloudpickle"]) -> MetaOapg.properties.cloudpickle:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["return_pickled"]
-    ) -> MetaOapg.properties.return_pickled:
+    def __getitem__(self, name: typing_extensions.Literal["return_pickled"]) -> MetaOapg.properties.return_pickled:
         ...
 
     @typing.overload
@@ -184,15 +178,9 @@ class EndpointPredictV1Request(schemas.DictSchema):
             schemas.Unset,
         ] = schemas.unset,
         callback_auth: typing.Union["CallbackAuth", schemas.Unset] = schemas.unset,
-        callback_url: typing.Union[
-            MetaOapg.properties.callback_url, str, schemas.Unset
-        ] = schemas.unset,
-        cloudpickle: typing.Union[
-            MetaOapg.properties.cloudpickle, str, schemas.Unset
-        ] = schemas.unset,
-        return_pickled: typing.Union[
-            MetaOapg.properties.return_pickled, bool, schemas.Unset
-        ] = schemas.unset,
+        callback_url: typing.Union[MetaOapg.properties.callback_url, str, schemas.Unset] = schemas.unset,
+        cloudpickle: typing.Union[MetaOapg.properties.cloudpickle, str, schemas.Unset] = schemas.unset,
+        return_pickled: typing.Union[MetaOapg.properties.return_pickled, bool, schemas.Unset] = schemas.unset,
         url: typing.Union[MetaOapg.properties.url, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[

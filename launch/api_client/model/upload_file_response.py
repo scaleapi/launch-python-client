@@ -55,9 +55,7 @@ class UploadFileResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "id",
-            ],
+            typing_extensions.Literal["id",],
             str,
         ],
     ):
@@ -75,9 +73,7 @@ class UploadFileResponse(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "id",
-            ],
+            typing_extensions.Literal["id",],
             str,
         ],
     ):

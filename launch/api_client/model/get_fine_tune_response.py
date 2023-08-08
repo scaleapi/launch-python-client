@@ -120,9 +120,7 @@ class GetFineTuneResponse(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["fine_tuned_model"]
-    ) -> MetaOapg.properties.fine_tuned_model:
+    def __getitem__(self, name: typing_extensions.Literal["fine_tuned_model"]) -> MetaOapg.properties.fine_tuned_model:
         ...
 
     @typing.overload
@@ -148,9 +146,7 @@ class GetFineTuneResponse(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["status"]
-    ) -> MetaOapg.properties.status:
+    def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> MetaOapg.properties.status:
         ...
 
     @typing.overload
@@ -205,9 +201,7 @@ class GetFineTuneResponse(schemas.DictSchema):
             io.FileIO,
             io.BufferedReader,
         ],
-        fine_tuned_model: typing.Union[
-            MetaOapg.properties.fine_tuned_model, str, schemas.Unset
-        ] = schemas.unset,
+        fine_tuned_model: typing.Union[MetaOapg.properties.fine_tuned_model, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
