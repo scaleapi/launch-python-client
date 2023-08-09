@@ -3205,7 +3205,7 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"file_id": file_id})
-            response = api_instance.get_file_v1_files_file_id_get(  # type: ignore
+            response = api_instance.get_file_content_v1_files_file_id_content_get(  # type: ignore
                 path_params=path_params,
                 skip_deserialization=True,
             )
