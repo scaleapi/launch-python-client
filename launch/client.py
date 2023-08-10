@@ -92,6 +92,7 @@ from launch.api_client.model.model_bundle_packaging_type import (
 )
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
 from launch.api_client.model.pytorch_framework import PytorchFramework
+from launch.api_client.model.quantization import Quantization
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
 from launch.api_client.model.streaming_enhanced_runnable_image_flavor import (
     StreamingEnhancedRunnableImageFlavor,
@@ -2601,6 +2602,8 @@ class LaunchClient:
         source: LLMSource = LLMSource.HUGGING_FACE,
         inference_framework: LLMInferenceFramework = LLMInferenceFramework.DEEPSPEED,
         num_shards: int = 4,
+        quantize: Optional[Quantization] = None,
+        checkpoint_path: Optional[str] = None,
         # General endpoint fields
         cpus: int = 32,
         memory: str = "192Gi",
@@ -2644,6 +2647,11 @@ class LaunchClient:
 
             num_shards: number of shards for the LLM. When bigger than 1, LLM will be sharded
                 to multiple GPUs. Number of GPUs must be larger than num_shards.
+
+            quantize: Quantization method for the LLM. Only affects behavior for text-generation-inference models.
+
+            checkpoint_path: Path to the checkpoint to load the model from.
+                Only affects behavior for text-generation-inference models.
 
             cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater
                 than or equal to 1.
@@ -2793,6 +2801,8 @@ class LaunchClient:
                     inference_framework=inference_framework,
                     inference_framework_image_tag=inference_framework_image_tag,
                     num_shards=num_shards,
+                    quantize=quantize,
+                    checkpoint_path=checkpoint_path,
                     cpus=cpus,
                     endpoint_type=ModelEndpointType(endpoint_type),
                     gpus=gpus,
