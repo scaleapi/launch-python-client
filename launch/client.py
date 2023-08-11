@@ -3222,7 +3222,7 @@ class LaunchClient:
             download_format: format of the model to download
 
         Returns:
-            ModelDownloadResponse: the url with the link to download the model
+            ModelDownloadResponse: dictionary with file names and urls to download the model
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)

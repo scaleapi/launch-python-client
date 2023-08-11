@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict
 
 from pydantic import BaseModel, Field
 
@@ -15,5 +15,5 @@ class ModelDownloadRequest(BaseModel):
 class ModelDownloadResponse(BaseModel):
     """Response object for downloading a model."""
 
-    urls: List[str] = Field(..., description="Model download urls.")
+    urls: Dict[str, str] = Field(..., description="Dictionary of model file name, model download url pairs.")
     """Model download urls."""
