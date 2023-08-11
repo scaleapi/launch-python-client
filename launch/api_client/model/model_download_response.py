@@ -36,36 +36,41 @@ class ModelDownloadResponse(schemas.DictSchema):
         }
 
         class properties:
-            class urls(schemas.ListSchema):
+            class urls(schemas.DictSchema):
                 class MetaOapg:
-                    items = schemas.StrSchema
+                    additional_properties = schemas.StrSchema
+
+                def __getitem__(
+                    self,
+                    name: typing.Union[str,],
+                ) -> MetaOapg.additional_properties:
+                    # dict_instance[name] accessor
+                    return super().__getitem__(name)
+
+                def get_item_oapg(
+                    self,
+                    name: typing.Union[str,],
+                ) -> MetaOapg.additional_properties:
+                    return super().get_item_oapg(name)
 
                 def __new__(
                     cls,
-                    _arg: typing.Union[
-                        typing.Tuple[
-                            typing.Union[
-                                MetaOapg.items,
-                                str,
-                            ]
-                        ],
-                        typing.List[
-                            typing.Union[
-                                MetaOapg.items,
-                                str,
-                            ]
-                        ],
+                    *_args: typing.Union[
+                        dict,
+                        frozendict.frozendict,
                     ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
+                    **kwargs: typing.Union[
+                        MetaOapg.additional_properties,
+                        str,
+                    ],
                 ) -> "urls":
                     return super().__new__(
                         cls,
-                        _arg,
+                        *_args,
                         _configuration=_configuration,
+                        **kwargs,
                     )
-
-                def __getitem__(self, i: int) -> MetaOapg.items:
-                    return super().__getitem__(i)
 
             __annotations__ = {
                 "urls": urls,
@@ -116,8 +121,8 @@ class ModelDownloadResponse(schemas.DictSchema):
         ],
         urls: typing.Union[
             MetaOapg.properties.urls,
-            list,
-            tuple,
+            dict,
+            frozendict.frozendict,
         ],
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
