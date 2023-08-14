@@ -89,6 +89,9 @@ from launch.api_client.paths.v1_llm_model_endpoints.get import (
 from launch.api_client.paths.v1_llm_model_endpoints.post import (
     CreateModelEndpointV1LlmModelEndpointsPost,
 )
+from launch.api_client.paths.v1_llm_model_endpoints_download.post import (
+    DownloadModelEndpointV1LlmModelEndpointsDownloadPost,
+)
 from launch.api_client.paths.v1_llm_model_endpoints_model_endpoint_name.get import (
     GetModelEndpointV1LlmModelEndpointsModelEndpointNameGet,
 )
@@ -184,6 +187,7 @@ class DefaultApi(
     CreateTriggerV1TriggersPost,
     DeleteFileV1FilesFileIdDelete,
     DeleteModelEndpointV1ModelEndpointsModelEndpointIdDelete,
+    DownloadModelEndpointV1LlmModelEndpointsDownloadPost,
     DeleteTriggerV1TriggersTriggerIdDelete,
     GetAsyncInferenceTaskV1AsyncTasksTaskIdGet,
     GetBatchJobV1BatchJobsBatchJobIdGet,

@@ -201,6 +201,10 @@ from launch.api_client.model.model_bundle_v1_response import (
 from launch.api_client.model.model_bundle_v2_response import (
     ModelBundleV2Response,
 )
+from launch.api_client.model.model_download_request import ModelDownloadRequest
+from launch.api_client.model.model_download_response import (
+    ModelDownloadResponse,
+)
 from launch.api_client.model.model_endpoint_deployment_state import (
     ModelEndpointDeploymentState,
 )

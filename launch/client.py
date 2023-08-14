@@ -142,6 +142,7 @@ from launch.make_batch_file import (
     make_batch_input_dict_file,
     make_batch_input_file,
 )
+from launch.model import ModelDownloadResponse
 from launch.model_bundle import (
     CreateModelBundleV2Response,
     ListModelBundlesV2Response,
@@ -3248,6 +3249,28 @@ class LaunchClient:
                 skip_deserialization=True,
             )
             resp = GetFileContentResponse.parse_raw(response.response.data)
+
+        return resp
+
+    def download_model_weights(self, model_name: str, download_format: str = "huggingface") -> ModelDownloadResponse:
+        """
+        download a finetuned model
+
+        Parameters:
+            model_name: name of the model to download
+            download_format: format of the model to download
+
+        Returns:
+            ModelDownloadResponse: dictionary with file names and urls to download the model
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            request_body = {"model_name": model_name, "download_format": download_format}
+            response = api_instance.download_model_endpoint_v1_llm_model_endpoints_download_post(  # type: ignore
+                body=request_body,
+                skip_deserialization=True,
+            )
+            resp = ModelDownloadResponse.parse_raw(response.response.data)
 
         return resp
 
