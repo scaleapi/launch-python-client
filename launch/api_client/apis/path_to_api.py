@@ -78,6 +78,10 @@ from launch.api_client.apis.paths.v1_model_endpoints_schema_json import (
 )
 from launch.api_client.apis.paths.v1_streaming_tasks import V1StreamingTasks
 from launch.api_client.apis.paths.v1_sync_tasks import V1SyncTasks
+from launch.api_client.apis.paths.v1_triggers import V1Triggers
+from launch.api_client.apis.paths.v1_triggers_trigger_id import (
+    V1TriggersTriggerId,
+)
 from launch.api_client.apis.paths.v2_model_bundles import V2ModelBundles
 from launch.api_client.apis.paths.v2_model_bundles_clone_with_changes import (
     V2ModelBundlesCloneWithChanges,
@@ -127,6 +131,8 @@ PathToApi = typing_extensions.TypedDict(
         PathValues.V1_MODELENDPOINTS_MODEL_ENDPOINT_ID: V1ModelEndpointsModelEndpointId,
         PathValues.V1_STREAMINGTASKS: V1StreamingTasks,
         PathValues.V1_SYNCTASKS: V1SyncTasks,
+        PathValues.V1_TRIGGERS: V1Triggers,
+        PathValues.V1_TRIGGERS_TRIGGER_ID: V1TriggersTriggerId,
         PathValues.V2_MODELBUNDLES: V2ModelBundles,
         PathValues.V2_MODELBUNDLES_CLONEWITHCHANGES: V2ModelBundlesCloneWithChanges,
         PathValues.V2_MODELBUNDLES_LATEST: V2ModelBundlesLatest,
@@ -170,6 +176,8 @@ path_to_api = PathToApi(
         PathValues.V1_MODELENDPOINTS_MODEL_ENDPOINT_ID: V1ModelEndpointsModelEndpointId,
         PathValues.V1_STREAMINGTASKS: V1StreamingTasks,
         PathValues.V1_SYNCTASKS: V1SyncTasks,
+        PathValues.V1_TRIGGERS: V1Triggers,
+        PathValues.V1_TRIGGERS_TRIGGER_ID: V1TriggersTriggerId,
         PathValues.V2_MODELBUNDLES: V2ModelBundles,
         PathValues.V2_MODELBUNDLES_CLONEWITHCHANGES: V2ModelBundlesCloneWithChanges,
         PathValues.V2_MODELBUNDLES_LATEST: V2ModelBundlesLatest,

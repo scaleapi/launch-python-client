@@ -92,6 +92,7 @@ from launch.api_client.model.model_bundle_packaging_type import (
 )
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
 from launch.api_client.model.pytorch_framework import PytorchFramework
+from launch.api_client.model.quantization import Quantization
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
 from launch.api_client.model.streaming_enhanced_runnable_image_flavor import (
     StreamingEnhancedRunnableImageFlavor,
@@ -1387,7 +1388,7 @@ class LaunchClient:
         model_bundle: Union[ModelBundle, str],
         cpus: int = 3,
         memory: str = "8Gi",
-        storage: Optional[str] = None,
+        storage: str = "16Gi",
         gpus: int = 0,
         min_workers: int = 1,
         max_workers: int = 1,
@@ -2602,6 +2603,8 @@ class LaunchClient:
         source: LLMSource = LLMSource.HUGGING_FACE,
         inference_framework: LLMInferenceFramework = LLMInferenceFramework.DEEPSPEED,
         num_shards: int = 4,
+        quantize: Optional[Quantization] = None,
+        checkpoint_path: Optional[str] = None,
         # General endpoint fields
         cpus: int = 32,
         memory: str = "192Gi",
@@ -2645,6 +2648,11 @@ class LaunchClient:
 
             num_shards: number of shards for the LLM. When bigger than 1, LLM will be sharded
                 to multiple GPUs. Number of GPUs must be larger than num_shards.
+
+            quantize: Quantization method for the LLM. Only affects behavior for text-generation-inference models.
+
+            checkpoint_path: Path to the checkpoint to load the model from.
+                Only affects behavior for text-generation-inference models.
 
             cpus: Number of cpus each worker should get, e.g. 1, 2, etc. This must be greater
                 than or equal to 1.
@@ -2794,6 +2802,8 @@ class LaunchClient:
                     inference_framework=inference_framework,
                     inference_framework_image_tag=inference_framework_image_tag,
                     num_shards=num_shards,
+                    quantize=quantize,
+                    checkpoint_path=checkpoint_path,
                     cpus=cpus,
                     endpoint_type=ModelEndpointType(endpoint_type),
                     gpus=gpus,
@@ -2899,6 +2909,8 @@ class LaunchClient:
         prompt: str,
         max_new_tokens: int,
         temperature: float,
+        stop_sequences: Optional[List[str]] = None,
+        return_token_log_probs: Optional[bool] = False,
     ) -> CompletionSyncV1Response:
         """
         Run prompt completion on a sync LLM endpoint. Will fail if the endpoint is not sync.
@@ -2912,12 +2924,22 @@ class LaunchClient:
 
             temperature: The temperature to use for sampling
 
+            stop_sequences: List of sequences to stop the completion at
+
+            return_token_log_probs: Whether to return the log probabilities of the tokens
+
         Returns:
             Response for prompt completion
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            request = CompletionSyncV1Request(max_new_tokens=max_new_tokens, prompt=prompt, temperature=temperature)
+            request = CompletionSyncV1Request(
+                max_new_tokens=max_new_tokens,
+                prompt=prompt,
+                temperature=temperature,
+                stop_sequences=stop_sequences if stop_sequences is not None else [],
+                return_token_log_probs=return_token_log_probs,
+            )
             query_params = frozendict({"model_endpoint_name": endpoint_name})
             response = api_instance.create_completion_sync_task_v1_llm_completions_sync_post(  # type: ignore
                 body=request,
@@ -2933,6 +2955,8 @@ class LaunchClient:
         prompt: str,
         max_new_tokens: int,
         temperature: float,
+        stop_sequences: Optional[List[str]] = None,
+        return_token_log_probs: Optional[bool] = False,
     ) -> Iterable[CompletionStreamV1Response]:
         """
         Run prompt completion on an LLM endpoint in streaming fashion. Will fail if endpoint does not support streaming.
@@ -2946,10 +2970,20 @@ class LaunchClient:
 
             temperature: The temperature to use for sampling
 
+            stop_sequences: List of sequences to stop the completion at
+
+            return_token_log_probs: Whether to return the log probabilities of the tokens
+
         Returns:
             Iterable responses for prompt completion
         """
-        request = {"max_new_tokens": max_new_tokens, "prompt": prompt, "temperature": temperature}
+        request = {
+            "max_new_tokens": max_new_tokens,
+            "prompt": prompt,
+            "temperature": temperature,
+            "stop_sequences": stop_sequences,
+            "return_token_log_probs": return_token_log_probs,
+        }
         response = requests.post(
             url=f"{self.configuration.host}/v1/llm/completions-stream?model_endpoint_name={endpoint_name}",
             json=request,
@@ -2968,6 +3002,7 @@ class LaunchClient:
         validation_file: Optional[str] = None,
         fine_tuning_method: Optional[str] = None,
         hyperparameters: Optional[Dict[str, str]] = None,
+        wandb_config: Optional[Dict[str, Any]] = None,
         suffix: str = None,
     ) -> CreateFineTuneResponse:
         """
@@ -2983,6 +3018,9 @@ class LaunchClient:
             fine_tuning_method: Fine-tuning method. Currently unused,
                 but when different techniques are implemented we will expose this field.
             hyperparameters: Hyperparameters to pass in to training job.
+            wandb_config: Configuration for Weights and Biases.
+                To enable set `hyperparameters["report_to"]` to `wandb`.
+                `api_key` must be provided which is the API key.
             suffix: Optional user-provided identifier suffix for the fine-tuned model.
 
         Returns:
@@ -2997,6 +3035,7 @@ class LaunchClient:
                 validation_file=validation_file,
                 fine_tuning_method=fine_tuning_method,
                 hyperparameters=hyperparameters,
+                wandb_config=wandb_config,
                 suffix=suffix,
             )
         )

@@ -106,11 +106,21 @@ from launch.api_client.model.create_model_endpoint_v1_request import (
 from launch.api_client.model.create_model_endpoint_v1_response import (
     CreateModelEndpointV1Response,
 )
+from launch.api_client.model.create_trigger_v1_request import (
+    CreateTriggerV1Request,
+)
+from launch.api_client.model.create_trigger_v1_response import (
+    CreateTriggerV1Response,
+)
 from launch.api_client.model.custom_framework import CustomFramework
 from launch.api_client.model.delete_file_response import DeleteFileResponse
 from launch.api_client.model.delete_model_endpoint_v1_response import (
     DeleteModelEndpointV1Response,
 )
+from launch.api_client.model.delete_trigger_v1_response import (
+    DeleteTriggerV1Response,
+)
+from launch.api_client.model.docker_image_batch_job import DockerImageBatchJob
 from launch.api_client.model.docker_image_batch_job_bundle_v1_response import (
     DockerImageBatchJobBundleV1Response,
 )
@@ -140,10 +150,16 @@ from launch.api_client.model.get_llm_model_endpoint_v1_response import (
 from launch.api_client.model.get_model_endpoint_v1_response import (
     GetModelEndpointV1Response,
 )
+from launch.api_client.model.get_trigger_v1_response import (
+    GetTriggerV1Response,
+)
 from launch.api_client.model.gpu_type import GpuType
 from launch.api_client.model.http_validation_error import HTTPValidationError
 from launch.api_client.model.list_docker_image_batch_job_bundle_v1_response import (
     ListDockerImageBatchJobBundleV1Response,
+)
+from launch.api_client.model.list_docker_image_batch_jobs_v1_response import (
+    ListDockerImageBatchJobsV1Response,
 )
 from launch.api_client.model.list_files_response import ListFilesResponse
 from launch.api_client.model.list_fine_tunes_response import (
@@ -160,6 +176,9 @@ from launch.api_client.model.list_model_bundles_v2_response import (
 )
 from launch.api_client.model.list_model_endpoints_v1_response import (
     ListModelEndpointsV1Response,
+)
+from launch.api_client.model.list_triggers_v1_response import (
+    ListTriggersV1Response,
 )
 from launch.api_client.model.llm_fine_tune_event import LLMFineTuneEvent
 from launch.api_client.model.llm_inference_framework import (
@@ -231,6 +250,12 @@ from launch.api_client.model.update_model_endpoint_v1_request import (
 )
 from launch.api_client.model.update_model_endpoint_v1_response import (
     UpdateModelEndpointV1Response,
+)
+from launch.api_client.model.update_trigger_v1_request import (
+    UpdateTriggerV1Request,
+)
+from launch.api_client.model.update_trigger_v1_response import (
+    UpdateTriggerV1Response,
 )
 from launch.api_client.model.upload_file_response import UploadFileResponse
 from launch.api_client.model.validation_error import ValidationError

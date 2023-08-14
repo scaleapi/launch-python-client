@@ -42,6 +42,8 @@ class PathValues(str, enum.Enum):
     V1_MODELENDPOINTS_MODEL_ENDPOINT_ID = "/v1/model-endpoints/{model_endpoint_id}"
     V1_STREAMINGTASKS = "/v1/streaming-tasks"
     V1_SYNCTASKS = "/v1/sync-tasks"
+    V1_TRIGGERS = "/v1/triggers"
+    V1_TRIGGERS_TRIGGER_ID = "/v1/triggers/{trigger_id}"
     V2_MODELBUNDLES = "/v2/model-bundles"
     V2_MODELBUNDLES_CLONEWITHCHANGES = "/v2/model-bundles/clone-with-changes"
     V2_MODELBUNDLES_LATEST = "/v2/model-bundles/latest"
