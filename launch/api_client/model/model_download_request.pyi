@@ -43,7 +43,9 @@ class ModelDownloadRequest(schemas.DictSchema):
     model_name: MetaOapg.properties.model_name
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["model_name"]
+    ) -> MetaOapg.properties.model_name: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["download_format"]
@@ -63,13 +65,17 @@ class ModelDownloadRequest(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["model_name"]
+    ) -> MetaOapg.properties.model_name: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["download_format"]
     ) -> typing.Union[MetaOapg.properties.download_format, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -91,7 +97,9 @@ class ModelDownloadRequest(schemas.DictSchema):
             MetaOapg.properties.model_name,
             str,
         ],
-        download_format: typing.Union[MetaOapg.properties.download_format, str, schemas.Unset] = schemas.unset,
+        download_format: typing.Union[
+            MetaOapg.properties.download_format, str, schemas.Unset
+        ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

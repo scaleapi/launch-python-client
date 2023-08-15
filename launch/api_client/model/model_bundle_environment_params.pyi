@@ -54,11 +54,17 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
     framework_type: "ModelBundleFrameworkType"
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["framework_type"]) -> "ModelBundleFrameworkType": ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["framework_type"]
+    ) -> "ModelBundleFrameworkType": ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["ecr_repo"]) -> MetaOapg.properties.ecr_repo: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["ecr_repo"]
+    ) -> MetaOapg.properties.ecr_repo: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["image_tag"]) -> MetaOapg.properties.image_tag: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["image_tag"]
+    ) -> MetaOapg.properties.image_tag: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["pytorch_image_tag"]
@@ -85,7 +91,9 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["framework_type"]) -> "ModelBundleFrameworkType": ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["framework_type"]
+    ) -> "ModelBundleFrameworkType": ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["ecr_repo"]
@@ -103,7 +111,9 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
         self, name: typing_extensions.Literal["tensorflow_version"]
     ) -> typing.Union[MetaOapg.properties.tensorflow_version, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -127,8 +137,12 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
         framework_type: "ModelBundleFrameworkType",
         ecr_repo: typing.Union[MetaOapg.properties.ecr_repo, str, schemas.Unset] = schemas.unset,
         image_tag: typing.Union[MetaOapg.properties.image_tag, str, schemas.Unset] = schemas.unset,
-        pytorch_image_tag: typing.Union[MetaOapg.properties.pytorch_image_tag, str, schemas.Unset] = schemas.unset,
-        tensorflow_version: typing.Union[MetaOapg.properties.tensorflow_version, str, schemas.Unset] = schemas.unset,
+        pytorch_image_tag: typing.Union[
+            MetaOapg.properties.pytorch_image_tag, str, schemas.Unset
+        ] = schemas.unset,
+        tensorflow_version: typing.Union[
+            MetaOapg.properties.tensorflow_version, str, schemas.Unset
+        ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -159,6 +173,4 @@ class ModelBundleEnvironmentParams(schemas.DictSchema):
             **kwargs,
         )
 
-from launch_client.model.model_bundle_framework_type import (
-    ModelBundleFrameworkType,
-)
+from launch_client.model.model_bundle_framework_type import ModelBundleFrameworkType

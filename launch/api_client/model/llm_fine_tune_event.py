@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -54,11 +53,15 @@ class LLMFineTuneEvent(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["message"]) -> MetaOapg.properties.message:
+    def __getitem__(
+        self, name: typing_extensions.Literal["message"]
+    ) -> MetaOapg.properties.message:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["timestamp"]) -> MetaOapg.properties.timestamp:
+    def __getitem__(
+        self, name: typing_extensions.Literal["timestamp"]
+    ) -> MetaOapg.properties.timestamp:
         ...
 
     @typing.overload
@@ -84,7 +87,9 @@ class LLMFineTuneEvent(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["message"]) -> MetaOapg.properties.message:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["message"]
+    ) -> MetaOapg.properties.message:
         ...
 
     @typing.overload

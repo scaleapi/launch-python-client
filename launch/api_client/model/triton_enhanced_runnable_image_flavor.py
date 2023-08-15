@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -106,11 +105,21 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
 
-                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def __getitem__(
+                    self,
+                    name: typing.Union[
+                        str,
+                    ],
+                ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
-                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def get_item_oapg(
+                    self,
+                    name: typing.Union[
+                        str,
+                    ],
+                ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
                 def __new__(
@@ -141,11 +150,21 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
 
-                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def __getitem__(
+                    self,
+                    name: typing.Union[
+                        str,
+                    ],
+                ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
-                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def get_item_oapg(
+                    self,
+                    name: typing.Union[
+                        str,
+                    ],
+                ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
                 def __new__(
@@ -198,7 +217,9 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
     triton_num_cpu: MetaOapg.properties.triton_num_cpu
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["command"]) -> MetaOapg.properties.command:
+    def __getitem__(
+        self, name: typing_extensions.Literal["command"]
+    ) -> MetaOapg.properties.command:
         ...
 
     @typing.overload
@@ -206,11 +227,15 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["protocol"]) -> MetaOapg.properties.protocol:
+    def __getitem__(
+        self, name: typing_extensions.Literal["protocol"]
+    ) -> MetaOapg.properties.protocol:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["repository"]) -> MetaOapg.properties.repository:
+    def __getitem__(
+        self, name: typing_extensions.Literal["repository"]
+    ) -> MetaOapg.properties.repository:
         ...
 
     @typing.overload
@@ -230,7 +255,9 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["triton_num_cpu"]) -> MetaOapg.properties.triton_num_cpu:
+    def __getitem__(
+        self, name: typing_extensions.Literal["triton_num_cpu"]
+    ) -> MetaOapg.properties.triton_num_cpu:
         ...
 
     @typing.overload
@@ -244,7 +271,9 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["predict_route"]) -> MetaOapg.properties.predict_route:
+    def __getitem__(
+        self, name: typing_extensions.Literal["predict_route"]
+    ) -> MetaOapg.properties.predict_route:
         ...
 
     @typing.overload
@@ -254,7 +283,9 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["triton_memory"]) -> MetaOapg.properties.triton_memory:
+    def __getitem__(
+        self, name: typing_extensions.Literal["triton_memory"]
+    ) -> MetaOapg.properties.triton_memory:
         ...
 
     @typing.overload
@@ -270,7 +301,9 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["triton_storage"]) -> MetaOapg.properties.triton_storage:
+    def __getitem__(
+        self, name: typing_extensions.Literal["triton_storage"]
+    ) -> MetaOapg.properties.triton_storage:
         ...
 
     @typing.overload
@@ -305,19 +338,27 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["command"]) -> MetaOapg.properties.command:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["command"]
+    ) -> MetaOapg.properties.command:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["flavor"]) -> MetaOapg.properties.flavor:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["flavor"]
+    ) -> MetaOapg.properties.flavor:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["protocol"]) -> MetaOapg.properties.protocol:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["protocol"]
+    ) -> MetaOapg.properties.protocol:
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["repository"]) -> MetaOapg.properties.repository:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["repository"]
+    ) -> MetaOapg.properties.repository:
         ...
 
     @typing.overload
@@ -337,7 +378,9 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["triton_num_cpu"]) -> MetaOapg.properties.triton_num_cpu:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["triton_num_cpu"]
+    ) -> MetaOapg.properties.triton_num_cpu:
         ...
 
     @typing.overload
@@ -459,20 +502,33 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
             int,
             float,
         ],
-        env: typing.Union[MetaOapg.properties.env, dict, frozendict.frozendict, schemas.Unset] = schemas.unset,
-        healthcheck_route: typing.Union[MetaOapg.properties.healthcheck_route, str, schemas.Unset] = schemas.unset,
-        predict_route: typing.Union[MetaOapg.properties.predict_route, str, schemas.Unset] = schemas.unset,
+        env: typing.Union[
+            MetaOapg.properties.env, dict, frozendict.frozendict, schemas.Unset
+        ] = schemas.unset,
+        healthcheck_route: typing.Union[
+            MetaOapg.properties.healthcheck_route, str, schemas.Unset
+        ] = schemas.unset,
+        predict_route: typing.Union[
+            MetaOapg.properties.predict_route, str, schemas.Unset
+        ] = schemas.unset,
         readiness_initial_delay_seconds: typing.Union[
             MetaOapg.properties.readiness_initial_delay_seconds, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
-        triton_memory: typing.Union[MetaOapg.properties.triton_memory, str, schemas.Unset] = schemas.unset,
+        triton_memory: typing.Union[
+            MetaOapg.properties.triton_memory, str, schemas.Unset
+        ] = schemas.unset,
         triton_model_replicas: typing.Union[
             MetaOapg.properties.triton_model_replicas, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         triton_readiness_initial_delay_seconds: typing.Union[
-            MetaOapg.properties.triton_readiness_initial_delay_seconds, decimal.Decimal, int, schemas.Unset
+            MetaOapg.properties.triton_readiness_initial_delay_seconds,
+            decimal.Decimal,
+            int,
+            schemas.Unset,
         ] = schemas.unset,
-        triton_storage: typing.Union[MetaOapg.properties.triton_storage, str, schemas.Unset] = schemas.unset,
+        triton_storage: typing.Union[
+            MetaOapg.properties.triton_storage, str, schemas.Unset
+        ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

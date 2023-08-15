@@ -65,7 +65,15 @@ class ListDockerImageBatchJobBundleV1Response(schemas.DictSchema):
     ) -> MetaOapg.properties.docker_image_batch_job_bundles: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["docker_image_batch_job_bundles",], str]):
+    def __getitem__(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "docker_image_batch_job_bundles",
+            ],
+            str,
+        ],
+    ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
@@ -73,8 +81,18 @@ class ListDockerImageBatchJobBundleV1Response(schemas.DictSchema):
         self, name: typing_extensions.Literal["docker_image_batch_job_bundles"]
     ) -> MetaOapg.properties.docker_image_batch_job_bundles: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["docker_image_batch_job_bundles",], str]):
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "docker_image_batch_job_bundles",
+            ],
+            str,
+        ],
+    ):
         return super().get_item_oapg(name)
     def __new__(
         cls,

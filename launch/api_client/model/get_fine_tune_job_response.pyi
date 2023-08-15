@@ -48,7 +48,9 @@ class GetFineTuneResponse(schemas.DictSchema):
     status: "BatchJobStatus"
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["fine_tune_id"]) -> MetaOapg.properties.fine_tune_id: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["fine_tune_id"]
+    ) -> MetaOapg.properties.fine_tune_id: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus": ...
     @typing.overload
@@ -66,11 +68,15 @@ class GetFineTuneResponse(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["fine_tune_id"]) -> MetaOapg.properties.fine_tune_id: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["fine_tune_id"]
+    ) -> MetaOapg.properties.fine_tune_id: ...
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["status"]) -> "BatchJobStatus": ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

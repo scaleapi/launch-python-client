@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -45,7 +44,8 @@ class ListLLMModelEndpointsV1Response(schemas.DictSchema):
                 def __new__(
                     cls,
                     _arg: typing.Union[
-                        typing.Tuple["GetLLMModelEndpointV1Response"], typing.List["GetLLMModelEndpointV1Response"]
+                        typing.Tuple["GetLLMModelEndpointV1Response"],
+                        typing.List["GetLLMModelEndpointV1Response"],
                     ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "model_endpoints":
@@ -65,26 +65,46 @@ class ListLLMModelEndpointsV1Response(schemas.DictSchema):
     model_endpoints: MetaOapg.properties.model_endpoints
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["model_endpoints"]) -> MetaOapg.properties.model_endpoints:
+    def __getitem__(
+        self, name: typing_extensions.Literal["model_endpoints"]
+    ) -> MetaOapg.properties.model_endpoints:
         ...
 
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema:
         ...
 
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["model_endpoints",], str]):
+    def __getitem__(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "model_endpoints",
+            ],
+            str,
+        ],
+    ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["model_endpoints"]) -> MetaOapg.properties.model_endpoints:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["model_endpoints"]
+    ) -> MetaOapg.properties.model_endpoints:
         ...
 
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["model_endpoints",], str]):
+    def get_item_oapg(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "model_endpoints",
+            ],
+            str,
+        ],
+    ):
         return super().get_item_oapg(name)
 
     def __new__(
@@ -125,6 +145,4 @@ class ListLLMModelEndpointsV1Response(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.get_llm_model_endpoint_v1_response import (
-    GetLLMModelEndpointV1Response,
-)
+from launch.api_client.model.get_llm_model_endpoint_v1_response import GetLLMModelEndpointV1Response

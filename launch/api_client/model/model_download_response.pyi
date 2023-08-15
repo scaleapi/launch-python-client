@@ -37,10 +37,20 @@ class ModelDownloadResponse(schemas.DictSchema):
             class urls(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
-                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def __getitem__(
+                    self,
+                    name: typing.Union[
+                        str,
+                    ],
+                ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
-                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def get_item_oapg(
+                    self,
+                    name: typing.Union[
+                        str,
+                    ],
+                ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
                 def __new__(
                     cls,
@@ -69,14 +79,34 @@ class ModelDownloadResponse(schemas.DictSchema):
     def __getitem__(self, name: typing_extensions.Literal["urls"]) -> MetaOapg.properties.urls: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["urls",], str]):
+    def __getitem__(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "urls",
+            ],
+            str,
+        ],
+    ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["urls"]) -> MetaOapg.properties.urls: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["urls"]
+    ) -> MetaOapg.properties.urls: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["urls",], str]):
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "urls",
+            ],
+            str,
+        ],
+    ):
         return super().get_item_oapg(name)
     def __new__(
         cls,

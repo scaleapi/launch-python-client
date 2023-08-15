@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -46,11 +45,15 @@ class ModelDownloadRequest(schemas.DictSchema):
     model_name: MetaOapg.properties.model_name
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name:
+    def __getitem__(
+        self, name: typing_extensions.Literal["model_name"]
+    ) -> MetaOapg.properties.model_name:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["download_format"]) -> MetaOapg.properties.download_format:
+    def __getitem__(
+        self, name: typing_extensions.Literal["download_format"]
+    ) -> MetaOapg.properties.download_format:
         ...
 
     @typing.overload
@@ -71,7 +74,9 @@ class ModelDownloadRequest(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["model_name"]
+    ) -> MetaOapg.properties.model_name:
         ...
 
     @typing.overload
@@ -106,7 +111,9 @@ class ModelDownloadRequest(schemas.DictSchema):
             MetaOapg.properties.model_name,
             str,
         ],
-        download_format: typing.Union[MetaOapg.properties.download_format, str, schemas.Unset] = schemas.unset,
+        download_format: typing.Union[
+            MetaOapg.properties.download_format, str, schemas.Unset
+        ] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
