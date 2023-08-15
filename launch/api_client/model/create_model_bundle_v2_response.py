@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -45,9 +46,7 @@ class CreateModelBundleV2Response(schemas.DictSchema):
     model_bundle_id: MetaOapg.properties.model_bundle_id
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["model_bundle_id"]
-    ) -> MetaOapg.properties.model_bundle_id:
+    def __getitem__(self, name: typing_extensions.Literal["model_bundle_id"]) -> MetaOapg.properties.model_bundle_id:
         ...
 
     @typing.overload
@@ -57,9 +56,7 @@ class CreateModelBundleV2Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_bundle_id",
-            ],
+            typing_extensions.Literal["model_bundle_id",],
             str,
         ],
     ):
@@ -67,9 +64,7 @@ class CreateModelBundleV2Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["model_bundle_id"]
-    ) -> MetaOapg.properties.model_bundle_id:
+    def get_item_oapg(self, name: typing_extensions.Literal["model_bundle_id"]) -> MetaOapg.properties.model_bundle_id:
         ...
 
     @typing.overload
@@ -79,9 +74,7 @@ class CreateModelBundleV2Response(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "model_bundle_id",
-            ],
+            typing_extensions.Literal["model_bundle_id",],
             str,
         ],
     ):

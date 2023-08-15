@@ -46,17 +46,13 @@ class CreateTriggerV1Request(schemas.DictSchema):
                     additional_properties = schemas.StrSchema
                 def __getitem__(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
                 def get_item_oapg(
                     self,
-                    name: typing.Union[
-                        str,
-                    ],
+                    name: typing.Union[str,],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
                 def __new__(
@@ -89,13 +85,9 @@ class CreateTriggerV1Request(schemas.DictSchema):
     name: MetaOapg.properties.name
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["bundle_id"]
-    ) -> MetaOapg.properties.bundle_id: ...
+    def __getitem__(self, name: typing_extensions.Literal["bundle_id"]) -> MetaOapg.properties.bundle_id: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["cron_schedule"]
-    ) -> MetaOapg.properties.cron_schedule: ...
+    def __getitem__(self, name: typing_extensions.Literal["cron_schedule"]) -> MetaOapg.properties.cron_schedule: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
@@ -124,17 +116,11 @@ class CreateTriggerV1Request(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["bundle_id"]
-    ) -> MetaOapg.properties.bundle_id: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["bundle_id"]) -> MetaOapg.properties.bundle_id: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["cron_schedule"]
-    ) -> MetaOapg.properties.cron_schedule: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["cron_schedule"]) -> MetaOapg.properties.cron_schedule: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["name"]
-    ) -> MetaOapg.properties.name: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["default_job_config"]
@@ -144,9 +130,7 @@ class CreateTriggerV1Request(schemas.DictSchema):
         self, name: typing_extensions.Literal["default_job_metadata"]
     ) -> typing.Union[MetaOapg.properties.default_job_metadata, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

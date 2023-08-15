@@ -47,28 +47,20 @@ class BodyUploadFileV1FilesPost(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "file",
-            ],
+            typing_extensions.Literal["file",],
             str,
         ],
     ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["file"]
-    ) -> MetaOapg.properties.file: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["file"]) -> MetaOapg.properties.file: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "file",
-            ],
+            typing_extensions.Literal["file",],
             str,
         ],
     ):

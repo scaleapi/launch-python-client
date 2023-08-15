@@ -37,13 +37,9 @@ class UpdateTriggerV1Request(schemas.DictSchema):
                 "suspend": suspend,
             }
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["cron_schedule"]
-    ) -> MetaOapg.properties.cron_schedule: ...
+    def __getitem__(self, name: typing_extensions.Literal["cron_schedule"]) -> MetaOapg.properties.cron_schedule: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["suspend"]
-    ) -> MetaOapg.properties.suspend: ...
+    def __getitem__(self, name: typing_extensions.Literal["suspend"]) -> MetaOapg.properties.suspend: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -67,9 +63,7 @@ class UpdateTriggerV1Request(schemas.DictSchema):
         self, name: typing_extensions.Literal["suspend"]
     ) -> typing.Union[MetaOapg.properties.suspend, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -87,9 +81,7 @@ class UpdateTriggerV1Request(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        cron_schedule: typing.Union[
-            MetaOapg.properties.cron_schedule, str, schemas.Unset
-        ] = schemas.unset,
+        cron_schedule: typing.Union[MetaOapg.properties.cron_schedule, str, schemas.Unset] = schemas.unset,
         suspend: typing.Union[MetaOapg.properties.suspend, bool, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[

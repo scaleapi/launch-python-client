@@ -62,17 +62,11 @@ class ModelEndpointDeploymentState(schemas.DictSchema):
     per_worker: MetaOapg.properties.per_worker
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["max_workers"]
-    ) -> MetaOapg.properties.max_workers: ...
+    def __getitem__(self, name: typing_extensions.Literal["max_workers"]) -> MetaOapg.properties.max_workers: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["min_workers"]
-    ) -> MetaOapg.properties.min_workers: ...
+    def __getitem__(self, name: typing_extensions.Literal["min_workers"]) -> MetaOapg.properties.min_workers: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["per_worker"]
-    ) -> MetaOapg.properties.per_worker: ...
+    def __getitem__(self, name: typing_extensions.Literal["per_worker"]) -> MetaOapg.properties.per_worker: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["available_workers"]
@@ -99,17 +93,11 @@ class ModelEndpointDeploymentState(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["max_workers"]
-    ) -> MetaOapg.properties.max_workers: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["max_workers"]) -> MetaOapg.properties.max_workers: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["min_workers"]
-    ) -> MetaOapg.properties.min_workers: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["min_workers"]) -> MetaOapg.properties.min_workers: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["per_worker"]
-    ) -> MetaOapg.properties.per_worker: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["per_worker"]) -> MetaOapg.properties.per_worker: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["available_workers"]
@@ -119,9 +107,7 @@ class ModelEndpointDeploymentState(schemas.DictSchema):
         self, name: typing_extensions.Literal["unavailable_workers"]
     ) -> typing.Union[MetaOapg.properties.unavailable_workers, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

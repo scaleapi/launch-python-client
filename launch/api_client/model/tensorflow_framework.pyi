@@ -50,9 +50,7 @@ class TensorflowFramework(schemas.DictSchema):
     framework_type: MetaOapg.properties.framework_type
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["framework_type"]
-    ) -> MetaOapg.properties.framework_type: ...
+    def __getitem__(self, name: typing_extensions.Literal["framework_type"]) -> MetaOapg.properties.framework_type: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["tensorflow_version"]
@@ -80,9 +78,7 @@ class TensorflowFramework(schemas.DictSchema):
         self, name: typing_extensions.Literal["tensorflow_version"]
     ) -> MetaOapg.properties.tensorflow_version: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
