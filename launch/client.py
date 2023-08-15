@@ -3252,7 +3252,7 @@ class LaunchClient:
 
         return resp
 
-    def download_model_weights(self, model_name: str, download_format: str = "huggingface") -> ModelDownloadResponse:
+    def model_download(self, model_name: str, download_format: str = "hugging_face") -> ModelDownloadResponse:
         """
         download a finetuned model
 
