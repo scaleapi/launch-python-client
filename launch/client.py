@@ -160,7 +160,7 @@ from launch.pydantic_schemas import get_model_definitions
 from launch.request_validation import validate_task_request
 
 DEFAULT_NETWORK_TIMEOUT_SEC = 120
-LLM_COMPLETIONS_TIMEOUT = 300
+DEFAULT_LLM_COMPLETIONS_TIMEOUT = 300
 
 logger = logging.getLogger(__name__)
 logging.basicConfig()
@@ -2912,6 +2912,7 @@ class LaunchClient:
         temperature: float,
         stop_sequences: Optional[List[str]] = None,
         return_token_log_probs: Optional[bool] = False,
+        timeout: float = DEFAULT_LLM_COMPLETIONS_TIMEOUT,
     ) -> CompletionSyncV1Response:
         """
         Run prompt completion on a sync LLM endpoint. Will fail if the endpoint is not sync.
@@ -2946,7 +2947,7 @@ class LaunchClient:
                 body=request,
                 query_params=query_params,
                 skip_deserialization=True,
-                timeout=LLM_COMPLETIONS_TIMEOUT,
+                timeout=timeout,
             )
             resp = json.loads(response.response.data)
         return resp
@@ -2959,6 +2960,7 @@ class LaunchClient:
         temperature: float,
         stop_sequences: Optional[List[str]] = None,
         return_token_log_probs: Optional[bool] = False,
+        timeout: float = DEFAULT_LLM_COMPLETIONS_TIMEOUT,
     ) -> Iterable[CompletionStreamV1Response]:
         """
         Run prompt completion on an LLM endpoint in streaming fashion. Will fail if endpoint does not support streaming.
@@ -2991,7 +2993,7 @@ class LaunchClient:
             json=request,
             auth=(self.configuration.username, self.configuration.password),
             stream=True,
-            timeout=LLM_COMPLETIONS_TIMEOUT,
+            timeout=timeout,
         )
         sse_client = sseclient.SSEClient(response)
         events = sse_client.events()
