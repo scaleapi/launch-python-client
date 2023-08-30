@@ -160,6 +160,7 @@ from launch.pydantic_schemas import get_model_definitions
 from launch.request_validation import validate_task_request
 
 DEFAULT_NETWORK_TIMEOUT_SEC = 120
+LLM_COMPLETIONS_TIMEOUT = 300
 
 logger = logging.getLogger(__name__)
 logging.basicConfig()
@@ -2945,6 +2946,7 @@ class LaunchClient:
                 body=request,
                 query_params=query_params,
                 skip_deserialization=True,
+                timeout=LLM_COMPLETIONS_TIMEOUT,
             )
             resp = json.loads(response.response.data)
         return resp
@@ -2989,6 +2991,7 @@ class LaunchClient:
             json=request,
             auth=(self.configuration.username, self.configuration.password),
             stream=True,
+            timeout=LLM_COMPLETIONS_TIMEOUT,
         )
         sse_client = sseclient.SSEClient(response)
         events = sse_client.events()
