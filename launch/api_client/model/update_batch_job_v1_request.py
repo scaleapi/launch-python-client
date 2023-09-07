@@ -51,13 +51,7 @@ class UpdateBatchJobV1Request(schemas.DictSchema):
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema:
         ...
 
-    def __getitem__(
-        self,
-        name: typing.Union[
-            typing_extensions.Literal["cancel",],
-            str,
-        ],
-    ):
+    def __getitem__(self, name: typing.Union[typing_extensions.Literal["cancel",], str]):
         # dict_instance[name] accessor
         return super().__getitem__(name)
 
@@ -69,13 +63,7 @@ class UpdateBatchJobV1Request(schemas.DictSchema):
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
-    def get_item_oapg(
-        self,
-        name: typing.Union[
-            typing_extensions.Literal["cancel",],
-            str,
-        ],
-    ):
+    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["cancel",], str]):
         return super().get_item_oapg(name)
 
     def __new__(
