@@ -20,29 +20,27 @@ import typing_extensions  # noqa: F401
 import urllib3
 from launch_client import schemas  # noqa: F401
 from launch_client import api_client, exceptions
-from launch_client.model.delete_llm_endpoint_response import DeleteLLMEndpointResponse
+from launch_client.model.delete_llm_endpoint_response import (
+    DeleteLLMEndpointResponse,
+)
 from launch_client.model.http_validation_error import HTTPValidationError
 from urllib3._collections import HTTPHeaderDict
 
 # Path params
 ModelEndpointNameSchema = schemas.StrSchema
 RequestRequiredPathParams = typing_extensions.TypedDict(
-    'RequestRequiredPathParams',
+    "RequestRequiredPathParams",
     {
-        'model_endpoint_name': typing.Union[ModelEndpointNameSchema, str, ],
-    }
-)
-RequestOptionalPathParams = typing_extensions.TypedDict(
-    'RequestOptionalPathParams',
-    {
+        "model_endpoint_name": typing.Union[
+            ModelEndpointNameSchema,
+            str,
+        ],
     },
-    total=False
 )
-
+RequestOptionalPathParams = typing_extensions.TypedDict("RequestOptionalPathParams", {}, total=False)
 
 class RequestPathParams(RequestRequiredPathParams, RequestOptionalPathParams):
     pass
-
 
 request_path_model_endpoint_name = api_client.PathParameter(
     name="model_endpoint_name",
@@ -52,46 +50,33 @@ request_path_model_endpoint_name = api_client.PathParameter(
 )
 SchemaFor200ResponseBodyApplicationJson = DeleteLLMEndpointResponse
 
-
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor200ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
-
 
 _response_for_200 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor200,
     content={
-        'application/json': api_client.MediaType(
-            schema=SchemaFor200ResponseBodyApplicationJson),
+        "application/json": api_client.MediaType(schema=SchemaFor200ResponseBodyApplicationJson),
     },
 )
 SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 
-
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[
-        SchemaFor422ResponseBodyApplicationJson,
-    ]
+    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
     headers: schemas.Unset = schemas.unset
-
 
 _response_for_422 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor422,
     content={
-        'application/json': api_client.MediaType(
-            schema=SchemaFor422ResponseBodyApplicationJson),
+        "application/json": api_client.MediaType(schema=SchemaFor422ResponseBodyApplicationJson),
     },
 )
-_all_accept_content_types = (
-    'application/json',
-)
-
+_all_accept_content_types = ("application/json",)
 
 class BaseApi(api_client.Api):
     @typing.overload
@@ -102,10 +87,7 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
     def _delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete_oapg(
         self,
@@ -115,7 +97,6 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
     ) -> api_client.ApiResponseWithoutDeserialization: ...
-
     @typing.overload
     def _delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete_oapg(
         self,
@@ -124,11 +105,7 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def _delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete_oapg(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -147,9 +124,7 @@ class BaseApi(api_client.Api):
         used_path = path.value
 
         _path_params = {}
-        for parameter in (
-            request_path_model_endpoint_name,
-        ):
+        for parameter in (request_path_model_endpoint_name,):
             parameter_data = path_params.get(parameter.name, schemas.unset)
             if parameter_data is schemas.unset:
                 continue
@@ -157,17 +132,17 @@ class BaseApi(api_client.Api):
             _path_params.update(serialized_data)
 
         for k, v in _path_params.items():
-            used_path = used_path.replace('{%s}' % k, v)
+            used_path = used_path.replace("{%s}" % k, v)
 
         _headers = HTTPHeaderDict()
         # TODO add cookie handling
         if accept_content_types:
             for accept_content_type in accept_content_types:
-                _headers.add('Accept', accept_content_type)
+                _headers.add("Accept", accept_content_type)
 
         response = self.api_client.call_api(
             resource_path=used_path,
-            method='delete'.upper(),
+            method="delete".upper(),
             headers=_headers,
             auth_settings=_auth,
             stream=stream,
@@ -184,14 +159,9 @@ class BaseApi(api_client.Api):
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
-            raise exceptions.ApiException(
-                status=response.status,
-                reason=response.reason,
-                api_response=api_response
-            )
+            raise exceptions.ApiException(status=response.status, reason=response.reason, api_response=api_response)
 
         return api_response
-
 
 class DeleteLlmModelEndpointV1LlmModelEndpointsModelEndpointNameDelete(BaseApi):
     # this class is used by api classes that refer to endpoints with operationId fn names
@@ -204,10 +174,7 @@ class DeleteLlmModelEndpointV1LlmModelEndpointsModelEndpointNameDelete(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
     def delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete(
         self,
@@ -217,7 +184,6 @@ class DeleteLlmModelEndpointV1LlmModelEndpointsModelEndpointNameDelete(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
     ) -> api_client.ApiResponseWithoutDeserialization: ...
-
     @typing.overload
     def delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete(
         self,
@@ -226,11 +192,7 @@ class DeleteLlmModelEndpointV1LlmModelEndpointsModelEndpointNameDelete(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -244,9 +206,8 @@ class DeleteLlmModelEndpointV1LlmModelEndpointsModelEndpointNameDelete(BaseApi):
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
-            skip_deserialization=skip_deserialization
+            skip_deserialization=skip_deserialization,
         )
-
 
 class ApiFordelete(BaseApi):
     # this class is used by api classes that refer to endpoints by path and http method names
@@ -259,10 +220,7 @@ class ApiFordelete(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200,]: ...
     @typing.overload
     def delete(
         self,
@@ -272,7 +230,6 @@ class ApiFordelete(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
     ) -> api_client.ApiResponseWithoutDeserialization: ...
-
     @typing.overload
     def delete(
         self,
@@ -281,11 +238,7 @@ class ApiFordelete(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[
-        ApiResponseFor200,
-        api_client.ApiResponseWithoutDeserialization,
-    ]: ...
-
+    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]: ...
     def delete(
         self,
         path_params: RequestPathParams = frozendict.frozendict(),
@@ -299,7 +252,5 @@ class ApiFordelete(BaseApi):
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
-            skip_deserialization=skip_deserialization
+            skip_deserialization=skip_deserialization,
         )
-
-

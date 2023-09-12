@@ -43,9 +43,7 @@ class ListFilesResponse(schemas.DictSchema):
                         return GetFileResponse
                 def __new__(
                     cls,
-                    _arg: typing.Union[
-                        typing.Tuple["GetFileResponse"], typing.List["GetFileResponse"]
-                    ],
+                    _arg: typing.Union[typing.Tuple["GetFileResponse"], typing.List["GetFileResponse"]],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "files":
                     return super().__new__(
@@ -61,36 +59,26 @@ class ListFilesResponse(schemas.DictSchema):
     files: MetaOapg.properties.files
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["files"]
-    ) -> MetaOapg.properties.files: ...
+    def __getitem__(self, name: typing_extensions.Literal["files"]) -> MetaOapg.properties.files: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "files",
-            ],
+            typing_extensions.Literal["files",],
             str,
         ],
     ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["files"]
-    ) -> MetaOapg.properties.files: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["files"]) -> MetaOapg.properties.files: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal[
-                "files",
-            ],
+            typing_extensions.Literal["files",],
             str,
         ],
     ):

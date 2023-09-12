@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -39,15 +40,11 @@ class UpdateTriggerV1Request(schemas.DictSchema):
             }
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["cron_schedule"]
-    ) -> MetaOapg.properties.cron_schedule:
+    def __getitem__(self, name: typing_extensions.Literal["cron_schedule"]) -> MetaOapg.properties.cron_schedule:
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["suspend"]
-    ) -> MetaOapg.properties.suspend:
+    def __getitem__(self, name: typing_extensions.Literal["suspend"]) -> MetaOapg.properties.suspend:
         ...
 
     @typing.overload
@@ -101,9 +98,7 @@ class UpdateTriggerV1Request(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        cron_schedule: typing.Union[
-            MetaOapg.properties.cron_schedule, str, schemas.Unset
-        ] = schemas.unset,
+        cron_schedule: typing.Union[MetaOapg.properties.cron_schedule, str, schemas.Unset] = schemas.unset,
         suspend: typing.Union[MetaOapg.properties.suspend, bool, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
