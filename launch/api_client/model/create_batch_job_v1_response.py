@@ -51,7 +51,13 @@ class CreateBatchJobV1Response(schemas.DictSchema):
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema:
         ...
 
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["job_id",], str]):
+    def __getitem__(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal["job_id",],
+            str,
+        ],
+    ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
 
@@ -63,7 +69,13 @@ class CreateBatchJobV1Response(schemas.DictSchema):
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["job_id",], str]):
+    def get_item_oapg(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal["job_id",],
+            str,
+        ],
+    ):
         return super().get_item_oapg(name)
 
     def __new__(

@@ -36,3 +36,6 @@ class LLMInferenceFramework(schemas.EnumBase, schemas.StrSchema):
     @schemas.classproperty
     def TEXT_GENERATION_INFERENCE(cls):
         return cls("text_generation_inference")
+    @schemas.classproperty
+    def VLLM(cls):
+        return cls("vllm")

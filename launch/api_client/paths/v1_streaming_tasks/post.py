@@ -22,10 +22,10 @@ from urllib3._collections import HTTPHeaderDict
 
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
-from launch.api_client.model.endpoint_predict_v1_request import (
-    EndpointPredictV1Request,
-)
 from launch.api_client.model.http_validation_error import HTTPValidationError
+from launch.api_client.model.sync_endpoint_predict_v1_request import (
+    SyncEndpointPredictV1Request,
+)
 
 from . import path
 
@@ -55,10 +55,10 @@ request_query_model_endpoint_id = api_client.QueryParameter(
     explode=True,
 )
 # body param
-SchemaForRequestBodyApplicationJson = EndpointPredictV1Request
+SchemaForRequestBodyApplicationJson = SyncEndpointPredictV1Request
 
 
-request_body_endpoint_predict_v1_request = api_client.RequestBody(
+request_body_sync_endpoint_predict_v1_request = api_client.RequestBody(
     content={
         "application/json": api_client.MediaType(schema=SchemaForRequestBodyApplicationJson),
     },
@@ -201,7 +201,7 @@ class BaseApi(api_client.Api):
             )
         _fields = None
         _body = None
-        serialized_data = request_body_endpoint_predict_v1_request.serialize(body, content_type)
+        serialized_data = request_body_sync_endpoint_predict_v1_request.serialize(body, content_type)
         _headers.add("Content-Type", content_type)
         if "fields" in serialized_data:
             _fields = serialized_data["fields"]

@@ -502,7 +502,9 @@ class Schema:
         validated_path_to_schemas = {}
         arg = cast_to_allowed_types(arg, from_server, validated_path_to_schemas)
         validation_metadata = ValidationMetadata(
-            from_server=from_server, configuration=_configuration, validated_path_to_schemas=validated_path_to_schemas
+            from_server=from_server,
+            configuration=_configuration,
+            validated_path_to_schemas=validated_path_to_schemas,
         )
         path_to_schemas = cls.__get_new_cls(arg, validation_metadata)
         new_cls = path_to_schemas[validation_metadata.path_to_item]
@@ -1060,7 +1062,16 @@ else:
 
     # qty 8
     class NoneFrozenDictTupleStrDecimalBoolFileBytesMixin:
-        _types = {NoneClass, frozendict.frozendict, tuple, str, decimal.Decimal, BoolClass, FileIO, bytes}
+        _types = {
+            NoneClass,
+            frozendict.frozendict,
+            tuple,
+            str,
+            decimal.Decimal,
+            BoolClass,
+            FileIO,
+            bytes,
+        }
 
 
 class ValidatorBase:
@@ -1785,7 +1796,10 @@ class DictBase(Discriminable, ValidatorBase):
             invalid_arguments.sort()
             raise ApiTypeError(
                 "{} was passed {} invalid argument{}: {}".format(
-                    cls.__name__, len(invalid_arguments), "s" if len(invalid_arguments) > 1 else "", invalid_arguments
+                    cls.__name__,
+                    len(invalid_arguments),
+                    "s" if len(invalid_arguments) > 1 else "",
+                    invalid_arguments,
                 )
             )
 
@@ -2307,7 +2321,11 @@ class ListSchema(ListBase, Schema, TupleMixin):
     ):
         return super().from_openapi_data_oapg(arg, _configuration=_configuration)
 
-    def __new__(cls, _arg: typing.Union[typing.List[typing.Any], typing.Tuple[typing.Any]], **kwargs: Configuration):
+    def __new__(
+        cls,
+        _arg: typing.Union[typing.List[typing.Any], typing.Tuple[typing.Any]],
+        **kwargs: Configuration,
+    ):
         return super().__new__(cls, _arg, **kwargs)
 
 
@@ -2600,7 +2618,14 @@ class BoolSchema(BoolBase, Schema, BoolMixin):
 
 
 class AnyTypeSchema(
-    DictBase, ListBase, NumberBase, StrBase, BoolBase, NoneBase, Schema, NoneFrozenDictTupleStrDecimalBoolFileBytesMixin
+    DictBase,
+    ListBase,
+    NumberBase,
+    StrBase,
+    BoolBase,
+    NoneBase,
+    Schema,
+    NoneFrozenDictTupleStrDecimalBoolFileBytesMixin,
 ):
     # Python representation of a schema defined as true or {}
     pass
@@ -2638,7 +2663,9 @@ class NotAnyTypeSchema(
 class DictSchema(DictBase, Schema, FrozenDictMixin):
     @classmethod
     def from_openapi_data_oapg(
-        cls, arg: typing.Dict[str, typing.Any], _configuration: typing.Optional[Configuration] = None
+        cls,
+        arg: typing.Dict[str, typing.Any],
+        _configuration: typing.Optional[Configuration] = None,
     ):
         return super().from_openapi_data_oapg(arg, _configuration=_configuration)
 
@@ -2667,7 +2694,15 @@ class DictSchema(DictBase, Schema, FrozenDictMixin):
         return super().__new__(cls, *_args, **kwargs)
 
 
-schema_type_classes = {NoneSchema, DictSchema, ListSchema, NumberSchema, StrSchema, BoolSchema, AnyTypeSchema}
+schema_type_classes = {
+    NoneSchema,
+    DictSchema,
+    ListSchema,
+    NumberSchema,
+    StrSchema,
+    BoolSchema,
+    AnyTypeSchema,
+}
 
 
 @functools.lru_cache()

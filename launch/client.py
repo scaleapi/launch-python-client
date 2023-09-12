@@ -1906,15 +1906,14 @@ class LaunchClient:
         ]
         return async_endpoints + sync_endpoints + streaming_endpoints
 
-    def delete_model_endpoint(self, model_endpoint: Union[ModelEndpoint, str]):
+    def delete_model_endpoint(self, model_endpoint_name: str):
         """
         Deletes a model endpoint.
 
         Parameters:
             model_endpoint: A ``ModelEndpoint`` object.
         """
-        endpoint_name = _model_endpoint_to_name(model_endpoint)
-        endpoint = self.get_model_endpoint(endpoint_name)
+        endpoint = self.get_model_endpoint(model_endpoint_name)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
