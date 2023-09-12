@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -54,7 +53,9 @@ class BodyUploadFileV1FilesPost(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["file",],
+            typing_extensions.Literal[
+                "file",
+            ],
             str,
         ],
     ):
@@ -72,7 +73,9 @@ class BodyUploadFileV1FilesPost(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["file",],
+            typing_extensions.Literal[
+                "file",
+            ],
             str,
         ],
     ):

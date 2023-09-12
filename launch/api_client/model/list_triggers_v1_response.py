@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -44,7 +43,9 @@ class ListTriggersV1Response(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    _arg: typing.Union[typing.Tuple["GetTriggerV1Response"], typing.List["GetTriggerV1Response"]],
+                    _arg: typing.Union[
+                        typing.Tuple["GetTriggerV1Response"], typing.List["GetTriggerV1Response"]
+                    ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "triggers":
                     return super().__new__(
@@ -63,7 +64,9 @@ class ListTriggersV1Response(schemas.DictSchema):
     triggers: MetaOapg.properties.triggers
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["triggers"]) -> MetaOapg.properties.triggers:
+    def __getitem__(
+        self, name: typing_extensions.Literal["triggers"]
+    ) -> MetaOapg.properties.triggers:
         ...
 
     @typing.overload
@@ -73,7 +76,9 @@ class ListTriggersV1Response(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["triggers",],
+            typing_extensions.Literal[
+                "triggers",
+            ],
             str,
         ],
     ):
@@ -81,7 +86,9 @@ class ListTriggersV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["triggers"]) -> MetaOapg.properties.triggers:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["triggers"]
+    ) -> MetaOapg.properties.triggers:
         ...
 
     @typing.overload
@@ -91,7 +98,9 @@ class ListTriggersV1Response(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["triggers",],
+            typing_extensions.Literal[
+                "triggers",
+            ],
             str,
         ],
     ):
@@ -135,6 +144,4 @@ class ListTriggersV1Response(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.get_trigger_v1_response import (
-    GetTriggerV1Response,
-)
+from launch.api_client.model.get_trigger_v1_response import GetTriggerV1Response

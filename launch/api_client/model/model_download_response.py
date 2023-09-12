@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -42,14 +41,18 @@ class ModelDownloadResponse(schemas.DictSchema):
 
                 def __getitem__(
                     self,
-                    name: typing.Union[str,],
+                    name: typing.Union[
+                        str,
+                    ],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
                 def get_item_oapg(
                     self,
-                    name: typing.Union[str,],
+                    name: typing.Union[
+                        str,
+                    ],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
@@ -89,7 +92,9 @@ class ModelDownloadResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["urls",],
+            typing_extensions.Literal[
+                "urls",
+            ],
             str,
         ],
     ):
@@ -107,7 +112,9 @@ class ModelDownloadResponse(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["urls",],
+            typing_extensions.Literal[
+                "urls",
+            ],
             str,
         ],
     ):

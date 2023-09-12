@@ -39,13 +39,17 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
                     additional_properties = schemas.StrSchema
                 def __getitem__(
                     self,
-                    name: typing.Union[str,],
+                    name: typing.Union[
+                        str,
+                    ],
                 ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
                 def get_item_oapg(
                     self,
-                    name: typing.Union[str,],
+                    name: typing.Union[
+                        str,
+                    ],
                 ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
                 def __new__(
@@ -143,7 +147,9 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
     labels: MetaOapg.properties.labels
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["labels"]
+    ) -> MetaOapg.properties.labels: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["docker_image_batch_job_bundle_id"]
@@ -153,7 +159,9 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
         self, name: typing_extensions.Literal["docker_image_batch_job_bundle_name"]
     ) -> MetaOapg.properties.docker_image_batch_job_bundle_name: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["job_config"]) -> MetaOapg.properties.job_config: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["job_config"]
+    ) -> MetaOapg.properties.job_config: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["override_job_max_runtime_s"]
@@ -181,7 +189,9 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["labels"]
+    ) -> MetaOapg.properties.labels: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["docker_image_batch_job_bundle_id"]
@@ -203,7 +213,9 @@ class CreateDockerImageBatchJobV1Request(schemas.DictSchema):
         self, name: typing_extensions.Literal["resource_requests"]
     ) -> typing.Union[MetaOapg.properties.resource_requests, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
