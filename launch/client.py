@@ -3288,7 +3288,7 @@ class LaunchClient:
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             path_params = frozendict({"model_endpoint_name": model_endpoint_name})
-            response = api_instance.delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete(  # type: ignore
+            response = api_instance.delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete(  # noqa
                 path_params=path_params,
                 skip_deserialization=True,
             )
