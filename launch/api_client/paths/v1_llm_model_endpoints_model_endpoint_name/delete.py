@@ -22,55 +22,41 @@ from urllib3._collections import HTTPHeaderDict
 
 from launch.api_client import schemas  # noqa: F401
 from launch.api_client import api_client, exceptions
+from launch.api_client.model.delete_llm_endpoint_response import (
+    DeleteLLMEndpointResponse,
+)
 from launch.api_client.model.http_validation_error import HTTPValidationError
-from launch.api_client.model.sync_endpoint_predict_v1_request import (
-    SyncEndpointPredictV1Request,
-)
-from launch.api_client.model.sync_endpoint_predict_v1_response import (
-    SyncEndpointPredictV1Response,
-)
 
 from . import path
 
-# Query params
-ModelEndpointIdSchema = schemas.StrSchema
-RequestRequiredQueryParams = typing_extensions.TypedDict(
-    "RequestRequiredQueryParams",
+# Path params
+ModelEndpointNameSchema = schemas.StrSchema
+RequestRequiredPathParams = typing_extensions.TypedDict(
+    "RequestRequiredPathParams",
     {
-        "model_endpoint_id": typing.Union[
-            ModelEndpointIdSchema,
+        "model_endpoint_name": typing.Union[
+            ModelEndpointNameSchema,
             str,
         ],
     },
 )
-RequestOptionalQueryParams = typing_extensions.TypedDict("RequestOptionalQueryParams", {}, total=False)
+RequestOptionalPathParams = typing_extensions.TypedDict("RequestOptionalPathParams", {}, total=False)
 
 
-class RequestQueryParams(RequestRequiredQueryParams, RequestOptionalQueryParams):
+class RequestPathParams(RequestRequiredPathParams, RequestOptionalPathParams):
     pass
 
 
-request_query_model_endpoint_id = api_client.QueryParameter(
-    name="model_endpoint_id",
-    style=api_client.ParameterStyle.FORM,
-    schema=ModelEndpointIdSchema,
-    required=True,
-    explode=True,
-)
-# body param
-SchemaForRequestBodyApplicationJson = SyncEndpointPredictV1Request
-
-
-request_body_sync_endpoint_predict_v1_request = api_client.RequestBody(
-    content={
-        "application/json": api_client.MediaType(schema=SchemaForRequestBodyApplicationJson),
-    },
+request_path_model_endpoint_name = api_client.PathParameter(
+    name="model_endpoint_name",
+    style=api_client.ParameterStyle.SIMPLE,
+    schema=ModelEndpointNameSchema,
     required=True,
 )
 _auth = [
     "HTTPBasic",
 ]
-SchemaFor200ResponseBodyApplicationJson = SyncEndpointPredictV1Response
+SchemaFor200ResponseBodyApplicationJson = DeleteLLMEndpointResponse
 
 
 @dataclass
@@ -111,11 +97,9 @@ _all_accept_content_types = ("application/json",)
 
 class BaseApi(api_client.Api):
     @typing.overload
-    def _create_sync_inference_task_v1_sync_tasks_post_oapg(
+    def _delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: typing_extensions.Literal["application/json"] = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
@@ -124,25 +108,10 @@ class BaseApi(api_client.Api):
         ...
 
     @typing.overload
-    def _create_sync_inference_task_v1_sync_tasks_post_oapg(
+    def _delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
-        accept_content_types: typing.Tuple[str] = _all_accept_content_types,
-        stream: bool = False,
-        timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-        skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
-
-    @typing.overload
-    def _create_sync_inference_task_v1_sync_tasks_post_oapg(
-        self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         skip_deserialization: typing_extensions.Literal[True],
-        content_type: str = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
@@ -150,11 +119,9 @@ class BaseApi(api_client.Api):
         ...
 
     @typing.overload
-    def _create_sync_inference_task_v1_sync_tasks_post_oapg(
+    def _delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
@@ -162,35 +129,33 @@ class BaseApi(api_client.Api):
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
         ...
 
-    def _create_sync_inference_task_v1_sync_tasks_post_oapg(
+    def _delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete_oapg(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = "application/json",
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
         """
-        Create Sync Inference Task
+        Delete Llm Model Endpoint
         :param skip_deserialization: If true then api_response.response will be set but
             api_response.body and api_response.headers will not be deserialized into schema
             class instances
         """
-        self._verify_typed_dict_inputs_oapg(RequestQueryParams, query_params)
+        self._verify_typed_dict_inputs_oapg(RequestPathParams, path_params)
         used_path = path.value
 
-        prefix_separator_iterator = None
-        for parameter in (request_query_model_endpoint_id,):
-            parameter_data = query_params.get(parameter.name, schemas.unset)
+        _path_params = {}
+        for parameter in (request_path_model_endpoint_name,):
+            parameter_data = path_params.get(parameter.name, schemas.unset)
             if parameter_data is schemas.unset:
                 continue
-            if prefix_separator_iterator is None:
-                prefix_separator_iterator = parameter.get_prefix_separator_iterator()
-            serialized_data = parameter.serialize(parameter_data, prefix_separator_iterator)
-            for serialized_value in serialized_data.values():
-                used_path += serialized_value
+            serialized_data = parameter.serialize(parameter_data)
+            _path_params.update(serialized_data)
+
+        for k, v in _path_params.items():
+            used_path = used_path.replace("{%s}" % k, v)
 
         _headers = HTTPHeaderDict()
         # TODO add cookie handling
@@ -198,24 +163,10 @@ class BaseApi(api_client.Api):
             for accept_content_type in accept_content_types:
                 _headers.add("Accept", accept_content_type)
 
-        if body is schemas.unset:
-            raise exceptions.ApiValueError(
-                "The required body parameter has an invalid value of: unset. Set a valid value instead"
-            )
-        _fields = None
-        _body = None
-        serialized_data = request_body_sync_endpoint_predict_v1_request.serialize(body, content_type)
-        _headers.add("Content-Type", content_type)
-        if "fields" in serialized_data:
-            _fields = serialized_data["fields"]
-        elif "body" in serialized_data:
-            _body = serialized_data["body"]
         response = self.api_client.call_api(
             resource_path=used_path,
-            method="post".upper(),
+            method="delete".upper(),
             headers=_headers,
-            fields=_fields,
-            body=_body,
             auth_settings=_auth,
             stream=stream,
             timeout=timeout,
@@ -236,15 +187,13 @@ class BaseApi(api_client.Api):
         return api_response
 
 
-class CreateSyncInferenceTaskV1SyncTasksPost(BaseApi):
+class DeleteLlmModelEndpointV1LlmModelEndpointsModelEndpointNameDelete(BaseApi):
     # this class is used by api classes that refer to endpoints with operationId fn names
 
     @typing.overload
-    def create_sync_inference_task_v1_sync_tasks_post(
+    def delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: typing_extensions.Literal["application/json"] = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
@@ -253,25 +202,10 @@ class CreateSyncInferenceTaskV1SyncTasksPost(BaseApi):
         ...
 
     @typing.overload
-    def create_sync_inference_task_v1_sync_tasks_post(
+    def delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
-        accept_content_types: typing.Tuple[str] = _all_accept_content_types,
-        stream: bool = False,
-        timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-        skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
-
-    @typing.overload
-    def create_sync_inference_task_v1_sync_tasks_post(
-        self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         skip_deserialization: typing_extensions.Literal[True],
-        content_type: str = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
@@ -279,11 +213,9 @@ class CreateSyncInferenceTaskV1SyncTasksPost(BaseApi):
         ...
 
     @typing.overload
-    def create_sync_inference_task_v1_sync_tasks_post(
+    def delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
@@ -291,20 +223,16 @@ class CreateSyncInferenceTaskV1SyncTasksPost(BaseApi):
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
         ...
 
-    def create_sync_inference_task_v1_sync_tasks_post(
+    def delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = "application/json",
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return self._create_sync_inference_task_v1_sync_tasks_post_oapg(
-            body=body,
-            query_params=query_params,
-            content_type=content_type,
+        return self._delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete_oapg(
+            path_params=path_params,
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
@@ -312,15 +240,13 @@ class CreateSyncInferenceTaskV1SyncTasksPost(BaseApi):
         )
 
 
-class ApiForpost(BaseApi):
+class ApiFordelete(BaseApi):
     # this class is used by api classes that refer to endpoints by path and http method names
 
     @typing.overload
-    def post(
+    def delete(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: typing_extensions.Literal["application/json"] = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
@@ -329,25 +255,10 @@ class ApiForpost(BaseApi):
         ...
 
     @typing.overload
-    def post(
+    def delete(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
-        accept_content_types: typing.Tuple[str] = _all_accept_content_types,
-        stream: bool = False,
-        timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-        skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
-
-    @typing.overload
-    def post(
-        self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
         skip_deserialization: typing_extensions.Literal[True],
-        content_type: str = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
@@ -355,11 +266,9 @@ class ApiForpost(BaseApi):
         ...
 
     @typing.overload
-    def post(
+    def delete(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = ...,
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
@@ -367,20 +276,16 @@ class ApiForpost(BaseApi):
     ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
         ...
 
-    def post(
+    def delete(
         self,
-        body: typing.Union[SchemaForRequestBodyApplicationJson,],
-        content_type: str = "application/json",
-        query_params: RequestQueryParams = frozendict.frozendict(),
+        path_params: RequestPathParams = frozendict.frozendict(),
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = False,
     ):
-        return self._create_sync_inference_task_v1_sync_tasks_post_oapg(
-            body=body,
-            query_params=query_params,
-            content_type=content_type,
+        return self._delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete_oapg(
+            path_params=path_params,
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,

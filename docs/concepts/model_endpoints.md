@@ -158,5 +158,5 @@ endpoint = client.create_model_endpoint(
     },
 )
 time.sleep(15)  # Wait for Launch to build the endpoint
-client.delete_model_endpoint(model_endpoint="demo-endpoint-tmp")
+client.delete_model_endpoint(model_endpoint_name="demo-endpoint-tmp")
 ```

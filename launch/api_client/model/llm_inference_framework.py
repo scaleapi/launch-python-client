@@ -36,6 +36,7 @@ class LLMInferenceFramework(schemas.EnumBase, schemas.StrSchema):
         enum_value_to_name = {
             "deepspeed": "DEEPSPEED",
             "text_generation_inference": "TEXT_GENERATION_INFERENCE",
+            "vllm": "VLLM",
         }
 
     @schemas.classproperty
@@ -45,3 +46,7 @@ class LLMInferenceFramework(schemas.EnumBase, schemas.StrSchema):
     @schemas.classproperty
     def TEXT_GENERATION_INFERENCE(cls):
         return cls("text_generation_inference")
+
+    @schemas.classproperty
+    def VLLM(cls):
+        return cls("vllm")

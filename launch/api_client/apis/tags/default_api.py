@@ -92,6 +92,9 @@ from launch.api_client.paths.v1_llm_model_endpoints.post import (
 from launch.api_client.paths.v1_llm_model_endpoints_download.post import (
     DownloadModelEndpointV1LlmModelEndpointsDownloadPost,
 )
+from launch.api_client.paths.v1_llm_model_endpoints_model_endpoint_name.delete import (
+    DeleteLlmModelEndpointV1LlmModelEndpointsModelEndpointNameDelete,
+)
 from launch.api_client.paths.v1_llm_model_endpoints_model_endpoint_name.get import (
     GetModelEndpointV1LlmModelEndpointsModelEndpointNameGet,
 )
@@ -186,6 +189,7 @@ class DefaultApi(
     CreateSyncInferenceTaskV1SyncTasksPost,
     CreateTriggerV1TriggersPost,
     DeleteFileV1FilesFileIdDelete,
+    DeleteLlmModelEndpointV1LlmModelEndpointsModelEndpointNameDelete,
     DeleteModelEndpointV1ModelEndpointsModelEndpointIdDelete,
     DeleteTriggerV1TriggersTriggerIdDelete,
     DownloadModelEndpointV1LlmModelEndpointsDownloadPost,

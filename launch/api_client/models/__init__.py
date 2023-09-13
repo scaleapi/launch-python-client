@@ -114,6 +114,9 @@ from launch.api_client.model.create_trigger_v1_response import (
 )
 from launch.api_client.model.custom_framework import CustomFramework
 from launch.api_client.model.delete_file_response import DeleteFileResponse
+from launch.api_client.model.delete_llm_endpoint_response import (
+    DeleteLLMEndpointResponse,
+)
 from launch.api_client.model.delete_model_endpoint_v1_response import (
     DeleteModelEndpointV1Response,
 )
@@ -223,6 +226,9 @@ from launch.api_client.model.response_schema import ResponseSchema
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
 from launch.api_client.model.streaming_enhanced_runnable_image_flavor import (
     StreamingEnhancedRunnableImageFlavor,
+)
+from launch.api_client.model.sync_endpoint_predict_v1_request import (
+    SyncEndpointPredictV1Request,
 )
 from launch.api_client.model.sync_endpoint_predict_v1_response import (
     SyncEndpointPredictV1Response,

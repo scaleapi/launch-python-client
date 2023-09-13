@@ -106,11 +106,17 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
 
-                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def __getitem__(
+                    self,
+                    name: typing.Union[str,],
+                ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
-                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def get_item_oapg(
+                    self,
+                    name: typing.Union[str,],
+                ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
                 def __new__(
@@ -141,11 +147,17 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
 
-                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def __getitem__(
+                    self,
+                    name: typing.Union[str,],
+                ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
-                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def get_item_oapg(
+                    self,
+                    name: typing.Union[str,],
+                ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
                 def __new__(
@@ -470,7 +482,10 @@ class TritonEnhancedRunnableImageFlavor(schemas.DictSchema):
             MetaOapg.properties.triton_model_replicas, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         triton_readiness_initial_delay_seconds: typing.Union[
-            MetaOapg.properties.triton_readiness_initial_delay_seconds, decimal.Decimal, int, schemas.Unset
+            MetaOapg.properties.triton_readiness_initial_delay_seconds,
+            decimal.Decimal,
+            int,
+            schemas.Unset,
         ] = schemas.unset,
         triton_storage: typing.Union[MetaOapg.properties.triton_storage, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,

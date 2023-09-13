@@ -1906,15 +1906,14 @@ class LaunchClient:
         ]
         return async_endpoints + sync_endpoints + streaming_endpoints
 
-    def delete_model_endpoint(self, model_endpoint: Union[ModelEndpoint, str]):
+    def delete_model_endpoint(self, model_endpoint_name: str):
         """
         Deletes a model endpoint.
 
         Parameters:
             model_endpoint: A ``ModelEndpoint`` object.
         """
-        endpoint_name = _model_endpoint_to_name(model_endpoint)
-        endpoint = self.get_model_endpoint(endpoint_name)
+        endpoint = self.get_model_endpoint(model_endpoint_name)
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
             model_endpoint_id = endpoint.model_endpoint.id  # type: ignore
@@ -3278,6 +3277,23 @@ class LaunchClient:
             resp = ModelDownloadResponse.parse_raw(response.response.data)
 
         return resp
+
+    def delete_llm_model_endpoint(self, model_endpoint_name: str) -> bool:
+        """
+        Deletes an LLM model endpoint.
+
+        Parameters:
+            model_endpoint_name: The name of the model endpoint to delete.
+        """
+        with ApiClient(self.configuration) as api_client:
+            api_instance = DefaultApi(api_client)
+            path_params = frozendict({"model_endpoint_name": model_endpoint_name})
+            response = api_instance.delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete(  # type: ignore # noqa: E501
+                path_params=path_params,
+                skip_deserialization=True,
+            )
+            resp = json.loads(response.response.data)
+        return resp["deleted"]
 
 
 def _zip_directory(zipf: ZipFile, path: str) -> None:
