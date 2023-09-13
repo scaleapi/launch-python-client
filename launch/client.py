@@ -3278,17 +3278,17 @@ class LaunchClient:
 
         return resp
 
-    def delete_llm_model_endpoint(self, model_endpoint_id: str) -> bool:
+    def delete_llm_model_endpoint(self, model_endpoint_name: str) -> bool:
         """
         Deletes an LLM model endpoint.
 
         Parameters:
-            model_endpoint_id: The id of the model endpoint to delete.
+            model_endpoint_name: The name of the model endpoint to delete.
         """
         with ApiClient(self.configuration) as api_client:
             api_instance = DefaultApi(api_client)
-            path_params = frozendict({"model_endpoint_id": model_endpoint_id})
-            response = api_instance.delete_model_endpoint_v1_model_endpoints_model_endpoint_id_delete(  # type: ignore
+            path_params = frozendict({"model_endpoint_name": model_endpoint_name})
+            response = api_instance.delete_llm_model_endpoint_v1_llm_model_endpoints_model_endpoint_name_delete(  # type: ignore
                 path_params=path_params,
                 skip_deserialization=True,
             )
