@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -41,18 +40,29 @@ class CompletionStreamV1Response(schemas.DictSchema):
             request_id = schemas.StrSchema
 
             @staticmethod
+            def error() -> typing.Type["StreamError"]:
+                return StreamError
+
+            @staticmethod
             def output() -> typing.Type["CompletionStreamOutput"]:
                 return CompletionStreamOutput
 
             __annotations__ = {
                 "request_id": request_id,
+                "error": error,
                 "output": output,
             }
 
     request_id: MetaOapg.properties.request_id
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id:
+    def __getitem__(
+        self, name: typing_extensions.Literal["request_id"]
+    ) -> MetaOapg.properties.request_id:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["error"]) -> "StreamError":
         ...
 
     @typing.overload
@@ -68,6 +78,7 @@ class CompletionStreamV1Response(schemas.DictSchema):
         name: typing.Union[
             typing_extensions.Literal[
                 "request_id",
+                "error",
                 "output",
             ],
             str,
@@ -77,7 +88,15 @@ class CompletionStreamV1Response(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["request_id"]
+    ) -> MetaOapg.properties.request_id:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["error"]
+    ) -> typing.Union["StreamError", schemas.Unset]:
         ...
 
     @typing.overload
@@ -95,6 +114,7 @@ class CompletionStreamV1Response(schemas.DictSchema):
         name: typing.Union[
             typing_extensions.Literal[
                 "request_id",
+                "error",
                 "output",
             ],
             str,
@@ -112,6 +132,7 @@ class CompletionStreamV1Response(schemas.DictSchema):
             MetaOapg.properties.request_id,
             str,
         ],
+        error: typing.Union["StreamError", schemas.Unset] = schemas.unset,
         output: typing.Union["CompletionStreamOutput", schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
@@ -135,12 +156,12 @@ class CompletionStreamV1Response(schemas.DictSchema):
             cls,
             *_args,
             request_id=request_id,
+            error=error,
             output=output,
             _configuration=_configuration,
             **kwargs,
         )
 
 
-from launch.api_client.model.completion_stream_output import (
-    CompletionStreamOutput,
-)
+from launch.api_client.model.completion_stream_output import CompletionStreamOutput
+from launch.api_client.model.stream_error import StreamError

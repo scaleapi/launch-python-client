@@ -58,13 +58,21 @@ class SyncEndpointPredictV1Request(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["callback_auth"]) -> "CallbackAuth": ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["callback_url"]) -> MetaOapg.properties.callback_url: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["callback_url"]
+    ) -> MetaOapg.properties.callback_url: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["cloudpickle"]) -> MetaOapg.properties.cloudpickle: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["cloudpickle"]
+    ) -> MetaOapg.properties.cloudpickle: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["num_retries"]) -> MetaOapg.properties.num_retries: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["num_retries"]
+    ) -> MetaOapg.properties.num_retries: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["return_pickled"]) -> MetaOapg.properties.return_pickled: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["return_pickled"]
+    ) -> MetaOapg.properties.return_pickled: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["timeout_seconds"]
@@ -124,7 +132,9 @@ class SyncEndpointPredictV1Request(schemas.DictSchema):
         self, name: typing_extensions.Literal["url"]
     ) -> typing.Union[MetaOapg.properties.url, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -169,10 +179,18 @@ class SyncEndpointPredictV1Request(schemas.DictSchema):
             schemas.Unset,
         ] = schemas.unset,
         callback_auth: typing.Union["CallbackAuth", schemas.Unset] = schemas.unset,
-        callback_url: typing.Union[MetaOapg.properties.callback_url, str, schemas.Unset] = schemas.unset,
-        cloudpickle: typing.Union[MetaOapg.properties.cloudpickle, str, schemas.Unset] = schemas.unset,
-        num_retries: typing.Union[MetaOapg.properties.num_retries, decimal.Decimal, int, schemas.Unset] = schemas.unset,
-        return_pickled: typing.Union[MetaOapg.properties.return_pickled, bool, schemas.Unset] = schemas.unset,
+        callback_url: typing.Union[
+            MetaOapg.properties.callback_url, str, schemas.Unset
+        ] = schemas.unset,
+        cloudpickle: typing.Union[
+            MetaOapg.properties.cloudpickle, str, schemas.Unset
+        ] = schemas.unset,
+        num_retries: typing.Union[
+            MetaOapg.properties.num_retries, decimal.Decimal, int, schemas.Unset
+        ] = schemas.unset,
+        return_pickled: typing.Union[
+            MetaOapg.properties.return_pickled, bool, schemas.Unset
+        ] = schemas.unset,
         timeout_seconds: typing.Union[
             MetaOapg.properties.timeout_seconds, decimal.Decimal, int, float, schemas.Unset
         ] = schemas.unset,

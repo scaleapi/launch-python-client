@@ -45,6 +45,7 @@ class CreateFineTuneRequest(schemas.DictSchema):
                             any_of_0 = schemas.StrSchema
                             any_of_1 = schemas.IntSchema
                             any_of_2 = schemas.NumberSchema
+                            any_of_3 = schemas.DictSchema
 
                             @classmethod
                             @functools.lru_cache()
@@ -60,6 +61,7 @@ class CreateFineTuneRequest(schemas.DictSchema):
                                     cls.any_of_0,
                                     cls.any_of_1,
                                     cls.any_of_2,
+                                    cls.any_of_3,
                                 ]
                         def __new__(
                             cls,
@@ -105,10 +107,20 @@ class CreateFineTuneRequest(schemas.DictSchema):
                                 _configuration=_configuration,
                                 **kwargs,
                             )
-                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def __getitem__(
+                    self,
+                    name: typing.Union[
+                        str,
+                    ],
+                ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
-                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def get_item_oapg(
+                    self,
+                    name: typing.Union[
+                        str,
+                    ],
+                ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
                 def __new__(
                     cls,
@@ -165,17 +177,25 @@ class CreateFineTuneRequest(schemas.DictSchema):
         self, name: typing_extensions.Literal["hyperparameters"]
     ) -> MetaOapg.properties.hyperparameters: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["model"]) -> MetaOapg.properties.model: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["model"]
+    ) -> MetaOapg.properties.model: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["training_file"]) -> MetaOapg.properties.training_file: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["training_file"]
+    ) -> MetaOapg.properties.training_file: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["suffix"]) -> MetaOapg.properties.suffix: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["suffix"]
+    ) -> MetaOapg.properties.suffix: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["validation_file"]
     ) -> MetaOapg.properties.validation_file: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["wandb_config"]) -> MetaOapg.properties.wandb_config: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["wandb_config"]
+    ) -> MetaOapg.properties.wandb_config: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -199,9 +219,13 @@ class CreateFineTuneRequest(schemas.DictSchema):
         self, name: typing_extensions.Literal["hyperparameters"]
     ) -> MetaOapg.properties.hyperparameters: ...
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["model"]) -> MetaOapg.properties.model: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["model"]
+    ) -> MetaOapg.properties.model: ...
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["training_file"]) -> MetaOapg.properties.training_file: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["training_file"]
+    ) -> MetaOapg.properties.training_file: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["suffix"]
@@ -215,7 +239,9 @@ class CreateFineTuneRequest(schemas.DictSchema):
         self, name: typing_extensions.Literal["wandb_config"]
     ) -> typing.Union[MetaOapg.properties.wandb_config, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -251,7 +277,9 @@ class CreateFineTuneRequest(schemas.DictSchema):
             str,
         ],
         suffix: typing.Union[MetaOapg.properties.suffix, str, schemas.Unset] = schemas.unset,
-        validation_file: typing.Union[MetaOapg.properties.validation_file, str, schemas.Unset] = schemas.unset,
+        validation_file: typing.Union[
+            MetaOapg.properties.validation_file, str, schemas.Unset
+        ] = schemas.unset,
         wandb_config: typing.Union[
             MetaOapg.properties.wandb_config, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,

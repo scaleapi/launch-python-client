@@ -16,7 +16,6 @@ import sys
 from http import client as http_client
 
 import urllib3
-
 from launch.api_client.exceptions import ApiValueError
 
 JSON_SCHEMA_VALIDATION_KEYWORDS = {
@@ -441,7 +440,9 @@ class Configuration(object):
             if "enum_values" in variable and used_value not in variable["enum_values"]:
                 raise ValueError(
                     "The variable `{0}` in the host URL has invalid value "
-                    "{1}. Must be {2}.".format(variable_name, variables[variable_name], variable["enum_values"])
+                    "{1}. Must be {2}.".format(
+                        variable_name, variables[variable_name], variable["enum_values"]
+                    )
                 )
 
             url = url.replace("{" + variable_name + "}", used_value)

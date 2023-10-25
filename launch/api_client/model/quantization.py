@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -35,8 +34,13 @@ class Quantization(schemas.EnumBase, schemas.StrSchema):
     class MetaOapg:
         enum_value_to_name = {
             "bitsandbytes": "BITSANDBYTES",
+            "awq": "AWQ",
         }
 
     @schemas.classproperty
     def BITSANDBYTES(cls):
         return cls("bitsandbytes")
+
+    @schemas.classproperty
+    def AWQ(cls):
+        return cls("awq")

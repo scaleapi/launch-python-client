@@ -39,3 +39,6 @@ class LLMInferenceFramework(schemas.EnumBase, schemas.StrSchema):
     @schemas.classproperty
     def VLLM(cls):
         return cls("vllm")
+    @schemas.classproperty
+    def LIGHTLLM(cls):
+        return cls("lightllm")

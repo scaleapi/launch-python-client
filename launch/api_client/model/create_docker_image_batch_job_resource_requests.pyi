@@ -251,9 +251,13 @@ class CreateDockerImageBatchJobResourceRequests(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["gpus"]) -> MetaOapg.properties.gpus: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["memory"]) -> MetaOapg.properties.memory: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["memory"]
+    ) -> MetaOapg.properties.memory: ...
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["storage"]) -> MetaOapg.properties.storage: ...
+    def __getitem__(
+        self, name: typing_extensions.Literal["storage"]
+    ) -> MetaOapg.properties.storage: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -276,7 +280,9 @@ class CreateDockerImageBatchJobResourceRequests(schemas.DictSchema):
         self, name: typing_extensions.Literal["cpus"]
     ) -> typing.Union[MetaOapg.properties.cpus, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["gpu_type"]) -> typing.Union["GpuType", schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["gpu_type"]
+    ) -> typing.Union["GpuType", schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["gpus"]
@@ -290,7 +296,9 @@ class CreateDockerImageBatchJobResourceRequests(schemas.DictSchema):
         self, name: typing_extensions.Literal["storage"]
     ) -> typing.Union[MetaOapg.properties.storage, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -332,7 +340,9 @@ class CreateDockerImageBatchJobResourceRequests(schemas.DictSchema):
             schemas.Unset,
         ] = schemas.unset,
         gpu_type: typing.Union["GpuType", schemas.Unset] = schemas.unset,
-        gpus: typing.Union[MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset] = schemas.unset,
+        gpus: typing.Union[
+            MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset
+        ] = schemas.unset,
         memory: typing.Union[
             MetaOapg.properties.memory,
             dict,

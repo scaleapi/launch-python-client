@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -44,7 +43,9 @@ class ListTriggersV1Response(schemas.DictSchema):
 
                 def __new__(
                     cls,
-                    _arg: typing.Union[typing.Tuple["GetTriggerV1Response"], typing.List["GetTriggerV1Response"]],
+                    _arg: typing.Union[
+                        typing.Tuple["GetTriggerV1Response"], typing.List["GetTriggerV1Response"]
+                    ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> "triggers":
                     return super().__new__(
@@ -63,26 +64,46 @@ class ListTriggersV1Response(schemas.DictSchema):
     triggers: MetaOapg.properties.triggers
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["triggers"]) -> MetaOapg.properties.triggers:
+    def __getitem__(
+        self, name: typing_extensions.Literal["triggers"]
+    ) -> MetaOapg.properties.triggers:
         ...
 
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema:
         ...
 
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["triggers",], str]):
+    def __getitem__(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "triggers",
+            ],
+            str,
+        ],
+    ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["triggers"]) -> MetaOapg.properties.triggers:
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["triggers"]
+    ) -> MetaOapg.properties.triggers:
         ...
 
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]:
         ...
 
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["triggers",], str]):
+    def get_item_oapg(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "triggers",
+            ],
+            str,
+        ],
+    ):
         return super().get_item_oapg(name)
 
     def __new__(
@@ -123,6 +144,4 @@ class ListTriggersV1Response(schemas.DictSchema):
         )
 
 
-from launch.api_client.model.get_trigger_v1_response import (
-    GetTriggerV1Response,
-)
+from launch.api_client.model.get_trigger_v1_response import GetTriggerV1Response

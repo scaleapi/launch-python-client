@@ -19,7 +19,6 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
-
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -37,6 +36,7 @@ class LLMInferenceFramework(schemas.EnumBase, schemas.StrSchema):
             "deepspeed": "DEEPSPEED",
             "text_generation_inference": "TEXT_GENERATION_INFERENCE",
             "vllm": "VLLM",
+            "lightllm": "LIGHTLLM",
         }
 
     @schemas.classproperty
@@ -50,3 +50,7 @@ class LLMInferenceFramework(schemas.EnumBase, schemas.StrSchema):
     @schemas.classproperty
     def VLLM(cls):
         return cls("vllm")
+
+    @schemas.classproperty
+    def LIGHTLLM(cls):
+        return cls("lightllm")

@@ -44,14 +44,34 @@ class BodyUploadFileV1FilesPost(schemas.DictSchema):
     def __getitem__(self, name: typing_extensions.Literal["file"]) -> MetaOapg.properties.file: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["file",], str]):
+    def __getitem__(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "file",
+            ],
+            str,
+        ],
+    ):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["file"]) -> MetaOapg.properties.file: ...
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["file"]
+    ) -> MetaOapg.properties.file: ...
     @typing.overload
-    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["file",], str]):
+    def get_item_oapg(
+        self, name: str
+    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(
+        self,
+        name: typing.Union[
+            typing_extensions.Literal[
+                "file",
+            ],
+            str,
+        ],
+    ):
         return super().get_item_oapg(name)
     def __new__(
         cls,

@@ -33,3 +33,6 @@ class Quantization(schemas.EnumBase, schemas.StrSchema):
     @schemas.classproperty
     def BITSANDBYTES(cls):
         return cls("bitsandbytes")
+    @schemas.classproperty
+    def AWQ(cls):
+        return cls("awq")
