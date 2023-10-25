@@ -51,9 +51,7 @@ class GetFileResponse(schemas.DictSchema):
     id: MetaOapg.properties.id
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["filename"]
-    ) -> MetaOapg.properties.filename: ...
+    def __getitem__(self, name: typing_extensions.Literal["filename"]) -> MetaOapg.properties.filename: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
     @typing.overload
@@ -74,19 +72,13 @@ class GetFileResponse(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["filename"]
-    ) -> MetaOapg.properties.filename: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["filename"]) -> MetaOapg.properties.filename: ...
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["size"]
-    ) -> MetaOapg.properties.size: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["size"]) -> MetaOapg.properties.size: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

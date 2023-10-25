@@ -45,13 +45,9 @@ class TokenOutput(schemas.DictSchema):
     token: MetaOapg.properties.token
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["log_prob"]
-    ) -> MetaOapg.properties.log_prob: ...
+    def __getitem__(self, name: typing_extensions.Literal["log_prob"]) -> MetaOapg.properties.log_prob: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["token"]
-    ) -> MetaOapg.properties.token: ...
+    def __getitem__(self, name: typing_extensions.Literal["token"]) -> MetaOapg.properties.token: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -67,17 +63,11 @@ class TokenOutput(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["log_prob"]
-    ) -> MetaOapg.properties.log_prob: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["log_prob"]) -> MetaOapg.properties.log_prob: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["token"]
-    ) -> MetaOapg.properties.token: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["token"]) -> MetaOapg.properties.token: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

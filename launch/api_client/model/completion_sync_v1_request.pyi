@@ -101,17 +101,11 @@ class CompletionSyncV1Request(schemas.DictSchema):
     prompt: MetaOapg.properties.prompt
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["max_new_tokens"]
-    ) -> MetaOapg.properties.max_new_tokens: ...
+    def __getitem__(self, name: typing_extensions.Literal["max_new_tokens"]) -> MetaOapg.properties.max_new_tokens: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["prompt"]
-    ) -> MetaOapg.properties.prompt: ...
+    def __getitem__(self, name: typing_extensions.Literal["prompt"]) -> MetaOapg.properties.prompt: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["temperature"]
-    ) -> MetaOapg.properties.temperature: ...
+    def __getitem__(self, name: typing_extensions.Literal["temperature"]) -> MetaOapg.properties.temperature: ...
     @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["frequency_penalty"]
@@ -125,17 +119,11 @@ class CompletionSyncV1Request(schemas.DictSchema):
         self, name: typing_extensions.Literal["return_token_log_probs"]
     ) -> MetaOapg.properties.return_token_log_probs: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["stop_sequences"]
-    ) -> MetaOapg.properties.stop_sequences: ...
+    def __getitem__(self, name: typing_extensions.Literal["stop_sequences"]) -> MetaOapg.properties.stop_sequences: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["top_k"]
-    ) -> MetaOapg.properties.top_k: ...
+    def __getitem__(self, name: typing_extensions.Literal["top_k"]) -> MetaOapg.properties.top_k: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["top_p"]
-    ) -> MetaOapg.properties.top_p: ...
+    def __getitem__(self, name: typing_extensions.Literal["top_p"]) -> MetaOapg.properties.top_p: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -162,13 +150,9 @@ class CompletionSyncV1Request(schemas.DictSchema):
         self, name: typing_extensions.Literal["max_new_tokens"]
     ) -> MetaOapg.properties.max_new_tokens: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["prompt"]
-    ) -> MetaOapg.properties.prompt: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["prompt"]) -> MetaOapg.properties.prompt: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["temperature"]
-    ) -> MetaOapg.properties.temperature: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["temperature"]) -> MetaOapg.properties.temperature: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["frequency_penalty"]
@@ -194,9 +178,7 @@ class CompletionSyncV1Request(schemas.DictSchema):
         self, name: typing_extensions.Literal["top_p"]
     ) -> typing.Union[MetaOapg.properties.top_p, schemas.Unset]: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
@@ -245,15 +227,9 @@ class CompletionSyncV1Request(schemas.DictSchema):
         return_token_log_probs: typing.Union[
             MetaOapg.properties.return_token_log_probs, bool, schemas.Unset
         ] = schemas.unset,
-        stop_sequences: typing.Union[
-            MetaOapg.properties.stop_sequences, list, tuple, schemas.Unset
-        ] = schemas.unset,
-        top_k: typing.Union[
-            MetaOapg.properties.top_k, decimal.Decimal, int, schemas.Unset
-        ] = schemas.unset,
-        top_p: typing.Union[
-            MetaOapg.properties.top_p, decimal.Decimal, int, float, schemas.Unset
-        ] = schemas.unset,
+        stop_sequences: typing.Union[MetaOapg.properties.stop_sequences, list, tuple, schemas.Unset] = schemas.unset,
+        top_k: typing.Union[MetaOapg.properties.top_k, decimal.Decimal, int, schemas.Unset] = schemas.unset,
+        top_p: typing.Union[MetaOapg.properties.top_p, decimal.Decimal, int, float, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,

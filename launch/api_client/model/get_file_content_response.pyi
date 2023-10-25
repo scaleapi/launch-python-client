@@ -47,9 +47,7 @@ class GetFileContentResponse(schemas.DictSchema):
     content: MetaOapg.properties.content
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["content"]
-    ) -> MetaOapg.properties.content: ...
+    def __getitem__(self, name: typing_extensions.Literal["content"]) -> MetaOapg.properties.content: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
     @typing.overload
@@ -67,15 +65,11 @@ class GetFileContentResponse(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["content"]
-    ) -> MetaOapg.properties.content: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["content"]) -> MetaOapg.properties.content: ...
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["id"]) -> MetaOapg.properties.id: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[

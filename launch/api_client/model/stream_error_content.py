@@ -19,6 +19,7 @@ from datetime import date, datetime  # noqa: F401
 
 import frozendict  # noqa: F401
 import typing_extensions  # noqa: F401
+
 from launch.api_client import schemas  # noqa: F401
 
 
@@ -51,9 +52,7 @@ class StreamErrorContent(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["timestamp"]
-    ) -> MetaOapg.properties.timestamp:
+    def __getitem__(self, name: typing_extensions.Literal["timestamp"]) -> MetaOapg.properties.timestamp:
         ...
 
     @typing.overload
@@ -78,9 +77,7 @@ class StreamErrorContent(schemas.DictSchema):
         ...
 
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["timestamp"]
-    ) -> MetaOapg.properties.timestamp:
+    def get_item_oapg(self, name: typing_extensions.Literal["timestamp"]) -> MetaOapg.properties.timestamp:
         ...
 
     @typing.overload

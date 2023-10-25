@@ -45,13 +45,9 @@ class StreamErrorContent(schemas.DictSchema):
     timestamp: MetaOapg.properties.timestamp
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["error"]
-    ) -> MetaOapg.properties.error: ...
+    def __getitem__(self, name: typing_extensions.Literal["error"]) -> MetaOapg.properties.error: ...
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["timestamp"]
-    ) -> MetaOapg.properties.timestamp: ...
+    def __getitem__(self, name: typing_extensions.Literal["timestamp"]) -> MetaOapg.properties.timestamp: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
@@ -67,17 +63,11 @@ class StreamErrorContent(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["error"]
-    ) -> MetaOapg.properties.error: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["error"]) -> MetaOapg.properties.error: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["timestamp"]
-    ) -> MetaOapg.properties.timestamp: ...
+    def get_item_oapg(self, name: typing_extensions.Literal["timestamp"]) -> MetaOapg.properties.timestamp: ...
     @typing.overload
-    def get_item_oapg(
-        self, name: str
-    ) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
+    def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
