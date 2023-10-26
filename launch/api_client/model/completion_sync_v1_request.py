@@ -48,6 +48,16 @@ class CompletionSyncV1Request(schemas.DictSchema):
                     inclusive_maximum = 1.0
                     inclusive_minimum = 0.0
 
+            class frequency_penalty(schemas.NumberSchema):
+                class MetaOapg:
+                    inclusive_maximum = 2.0
+                    inclusive_minimum = 0.0
+
+            class presence_penalty(schemas.NumberSchema):
+                class MetaOapg:
+                    inclusive_maximum = 2.0
+                    inclusive_minimum = 0.0
+
             return_token_log_probs = schemas.BoolSchema
 
             class stop_sequences(schemas.ListSchema):
@@ -81,12 +91,24 @@ class CompletionSyncV1Request(schemas.DictSchema):
                 def __getitem__(self, i: int) -> MetaOapg.items:
                     return super().__getitem__(i)
 
+            class top_k(schemas.IntSchema):
+                class MetaOapg:
+                    inclusive_minimum = -1
+
+            class top_p(schemas.NumberSchema):
+                class MetaOapg:
+                    inclusive_maximum = 1.0
+
             __annotations__ = {
                 "max_new_tokens": max_new_tokens,
                 "prompt": prompt,
                 "temperature": temperature,
+                "frequency_penalty": frequency_penalty,
+                "presence_penalty": presence_penalty,
                 "return_token_log_probs": return_token_log_probs,
                 "stop_sequences": stop_sequences,
+                "top_k": top_k,
+                "top_p": top_p,
             }
 
     max_new_tokens: MetaOapg.properties.max_new_tokens
@@ -107,12 +129,30 @@ class CompletionSyncV1Request(schemas.DictSchema):
 
     @typing.overload
     def __getitem__(
+        self, name: typing_extensions.Literal["frequency_penalty"]
+    ) -> MetaOapg.properties.frequency_penalty:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["presence_penalty"]) -> MetaOapg.properties.presence_penalty:
+        ...
+
+    @typing.overload
+    def __getitem__(
         self, name: typing_extensions.Literal["return_token_log_probs"]
     ) -> MetaOapg.properties.return_token_log_probs:
         ...
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["stop_sequences"]) -> MetaOapg.properties.stop_sequences:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["top_k"]) -> MetaOapg.properties.top_k:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["top_p"]) -> MetaOapg.properties.top_p:
         ...
 
     @typing.overload
@@ -126,8 +166,12 @@ class CompletionSyncV1Request(schemas.DictSchema):
                 "max_new_tokens",
                 "prompt",
                 "temperature",
+                "frequency_penalty",
+                "presence_penalty",
                 "return_token_log_probs",
                 "stop_sequences",
+                "top_k",
+                "top_p",
             ],
             str,
         ],
@@ -149,6 +193,18 @@ class CompletionSyncV1Request(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["frequency_penalty"]
+    ) -> typing.Union[MetaOapg.properties.frequency_penalty, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["presence_penalty"]
+    ) -> typing.Union[MetaOapg.properties.presence_penalty, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["return_token_log_probs"]
     ) -> typing.Union[MetaOapg.properties.return_token_log_probs, schemas.Unset]:
         ...
@@ -157,6 +213,18 @@ class CompletionSyncV1Request(schemas.DictSchema):
     def get_item_oapg(
         self, name: typing_extensions.Literal["stop_sequences"]
     ) -> typing.Union[MetaOapg.properties.stop_sequences, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["top_k"]
+    ) -> typing.Union[MetaOapg.properties.top_k, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["top_p"]
+    ) -> typing.Union[MetaOapg.properties.top_p, schemas.Unset]:
         ...
 
     @typing.overload
@@ -170,8 +238,12 @@ class CompletionSyncV1Request(schemas.DictSchema):
                 "max_new_tokens",
                 "prompt",
                 "temperature",
+                "frequency_penalty",
+                "presence_penalty",
                 "return_token_log_probs",
                 "stop_sequences",
+                "top_k",
+                "top_p",
             ],
             str,
         ],
@@ -199,10 +271,18 @@ class CompletionSyncV1Request(schemas.DictSchema):
             MetaOapg.properties.prompt,
             str,
         ],
+        frequency_penalty: typing.Union[
+            MetaOapg.properties.frequency_penalty, decimal.Decimal, int, float, schemas.Unset
+        ] = schemas.unset,
+        presence_penalty: typing.Union[
+            MetaOapg.properties.presence_penalty, decimal.Decimal, int, float, schemas.Unset
+        ] = schemas.unset,
         return_token_log_probs: typing.Union[
             MetaOapg.properties.return_token_log_probs, bool, schemas.Unset
         ] = schemas.unset,
         stop_sequences: typing.Union[MetaOapg.properties.stop_sequences, list, tuple, schemas.Unset] = schemas.unset,
+        top_k: typing.Union[MetaOapg.properties.top_k, decimal.Decimal, int, schemas.Unset] = schemas.unset,
+        top_p: typing.Union[MetaOapg.properties.top_p, decimal.Decimal, int, float, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -227,8 +307,12 @@ class CompletionSyncV1Request(schemas.DictSchema):
             max_new_tokens=max_new_tokens,
             temperature=temperature,
             prompt=prompt,
+            frequency_penalty=frequency_penalty,
+            presence_penalty=presence_penalty,
             return_token_log_probs=return_token_log_probs,
             stop_sequences=stop_sequences,
+            top_k=top_k,
+            top_p=top_p,
             _configuration=_configuration,
             **kwargs,
         )

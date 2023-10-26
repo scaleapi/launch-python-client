@@ -224,6 +224,8 @@ from launch.api_client.model.quantization import Quantization
 from launch.api_client.model.request_schema import RequestSchema
 from launch.api_client.model.response_schema import ResponseSchema
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
+from launch.api_client.model.stream_error import StreamError
+from launch.api_client.model.stream_error_content import StreamErrorContent
 from launch.api_client.model.streaming_enhanced_runnable_image_flavor import (
     StreamingEnhancedRunnableImageFlavor,
 )

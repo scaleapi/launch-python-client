@@ -35,8 +35,13 @@ class Quantization(schemas.EnumBase, schemas.StrSchema):
     class MetaOapg:
         enum_value_to_name = {
             "bitsandbytes": "BITSANDBYTES",
+            "awq": "AWQ",
         }
 
     @schemas.classproperty
     def BITSANDBYTES(cls):
         return cls("bitsandbytes")
+
+    @schemas.classproperty
+    def AWQ(cls):
+        return cls("awq")

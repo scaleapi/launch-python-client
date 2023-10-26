@@ -47,6 +47,7 @@ class CreateFineTuneRequest(schemas.DictSchema):
                             any_of_0 = schemas.StrSchema
                             any_of_1 = schemas.IntSchema
                             any_of_2 = schemas.NumberSchema
+                            any_of_3 = schemas.DictSchema
 
                             @classmethod
                             @functools.lru_cache()
@@ -62,6 +63,7 @@ class CreateFineTuneRequest(schemas.DictSchema):
                                     cls.any_of_0,
                                     cls.any_of_1,
                                     cls.any_of_2,
+                                    cls.any_of_3,
                                 ]
 
                         def __new__(
@@ -109,11 +111,17 @@ class CreateFineTuneRequest(schemas.DictSchema):
                                 **kwargs,
                             )
 
-                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def __getitem__(
+                    self,
+                    name: typing.Union[str,],
+                ) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
 
-                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                def get_item_oapg(
+                    self,
+                    name: typing.Union[str,],
+                ) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
 
                 def __new__(
