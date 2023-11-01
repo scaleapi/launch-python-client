@@ -254,6 +254,7 @@ class LaunchClient:
         api_key: str,
         endpoint: Optional[str] = None,
         self_hosted: bool = False,
+        use_path_with_custom_endpoint: bool = False,
     ):
         """
         Initializes a Scale Launch Client.
@@ -262,6 +263,7 @@ class LaunchClient:
             api_key: Your Scale API key
             endpoint: The Scale Launch Endpoint (this should not need to be changed)
             self_hosted: True iff you are connecting to a self-hosted Scale Launch
+            use_path_with_custom_endpoint: True iff you are not using the default Scale Launch endpoint but your endpoint has path routing (to SCALE_LAUNCH_VX_PATH) set up
         """
         self.endpoint = endpoint or DEFAULT_SCALE_ENDPOINT
         self.connection = Connection(api_key, self.endpoint + SCALE_LAUNCH_V0_PATH)
@@ -270,8 +272,11 @@ class LaunchClient:
         self.upload_batch_csv_fn: Optional[Callable[[str, str], None]] = None
         self.bundle_location_fn: Optional[Callable[[], str]] = None
         self.batch_csv_location_fn: Optional[Callable[[], str]] = None
+        host = self.endpoint + SCALE_LAUNCH_V1_PATH if endpoint is None else self.endpoint
+        if use_path_with_custom_endpoint:
+            host = self.endpoint + SCALE_LAUNCH_V1_PATH
         self.configuration = Configuration(
-            host=self.endpoint + SCALE_LAUNCH_V1_PATH if endpoint is None else self.endpoint,
+            host=host,
             discard_unknown_keys=True,
             username=api_key,
             password="",
