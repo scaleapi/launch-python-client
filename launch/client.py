@@ -263,7 +263,8 @@ class LaunchClient:
             api_key: Your Scale API key
             endpoint: The Scale Launch Endpoint (this should not need to be changed)
             self_hosted: True iff you are connecting to a self-hosted Scale Launch
-            use_path_with_custom_endpoint: True iff you are not using the default Scale Launch endpoint but your endpoint has path routing (to SCALE_LAUNCH_VX_PATH) set up
+            use_path_with_custom_endpoint: True iff you are not using the default Scale Launch endpoint
+                but your endpoint has path routing (to SCALE_LAUNCH_VX_PATH) set up
         """
         self.endpoint = endpoint or DEFAULT_SCALE_ENDPOINT
         self.connection = Connection(api_key, self.endpoint + SCALE_LAUNCH_V0_PATH)
