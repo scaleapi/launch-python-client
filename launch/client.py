@@ -2842,8 +2842,10 @@ class LaunchClient:
                 return AsyncEndpoint(model_endpoint=model_endpoint, client=self)
             elif endpoint_type == "sync":
                 return SyncEndpoint(model_endpoint=model_endpoint, client=self)
+            elif endpoint_type == "streaming":
+                return StreamingEndpoint(model_endpoint=model_endpoint, client=self)
             else:
-                raise ValueError("Endpoint should be one of the types 'sync' or 'async'")
+                raise ValueError("Endpoint should be one of the types 'sync', 'async', or 'streaming'")
 
     def list_llm_model_endpoints(self) -> List[Endpoint]:
         """
