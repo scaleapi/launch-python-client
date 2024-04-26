@@ -1,4 +1,5 @@
 import datetime
+import warnings
 from abc import ABC
 from dataclasses import dataclass
 from enum import Enum
@@ -94,7 +95,7 @@ class ZipArtifactFlavor(BaseModel):
     [`CustomFramework`](./#launch.model_bundle.CustomFramework).
     """
 
-    app_config: Optional[Dict[str, Any]]
+    app_config: Optional[Dict[str, Any]] = None
     """Optional configuration for the application."""
 
     location: str
@@ -112,7 +113,7 @@ class RunnableImageLike(BaseModel, ABC):
     repository: str
     tag: str
     command: List[str]
-    env: Optional[Dict[str, str]]
+    env: Optional[Dict[str, str]] = None
     protocol: Literal["http"]  # TODO: add support for other protocols (e.g. grpc)
     readiness_initial_delay_seconds: int = 120
 
@@ -137,15 +138,15 @@ class TritonEnhancedRunnableImageFlavor(RunnableImageLike):
 
     triton_model_repository: str
 
-    triton_model_replicas: Optional[Dict[str, str]]
+    triton_model_replicas: Optional[Dict[str, str]] = None
 
     triton_num_cpu: float
 
     triton_commit_tag: str
 
-    triton_storage: Optional[str]
+    triton_storage: Optional[str] = None
 
-    triton_memory: Optional[str]
+    triton_memory: Optional[str] = None
 
     triton_readiness_initial_delay_seconds: int = 300
 
@@ -197,7 +198,7 @@ class ModelBundleV2Response(BaseModel):
     model_artifact_ids: List[str]
     """IDs of the Model Artifacts associated with the Model Bundle."""
 
-    schema_location: Optional[str]
+    schema_location: Optional[str] = None
 
     flavor: ModelBundleFlavors = Field(..., discriminator="flavor")
     """Flavor of the Model Bundle, representing how the model bundle was packaged.

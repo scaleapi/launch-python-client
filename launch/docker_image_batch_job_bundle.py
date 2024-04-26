@@ -34,18 +34,18 @@ class DockerImageBatchJobBundleResponse(BaseModel):
     """The command to run inside the docker image"""
     env: Dict[str, str]
     """Environment variables to be injected into the docker image"""
-    mount_location: Optional[str]
+    mount_location: Optional[str] = None
     """Location of a json-formatted file to mount inside the docker image.
         Contents get populated at runtime, and this is the method to change behavior on runtime."""
-    cpus: Optional[str]
+    cpus: Optional[str] = None
     """Default number of cpus to give to the docker image"""
-    memory: Optional[str]
+    memory: Optional[str] = None
     """Default amount of memory to give to the docker image"""
-    storage: Optional[str]
+    storage: Optional[str] = None
     """Default amount of disk to give to the docker image"""
-    gpus: Optional[int]
+    gpus: Optional[int] = None
     """Default number of gpus to give to the docker image"""
-    gpu_type: Optional[str]
+    gpu_type: Optional[str] = None
     """Default type of gpu, e.g. nvidia-tesla-t4, nvidia-ampere-a10 to give to the docker image"""
 
 
