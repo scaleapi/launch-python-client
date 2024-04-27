@@ -18,6 +18,7 @@ else:
 
 REF_PREFIX = "#/components/schemas/"
 
+
 def get_model_definitions_v1(request_schema: Type[BaseModel], response_schema: Type[BaseModel]) -> Dict[str, Any]:
     """
     Gets the model schemas in jsonschema format from a sequence of Pydantic BaseModels.
@@ -27,12 +28,11 @@ def get_model_definitions_v1(request_schema: Type[BaseModel], response_schema: T
     model_name_map.update({request_schema: "RequestSchema", response_schema: "ResponseSchema"})
     return get_model_definitions_from_flat_models(flat_models=flat_models, model_name_map=model_name_map)
 
+
 def get_model_definitions_v2(request_schema: Type[BaseModel], response_schema: Type[BaseModel]) -> Dict[str, Any]:
-    return {
-        "RequestSchema": request_schema.model_json_schema(),
-        "ResponseSchema": response_schema.model_json_schema()
-    }
-    
+    return {"RequestSchema": request_schema.model_json_schema(), "ResponseSchema": response_schema.model_json_schema()}
+
+
 if PYDANTIC_VERSION == 1:
     get_model_definitions: Callable = get_model_definitions_v1
 elif PYDANTIC_VERSION == 2:

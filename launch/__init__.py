@@ -12,7 +12,7 @@ from typing import Sequence
 import pkg_resources
 import pydantic
 
-if pydantic.VERSION.startswith('2.'):
+if pydantic.VERSION.startswith("2."):
     # HACK: Suppress warning from pydantic v2 about protected namespace, this is due to
     # launch-python-client module is based on v1 and only does minimum to support forward compatibility
     warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
