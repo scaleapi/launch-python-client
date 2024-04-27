@@ -30,13 +30,16 @@ def get_model_definitions_v1(request_schema: Type[BaseModel], response_schema: T
 
 
 def get_model_definitions_v2(request_schema: Type[BaseModel], response_schema: Type[BaseModel]) -> Dict[str, Any]:
-    return {"RequestSchema": request_schema.model_json_schema(), "ResponseSchema": response_schema.model_json_schema()}
+    return {
+        "RequestSchema": request_schema.model_json_schema(),  # type: ignore
+        "ResponseSchema": response_schema.model_json_schema(),  # type: ignore
+    }
 
 
 if PYDANTIC_VERSION == 1:
-    get_model_definitions: Callable = get_model_definitions_v1
+    get_model_definitions: Callable = get_model_definitions_v1  # type: ignore
 elif PYDANTIC_VERSION == 2:
-    get_model_definitions: Callable = get_model_definitions_v2
+    get_model_definitions: Callable = get_model_definitions_v2  # type: ignore
 
 
 def get_model_definitions_from_flat_models(
