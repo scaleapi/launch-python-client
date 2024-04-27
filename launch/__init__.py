@@ -5,6 +5,7 @@ into a production service that automatically scales according to traffic.
 
 
 """
+# pylint: disable=C0413
 
 import warnings
 from typing import Sequence
