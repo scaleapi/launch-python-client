@@ -1,25 +1,25 @@
 from enum import Enum
-from typing import Any, Dict, Set, Type, Union
+from typing import Any, Callable, Dict, Set, Type, Union
 
+import pydantic
 from pydantic import BaseModel
 
-try:
+if hasattr(pydantic, "VERSION") and pydantic.VERSION.startswith("1."):
+    PYDANTIC_VERSION = 1
     from pydantic.schema import (
         get_flat_models_from_models,
         model_process_schema,
     )
-except ImportError:
-    # We assume this is due to the user having pydantic 2.x installed.
-    from pydantic.v1.schema import (  # type: ignore
-        get_flat_models_from_models,
-        model_process_schema,
-    )
+elif hasattr(pydantic, "VERSION") and pydantic.VERSION.startswith("2."):
+    PYDANTIC_VERSION = 2
+else:
+    raise ImportError("Unsupported pydantic version.")
 
 
 REF_PREFIX = "#/components/schemas/"
 
 
-def get_model_definitions(request_schema: Type[BaseModel], response_schema: Type[BaseModel]) -> Dict[str, Any]:
+def get_model_definitions_v1(request_schema: Type[BaseModel], response_schema: Type[BaseModel]) -> Dict[str, Any]:
     """
     Gets the model schemas in jsonschema format from a sequence of Pydantic BaseModels.
     """
@@ -27,6 +27,16 @@ def get_model_definitions(request_schema: Type[BaseModel], response_schema: Type
     model_name_map = {model: model.__name__ for model in flat_models}
     model_name_map.update({request_schema: "RequestSchema", response_schema: "ResponseSchema"})
     return get_model_definitions_from_flat_models(flat_models=flat_models, model_name_map=model_name_map)
+
+
+def get_model_definitions_v2(request_schema: Type[BaseModel], response_schema: Type[BaseModel]) -> Dict[str, Any]:
+    return {"RequestSchema": request_schema.model_json_schema(), "ResponseSchema": response_schema.model_json_schema()}
+
+
+if PYDANTIC_VERSION == 1:
+    get_model_definitions: Callable = get_model_definitions_v1
+elif PYDANTIC_VERSION == 2:
+    get_model_definitions: Callable = get_model_definitions_v2
 
 
 def get_model_definitions_from_flat_models(
