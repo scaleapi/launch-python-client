@@ -38,6 +38,9 @@ class GpuType(schemas.EnumBase, schemas.StrSchema):
             "nvidia-ampere-a10": "AMPEREA10",
             "nvidia-ampere-a100": "AMPEREA100",
             "nvidia-ampere-a100e": "AMPEREA100E",
+            "nvidia-hopper-h100": "HOPPERH100",
+            "nvidia-hopper-h100-1g20gb": "HOPPERH1001G20GB",
+            "nvidia-hopper-h100-3g40gb": "HOPPERH1003G40GB",
         }
 
     @schemas.classproperty
@@ -55,3 +58,15 @@ class GpuType(schemas.EnumBase, schemas.StrSchema):
     @schemas.classproperty
     def AMPEREA100E(cls):
         return cls("nvidia-ampere-a100e")
+
+    @schemas.classproperty
+    def HOPPERH100(cls):
+        return cls("nvidia-hopper-h100")
+
+    @schemas.classproperty
+    def HOPPERH1001G20GB(cls):
+        return cls("nvidia-hopper-h100-1g20gb")
+
+    @schemas.classproperty
+    def HOPPERH1003G40GB(cls):
+        return cls("nvidia-hopper-h100-3g40gb")

@@ -53,6 +53,42 @@ class CompletionStreamV1Request(schemas.DictSchema):
                     inclusive_maximum = 2.0
                     inclusive_minimum = 0.0
 
+            class guided_choice(schemas.ListSchema):
+                class MetaOapg:
+                    items = schemas.StrSchema
+
+                def __new__(
+                    cls,
+                    _arg: typing.Union[
+                        typing.Tuple[
+                            typing.Union[
+                                MetaOapg.items,
+                                str,
+                            ]
+                        ],
+                        typing.List[
+                            typing.Union[
+                                MetaOapg.items,
+                                str,
+                            ]
+                        ],
+                    ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> "guided_choice":
+                    return super().__new__(
+                        cls,
+                        _arg,
+                        _configuration=_configuration,
+                    )
+
+                def __getitem__(self, i: int) -> MetaOapg.items:
+                    return super().__getitem__(i)
+
+            guided_grammar = schemas.StrSchema
+            guided_json = schemas.DictSchema
+            guided_regex = schemas.StrSchema
+            include_stop_str_in_output = schemas.BoolSchema
+
             class presence_penalty(schemas.NumberSchema):
                 class MetaOapg:
                     inclusive_maximum = 2.0
@@ -104,6 +140,11 @@ class CompletionStreamV1Request(schemas.DictSchema):
                 "prompt": prompt,
                 "temperature": temperature,
                 "frequency_penalty": frequency_penalty,
+                "guided_choice": guided_choice,
+                "guided_grammar": guided_grammar,
+                "guided_json": guided_json,
+                "guided_regex": guided_regex,
+                "include_stop_str_in_output": include_stop_str_in_output,
                 "presence_penalty": presence_penalty,
                 "return_token_log_probs": return_token_log_probs,
                 "stop_sequences": stop_sequences,
@@ -131,6 +172,28 @@ class CompletionStreamV1Request(schemas.DictSchema):
     def __getitem__(
         self, name: typing_extensions.Literal["frequency_penalty"]
     ) -> MetaOapg.properties.frequency_penalty:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["guided_choice"]) -> MetaOapg.properties.guided_choice:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["guided_grammar"]) -> MetaOapg.properties.guided_grammar:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["guided_json"]) -> MetaOapg.properties.guided_json:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["guided_regex"]) -> MetaOapg.properties.guided_regex:
+        ...
+
+    @typing.overload
+    def __getitem__(
+        self, name: typing_extensions.Literal["include_stop_str_in_output"]
+    ) -> MetaOapg.properties.include_stop_str_in_output:
         ...
 
     @typing.overload
@@ -167,6 +230,11 @@ class CompletionStreamV1Request(schemas.DictSchema):
                 "prompt",
                 "temperature",
                 "frequency_penalty",
+                "guided_choice",
+                "guided_grammar",
+                "guided_json",
+                "guided_regex",
+                "include_stop_str_in_output",
                 "presence_penalty",
                 "return_token_log_probs",
                 "stop_sequences",
@@ -195,6 +263,36 @@ class CompletionStreamV1Request(schemas.DictSchema):
     def get_item_oapg(
         self, name: typing_extensions.Literal["frequency_penalty"]
     ) -> typing.Union[MetaOapg.properties.frequency_penalty, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["guided_choice"]
+    ) -> typing.Union[MetaOapg.properties.guided_choice, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["guided_grammar"]
+    ) -> typing.Union[MetaOapg.properties.guided_grammar, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["guided_json"]
+    ) -> typing.Union[MetaOapg.properties.guided_json, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["guided_regex"]
+    ) -> typing.Union[MetaOapg.properties.guided_regex, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["include_stop_str_in_output"]
+    ) -> typing.Union[MetaOapg.properties.include_stop_str_in_output, schemas.Unset]:
         ...
 
     @typing.overload
@@ -239,6 +337,11 @@ class CompletionStreamV1Request(schemas.DictSchema):
                 "prompt",
                 "temperature",
                 "frequency_penalty",
+                "guided_choice",
+                "guided_grammar",
+                "guided_json",
+                "guided_regex",
+                "include_stop_str_in_output",
                 "presence_penalty",
                 "return_token_log_probs",
                 "stop_sequences",
@@ -274,6 +377,15 @@ class CompletionStreamV1Request(schemas.DictSchema):
         frequency_penalty: typing.Union[
             MetaOapg.properties.frequency_penalty, decimal.Decimal, int, float, schemas.Unset
         ] = schemas.unset,
+        guided_choice: typing.Union[MetaOapg.properties.guided_choice, list, tuple, schemas.Unset] = schemas.unset,
+        guided_grammar: typing.Union[MetaOapg.properties.guided_grammar, str, schemas.Unset] = schemas.unset,
+        guided_json: typing.Union[
+            MetaOapg.properties.guided_json, dict, frozendict.frozendict, schemas.Unset
+        ] = schemas.unset,
+        guided_regex: typing.Union[MetaOapg.properties.guided_regex, str, schemas.Unset] = schemas.unset,
+        include_stop_str_in_output: typing.Union[
+            MetaOapg.properties.include_stop_str_in_output, bool, schemas.Unset
+        ] = schemas.unset,
         presence_penalty: typing.Union[
             MetaOapg.properties.presence_penalty, decimal.Decimal, int, float, schemas.Unset
         ] = schemas.unset,
@@ -308,6 +420,11 @@ class CompletionStreamV1Request(schemas.DictSchema):
             temperature=temperature,
             prompt=prompt,
             frequency_penalty=frequency_penalty,
+            guided_choice=guided_choice,
+            guided_grammar=guided_grammar,
+            guided_json=guided_json,
+            guided_regex=guided_regex,
+            include_stop_str_in_output=include_stop_str_in_output,
             presence_penalty=presence_penalty,
             return_token_log_probs=return_token_log_probs,
             stop_sequences=stop_sequences,
