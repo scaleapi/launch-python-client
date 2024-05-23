@@ -114,7 +114,9 @@ def mock_list_llm_model_endpoints():
 @pytest.fixture
 def mock_completions_sync():
     return CompletionSyncV1Response(
-        output=CompletionOutput(text="Deep learning is a subnet of machine learning.", num_completion_tokens=9),
+        output=CompletionOutput(
+            text="Deep learning is a subnet of machine learning.", num_prompt_tokens=10, num_completion_tokens=9
+        ),
         request_id="test-request-id",
     )
 
