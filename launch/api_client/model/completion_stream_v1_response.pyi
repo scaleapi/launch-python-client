@@ -31,41 +31,34 @@ class CompletionStreamV1Response(schemas.DictSchema):
     """
 
     class MetaOapg:
-        required = {
-            "request_id",
-        }
-
         class properties:
-            request_id = schemas.StrSchema
-
             @staticmethod
             def error() -> typing.Type["StreamError"]:
                 return StreamError
             @staticmethod
             def output() -> typing.Type["CompletionStreamOutput"]:
                 return CompletionStreamOutput
+            request_id = schemas.StrSchema
             __annotations__ = {
-                "request_id": request_id,
                 "error": error,
                 "output": output,
+                "request_id": request_id,
             }
-    request_id: MetaOapg.properties.request_id
-
-    @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id: ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["error"]) -> "StreamError": ...
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["output"]) -> "CompletionStreamOutput": ...
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id: ...
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     def __getitem__(
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "request_id",
                 "error",
                 "output",
+                "request_id",
             ],
             str,
         ],
@@ -73,22 +66,24 @@ class CompletionStreamV1Response(schemas.DictSchema):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["request_id"]) -> MetaOapg.properties.request_id: ...
-    @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["error"]) -> typing.Union["StreamError", schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["output"]
     ) -> typing.Union["CompletionStreamOutput", schemas.Unset]: ...
     @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["request_id"]
+    ) -> typing.Union[MetaOapg.properties.request_id, schemas.Unset]: ...
+    @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     def get_item_oapg(
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "request_id",
                 "error",
                 "output",
+                "request_id",
             ],
             str,
         ],
@@ -100,12 +95,9 @@ class CompletionStreamV1Response(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        request_id: typing.Union[
-            MetaOapg.properties.request_id,
-            str,
-        ],
         error: typing.Union["StreamError", schemas.Unset] = schemas.unset,
         output: typing.Union["CompletionStreamOutput", schemas.Unset] = schemas.unset,
+        request_id: typing.Union[MetaOapg.properties.request_id, str, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[
             schemas.AnyTypeSchema,
@@ -127,9 +119,9 @@ class CompletionStreamV1Response(schemas.DictSchema):
         return super().__new__(
             cls,
             *_args,
-            request_id=request_id,
             error=error,
             output=output,
+            request_id=request_id,
             _configuration=_configuration,
             **kwargs,
         )

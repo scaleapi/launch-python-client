@@ -38,6 +38,7 @@ class LLMInferenceFramework(schemas.EnumBase, schemas.StrSchema):
             "text_generation_inference": "TEXT_GENERATION_INFERENCE",
             "vllm": "VLLM",
             "lightllm": "LIGHTLLM",
+            "tensorrt_llm": "TENSORRT_LLM",
         }
 
     @schemas.classproperty
@@ -55,3 +56,7 @@ class LLMInferenceFramework(schemas.EnumBase, schemas.StrSchema):
     @schemas.classproperty
     def LIGHTLLM(cls):
         return cls("lightllm")
+
+    @schemas.classproperty
+    def TENSORRT_LLM(cls):
+        return cls("tensorrt_llm")

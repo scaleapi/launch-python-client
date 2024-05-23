@@ -53,16 +53,10 @@ class DockerImageBatchJob(schemas.DictSchema):
             class annotations(schemas.DictSchema):
                 class MetaOapg:
                     additional_properties = schemas.StrSchema
-                def __getitem__(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     # dict_instance[name] accessor
                     return super().__getitem__(name)
-                def get_item_oapg(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
+                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
                     return super().get_item_oapg(name)
                 def __new__(
                     cls,
@@ -83,6 +77,7 @@ class DockerImageBatchJob(schemas.DictSchema):
                         **kwargs,
                     )
             completed_at = schemas.DateTimeSchema
+            num_workers = schemas.IntSchema
             override_job_max_runtime_s = schemas.IntSchema
             __annotations__ = {
                 "created_at": created_at,
@@ -92,6 +87,7 @@ class DockerImageBatchJob(schemas.DictSchema):
                 "status": status,
                 "annotations": annotations,
                 "completed_at": completed_at,
+                "num_workers": num_workers,
                 "override_job_max_runtime_s": override_job_max_runtime_s,
             }
     owner: MetaOapg.properties.owner
@@ -115,6 +111,8 @@ class DockerImageBatchJob(schemas.DictSchema):
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["completed_at"]) -> MetaOapg.properties.completed_at: ...
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["num_workers"]) -> MetaOapg.properties.num_workers: ...
+    @typing.overload
     def __getitem__(
         self, name: typing_extensions.Literal["override_job_max_runtime_s"]
     ) -> MetaOapg.properties.override_job_max_runtime_s: ...
@@ -131,6 +129,7 @@ class DockerImageBatchJob(schemas.DictSchema):
                 "status",
                 "annotations",
                 "completed_at",
+                "num_workers",
                 "override_job_max_runtime_s",
             ],
             str,
@@ -158,6 +157,10 @@ class DockerImageBatchJob(schemas.DictSchema):
     ) -> typing.Union[MetaOapg.properties.completed_at, schemas.Unset]: ...
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["num_workers"]
+    ) -> typing.Union[MetaOapg.properties.num_workers, schemas.Unset]: ...
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["override_job_max_runtime_s"]
     ) -> typing.Union[MetaOapg.properties.override_job_max_runtime_s, schemas.Unset]: ...
     @typing.overload
@@ -173,6 +176,7 @@ class DockerImageBatchJob(schemas.DictSchema):
                 "status",
                 "annotations",
                 "completed_at",
+                "num_workers",
                 "override_job_max_runtime_s",
             ],
             str,
@@ -207,6 +211,7 @@ class DockerImageBatchJob(schemas.DictSchema):
             MetaOapg.properties.annotations, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         completed_at: typing.Union[MetaOapg.properties.completed_at, str, datetime, schemas.Unset] = schemas.unset,
+        num_workers: typing.Union[MetaOapg.properties.num_workers, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         override_job_max_runtime_s: typing.Union[
             MetaOapg.properties.override_job_max_runtime_s, decimal.Decimal, int, schemas.Unset
         ] = schemas.unset,
@@ -238,6 +243,7 @@ class DockerImageBatchJob(schemas.DictSchema):
             status=status,
             annotations=annotations,
             completed_at=completed_at,
+            num_workers=num_workers,
             override_job_max_runtime_s=override_job_max_runtime_s,
             _configuration=_configuration,
             **kwargs,

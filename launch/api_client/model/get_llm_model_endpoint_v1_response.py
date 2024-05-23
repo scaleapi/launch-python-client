@@ -33,6 +33,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
     class MetaOapg:
         required = {
             "inference_framework",
+            "model_name",
             "name",
             "id",
             "source",
@@ -46,6 +47,7 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             def inference_framework() -> typing.Type["LLMInferenceFramework"]:
                 return LLMInferenceFramework
 
+            model_name = schemas.StrSchema
             name = schemas.StrSchema
 
             @staticmethod
@@ -56,8 +58,8 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             def status() -> typing.Type["ModelEndpointStatus"]:
                 return ModelEndpointStatus
 
+            checkpoint_path = schemas.StrSchema
             inference_framework_image_tag = schemas.StrSchema
-            model_name = schemas.StrSchema
             num_shards = schemas.IntSchema
 
             @staticmethod
@@ -71,17 +73,19 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             __annotations__ = {
                 "id": id,
                 "inference_framework": inference_framework,
+                "model_name": model_name,
                 "name": name,
                 "source": source,
                 "status": status,
+                "checkpoint_path": checkpoint_path,
                 "inference_framework_image_tag": inference_framework_image_tag,
-                "model_name": model_name,
                 "num_shards": num_shards,
                 "quantize": quantize,
                 "spec": spec,
             }
 
     inference_framework: "LLMInferenceFramework"
+    model_name: MetaOapg.properties.model_name
     name: MetaOapg.properties.name
     id: MetaOapg.properties.id
     source: "LLMSource"
@@ -93,6 +97,10 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["inference_framework"]) -> "LLMInferenceFramework":
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name:
         ...
 
     @typing.overload
@@ -108,13 +116,13 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["inference_framework_image_tag"]
-    ) -> MetaOapg.properties.inference_framework_image_tag:
+    def __getitem__(self, name: typing_extensions.Literal["checkpoint_path"]) -> MetaOapg.properties.checkpoint_path:
         ...
 
     @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name:
+    def __getitem__(
+        self, name: typing_extensions.Literal["inference_framework_image_tag"]
+    ) -> MetaOapg.properties.inference_framework_image_tag:
         ...
 
     @typing.overload
@@ -139,11 +147,12 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             typing_extensions.Literal[
                 "id",
                 "inference_framework",
+                "model_name",
                 "name",
                 "source",
                 "status",
+                "checkpoint_path",
                 "inference_framework_image_tag",
-                "model_name",
                 "num_shards",
                 "quantize",
                 "spec",
@@ -163,6 +172,10 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ...
 
     @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name:
+        ...
+
+    @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["name"]) -> MetaOapg.properties.name:
         ...
 
@@ -176,14 +189,14 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(
-        self, name: typing_extensions.Literal["inference_framework_image_tag"]
-    ) -> typing.Union[MetaOapg.properties.inference_framework_image_tag, schemas.Unset]:
+        self, name: typing_extensions.Literal["checkpoint_path"]
+    ) -> typing.Union[MetaOapg.properties.checkpoint_path, schemas.Unset]:
         ...
 
     @typing.overload
     def get_item_oapg(
-        self, name: typing_extensions.Literal["model_name"]
-    ) -> typing.Union[MetaOapg.properties.model_name, schemas.Unset]:
+        self, name: typing_extensions.Literal["inference_framework_image_tag"]
+    ) -> typing.Union[MetaOapg.properties.inference_framework_image_tag, schemas.Unset]:
         ...
 
     @typing.overload
@@ -212,11 +225,12 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             typing_extensions.Literal[
                 "id",
                 "inference_framework",
+                "model_name",
                 "name",
                 "source",
                 "status",
+                "checkpoint_path",
                 "inference_framework_image_tag",
-                "model_name",
                 "num_shards",
                 "quantize",
                 "spec",
@@ -233,6 +247,10 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             frozendict.frozendict,
         ],
         inference_framework: "LLMInferenceFramework",
+        model_name: typing.Union[
+            MetaOapg.properties.model_name,
+            str,
+        ],
         name: typing.Union[
             MetaOapg.properties.name,
             str,
@@ -243,10 +261,10 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
         ],
         source: "LLMSource",
         status: "ModelEndpointStatus",
+        checkpoint_path: typing.Union[MetaOapg.properties.checkpoint_path, str, schemas.Unset] = schemas.unset,
         inference_framework_image_tag: typing.Union[
             MetaOapg.properties.inference_framework_image_tag, str, schemas.Unset
         ] = schemas.unset,
-        model_name: typing.Union[MetaOapg.properties.model_name, str, schemas.Unset] = schemas.unset,
         num_shards: typing.Union[MetaOapg.properties.num_shards, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         quantize: typing.Union["Quantization", schemas.Unset] = schemas.unset,
         spec: typing.Union["GetModelEndpointV1Response", schemas.Unset] = schemas.unset,
@@ -272,12 +290,13 @@ class GetLLMModelEndpointV1Response(schemas.DictSchema):
             cls,
             *_args,
             inference_framework=inference_framework,
+            model_name=model_name,
             name=name,
             id=id,
             source=source,
             status=status,
+            checkpoint_path=checkpoint_path,
             inference_framework_image_tag=inference_framework_image_tag,
-            model_name=model_name,
             num_shards=num_shards,
             quantize=quantize,
             spec=spec,

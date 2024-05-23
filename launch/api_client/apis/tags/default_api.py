@@ -62,6 +62,9 @@ from launch.api_client.paths.v1_files_file_id.get import (
 from launch.api_client.paths.v1_files_file_id_content.get import (
     GetFileContentV1FilesFileIdContentGet,
 )
+from launch.api_client.paths.v1_llm_batch_completions.post import (
+    CreateBatchCompletionsV1LlmBatchCompletionsPost,
+)
 from launch.api_client.paths.v1_llm_completions_stream.post import (
     CreateCompletionStreamTaskV1LlmCompletionsStreamPost,
 )
@@ -97,6 +100,9 @@ from launch.api_client.paths.v1_llm_model_endpoints_model_endpoint_name.delete i
 )
 from launch.api_client.paths.v1_llm_model_endpoints_model_endpoint_name.get import (
     GetModelEndpointV1LlmModelEndpointsModelEndpointNameGet,
+)
+from launch.api_client.paths.v1_llm_model_endpoints_model_endpoint_name.put import (
+    UpdateModelEndpointV1LlmModelEndpointsModelEndpointNamePut,
 )
 from launch.api_client.paths.v1_model_bundles.get import (
     ListModelBundlesV1ModelBundlesGet,
@@ -175,6 +181,7 @@ class DefaultApi(
     CloneModelBundleWithChangesV1ModelBundlesCloneWithChangesPost,
     CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost,
     CreateAsyncInferenceTaskV1AsyncTasksPost,
+    CreateBatchCompletionsV1LlmBatchCompletionsPost,
     CreateBatchJobV1BatchJobsPost,
     CreateCompletionStreamTaskV1LlmCompletionsStreamPost,
     CreateCompletionSyncTaskV1LlmCompletionsSyncPost,
@@ -225,6 +232,7 @@ class DefaultApi(
     ListTriggersV1TriggersGet,
     UpdateBatchJobV1BatchJobsBatchJobIdPut,
     UpdateDockerImageBatchJobV1DockerImageBatchJobsBatchJobIdPut,
+    UpdateModelEndpointV1LlmModelEndpointsModelEndpointNamePut,
     UpdateModelEndpointV1ModelEndpointsModelEndpointIdPut,
     UpdateTriggerV1TriggersTriggerIdPut,
     UploadFileV1FilesPost,

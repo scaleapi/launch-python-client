@@ -33,20 +33,54 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
     class MetaOapg:
         required = {
             "metadata",
-            "memory",
             "model_name",
-            "cpus",
-            "inference_framework_image_tag",
             "max_workers",
-            "gpu_type",
             "min_workers",
-            "gpus",
             "name",
             "per_worker",
             "labels",
         }
 
         class properties:
+            class labels(schemas.DictSchema):
+                class MetaOapg:
+                    additional_properties = schemas.StrSchema
+
+                def __getitem__(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                    # dict_instance[name] accessor
+                    return super().__getitem__(name)
+
+                def get_item_oapg(self, name: typing.Union[str,]) -> MetaOapg.additional_properties:
+                    return super().get_item_oapg(name)
+
+                def __new__(
+                    cls,
+                    *_args: typing.Union[
+                        dict,
+                        frozendict.frozendict,
+                    ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                    **kwargs: typing.Union[
+                        MetaOapg.additional_properties,
+                        str,
+                    ],
+                ) -> "labels":
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                        **kwargs,
+                    )
+
+            max_workers = schemas.IntSchema
+            metadata = schemas.DictSchema
+            min_workers = schemas.IntSchema
+            model_name = schemas.StrSchema
+            name = schemas.StrSchema
+            per_worker = schemas.IntSchema
+            billing_tags = schemas.DictSchema
+            checkpoint_path = schemas.StrSchema
+
             class cpus(
                 schemas.ComposedSchema,
             ):
@@ -115,128 +149,6 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                         _configuration=_configuration,
                         **kwargs,
                     )
-
-            @staticmethod
-            def gpu_type() -> typing.Type["GpuType"]:
-                return GpuType
-
-            gpus = schemas.IntSchema
-            inference_framework_image_tag = schemas.StrSchema
-
-            class labels(schemas.DictSchema):
-                class MetaOapg:
-                    additional_properties = schemas.StrSchema
-
-                def __getitem__(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
-                    # dict_instance[name] accessor
-                    return super().__getitem__(name)
-
-                def get_item_oapg(
-                    self,
-                    name: typing.Union[str,],
-                ) -> MetaOapg.additional_properties:
-                    return super().get_item_oapg(name)
-
-                def __new__(
-                    cls,
-                    *_args: typing.Union[
-                        dict,
-                        frozendict.frozendict,
-                    ],
-                    _configuration: typing.Optional[schemas.Configuration] = None,
-                    **kwargs: typing.Union[
-                        MetaOapg.additional_properties,
-                        str,
-                    ],
-                ) -> "labels":
-                    return super().__new__(
-                        cls,
-                        *_args,
-                        _configuration=_configuration,
-                        **kwargs,
-                    )
-
-            max_workers = schemas.IntSchema
-
-            class memory(
-                schemas.ComposedSchema,
-            ):
-                class MetaOapg:
-                    any_of_0 = schemas.StrSchema
-                    any_of_1 = schemas.IntSchema
-                    any_of_2 = schemas.NumberSchema
-
-                    @classmethod
-                    @functools.lru_cache()
-                    def any_of(cls):
-                        # we need this here to make our import statements work
-                        # we must store _composed_schemas in here so the code is only run
-                        # when we invoke this method. If we kept this at the class
-                        # level we would get an error because the class level
-                        # code would be run when this module is imported, and these composed
-                        # classes don't exist yet because their module has not finished
-                        # loading
-                        return [
-                            cls.any_of_0,
-                            cls.any_of_1,
-                            cls.any_of_2,
-                        ]
-
-                def __new__(
-                    cls,
-                    *_args: typing.Union[
-                        dict,
-                        frozendict.frozendict,
-                        str,
-                        date,
-                        datetime,
-                        uuid.UUID,
-                        int,
-                        float,
-                        decimal.Decimal,
-                        bool,
-                        None,
-                        list,
-                        tuple,
-                        bytes,
-                        io.FileIO,
-                        io.BufferedReader,
-                    ],
-                    _configuration: typing.Optional[schemas.Configuration] = None,
-                    **kwargs: typing.Union[
-                        schemas.AnyTypeSchema,
-                        dict,
-                        frozendict.frozendict,
-                        str,
-                        date,
-                        datetime,
-                        uuid.UUID,
-                        int,
-                        float,
-                        decimal.Decimal,
-                        None,
-                        list,
-                        tuple,
-                        bytes,
-                    ],
-                ) -> "memory":
-                    return super().__new__(
-                        cls,
-                        *_args,
-                        _configuration=_configuration,
-                        **kwargs,
-                    )
-
-            metadata = schemas.DictSchema
-            min_workers = schemas.IntSchema
-            model_name = schemas.StrSchema
-            name = schemas.StrSchema
-            per_worker = schemas.IntSchema
-            billing_tags = schemas.DictSchema
-            checkpoint_path = schemas.StrSchema
 
             @staticmethod
             def default_callback_auth() -> typing.Type["CallbackAuth"]:
@@ -311,6 +223,11 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                         **kwargs,
                     )
 
+            @staticmethod
+            def gpu_type() -> typing.Type["GpuType"]:
+                return GpuType
+
+            gpus = schemas.IntSchema
             high_priority = schemas.BoolSchema
 
             class inference_framework(
@@ -369,6 +286,77 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                         bytes,
                     ],
                 ) -> "inference_framework":
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                        **kwargs,
+                    )
+
+            inference_framework_image_tag = schemas.StrSchema
+
+            class memory(
+                schemas.ComposedSchema,
+            ):
+                class MetaOapg:
+                    any_of_0 = schemas.StrSchema
+                    any_of_1 = schemas.IntSchema
+                    any_of_2 = schemas.NumberSchema
+
+                    @classmethod
+                    @functools.lru_cache()
+                    def any_of(cls):
+                        # we need this here to make our import statements work
+                        # we must store _composed_schemas in here so the code is only run
+                        # when we invoke this method. If we kept this at the class
+                        # level we would get an error because the class level
+                        # code would be run when this module is imported, and these composed
+                        # classes don't exist yet because their module has not finished
+                        # loading
+                        return [
+                            cls.any_of_0,
+                            cls.any_of_1,
+                            cls.any_of_2,
+                        ]
+
+                def __new__(
+                    cls,
+                    *_args: typing.Union[
+                        dict,
+                        frozendict.frozendict,
+                        str,
+                        date,
+                        datetime,
+                        uuid.UUID,
+                        int,
+                        float,
+                        decimal.Decimal,
+                        bool,
+                        None,
+                        list,
+                        tuple,
+                        bytes,
+                        io.FileIO,
+                        io.BufferedReader,
+                    ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                    **kwargs: typing.Union[
+                        schemas.AnyTypeSchema,
+                        dict,
+                        frozendict.frozendict,
+                        str,
+                        date,
+                        datetime,
+                        uuid.UUID,
+                        int,
+                        float,
+                        decimal.Decimal,
+                        None,
+                        list,
+                        tuple,
+                        bytes,
+                    ],
+                ) -> "memory":
                     return super().__new__(
                         cls,
                         *_args,
@@ -550,13 +538,8 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                     )
 
             __annotations__ = {
-                "cpus": cpus,
-                "gpu_type": gpu_type,
-                "gpus": gpus,
-                "inference_framework_image_tag": inference_framework_image_tag,
                 "labels": labels,
                 "max_workers": max_workers,
-                "memory": memory,
                 "metadata": metadata,
                 "min_workers": min_workers,
                 "model_name": model_name,
@@ -564,11 +547,16 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                 "per_worker": per_worker,
                 "billing_tags": billing_tags,
                 "checkpoint_path": checkpoint_path,
+                "cpus": cpus,
                 "default_callback_auth": default_callback_auth,
                 "default_callback_url": default_callback_url,
                 "endpoint_type": endpoint_type,
+                "gpu_type": gpu_type,
+                "gpus": gpus,
                 "high_priority": high_priority,
                 "inference_framework": inference_framework,
+                "inference_framework_image_tag": inference_framework_image_tag,
+                "memory": memory,
                 "num_shards": num_shards,
                 "optimize_costs": optimize_costs,
                 "post_inference_hooks": post_inference_hooks,
@@ -580,35 +568,12 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             }
 
     metadata: MetaOapg.properties.metadata
-    memory: MetaOapg.properties.memory
     model_name: MetaOapg.properties.model_name
-    cpus: MetaOapg.properties.cpus
-    inference_framework_image_tag: MetaOapg.properties.inference_framework_image_tag
     max_workers: MetaOapg.properties.max_workers
-    gpu_type: "GpuType"
     min_workers: MetaOapg.properties.min_workers
-    gpus: MetaOapg.properties.gpus
     name: MetaOapg.properties.name
     per_worker: MetaOapg.properties.per_worker
     labels: MetaOapg.properties.labels
-
-    @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["cpus"]) -> MetaOapg.properties.cpus:
-        ...
-
-    @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["gpu_type"]) -> "GpuType":
-        ...
-
-    @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["gpus"]) -> MetaOapg.properties.gpus:
-        ...
-
-    @typing.overload
-    def __getitem__(
-        self, name: typing_extensions.Literal["inference_framework_image_tag"]
-    ) -> MetaOapg.properties.inference_framework_image_tag:
-        ...
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels:
@@ -616,10 +581,6 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
 
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["max_workers"]) -> MetaOapg.properties.max_workers:
-        ...
-
-    @typing.overload
-    def __getitem__(self, name: typing_extensions.Literal["memory"]) -> MetaOapg.properties.memory:
         ...
 
     @typing.overload
@@ -651,6 +612,10 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["cpus"]) -> MetaOapg.properties.cpus:
+        ...
+
+    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["default_callback_auth"]) -> "CallbackAuth":
         ...
 
@@ -665,6 +630,14 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["gpu_type"]) -> "GpuType":
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["gpus"]) -> MetaOapg.properties.gpus:
+        ...
+
+    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["high_priority"]) -> MetaOapg.properties.high_priority:
         ...
 
@@ -672,6 +645,16 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
     def __getitem__(
         self, name: typing_extensions.Literal["inference_framework"]
     ) -> MetaOapg.properties.inference_framework:
+        ...
+
+    @typing.overload
+    def __getitem__(
+        self, name: typing_extensions.Literal["inference_framework_image_tag"]
+    ) -> MetaOapg.properties.inference_framework_image_tag:
+        ...
+
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["memory"]) -> MetaOapg.properties.memory:
         ...
 
     @typing.overload
@@ -716,13 +699,8 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "cpus",
-                "gpu_type",
-                "gpus",
-                "inference_framework_image_tag",
                 "labels",
                 "max_workers",
-                "memory",
                 "metadata",
                 "min_workers",
                 "model_name",
@@ -730,11 +708,16 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                 "per_worker",
                 "billing_tags",
                 "checkpoint_path",
+                "cpus",
                 "default_callback_auth",
                 "default_callback_url",
                 "endpoint_type",
+                "gpu_type",
+                "gpus",
                 "high_priority",
                 "inference_framework",
+                "inference_framework_image_tag",
+                "memory",
                 "num_shards",
                 "optimize_costs",
                 "post_inference_hooks",
@@ -751,33 +734,11 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         return super().__getitem__(name)
 
     @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["cpus"]) -> MetaOapg.properties.cpus:
-        ...
-
-    @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["gpu_type"]) -> "GpuType":
-        ...
-
-    @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["gpus"]) -> MetaOapg.properties.gpus:
-        ...
-
-    @typing.overload
-    def get_item_oapg(
-        self, name: typing_extensions.Literal["inference_framework_image_tag"]
-    ) -> MetaOapg.properties.inference_framework_image_tag:
-        ...
-
-    @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["labels"]) -> MetaOapg.properties.labels:
         ...
 
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["max_workers"]) -> MetaOapg.properties.max_workers:
-        ...
-
-    @typing.overload
-    def get_item_oapg(self, name: typing_extensions.Literal["memory"]) -> MetaOapg.properties.memory:
         ...
 
     @typing.overload
@@ -814,6 +775,12 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
 
     @typing.overload
     def get_item_oapg(
+        self, name: typing_extensions.Literal["cpus"]
+    ) -> typing.Union[MetaOapg.properties.cpus, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
         self, name: typing_extensions.Literal["default_callback_auth"]
     ) -> typing.Union["CallbackAuth", schemas.Unset]:
         ...
@@ -831,6 +798,16 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         ...
 
     @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["gpu_type"]) -> typing.Union["GpuType", schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["gpus"]
+    ) -> typing.Union[MetaOapg.properties.gpus, schemas.Unset]:
+        ...
+
+    @typing.overload
     def get_item_oapg(
         self, name: typing_extensions.Literal["high_priority"]
     ) -> typing.Union[MetaOapg.properties.high_priority, schemas.Unset]:
@@ -840,6 +817,18 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
     def get_item_oapg(
         self, name: typing_extensions.Literal["inference_framework"]
     ) -> typing.Union[MetaOapg.properties.inference_framework, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["inference_framework_image_tag"]
+    ) -> typing.Union[MetaOapg.properties.inference_framework_image_tag, schemas.Unset]:
+        ...
+
+    @typing.overload
+    def get_item_oapg(
+        self, name: typing_extensions.Literal["memory"]
+    ) -> typing.Union[MetaOapg.properties.memory, schemas.Unset]:
         ...
 
     @typing.overload
@@ -896,13 +885,8 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
         self,
         name: typing.Union[
             typing_extensions.Literal[
-                "cpus",
-                "gpu_type",
-                "gpus",
-                "inference_framework_image_tag",
                 "labels",
                 "max_workers",
-                "memory",
                 "metadata",
                 "min_workers",
                 "model_name",
@@ -910,11 +894,16 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
                 "per_worker",
                 "billing_tags",
                 "checkpoint_path",
+                "cpus",
                 "default_callback_auth",
                 "default_callback_url",
                 "endpoint_type",
+                "gpu_type",
+                "gpus",
                 "high_priority",
                 "inference_framework",
+                "inference_framework_image_tag",
+                "memory",
                 "num_shards",
                 "optimize_costs",
                 "post_inference_hooks",
@@ -940,50 +929,8 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             dict,
             frozendict.frozendict,
         ],
-        memory: typing.Union[
-            MetaOapg.properties.memory,
-            dict,
-            frozendict.frozendict,
-            str,
-            date,
-            datetime,
-            uuid.UUID,
-            int,
-            float,
-            decimal.Decimal,
-            bool,
-            None,
-            list,
-            tuple,
-            bytes,
-            io.FileIO,
-            io.BufferedReader,
-        ],
         model_name: typing.Union[
             MetaOapg.properties.model_name,
-            str,
-        ],
-        cpus: typing.Union[
-            MetaOapg.properties.cpus,
-            dict,
-            frozendict.frozendict,
-            str,
-            date,
-            datetime,
-            uuid.UUID,
-            int,
-            float,
-            decimal.Decimal,
-            bool,
-            None,
-            list,
-            tuple,
-            bytes,
-            io.FileIO,
-            io.BufferedReader,
-        ],
-        inference_framework_image_tag: typing.Union[
-            MetaOapg.properties.inference_framework_image_tag,
             str,
         ],
         max_workers: typing.Union[
@@ -991,14 +938,8 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             decimal.Decimal,
             int,
         ],
-        gpu_type: "GpuType",
         min_workers: typing.Union[
             MetaOapg.properties.min_workers,
-            decimal.Decimal,
-            int,
-        ],
-        gpus: typing.Union[
-            MetaOapg.properties.gpus,
             decimal.Decimal,
             int,
         ],
@@ -1020,6 +961,26 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             MetaOapg.properties.billing_tags, dict, frozendict.frozendict, schemas.Unset
         ] = schemas.unset,
         checkpoint_path: typing.Union[MetaOapg.properties.checkpoint_path, str, schemas.Unset] = schemas.unset,
+        cpus: typing.Union[
+            MetaOapg.properties.cpus,
+            dict,
+            frozendict.frozendict,
+            str,
+            date,
+            datetime,
+            uuid.UUID,
+            int,
+            float,
+            decimal.Decimal,
+            bool,
+            None,
+            list,
+            tuple,
+            bytes,
+            io.FileIO,
+            io.BufferedReader,
+            schemas.Unset,
+        ] = schemas.unset,
         default_callback_auth: typing.Union["CallbackAuth", schemas.Unset] = schemas.unset,
         default_callback_url: typing.Union[
             MetaOapg.properties.default_callback_url, str, schemas.Unset
@@ -1044,9 +1005,34 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             io.BufferedReader,
             schemas.Unset,
         ] = schemas.unset,
+        gpu_type: typing.Union["GpuType", schemas.Unset] = schemas.unset,
+        gpus: typing.Union[MetaOapg.properties.gpus, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         high_priority: typing.Union[MetaOapg.properties.high_priority, bool, schemas.Unset] = schemas.unset,
         inference_framework: typing.Union[
             MetaOapg.properties.inference_framework,
+            dict,
+            frozendict.frozendict,
+            str,
+            date,
+            datetime,
+            uuid.UUID,
+            int,
+            float,
+            decimal.Decimal,
+            bool,
+            None,
+            list,
+            tuple,
+            bytes,
+            io.FileIO,
+            io.BufferedReader,
+            schemas.Unset,
+        ] = schemas.unset,
+        inference_framework_image_tag: typing.Union[
+            MetaOapg.properties.inference_framework_image_tag, str, schemas.Unset
+        ] = schemas.unset,
+        memory: typing.Union[
+            MetaOapg.properties.memory,
             dict,
             frozendict.frozendict,
             str,
@@ -1135,24 +1121,24 @@ class CreateLLMModelEndpointV1Request(schemas.DictSchema):
             cls,
             *_args,
             metadata=metadata,
-            memory=memory,
             model_name=model_name,
-            cpus=cpus,
-            inference_framework_image_tag=inference_framework_image_tag,
             max_workers=max_workers,
-            gpu_type=gpu_type,
             min_workers=min_workers,
-            gpus=gpus,
             name=name,
             per_worker=per_worker,
             labels=labels,
             billing_tags=billing_tags,
             checkpoint_path=checkpoint_path,
+            cpus=cpus,
             default_callback_auth=default_callback_auth,
             default_callback_url=default_callback_url,
             endpoint_type=endpoint_type,
+            gpu_type=gpu_type,
+            gpus=gpus,
             high_priority=high_priority,
             inference_framework=inference_framework,
+            inference_framework_image_tag=inference_framework_image_tag,
+            memory=memory,
             num_shards=num_shards,
             optimize_costs=optimize_costs,
             post_inference_hooks=post_inference_hooks,

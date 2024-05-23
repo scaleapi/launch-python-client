@@ -52,6 +52,18 @@ from launch.api_client.model.completion_sync_v1_response import (
 from launch.api_client.model.create_async_task_v1_response import (
     CreateAsyncTaskV1Response,
 )
+from launch.api_client.model.create_batch_completions_model_config import (
+    CreateBatchCompletionsModelConfig,
+)
+from launch.api_client.model.create_batch_completions_request import (
+    CreateBatchCompletionsRequest,
+)
+from launch.api_client.model.create_batch_completions_request_content import (
+    CreateBatchCompletionsRequestContent,
+)
+from launch.api_client.model.create_batch_completions_response import (
+    CreateBatchCompletionsResponse,
+)
 from launch.api_client.model.create_batch_job_resource_requests import (
     CreateBatchJobResourceRequests,
 )
@@ -238,6 +250,7 @@ from launch.api_client.model.sync_endpoint_predict_v1_response import (
 from launch.api_client.model.task_status import TaskStatus
 from launch.api_client.model.tensorflow_framework import TensorflowFramework
 from launch.api_client.model.token_output import TokenOutput
+from launch.api_client.model.tool_config import ToolConfig
 from launch.api_client.model.triton_enhanced_runnable_image_flavor import (
     TritonEnhancedRunnableImageFlavor,
 )
@@ -252,6 +265,12 @@ from launch.api_client.model.update_docker_image_batch_job_v1_request import (
 )
 from launch.api_client.model.update_docker_image_batch_job_v1_response import (
     UpdateDockerImageBatchJobV1Response,
+)
+from launch.api_client.model.update_llm_model_endpoint_v1_request import (
+    UpdateLLMModelEndpointV1Request,
+)
+from launch.api_client.model.update_llm_model_endpoint_v1_response import (
+    UpdateLLMModelEndpointV1Response,
 )
 from launch.api_client.model.update_model_endpoint_v1_request import (
     UpdateModelEndpointV1Request,
