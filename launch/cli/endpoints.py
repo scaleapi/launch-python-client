@@ -10,7 +10,6 @@ from typing_extensions import Literal
 from launch.cli.client import init_client
 from launch.cli.console import pretty_print, spinner
 from launch.hooks import PostInferenceHooks
-from launch.model_endpoint import ModelEndpoint
 
 
 @click.group("endpoints")
