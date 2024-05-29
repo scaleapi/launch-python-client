@@ -10,7 +10,6 @@ from typing_extensions import Literal
 from launch.cli.client import init_client
 from launch.cli.console import pretty_print, spinner
 from launch.hooks import PostInferenceHooks
-from launch.model_endpoint import ModelEndpoint
 
 
 @click.group("endpoints")
@@ -104,8 +103,7 @@ def delete_endpoint(ctx: click.Context, endpoint_name: str):
     client = init_client(ctx)
 
     with spinner(f"Deleting model endpoint '{endpoint_name}'"):
-        endpoint = ModelEndpoint(name=endpoint_name)
-        res = client.delete_model_endpoint(endpoint)
+        res = client.delete_model_endpoint(endpoint_name)
 
     pretty_print(res)
 
