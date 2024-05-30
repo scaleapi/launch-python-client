@@ -1469,6 +1469,9 @@ class LaunchClient:
 
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
+                - ``nvidia-hopper-h100``
+                - ``nvidia-hopper-h100-1g20g``
+                - ``nvidia-hopper-h100-3g40g``
 
             endpoint_type: Either ``"sync"``, ``"async"``, or ``"streaming"``.
 
@@ -1673,6 +1676,9 @@ class LaunchClient:
 
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
+                - ``nvidia-hopper-h100``
+                - ``nvidia-hopper-h100-1g20g``
+                - ``nvidia-hopper-h100-3g40g``
 
             high_priority: Either ``True`` or ``False``. Enabling this will allow the created
                 endpoint to leverage the shared pool of prewarmed nodes for faster spinup time.
@@ -2259,6 +2265,9 @@ class LaunchClient:
 
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
+                - ``nvidia-hopper-h100``
+                - ``nvidia-hopper-h100-1g20g``
+                - ``nvidia-hopper-h100-3g40g``
 
             timeout_seconds: The maximum amount of time (in seconds) that the batch job can take.
                 If not specified, the server defaults to 12 hours. This includes the time required
@@ -2704,6 +2713,9 @@ class LaunchClient:
 
                 - ``nvidia-tesla-t4``
                 - ``nvidia-ampere-a10``
+                - ``nvidia-hopper-h100``
+                - ``nvidia-hopper-h100-1g20g``
+                - ``nvidia-hopper-h100-3g40g``
 
             endpoint_type: Either ``"sync"`` or ``"async"``.
 
