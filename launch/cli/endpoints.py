@@ -205,7 +205,15 @@ def edit_endpoint(ctx: click.Context, endpoint_name: str):
     gpu_type_prompt = "Gpu type (optional): " if gpus == 0 else "Gpu type: "
     gpu_type = q.select(
         gpu_type_prompt,
-        choices=["", "nvidia-hopper-h100-1g20g", "nvidia-hopper-h100-3g40g", "nvidia-hopper-h100", "nvidia-tesla-t4", "nvidia-ampere-a10", "nvidia-ampere-a100"],
+        choices=[
+            "",
+            "nvidia-hopper-h100-1g20g",
+            "nvidia-hopper-h100-3g40g",
+            "nvidia-hopper-h100",
+            "nvidia-tesla-t4",
+            "nvidia-ampere-a10",
+            "nvidia-ampere-a100",
+        ],
     ).ask()
     min_workers = q.text(
         "Min workers: ",
