@@ -28,6 +28,7 @@ from .model_endpoint import (
     EndpointRequest,
     EndpointResponse,
     EndpointResponseFuture,
+    EndpointResponseStream,
     SyncEndpoint,
 )
 
@@ -39,6 +40,7 @@ __all__: Sequence[str] = [
     "EndpointRequest",
     "EndpointResponse",
     "EndpointResponseFuture",
+    "EndpointResponseStream",
     "LaunchClient",
     "ModelBundle",
     "PostInferenceHooks",
