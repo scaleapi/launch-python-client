@@ -3014,7 +3014,7 @@ class LaunchClient:
             stream=True,
             timeout=timeout,
         )
-        sse_client = sseclient.SSEClient(response)
+        sse_client = sseclient.SSEClient(response)  # type: ignore
         events = sse_client.events()
         for event in events:
             yield json.loads(event.data)
@@ -3027,7 +3027,7 @@ class LaunchClient:
         fine_tuning_method: Optional[str] = None,
         hyperparameters: Optional[Dict[str, str]] = None,
         wandb_config: Optional[Dict[str, Any]] = None,
-        suffix: str = None,
+        suffix: Optional[str] = None,
     ) -> CreateFineTuneResponse:
         """
         Create a fine-tune

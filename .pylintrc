@@ -1,16 +1,16 @@
 [tool.pylint.MESSAGE_CONTROL]
 disable=
-    bad-continuation,
     no-else-return,
     too-few-public-methods,
     line-too-long,
     duplicate-code,
     import-error,
     unused-argument,
-    no-self-use,
     import-outside-toplevel,
     too-many-instance-attributes,
     no-member,
+    W3101,
+    R1735,
     W0511,
     R0914,
     R0913,

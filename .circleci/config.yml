@@ -23,7 +23,7 @@ jobs:
     docker:
       # Important: Don't change this otherwise we will stop testing the earliest
       # python version we have to support.
-      - image: python:3.7-buster
+      - image: python:3.8-bullseye
     resource_class: small
     steps:
       - checkout # checkout source code to working directory

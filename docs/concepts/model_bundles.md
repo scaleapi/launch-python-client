@@ -62,7 +62,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
 === "Creating From Callables"
     ```py
     import os
-    from pydantic import BaseModel
+    from pydantic import BaseModel, RootModel
     from launch import LaunchClient
 
 
@@ -70,8 +70,8 @@ Each of these modes of creating a model bundle is called a "Flavor".
         x: int
         y: str
 
-    class MyResponseSchema(BaseModel):
-        __root__: int
+    class MyResponseSchema(RootModel):
+        root: int
 
 
     def my_load_predict_fn(model):
@@ -107,7 +107,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
     ```py
     import os
     import tempfile
-    from pydantic import BaseModel
+    from pydantic import BaseModel, RootModel
     from launch import LaunchClient
 
     directory = tempfile.mkdtemp()
@@ -151,8 +151,8 @@ Each of these modes of creating a model bundle is called a "Flavor".
         x: int
         y: str
 
-    class MyResponseSchema(BaseModel):
-        __root__: int
+    class MyResponseSchema(RootModel):
+        root: int
 
     print(directory)
     print(model_filename)
@@ -183,7 +183,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
 === "Creating From a Runnable Image"
     ```py
     import os
-    from pydantic import BaseModel
+    from pydantic import BaseModel, RootModel
     from launch import LaunchClient
 
 
@@ -191,8 +191,8 @@ Each of these modes of creating a model bundle is called a "Flavor".
         x: int
         y: str
 
-    class MyResponseSchema(BaseModel):
-        __root__: int
+    class MyResponseSchema(RootModel):
+        root: int
 
 
     BUNDLE_PARAMS = {
@@ -218,7 +218,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
 === "Creating From a Triton Enhanced Runnable Image"
     ```py
     import os
-    from pydantic import BaseModel
+    from pydantic import BaseModel, RootModel
     from launch import LaunchClient
 
 
@@ -226,8 +226,8 @@ Each of these modes of creating a model bundle is called a "Flavor".
         x: int
         y: str
 
-    class MyResponseSchema(BaseModel):
-        __root__: int
+    class MyResponseSchema(RootModel):
+        root: int
 
 
     BUNDLE_PARAMS = {
@@ -260,7 +260,7 @@ Each of these modes of creating a model bundle is called a "Flavor".
 === "Creating From a Streaming Enhanced Runnable Image"
     ```py
     import os
-    from pydantic import BaseModel
+    from pydantic import BaseModel, RootModel
     from launch import LaunchClient
 
 
@@ -268,8 +268,8 @@ Each of these modes of creating a model bundle is called a "Flavor".
         x: int
         y: str
 
-    class MyResponseSchema(BaseModel):
-        __root__: int
+    class MyResponseSchema(RootModel):
+        root: int
 
 
     BUNDLE_PARAMS = {
@@ -305,7 +305,7 @@ tasks.
 ```py title="Creating Model Bundles with app_config"
 import os
 from launch import LaunchClient
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
 from typing import List, Union
 from typing_extensions import Literal
 
@@ -320,11 +320,11 @@ class MyRequestSchemaBatched(BaseModel):
     x: List[int]
     y: List[str]
 
-class MyRequestSchema(BaseModel):
-    __root__: Union[MyRequestSchemaSingle, MyRequestSchemaBatched]
+class MyRequestSchema(RootModel):
+    root: Union[MyRequestSchemaSingle, MyRequestSchemaBatched]
 
-class MyResponseSchema(BaseModel):
-    __root__: Union[int, List[int]]
+class MyResponseSchema(RootModel):
+    root: Union[int, List[int]]
 
 
 def my_load_predict_fn(app_config, model):
