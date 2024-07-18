@@ -4,16 +4,13 @@ from typing import Any, Callable, Dict, Set, Type, Union
 import pydantic
 from pydantic import BaseModel
 
-if hasattr(pydantic, "VERSION") and pydantic.VERSION.startswith("1."):
-    PYDANTIC_VERSION = 1
-    from pydantic.schema import (
+PYDANTIC_V2 = hasattr(pydantic, "VERSION") and pydantic.VERSION.startswith("2.")
+
+if not PYDANTIC_V2:
+    from pydantic.schema import (  # pylint: disable=no-name-in-module
         get_flat_models_from_models,
         model_process_schema,
     )
-elif hasattr(pydantic, "VERSION") and pydantic.VERSION.startswith("2."):
-    PYDANTIC_VERSION = 2
-else:
-    raise ImportError("Unsupported pydantic version.")
 
 
 REF_PREFIX = "#/components/schemas/"
@@ -36,10 +33,10 @@ def get_model_definitions_v2(request_schema: Type[BaseModel], response_schema: T
     }
 
 
-if PYDANTIC_VERSION == 1:
-    get_model_definitions: Callable = get_model_definitions_v1  # type: ignore
-elif PYDANTIC_VERSION == 2:
+if PYDANTIC_V2:
     get_model_definitions: Callable = get_model_definitions_v2  # type: ignore
+else:
+    get_model_definitions: Callable = get_model_definitions_v1  # type: ignore
 
 
 def get_model_definitions_from_flat_models(

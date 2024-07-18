@@ -12,7 +12,7 @@ import os
 import time
 from launch import LaunchClient
 from launch import EndpointRequest
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
 from rich import print
 
 
@@ -20,8 +20,8 @@ class MyRequestSchema(BaseModel):
     x: int
     y: str
 
-class MyResponseSchema(BaseModel):
-    __root__: int
+class MyResponseSchema(RootModel):
+    root: int
 
 
 def my_load_predict_fn(model):
@@ -86,7 +86,7 @@ request = MyRequestSchema(x=5, y="hello")
 response = predict_on_endpoint(request)
 print(response)
 """
-MyResponseSchema(__root__=10)
+MyResponseSchema(root=10)
 """
 ```
 

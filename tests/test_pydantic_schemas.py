@@ -1,6 +1,10 @@
 from typing import List, Optional
 
-from pydantic import BaseModel
+import pydantic
+import pytest
+from pydantic import BaseModel, RootModel
+
+PYDANTIC_V2 = hasattr(pydantic, "VERSION") and pydantic.VERSION.startswith("2.")
 
 from launch.pydantic_schemas import (
     get_model_definitions,
@@ -8,7 +12,8 @@ from launch.pydantic_schemas import (
 )
 
 
-def test_get_model_definitions():
+@pytest.mark.skipif(PYDANTIC_V2, reason="Only for Pydantic v1")
+def test_get_model_definitions_v1():
     class MyRequestSubSchemaB(BaseModel):
         query: str
         language: str
@@ -69,13 +74,14 @@ def test_get_model_definitions():
     assert result == expected
 
 
+@pytest.mark.skipif(PYDANTIC_V2, reason="Only for Pydantic v1")
 def test_get_model_definitions_from_flat_models():
     class MyRequestSchema(BaseModel):
         x: int
         y: str
 
-    class MyResponseSchema(BaseModel):
-        __root__: int
+    class MyResponseSchema(RootModel):
+        root: int
 
     flat_models = {MyRequestSchema, MyResponseSchema}
     model_name_map = {

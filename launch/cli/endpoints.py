@@ -184,7 +184,7 @@ def edit_endpoint(ctx: click.Context, endpoint_name: str):
         post_inference_hooks = model_endpoint.post_inference_hooks or []
         for hook in PostInferenceHooks:
             value = hook.value  # type: ignore
-            post_inference_hooks_choices.append(q.Choice(title=value, checked=(value in post_inference_hooks)))
+            post_inference_hooks_choices.append(q.Choice(title=value, checked=value in post_inference_hooks))
 
     if model_endpoint.status != "READY":
         pretty_print(f"Endpoint '{endpoint_name}' is not ready. Please wait for it to be ready " "before editing.")
