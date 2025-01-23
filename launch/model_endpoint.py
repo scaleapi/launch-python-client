@@ -20,6 +20,8 @@ TASK_PENDING_STATE = "PENDING"
 TASK_SUCCESS_STATE = "SUCCESS"
 TASK_FAILURE_STATE = "FAILURE"
 
+# Echoes fields in EndpointResponse class
+ALLOWED_ENDPOINT_RESPONSE_FIELDS = {"status", "result_url", "result", "traceback", "status_code"}
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass
@@ -404,7 +406,8 @@ class SyncEndpoint(Endpoint):
             args=request.args,
             return_pickled=request.return_pickled,
         )
-        raw_response = {k: v for k, v in raw_response.items() if v is not None}
+        
+        raw_response = {k: v for k, v in raw_response.items() if v is not None and k in ALLOWED_ENDPOINT_RESPONSE_FIELDS}
         return EndpointResponse(client=self.client, **raw_response)
 
 
