@@ -20,6 +20,9 @@ TASK_PENDING_STATE = "PENDING"
 TASK_SUCCESS_STATE = "SUCCESS"
 TASK_FAILURE_STATE = "FAILURE"
 
+# Echoes fields in EndpointResponse class
+ALLOWED_ENDPOINT_RESPONSE_FIELDS = {"status", "result_url", "result", "traceback", "status_code"}
+
 
 @dataclass_json(undefined=Undefined.EXCLUDE)
 @dataclass
@@ -189,6 +192,7 @@ class EndpointResponse:
         result_url: Optional[str] = None,
         result: Optional[str] = None,
         traceback: Optional[str] = None,
+        status_code: Optional[int] = None,
     ):
         """
         Parameters:
@@ -210,12 +214,15 @@ class EndpointResponse:
 
             traceback: The stack trace if the inference endpoint raised an error. Can be used for debugging
 
+            status_code: The underlying status code of the response, given from the inference endpoint itself.
+
         """
         self.client = client
         self.status = status
         self.result_url = result_url
         self.result = result
         self.traceback = traceback
+        self.status_code = status_code
 
     def __str__(self) -> str:
         return (
@@ -271,6 +278,7 @@ class EndpointResponseFuture:
                         result_url=async_response.get("result", {}).get("result_url", None),
                         result=async_response.get("result", {}).get("result", None),
                         traceback=None,
+                        status_code=async_response.get("status_code", None),
                     )
                 elif status == "FAILURE":
                     return EndpointResponse(
@@ -279,6 +287,7 @@ class EndpointResponseFuture:
                         result_url=None,
                         result=None,
                         traceback=async_response.get("traceback", None),
+                        status_code=async_response.get("status_code", None),
                     )
                 else:
                     raise ValueError(f"Unrecognized status: {async_response['status']}")
@@ -312,6 +321,7 @@ class EndpointResponseStream(Iterator):
             result_url=result.get("result_url", None),
             result=result.get("result", None),
             traceback=data.get("traceback"),
+            status_code=data.get("status_code", None),
         )
 
 
@@ -397,7 +407,10 @@ class SyncEndpoint(Endpoint):
             args=request.args,
             return_pickled=request.return_pickled,
         )
-        raw_response = {k: v for k, v in raw_response.items() if v is not None}
+
+        raw_response = {
+            k: v for k, v in raw_response.items() if v is not None and k in ALLOWED_ENDPOINT_RESPONSE_FIELDS
+        }
         return EndpointResponse(client=self.client, **raw_response)
 
 
@@ -632,6 +645,7 @@ class AsyncEndpointBatchResponse:
                     result_url=raw_response.get("result_url", None),
                     result=raw_response.get("result", None),
                     traceback=raw_response.get("traceback", None),
+                    status_code=raw_response.get("status_code", None),
                 )
                 self.responses[url] = response_object
 
