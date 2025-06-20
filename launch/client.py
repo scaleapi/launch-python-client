@@ -255,6 +255,7 @@ class LaunchClient:
         endpoint: Optional[str] = None,
         self_hosted: bool = False,
         use_path_with_custom_endpoint: bool = False,
+        extra_headers: Optional[Dict[str, str]] = None
     ):
         """
         Initializes a Scale Launch Client.
@@ -276,6 +277,7 @@ class LaunchClient:
         host = self.endpoint + SCALE_LAUNCH_V1_PATH if endpoint is None else self.endpoint
         if use_path_with_custom_endpoint:
             host = self.endpoint + SCALE_LAUNCH_V1_PATH
+        self.extra_headers = extra_headers
         self.configuration = Configuration(
             host=host,
             discard_unknown_keys=True,
@@ -2039,6 +2041,8 @@ class LaunchClient:
         endpoint = self.get_model_endpoint(endpoint_name)
         endpoint_id = endpoint.model_endpoint.id  # type: ignore
         with ApiClient(self.configuration) as api_client:
+            for key, value in (self.extra_headers or {}).items():
+                api_client.set_default_header(key, value)
             api_instance = DefaultApi(api_client)
             payload = dict_not_none(return_pickled=return_pickled, url=url, args=args)
             request = EndpointPredictV1Request(**payload)
@@ -2120,6 +2124,8 @@ class LaunchClient:
         validate_task_request(url=url, args=args)
         endpoint = self.get_model_endpoint(endpoint_name)
         with ApiClient(self.configuration) as api_client:
+            for key, value in (self.extra_headers or {}).items():
+                api_client.set_default_header(key, value)
             api_instance = DefaultApi(api_client)
             if callback_auth_kind is not None:
                 callback_auth = CallbackAuth(
