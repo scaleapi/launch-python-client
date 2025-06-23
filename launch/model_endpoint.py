@@ -411,7 +411,7 @@ class SyncEndpoint(Endpoint):
             url=request.url,
             args=request.args,
             return_pickled=request.return_pickled,
-            extra_headers=self.extra_headers,
+            extra_headers=request.extra_headers,
         )
 
         raw_response = {
@@ -463,7 +463,7 @@ class StreamingEndpoint(Endpoint):
             url=request.url,
             args=request.args,
             return_pickled=request.return_pickled,
-            extra_headers=self.extra_headers,
+            extra_headers=request.extra_headers,
         )
         return EndpointResponseStream(response=raw_response)
 
@@ -524,7 +524,7 @@ class AsyncEndpoint(Endpoint):
             callback_auth_cert=request.callback_auth_cert,
             callback_auth_key=request.callback_auth_key,
             return_pickled=request.return_pickled,
-            extra_headers=self.extra_headers,
+            extra_headers=request.extra_headers,
         )
         async_task_id = response["task_id"]
         return EndpointResponseFuture(
