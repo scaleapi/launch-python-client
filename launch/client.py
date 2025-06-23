@@ -255,7 +255,7 @@ class LaunchClient:
         endpoint: Optional[str] = None,
         self_hosted: bool = False,
         use_path_with_custom_endpoint: bool = False,
-        extra_headers: Optional[Dict[str, str]] = None,
+        extra_headers: Optional[Dict[str, str]] = None
     ):
         """
         Initializes a Scale Launch Client.
