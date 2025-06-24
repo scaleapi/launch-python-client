@@ -192,7 +192,7 @@ class BaseApi(api_client.Api):
             for serialized_value in serialized_data.values():
                 used_path += serialized_value
 
-        _headers = HTTPHeaderDict()
+        _headers = HTTPHeaderDict(self.api_client.default_headers)
         # TODO add cookie handling
         if accept_content_types:
             for accept_content_type in accept_content_types:
