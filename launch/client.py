@@ -1955,6 +1955,7 @@ class LaunchClient:
         url: Optional[str] = None,
         args: Optional[Dict] = None,
         return_pickled: bool = False,
+        extra_headers: Optional[Dict[str, str]] = None,
     ) -> requests.Response:
         """
         Not recommended for use, instead use functions provided by StreamingEndpoint. Makes a
@@ -1991,6 +1992,7 @@ class LaunchClient:
             json=payload,
             auth=(self.configuration.username, self.configuration.password),
             stream=True,
+            headers=extra_headers or {},
         )
         return response
 
@@ -2000,6 +2002,7 @@ class LaunchClient:
         url: Optional[str] = None,
         args: Optional[Dict] = None,
         return_pickled: bool = False,
+        extra_headers: Optional[Dict[str, str]] = None,
     ) -> Dict[str, Any]:
         """
         Not recommended for use, instead use functions provided by SyncEndpoint Makes a request
@@ -2039,6 +2042,8 @@ class LaunchClient:
         endpoint = self.get_model_endpoint(endpoint_name)
         endpoint_id = endpoint.model_endpoint.id  # type: ignore
         with ApiClient(self.configuration) as api_client:
+            for key, value in (extra_headers or {}).items():
+                api_client.set_default_header(key, value)
             api_instance = DefaultApi(api_client)
             payload = dict_not_none(return_pickled=return_pickled, url=url, args=args)
             request = EndpointPredictV1Request(**payload)
@@ -2064,6 +2069,7 @@ class LaunchClient:
         callback_auth_cert: Optional[str] = None,
         callback_auth_key: Optional[str] = None,
         return_pickled: bool = False,
+        extra_headers: Optional[Dict[str, str]] = None,
     ) -> str:
         """
         Makes a request to the Async Model Endpoint at endpoint_id, and immediately returns a key
@@ -2120,6 +2126,8 @@ class LaunchClient:
         validate_task_request(url=url, args=args)
         endpoint = self.get_model_endpoint(endpoint_name)
         with ApiClient(self.configuration) as api_client:
+            for key, value in (extra_headers or {}).items():
+                api_client.set_default_header(key, value)
             api_instance = DefaultApi(api_client)
             if callback_auth_kind is not None:
                 callback_auth = CallbackAuth(

@@ -147,6 +147,9 @@ class EndpointRequest:
         request_id: (deprecated) A user-specifiable id for requests.
             Should be unique among EndpointRequests made in the same batch call.
             If one isn't provided the client will generate its own.
+
+        extra_headers: An optional dictionary which is passed on to the model endpoint
+            as extra HTTP headers.
     """
 
     def __init__(
@@ -161,6 +164,7 @@ class EndpointRequest:
         callback_auth_key: Optional[str] = None,
         return_pickled: Optional[bool] = False,
         request_id: Optional[str] = None,
+        extra_headers: Optional[Dict[str, str]] = None,
     ):
         # TODO: request_id is pretty much here only to support the clientside AsyncEndpointBatchResponse
         # so it should be removed when we get proper batch endpoints working.
@@ -177,6 +181,7 @@ class EndpointRequest:
         self.callback_auth_key = callback_auth_key
         self.return_pickled = return_pickled
         self.request_id: str = request_id
+        self.extra_headers = extra_headers
 
 
 class EndpointResponse:
@@ -406,6 +411,7 @@ class SyncEndpoint(Endpoint):
             url=request.url,
             args=request.args,
             return_pickled=request.return_pickled,
+            extra_headers=request.extra_headers,
         )
 
         raw_response = {
@@ -457,6 +463,7 @@ class StreamingEndpoint(Endpoint):
             url=request.url,
             args=request.args,
             return_pickled=request.return_pickled,
+            extra_headers=request.extra_headers,
         )
         return EndpointResponseStream(response=raw_response)
 
@@ -517,6 +524,7 @@ class AsyncEndpoint(Endpoint):
             callback_auth_cert=request.callback_auth_cert,
             callback_auth_key=request.callback_auth_key,
             return_pickled=request.return_pickled,
+            extra_headers=request.extra_headers,
         )
         async_task_id = response["task_id"]
         return EndpointResponseFuture(
