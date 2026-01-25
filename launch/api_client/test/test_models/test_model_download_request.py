@@ -12,14 +12,15 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.model_download_request import ModelDownloadRequest
 from launch.api_client import configuration
+from launch.api_client.model.model_download_request import ModelDownloadRequest
 
 
 class TestModelDownloadRequest(unittest.TestCase):
     """ModelDownloadRequest unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

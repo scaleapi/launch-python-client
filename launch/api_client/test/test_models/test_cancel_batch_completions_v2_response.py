@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.cancel_batch_completions_v2_response import CancelBatchCompletionsV2Response
 from launch.api_client import configuration
+from launch.api_client.model.cancel_batch_completions_v2_response import (
+    CancelBatchCompletionsV2Response,
+)
 
 
 class TestCancelBatchCompletionsV2Response(unittest.TestCase):
     """CancelBatchCompletionsV2Response unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

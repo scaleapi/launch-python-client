@@ -10,3 +10,6 @@ launch/model_endpoint.py
 README.md
 .gitignore
 requirements.txt
+
+# Type stub files (have syntax errors due to generator bug)
+**/*.pyi

@@ -12,14 +12,15 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.audio2 import Audio2
 from launch.api_client import configuration
+from launch.api_client.model.audio2 import Audio2
 
 
 class TestAudio2(unittest.TestCase):
     """Audio2 unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

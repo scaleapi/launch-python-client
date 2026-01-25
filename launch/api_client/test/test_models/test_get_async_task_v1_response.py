@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.get_async_task_v1_response import GetAsyncTaskV1Response
 from launch.api_client import configuration
+from launch.api_client.model.get_async_task_v1_response import (
+    GetAsyncTaskV1Response,
+)
 
 
 class TestGetAsyncTaskV1Response(unittest.TestCase):
     """GetAsyncTaskV1Response unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

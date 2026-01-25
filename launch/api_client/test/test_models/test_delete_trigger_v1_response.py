@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.delete_trigger_v1_response import DeleteTriggerV1Response
 from launch.api_client import configuration
+from launch.api_client.model.delete_trigger_v1_response import (
+    DeleteTriggerV1Response,
+)
 
 
 class TestDeleteTriggerV1Response(unittest.TestCase):
     """DeleteTriggerV1Response unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

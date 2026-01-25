@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.create_sg_lang_model_endpoint_request import CreateSGLangModelEndpointRequest
 from launch.api_client import configuration
+from launch.api_client.model.create_sg_lang_model_endpoint_request import (
+    CreateSGLangModelEndpointRequest,
+)
 
 
 class TestCreateSGLangModelEndpointRequest(unittest.TestCase):
     """CreateSGLangModelEndpointRequest unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

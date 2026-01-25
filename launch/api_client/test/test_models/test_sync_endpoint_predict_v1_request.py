@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.sync_endpoint_predict_v1_request import SyncEndpointPredictV1Request
 from launch.api_client import configuration
+from launch.api_client.model.sync_endpoint_predict_v1_request import (
+    SyncEndpointPredictV1Request,
+)
 
 
 class TestSyncEndpointPredictV1Request(unittest.TestCase):
     """SyncEndpointPredictV1Request unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.update_trigger_v1_response import UpdateTriggerV1Response
 from launch.api_client import configuration
+from launch.api_client.model.update_trigger_v1_response import (
+    UpdateTriggerV1Response,
+)
 
 
 class TestUpdateTriggerV1Response(unittest.TestCase):
     """UpdateTriggerV1Response unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

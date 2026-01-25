@@ -12,14 +12,15 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.completion_v2_request import CompletionV2Request
 from launch.api_client import configuration
+from launch.api_client.model.completion_v2_request import CompletionV2Request
 
 
 class TestCompletionV2Request(unittest.TestCase):
     """CompletionV2Request unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.create_fine_tune_response import CreateFineTuneResponse
 from launch.api_client import configuration
+from launch.api_client.model.create_fine_tune_response import (
+    CreateFineTuneResponse,
+)
 
 
 class TestCreateFineTuneResponse(unittest.TestCase):
     """CreateFineTuneResponse unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

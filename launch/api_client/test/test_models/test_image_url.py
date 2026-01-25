@@ -12,14 +12,15 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.image_url import ImageUrl
 from launch.api_client import configuration
+from launch.api_client.model.image_url import ImageUrl
 
 
 class TestImageUrl(unittest.TestCase):
     """ImageUrl unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

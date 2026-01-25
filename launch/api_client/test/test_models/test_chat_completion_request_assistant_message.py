@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.chat_completion_request_assistant_message import ChatCompletionRequestAssistantMessage
 from launch.api_client import configuration
+from launch.api_client.model.chat_completion_request_assistant_message import (
+    ChatCompletionRequestAssistantMessage,
+)
 
 
 class TestChatCompletionRequestAssistantMessage(unittest.TestCase):
     """ChatCompletionRequestAssistantMessage unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

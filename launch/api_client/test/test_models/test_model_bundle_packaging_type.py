@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.model_bundle_packaging_type import ModelBundlePackagingType
 from launch.api_client import configuration
+from launch.api_client.model.model_bundle_packaging_type import (
+    ModelBundlePackagingType,
+)
 
 
 class TestModelBundlePackagingType(unittest.TestCase):
     """ModelBundlePackagingType unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

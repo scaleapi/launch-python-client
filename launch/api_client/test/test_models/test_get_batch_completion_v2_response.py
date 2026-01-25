@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.get_batch_completion_v2_response import GetBatchCompletionV2Response
 from launch.api_client import configuration
+from launch.api_client.model.get_batch_completion_v2_response import (
+    GetBatchCompletionV2Response,
+)
 
 
 class TestGetBatchCompletionV2Response(unittest.TestCase):
     """GetBatchCompletionV2Response unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

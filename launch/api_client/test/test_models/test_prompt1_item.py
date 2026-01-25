@@ -12,14 +12,15 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.prompt1_item import Prompt1Item
 from launch.api_client import configuration
+from launch.api_client.model.prompt1_item import Prompt1Item
 
 
 class TestPrompt1Item(unittest.TestCase):
     """Prompt1Item unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

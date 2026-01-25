@@ -12,14 +12,15 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.logprobs import Logprobs
 from launch.api_client import configuration
+from launch.api_client.model.logprobs import Logprobs
 
 
 class TestLogprobs(unittest.TestCase):
     """Logprobs unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

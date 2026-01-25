@@ -12,14 +12,15 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.annotation import Annotation
 from launch.api_client import configuration
+from launch.api_client.model.annotation import Annotation
 
 
 class TestAnnotation(unittest.TestCase):
     """Annotation unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

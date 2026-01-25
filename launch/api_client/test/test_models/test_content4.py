@@ -12,14 +12,15 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.content4 import Content4
 from launch.api_client import configuration
+from launch.api_client.model.content4 import Content4
 
 
 class TestContent4(unittest.TestCase):
     """Content4 unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

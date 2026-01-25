@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.list_docker_image_batch_jobs_v1_response import ListDockerImageBatchJobsV1Response
 from launch.api_client import configuration
+from launch.api_client.model.list_docker_image_batch_jobs_v1_response import (
+    ListDockerImageBatchJobsV1Response,
+)
 
 
 class TestListDockerImageBatchJobsV1Response(unittest.TestCase):
     """ListDockerImageBatchJobsV1Response unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

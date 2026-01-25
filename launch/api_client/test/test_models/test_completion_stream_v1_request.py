@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.completion_stream_v1_request import CompletionStreamV1Request
 from launch.api_client import configuration
+from launch.api_client.model.completion_stream_v1_request import (
+    CompletionStreamV1Request,
+)
 
 
 class TestCompletionStreamV1Request(unittest.TestCase):
     """CompletionStreamV1Request unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

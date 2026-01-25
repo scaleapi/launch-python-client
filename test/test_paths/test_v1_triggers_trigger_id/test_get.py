@@ -12,8 +12,8 @@ from unittest.mock import patch
 import urllib3
 
 import launch.api_client
+from launch.api_client import api_client, configuration, schemas
 from launch.api_client.paths.v1_triggers_trigger_id import get  # noqa: E501
-from launch.api_client import configuration, schemas, api_client
 
 from .. import ApiTestMixin
 
@@ -23,6 +23,7 @@ class TestV1TriggersTriggerId(ApiTestMixin, unittest.TestCase):
     V1TriggersTriggerId unit test stubs
         Get Trigger  # noqa: E501
     """
+
     _configuration = configuration.Configuration()
 
     def setUp(self):
@@ -35,7 +36,5 @@ class TestV1TriggersTriggerId(ApiTestMixin, unittest.TestCase):
     response_status = 200
 
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

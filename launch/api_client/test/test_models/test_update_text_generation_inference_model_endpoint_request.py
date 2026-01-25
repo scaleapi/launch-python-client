@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.update_text_generation_inference_model_endpoint_request import UpdateTextGenerationInferenceModelEndpointRequest
 from launch.api_client import configuration
+from launch.api_client.model.update_text_generation_inference_model_endpoint_request import (
+    UpdateTextGenerationInferenceModelEndpointRequest,
+)
 
 
 class TestUpdateTextGenerationInferenceModelEndpointRequest(unittest.TestCase):
     """UpdateTextGenerationInferenceModelEndpointRequest unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

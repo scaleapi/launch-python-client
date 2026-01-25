@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.create_batch_job_v1_request import CreateBatchJobV1Request
 from launch.api_client import configuration
+from launch.api_client.model.create_batch_job_v1_request import (
+    CreateBatchJobV1Request,
+)
 
 
 class TestCreateBatchJobV1Request(unittest.TestCase):
     """CreateBatchJobV1Request unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

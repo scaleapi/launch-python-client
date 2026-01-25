@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.completion_sync_v1_response import CompletionSyncV1Response
 from launch.api_client import configuration
+from launch.api_client.model.completion_sync_v1_response import (
+    CompletionSyncV1Response,
+)
 
 
 class TestCompletionSyncV1Response(unittest.TestCase):
     """CompletionSyncV1Response unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

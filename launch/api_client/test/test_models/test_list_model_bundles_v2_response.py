@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.list_model_bundles_v2_response import ListModelBundlesV2Response
 from launch.api_client import configuration
+from launch.api_client.model.list_model_bundles_v2_response import (
+    ListModelBundlesV2Response,
+)
 
 
 class TestListModelBundlesV2Response(unittest.TestCase):
     """ListModelBundlesV2Response unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

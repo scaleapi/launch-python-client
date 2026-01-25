@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.batch_job_serialization_format import BatchJobSerializationFormat
 from launch.api_client import configuration
+from launch.api_client.model.batch_job_serialization_format import (
+    BatchJobSerializationFormat,
+)
 
 
 class TestBatchJobSerializationFormat(unittest.TestCase):
     """BatchJobSerializationFormat unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -12,8 +12,10 @@ from unittest.mock import patch
 import urllib3
 
 import launch.api_client
-from launch.api_client.paths.v2_batch_completions_batch_completion_id_actions_cancel import post  # noqa: E501
-from launch.api_client import configuration, schemas, api_client
+from launch.api_client import api_client, configuration, schemas
+from launch.api_client.paths.v2_batch_completions_batch_completion_id_actions_cancel import (  # noqa: E501
+    post,
+)
 
 from .. import ApiTestMixin
 
@@ -23,6 +25,7 @@ class TestV2BatchCompletionsBatchCompletionIdActionsCancel(ApiTestMixin, unittes
     V2BatchCompletionsBatchCompletionIdActionsCancel unit test stubs
         Cancel Batch Completion  # noqa: E501
     """
+
     _configuration = configuration.Configuration()
 
     def setUp(self):
@@ -35,7 +38,5 @@ class TestV2BatchCompletionsBatchCompletionIdActionsCancel(ApiTestMixin, unittes
     response_status = 200
 
 
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

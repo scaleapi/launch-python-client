@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.create_vllm_model_endpoint_request import CreateVLLMModelEndpointRequest
 from launch.api_client import configuration
+from launch.api_client.model.create_vllm_model_endpoint_request import (
+    CreateVLLMModelEndpointRequest,
+)
 
 
 class TestCreateVLLMModelEndpointRequest(unittest.TestCase):
     """CreateVLLMModelEndpointRequest unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

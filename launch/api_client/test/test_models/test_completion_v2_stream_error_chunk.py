@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.completion_v2_stream_error_chunk import CompletionV2StreamErrorChunk
 from launch.api_client import configuration
+from launch.api_client.model.completion_v2_stream_error_chunk import (
+    CompletionV2StreamErrorChunk,
+)
 
 
 class TestCompletionV2StreamErrorChunk(unittest.TestCase):
     """CompletionV2StreamErrorChunk unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

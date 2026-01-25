@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.create_docker_image_batch_job_bundle_v1_request import CreateDockerImageBatchJobBundleV1Request
 from launch.api_client import configuration
+from launch.api_client.model.create_docker_image_batch_job_bundle_v1_request import (
+    CreateDockerImageBatchJobBundleV1Request,
+)
 
 
 class TestCreateDockerImageBatchJobBundleV1Request(unittest.TestCase):
     """CreateDockerImageBatchJobBundleV1Request unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

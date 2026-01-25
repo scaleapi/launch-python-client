@@ -12,14 +12,15 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.choice1 import Choice1
 from launch.api_client import configuration
+from launch.api_client.model.choice1 import Choice1
 
 
 class TestChoice1(unittest.TestCase):
     """Choice1 unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

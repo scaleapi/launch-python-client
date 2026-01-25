@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.chat_completion_request_message_content_part_refusal import ChatCompletionRequestMessageContentPartRefusal
 from launch.api_client import configuration
+from launch.api_client.model.chat_completion_request_message_content_part_refusal import (
+    ChatCompletionRequestMessageContentPartRefusal,
+)
 
 
 class TestChatCompletionRequestMessageContentPartRefusal(unittest.TestCase):
     """ChatCompletionRequestMessageContentPartRefusal unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

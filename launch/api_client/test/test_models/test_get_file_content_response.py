@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.get_file_content_response import GetFileContentResponse
 from launch.api_client import configuration
+from launch.api_client.model.get_file_content_response import (
+    GetFileContentResponse,
+)
 
 
 class TestGetFileContentResponse(unittest.TestCase):
     """GetFileContentResponse unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

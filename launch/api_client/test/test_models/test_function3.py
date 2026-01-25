@@ -12,14 +12,15 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.function3 import Function3
 from launch.api_client import configuration
+from launch.api_client.model.function3 import Function3
 
 
 class TestFunction3(unittest.TestCase):
     """Function3 unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

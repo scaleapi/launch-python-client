@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.triton_enhanced_runnable_image_flavor import TritonEnhancedRunnableImageFlavor
 from launch.api_client import configuration
+from launch.api_client.model.triton_enhanced_runnable_image_flavor import (
+    TritonEnhancedRunnableImageFlavor,
+)
 
 
 class TestTritonEnhancedRunnableImageFlavor(unittest.TestCase):
     """TritonEnhancedRunnableImageFlavor unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

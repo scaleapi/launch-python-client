@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.clone_model_bundle_v2_request import CloneModelBundleV2Request
 from launch.api_client import configuration
+from launch.api_client.model.clone_model_bundle_v2_request import (
+    CloneModelBundleV2Request,
+)
 
 
 class TestCloneModelBundleV2Request(unittest.TestCase):
     """CloneModelBundleV2Request unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

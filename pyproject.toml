@@ -15,6 +15,7 @@ exclude = '''
     | buck-out
     | build
     | dist
+    | launch/api_client  # generated code
   )/
 )
 '''

@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.create_model_endpoint_v1_response import CreateModelEndpointV1Response
 from launch.api_client import configuration
+from launch.api_client.model.create_model_endpoint_v1_response import (
+    CreateModelEndpointV1Response,
+)
 
 
 class TestCreateModelEndpointV1Response(unittest.TestCase):
     """CreateModelEndpointV1Response unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

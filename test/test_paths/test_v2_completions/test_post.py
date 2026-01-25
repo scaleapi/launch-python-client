@@ -12,8 +12,8 @@ from unittest.mock import patch
 import urllib3
 
 import launch.api_client
+from launch.api_client import api_client, configuration, schemas
 from launch.api_client.paths.v2_completions import post  # noqa: E501
-from launch.api_client import configuration, schemas, api_client
 
 from .. import ApiTestMixin
 
@@ -23,6 +23,7 @@ class TestV2Completions(ApiTestMixin, unittest.TestCase):
     V2Completions unit test stubs
         Completion  # noqa: E501
     """
+
     _configuration = configuration.Configuration()
 
     def setUp(self):
@@ -35,9 +36,5 @@ class TestV2Completions(ApiTestMixin, unittest.TestCase):
     response_status = 200
 
 
-
-
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

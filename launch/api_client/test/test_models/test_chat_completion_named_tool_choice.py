@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.chat_completion_named_tool_choice import ChatCompletionNamedToolChoice
 from launch.api_client import configuration
+from launch.api_client.model.chat_completion_named_tool_choice import (
+    ChatCompletionNamedToolChoice,
+)
 
 
 class TestChatCompletionNamedToolChoice(unittest.TestCase):
     """ChatCompletionNamedToolChoice unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

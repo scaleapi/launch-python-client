@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.response_format_json_schema_schema import ResponseFormatJsonSchemaSchema
 from launch.api_client import configuration
+from launch.api_client.model.response_format_json_schema_schema import (
+    ResponseFormatJsonSchemaSchema,
+)
 
 
 class TestResponseFormatJsonSchemaSchema(unittest.TestCase):
     """ResponseFormatJsonSchemaSchema unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

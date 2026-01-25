@@ -12,14 +12,17 @@
 import unittest
 
 import launch.api_client
-from launch.api_client.model.create_chat_completion_stream_response import CreateChatCompletionStreamResponse
 from launch.api_client import configuration
+from launch.api_client.model.create_chat_completion_stream_response import (
+    CreateChatCompletionStreamResponse,
+)
 
 
 class TestCreateChatCompletionStreamResponse(unittest.TestCase):
     """CreateChatCompletionStreamResponse unit test stubs"""
+
     _configuration = configuration.Configuration()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
