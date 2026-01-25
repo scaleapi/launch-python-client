@@ -30,17 +30,37 @@ from launch.api_client.model.list_docker_image_batch_jobs_v1_response import (
 from . import path
 
 # Query params
-TriggerIdSchema = schemas.StrSchema
-RequestRequiredQueryParams = typing_extensions.TypedDict("RequestRequiredQueryParams", {})
-RequestOptionalQueryParams = typing_extensions.TypedDict(
-    "RequestOptionalQueryParams",
+
+
+class TriggerIdSchema(
+    schemas.StrBase,
+    schemas.NoneBase,
+    schemas.Schema,
+    schemas.NoneStrMixin
+):
+
+
+    def __new__(
+        cls,
+        *_args: typing.Union[None, str, ],
+        _configuration: typing.Optional[schemas.Configuration] = None,
+    ) -> 'TriggerIdSchema':
+        return super().__new__(
+            cls,
+            *_args,
+            _configuration=_configuration,
+        )
+RequestRequiredQueryParams = typing_extensions.TypedDict(
+    'RequestRequiredQueryParams',
     {
-        "trigger_id": typing.Union[
-            TriggerIdSchema,
-            str,
-        ],
+    }
+)
+RequestOptionalQueryParams = typing_extensions.TypedDict(
+    'RequestOptionalQueryParams',
+    {
+        'trigger_id': typing.Union[TriggerIdSchema, None, str, ],
     },
-    total=False,
+    total=False
 )
 
 
@@ -55,7 +75,8 @@ request_query_trigger_id = api_client.QueryParameter(
     explode=True,
 )
 _auth = [
-    "HTTPBasic",
+    'OAuth2PasswordBearer',
+    'HTTPBasic',
 ]
 SchemaFor200ResponseBodyApplicationJson = ListDockerImageBatchJobsV1Response
 
@@ -63,14 +84,17 @@ SchemaFor200ResponseBodyApplicationJson = ListDockerImageBatchJobsV1Response
 @dataclass
 class ApiResponseFor200(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor200ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor200ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 
 _response_for_200 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor200,
     content={
-        "application/json": api_client.MediaType(schema=SchemaFor200ResponseBodyApplicationJson),
+        'application/json': api_client.MediaType(
+            schema=SchemaFor200ResponseBodyApplicationJson),
     },
 )
 SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
@@ -79,21 +103,26 @@ SchemaFor422ResponseBodyApplicationJson = HTTPValidationError
 @dataclass
 class ApiResponseFor422(api_client.ApiResponse):
     response: urllib3.HTTPResponse
-    body: typing.Union[SchemaFor422ResponseBodyApplicationJson,]
+    body: typing.Union[
+        SchemaFor422ResponseBodyApplicationJson,
+    ]
     headers: schemas.Unset = schemas.unset
 
 
 _response_for_422 = api_client.OpenApiResponse(
     response_cls=ApiResponseFor422,
     content={
-        "application/json": api_client.MediaType(schema=SchemaFor422ResponseBodyApplicationJson),
+        'application/json': api_client.MediaType(
+            schema=SchemaFor422ResponseBodyApplicationJson),
     },
 )
 _status_code_to_response = {
-    "200": _response_for_200,
-    "422": _response_for_422,
+    '200': _response_for_200,
+    '422': _response_for_422,
 }
-_all_accept_content_types = ("application/json",)
+_all_accept_content_types = (
+    'application/json',
+)
 
 
 class BaseApi(api_client.Api):
@@ -105,8 +134,9 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
+    ) -> typing.Union[
+        ApiResponseFor200,
+    ]: ...
 
     @typing.overload
     def _list_docker_image_batch_jobs_v1_docker_image_batch_jobs_get_oapg(
@@ -116,8 +146,7 @@ class BaseApi(api_client.Api):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization:
-        ...
+    ) -> api_client.ApiResponseWithoutDeserialization: ...
 
     @typing.overload
     def _list_docker_image_batch_jobs_v1_docker_image_batch_jobs_get_oapg(
@@ -127,8 +156,10 @@ class BaseApi(api_client.Api):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
-        ...
+    ) -> typing.Union[
+        ApiResponseFor200,
+        api_client.ApiResponseWithoutDeserialization,
+    ]: ...
 
     def _list_docker_image_batch_jobs_v1_docker_image_batch_jobs_get_oapg(
         self,
@@ -148,7 +179,9 @@ class BaseApi(api_client.Api):
         used_path = path.value
 
         prefix_separator_iterator = None
-        for parameter in (request_query_trigger_id,):
+        for parameter in (
+            request_query_trigger_id,
+        ):
             parameter_data = query_params.get(parameter.name, schemas.unset)
             if parameter_data is schemas.unset:
                 continue
@@ -162,11 +195,11 @@ class BaseApi(api_client.Api):
         # TODO add cookie handling
         if accept_content_types:
             for accept_content_type in accept_content_types:
-                _headers.add("Accept", accept_content_type)
+                _headers.add('Accept', accept_content_type)
 
         response = self.api_client.call_api(
             resource_path=used_path,
-            method="get".upper(),
+            method='get'.upper(),
             headers=_headers,
             auth_settings=_auth,
             stream=stream,
@@ -183,7 +216,11 @@ class BaseApi(api_client.Api):
                 api_response = api_client.ApiResponseWithoutDeserialization(response=response)
 
         if not 200 <= response.status <= 299:
-            raise exceptions.ApiException(status=response.status, reason=response.reason, api_response=api_response)
+            raise exceptions.ApiException(
+                status=response.status,
+                reason=response.reason,
+                api_response=api_response
+            )
 
         return api_response
 
@@ -199,8 +236,9 @@ class ListDockerImageBatchJobsV1DockerImageBatchJobsGet(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
+    ) -> typing.Union[
+        ApiResponseFor200,
+    ]: ...
 
     @typing.overload
     def list_docker_image_batch_jobs_v1_docker_image_batch_jobs_get(
@@ -210,8 +248,7 @@ class ListDockerImageBatchJobsV1DockerImageBatchJobsGet(BaseApi):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization:
-        ...
+    ) -> api_client.ApiResponseWithoutDeserialization: ...
 
     @typing.overload
     def list_docker_image_batch_jobs_v1_docker_image_batch_jobs_get(
@@ -221,8 +258,10 @@ class ListDockerImageBatchJobsV1DockerImageBatchJobsGet(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
-        ...
+    ) -> typing.Union[
+        ApiResponseFor200,
+        api_client.ApiResponseWithoutDeserialization,
+    ]: ...
 
     def list_docker_image_batch_jobs_v1_docker_image_batch_jobs_get(
         self,
@@ -237,7 +276,7 @@ class ListDockerImageBatchJobsV1DockerImageBatchJobsGet(BaseApi):
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
-            skip_deserialization=skip_deserialization,
+            skip_deserialization=skip_deserialization
         )
 
 
@@ -252,8 +291,9 @@ class ApiForget(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: typing_extensions.Literal[False] = ...,
-    ) -> typing.Union[ApiResponseFor200,]:
-        ...
+    ) -> typing.Union[
+        ApiResponseFor200,
+    ]: ...
 
     @typing.overload
     def get(
@@ -263,8 +303,7 @@ class ApiForget(BaseApi):
         accept_content_types: typing.Tuple[str] = _all_accept_content_types,
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
-    ) -> api_client.ApiResponseWithoutDeserialization:
-        ...
+    ) -> api_client.ApiResponseWithoutDeserialization: ...
 
     @typing.overload
     def get(
@@ -274,8 +313,10 @@ class ApiForget(BaseApi):
         stream: bool = False,
         timeout: typing.Optional[typing.Union[int, typing.Tuple]] = None,
         skip_deserialization: bool = ...,
-    ) -> typing.Union[ApiResponseFor200, api_client.ApiResponseWithoutDeserialization,]:
-        ...
+    ) -> typing.Union[
+        ApiResponseFor200,
+        api_client.ApiResponseWithoutDeserialization,
+    ]: ...
 
     def get(
         self,
@@ -290,5 +331,7 @@ class ApiForget(BaseApi):
             accept_content_types=accept_content_types,
             stream=stream,
             timeout=timeout,
-            skip_deserialization=skip_deserialization,
+            skip_deserialization=skip_deserialization
         )
+
+

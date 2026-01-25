@@ -54,7 +54,9 @@ class CreateFineTuneResponse(schemas.DictSchema):
     def __getitem__(
         self,
         name: typing.Union[
-            typing_extensions.Literal["fine_tune_id",],
+            typing_extensions.Literal[
+                "fine_tune_id",
+            ],
             str,
         ],
     ):
@@ -72,7 +74,9 @@ class CreateFineTuneResponse(schemas.DictSchema):
     def get_item_oapg(
         self,
         name: typing.Union[
-            typing_extensions.Literal["fine_tune_id",],
+            typing_extensions.Literal[
+                "fine_tune_id",
+            ],
             str,
         ],
     ):

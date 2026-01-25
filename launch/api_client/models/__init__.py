@@ -11,19 +11,124 @@
 # import sys
 # sys.setrecursionlimit(n)
 
+from launch.api_client.model.annotation import Annotation
+from launch.api_client.model.audio import Audio
+from launch.api_client.model.audio1 import Audio1
+from launch.api_client.model.audio2 import Audio2
+from launch.api_client.model.batch_completions_job import BatchCompletionsJob
+from launch.api_client.model.batch_completions_job_status import (
+    BatchCompletionsJobStatus,
+)
+from launch.api_client.model.batch_completions_model_config import (
+    BatchCompletionsModelConfig,
+)
 from launch.api_client.model.batch_job_serialization_format import (
     BatchJobSerializationFormat,
 )
 from launch.api_client.model.batch_job_status import BatchJobStatus
-from launch.api_client.model.body_upload_file_v1_files_post import (
-    BodyUploadFileV1FilesPost,
-)
 from launch.api_client.model.callback_auth import CallbackAuth
 from launch.api_client.model.callback_basic_auth import CallbackBasicAuth
 from launch.api_client.model.callbackm_tls_auth import CallbackmTLSAuth
+from launch.api_client.model.cancel_batch_completions_v2_response import (
+    CancelBatchCompletionsV2Response,
+)
 from launch.api_client.model.cancel_fine_tune_response import (
     CancelFineTuneResponse,
 )
+from launch.api_client.model.chat_completion_function_call_option import (
+    ChatCompletionFunctionCallOption,
+)
+from launch.api_client.model.chat_completion_functions import (
+    ChatCompletionFunctions,
+)
+from launch.api_client.model.chat_completion_message_tool_call import (
+    ChatCompletionMessageToolCall,
+)
+from launch.api_client.model.chat_completion_message_tool_call_chunk import (
+    ChatCompletionMessageToolCallChunk,
+)
+from launch.api_client.model.chat_completion_message_tool_calls_input import (
+    ChatCompletionMessageToolCallsInput,
+)
+from launch.api_client.model.chat_completion_message_tool_calls_output import (
+    ChatCompletionMessageToolCallsOutput,
+)
+from launch.api_client.model.chat_completion_named_tool_choice import (
+    ChatCompletionNamedToolChoice,
+)
+from launch.api_client.model.chat_completion_request_assistant_message import (
+    ChatCompletionRequestAssistantMessage,
+)
+from launch.api_client.model.chat_completion_request_assistant_message_content_part import (
+    ChatCompletionRequestAssistantMessageContentPart,
+)
+from launch.api_client.model.chat_completion_request_developer_message import (
+    ChatCompletionRequestDeveloperMessage,
+)
+from launch.api_client.model.chat_completion_request_function_message import (
+    ChatCompletionRequestFunctionMessage,
+)
+from launch.api_client.model.chat_completion_request_message import (
+    ChatCompletionRequestMessage,
+)
+from launch.api_client.model.chat_completion_request_message_content_part_audio import (
+    ChatCompletionRequestMessageContentPartAudio,
+)
+from launch.api_client.model.chat_completion_request_message_content_part_file import (
+    ChatCompletionRequestMessageContentPartFile,
+)
+from launch.api_client.model.chat_completion_request_message_content_part_image import (
+    ChatCompletionRequestMessageContentPartImage,
+)
+from launch.api_client.model.chat_completion_request_message_content_part_refusal import (
+    ChatCompletionRequestMessageContentPartRefusal,
+)
+from launch.api_client.model.chat_completion_request_message_content_part_text import (
+    ChatCompletionRequestMessageContentPartText,
+)
+from launch.api_client.model.chat_completion_request_system_message import (
+    ChatCompletionRequestSystemMessage,
+)
+from launch.api_client.model.chat_completion_request_system_message_content_part import (
+    ChatCompletionRequestSystemMessageContentPart,
+)
+from launch.api_client.model.chat_completion_request_tool_message import (
+    ChatCompletionRequestToolMessage,
+)
+from launch.api_client.model.chat_completion_request_tool_message_content_part import (
+    ChatCompletionRequestToolMessageContentPart,
+)
+from launch.api_client.model.chat_completion_request_user_message import (
+    ChatCompletionRequestUserMessage,
+)
+from launch.api_client.model.chat_completion_request_user_message_content_part import (
+    ChatCompletionRequestUserMessageContentPart,
+)
+from launch.api_client.model.chat_completion_response_message import (
+    ChatCompletionResponseMessage,
+)
+from launch.api_client.model.chat_completion_stream_options import (
+    ChatCompletionStreamOptions,
+)
+from launch.api_client.model.chat_completion_stream_response_delta import (
+    ChatCompletionStreamResponseDelta,
+)
+from launch.api_client.model.chat_completion_token_logprob import (
+    ChatCompletionTokenLogprob,
+)
+from launch.api_client.model.chat_completion_tool import ChatCompletionTool
+from launch.api_client.model.chat_completion_tool_choice_option import (
+    ChatCompletionToolChoiceOption,
+)
+from launch.api_client.model.chat_completion_v2_request import (
+    ChatCompletionV2Request,
+)
+from launch.api_client.model.chat_completion_v2_stream_error_chunk import (
+    ChatCompletionV2StreamErrorChunk,
+)
+from launch.api_client.model.choice import Choice
+from launch.api_client.model.choice1 import Choice1
+from launch.api_client.model.choice2 import Choice2
 from launch.api_client.model.clone_model_bundle_v1_request import (
     CloneModelBundleV1Request,
 )
@@ -49,20 +154,37 @@ from launch.api_client.model.completion_sync_v1_request import (
 from launch.api_client.model.completion_sync_v1_response import (
     CompletionSyncV1Response,
 )
+from launch.api_client.model.completion_tokens_details import (
+    CompletionTokensDetails,
+)
+from launch.api_client.model.completion_usage import CompletionUsage
+from launch.api_client.model.completion_v2_request import CompletionV2Request
+from launch.api_client.model.completion_v2_stream_error_chunk import (
+    CompletionV2StreamErrorChunk,
+)
+from launch.api_client.model.content import Content
+from launch.api_client.model.content1 import Content1
+from launch.api_client.model.content2 import Content2
+from launch.api_client.model.content3 import Content3
+from launch.api_client.model.content4 import Content4
+from launch.api_client.model.content8 import Content8
 from launch.api_client.model.create_async_task_v1_response import (
     CreateAsyncTaskV1Response,
 )
-from launch.api_client.model.create_batch_completions_model_config import (
-    CreateBatchCompletionsModelConfig,
+from launch.api_client.model.create_batch_completions_v1_model_config import (
+    CreateBatchCompletionsV1ModelConfig,
 )
-from launch.api_client.model.create_batch_completions_request import (
-    CreateBatchCompletionsRequest,
+from launch.api_client.model.create_batch_completions_v1_request import (
+    CreateBatchCompletionsV1Request,
 )
-from launch.api_client.model.create_batch_completions_request_content import (
-    CreateBatchCompletionsRequestContent,
+from launch.api_client.model.create_batch_completions_v1_request_content import (
+    CreateBatchCompletionsV1RequestContent,
 )
-from launch.api_client.model.create_batch_completions_response import (
-    CreateBatchCompletionsResponse,
+from launch.api_client.model.create_batch_completions_v1_response import (
+    CreateBatchCompletionsV1Response,
+)
+from launch.api_client.model.create_batch_completions_v2_request import (
+    CreateBatchCompletionsV2Request,
 )
 from launch.api_client.model.create_batch_job_resource_requests import (
     CreateBatchJobResourceRequests,
@@ -72,6 +194,18 @@ from launch.api_client.model.create_batch_job_v1_request import (
 )
 from launch.api_client.model.create_batch_job_v1_response import (
     CreateBatchJobV1Response,
+)
+from launch.api_client.model.create_chat_completion_response import (
+    CreateChatCompletionResponse,
+)
+from launch.api_client.model.create_chat_completion_stream_response import (
+    CreateChatCompletionStreamResponse,
+)
+from launch.api_client.model.create_completion_response import (
+    CreateCompletionResponse,
+)
+from launch.api_client.model.create_deep_speed_model_endpoint_request import (
+    CreateDeepSpeedModelEndpointRequest,
 )
 from launch.api_client.model.create_docker_image_batch_job_bundle_v1_request import (
     CreateDockerImageBatchJobBundleV1Request,
@@ -93,6 +227,9 @@ from launch.api_client.model.create_fine_tune_request import (
 )
 from launch.api_client.model.create_fine_tune_response import (
     CreateFineTuneResponse,
+)
+from launch.api_client.model.create_light_llm_model_endpoint_request import (
+    CreateLightLLMModelEndpointRequest,
 )
 from launch.api_client.model.create_llm_model_endpoint_v1_request import (
     CreateLLMModelEndpointV1Request,
@@ -118,11 +255,23 @@ from launch.api_client.model.create_model_endpoint_v1_request import (
 from launch.api_client.model.create_model_endpoint_v1_response import (
     CreateModelEndpointV1Response,
 )
+from launch.api_client.model.create_sg_lang_model_endpoint_request import (
+    CreateSGLangModelEndpointRequest,
+)
+from launch.api_client.model.create_tensor_rtllm_model_endpoint_request import (
+    CreateTensorRTLLMModelEndpointRequest,
+)
+from launch.api_client.model.create_text_generation_inference_model_endpoint_request import (
+    CreateTextGenerationInferenceModelEndpointRequest,
+)
 from launch.api_client.model.create_trigger_v1_request import (
     CreateTriggerV1Request,
 )
 from launch.api_client.model.create_trigger_v1_response import (
     CreateTriggerV1Response,
+)
+from launch.api_client.model.create_vllm_model_endpoint_request import (
+    CreateVLLMModelEndpointRequest,
 )
 from launch.api_client.model.custom_framework import CustomFramework
 from launch.api_client.model.delete_file_response import DeleteFileResponse
@@ -142,8 +291,25 @@ from launch.api_client.model.docker_image_batch_job_bundle_v1_response import (
 from launch.api_client.model.endpoint_predict_v1_request import (
     EndpointPredictV1Request,
 )
+from launch.api_client.model.file import File
+from launch.api_client.model.filtered_chat_completion_v2_request import (
+    FilteredChatCompletionV2Request,
+)
+from launch.api_client.model.filtered_completion_v2_request import (
+    FilteredCompletionV2Request,
+)
+from launch.api_client.model.function1 import Function1
+from launch.api_client.model.function2 import Function2
+from launch.api_client.model.function3 import Function3
+from launch.api_client.model.function_call import FunctionCall
+from launch.api_client.model.function_call2 import FunctionCall2
+from launch.api_client.model.function_object import FunctionObject
+from launch.api_client.model.function_parameters import FunctionParameters
 from launch.api_client.model.get_async_task_v1_response import (
     GetAsyncTaskV1Response,
+)
+from launch.api_client.model.get_batch_completion_v2_response import (
+    GetBatchCompletionV2Response,
 )
 from launch.api_client.model.get_batch_job_v1_response import (
     GetBatchJobV1Response,
@@ -170,6 +336,9 @@ from launch.api_client.model.get_trigger_v1_response import (
 )
 from launch.api_client.model.gpu_type import GpuType
 from launch.api_client.model.http_validation_error import HTTPValidationError
+from launch.api_client.model.image_url import ImageUrl
+from launch.api_client.model.input_audio import InputAudio
+from launch.api_client.model.json_schema import JsonSchema
 from launch.api_client.model.list_docker_image_batch_job_bundle_v1_response import (
     ListDockerImageBatchJobBundleV1Response,
 )
@@ -200,6 +369,9 @@ from launch.api_client.model.llm_inference_framework import (
     LLMInferenceFramework,
 )
 from launch.api_client.model.llm_source import LLMSource
+from launch.api_client.model.logprobs import Logprobs
+from launch.api_client.model.logprobs2 import Logprobs2
+from launch.api_client.model.metadata import Metadata
 from launch.api_client.model.model_bundle_environment_params import (
     ModelBundleEnvironmentParams,
 )
@@ -231,11 +403,35 @@ from launch.api_client.model.model_endpoint_resource_state import (
 )
 from launch.api_client.model.model_endpoint_status import ModelEndpointStatus
 from launch.api_client.model.model_endpoint_type import ModelEndpointType
+from launch.api_client.model.parallel_tool_calls import ParallelToolCalls
+from launch.api_client.model.prediction_content import PredictionContent
+from launch.api_client.model.prompt import Prompt
+from launch.api_client.model.prompt1 import Prompt1
+from launch.api_client.model.prompt1_item import Prompt1Item
+from launch.api_client.model.prompt_tokens_details import PromptTokensDetails
 from launch.api_client.model.pytorch_framework import PytorchFramework
 from launch.api_client.model.quantization import Quantization
+from launch.api_client.model.reasoning_effort import ReasoningEffort
 from launch.api_client.model.request_schema import RequestSchema
+from launch.api_client.model.response_format_json_object import (
+    ResponseFormatJsonObject,
+)
+from launch.api_client.model.response_format_json_schema import (
+    ResponseFormatJsonSchema,
+)
+from launch.api_client.model.response_format_json_schema_schema import (
+    ResponseFormatJsonSchemaSchema,
+)
+from launch.api_client.model.response_format_text import ResponseFormatText
+from launch.api_client.model.response_modalities import ResponseModalities
 from launch.api_client.model.response_schema import ResponseSchema
+from launch.api_client.model.restart_model_endpoint_v1_response import (
+    RestartModelEndpointV1Response,
+)
 from launch.api_client.model.runnable_image_flavor import RunnableImageFlavor
+from launch.api_client.model.service_tier import ServiceTier
+from launch.api_client.model.stop_configuration import StopConfiguration
+from launch.api_client.model.stop_configuration1 import StopConfiguration1
 from launch.api_client.model.stream_error import StreamError
 from launch.api_client.model.stream_error_content import StreamErrorContent
 from launch.api_client.model.streaming_enhanced_runnable_image_flavor import (
@@ -251,14 +447,24 @@ from launch.api_client.model.task_status import TaskStatus
 from launch.api_client.model.tensorflow_framework import TensorflowFramework
 from launch.api_client.model.token_output import TokenOutput
 from launch.api_client.model.tool_config import ToolConfig
+from launch.api_client.model.top_logprob import TopLogprob
 from launch.api_client.model.triton_enhanced_runnable_image_flavor import (
     TritonEnhancedRunnableImageFlavor,
+)
+from launch.api_client.model.update_batch_completions_v2_request import (
+    UpdateBatchCompletionsV2Request,
+)
+from launch.api_client.model.update_batch_completions_v2_response import (
+    UpdateBatchCompletionsV2Response,
 )
 from launch.api_client.model.update_batch_job_v1_request import (
     UpdateBatchJobV1Request,
 )
 from launch.api_client.model.update_batch_job_v1_response import (
     UpdateBatchJobV1Response,
+)
+from launch.api_client.model.update_deep_speed_model_endpoint_request import (
+    UpdateDeepSpeedModelEndpointRequest,
 )
 from launch.api_client.model.update_docker_image_batch_job_v1_request import (
     UpdateDockerImageBatchJobV1Request,
@@ -278,12 +484,29 @@ from launch.api_client.model.update_model_endpoint_v1_request import (
 from launch.api_client.model.update_model_endpoint_v1_response import (
     UpdateModelEndpointV1Response,
 )
+from launch.api_client.model.update_sg_lang_model_endpoint_request import (
+    UpdateSGLangModelEndpointRequest,
+)
+from launch.api_client.model.update_text_generation_inference_model_endpoint_request import (
+    UpdateTextGenerationInferenceModelEndpointRequest,
+)
 from launch.api_client.model.update_trigger_v1_request import (
     UpdateTriggerV1Request,
 )
 from launch.api_client.model.update_trigger_v1_response import (
     UpdateTriggerV1Response,
 )
+from launch.api_client.model.update_vllm_model_endpoint_request import (
+    UpdateVLLMModelEndpointRequest,
+)
 from launch.api_client.model.upload_file_response import UploadFileResponse
+from launch.api_client.model.url_citation import UrlCitation
+from launch.api_client.model.user_location import UserLocation
 from launch.api_client.model.validation_error import ValidationError
+from launch.api_client.model.voice_ids_shared import VoiceIdsShared
+from launch.api_client.model.web_search_context_size import (
+    WebSearchContextSize,
+)
+from launch.api_client.model.web_search_location import WebSearchLocation
+from launch.api_client.model.web_search_options import WebSearchOptions
 from launch.api_client.model.zip_artifact_flavor import ZipArtifactFlavor

@@ -137,6 +137,9 @@ from launch.api_client.paths.v1_model_endpoints_model_endpoint_id.get import (
 from launch.api_client.paths.v1_model_endpoints_model_endpoint_id.put import (
     UpdateModelEndpointV1ModelEndpointsModelEndpointIdPut,
 )
+from launch.api_client.paths.v1_model_endpoints_model_endpoint_id_restart.post import (
+    RestartModelEndpointV1ModelEndpointsModelEndpointIdRestartPost,
+)
 from launch.api_client.paths.v1_model_endpoints_schema_json.get import (
     GetModelEndpointsSchemaV1ModelEndpointsSchemaJsonGet,
 )
@@ -159,6 +162,24 @@ from launch.api_client.paths.v1_triggers_trigger_id.get import (
 from launch.api_client.paths.v1_triggers_trigger_id.put import (
     UpdateTriggerV1TriggersTriggerIdPut,
 )
+from launch.api_client.paths.v2_batch_completions.post import (
+    BatchCompletionsV2BatchCompletionsPost,
+)
+from launch.api_client.paths.v2_batch_completions_batch_completion_id.get import (
+    GetBatchCompletionV2BatchCompletionsBatchCompletionIdGet,
+)
+from launch.api_client.paths.v2_batch_completions_batch_completion_id.post import (
+    UpdateBatchCompletionV2BatchCompletionsBatchCompletionIdPost,
+)
+from launch.api_client.paths.v2_batch_completions_batch_completion_id_actions_cancel.post import (
+    CancelBatchCompletionV2BatchCompletionsBatchCompletionIdActionsCancelPost,
+)
+from launch.api_client.paths.v2_chat_completions.post import (
+    ChatCompletionV2ChatCompletionsPost,
+)
+from launch.api_client.paths.v2_completions.post import (
+    CompletionV2CompletionsPost,
+)
 from launch.api_client.paths.v2_model_bundles.get import (
     ListModelBundlesV2ModelBundlesGet,
 )
@@ -177,9 +198,13 @@ from launch.api_client.paths.v2_model_bundles_model_bundle_id.get import (
 
 
 class DefaultApi(
+    BatchCompletionsV2BatchCompletionsPost,
+    CancelBatchCompletionV2BatchCompletionsBatchCompletionIdActionsCancelPost,
     CancelFineTuneV1LlmFineTunesFineTuneIdCancelPut,
+    ChatCompletionV2ChatCompletionsPost,
     CloneModelBundleWithChangesV1ModelBundlesCloneWithChangesPost,
     CloneModelBundleWithChangesV2ModelBundlesCloneWithChangesPost,
+    CompletionV2CompletionsPost,
     CreateAsyncInferenceTaskV1AsyncTasksPost,
     CreateBatchCompletionsV1LlmBatchCompletionsPost,
     CreateBatchJobV1BatchJobsPost,
@@ -201,6 +226,7 @@ class DefaultApi(
     DeleteTriggerV1TriggersTriggerIdDelete,
     DownloadModelEndpointV1LlmModelEndpointsDownloadPost,
     GetAsyncInferenceTaskV1AsyncTasksTaskIdGet,
+    GetBatchCompletionV2BatchCompletionsBatchCompletionIdGet,
     GetBatchJobV1BatchJobsBatchJobIdGet,
     GetDockerImageBatchJobModelBundleV1DockerImageBatchJobBundlesDockerImageBatchJobBundleIdGet,
     GetDockerImageBatchJobV1DockerImageBatchJobsBatchJobIdGet,
@@ -230,6 +256,8 @@ class DefaultApi(
     ListModelEndpointsV1LlmModelEndpointsGet,
     ListModelEndpointsV1ModelEndpointsGet,
     ListTriggersV1TriggersGet,
+    RestartModelEndpointV1ModelEndpointsModelEndpointIdRestartPost,
+    UpdateBatchCompletionV2BatchCompletionsBatchCompletionIdPost,
     UpdateBatchJobV1BatchJobsBatchJobIdPut,
     UpdateDockerImageBatchJobV1DockerImageBatchJobsBatchJobIdPut,
     UpdateModelEndpointV1LlmModelEndpointsModelEndpointNamePut,
@@ -242,5 +270,4 @@ class DefaultApi(
 
     Do not edit the class manually.
     """
-
     pass

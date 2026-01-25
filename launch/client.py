@@ -29,6 +29,9 @@ from typing_extensions import Literal
 
 from launch.api_client import ApiClient, Configuration
 from launch.api_client.apis.tags.default_api import DefaultApi
+from launch.api_client.model.body_upload_file_v1_files_post import (
+    BodyUploadFileV1FilesPost,
+)
 from launch.api_client.model.callback_auth import CallbackAuth
 from launch.api_client.model.clone_model_bundle_v1_request import (
     CloneModelBundleV1Request,
@@ -3182,12 +3185,12 @@ class LaunchClient:
             UploadFileResponse: ID of the created file
         """
         with open(file_path, "rb") as file:
-            files = {"file": file}
+            body = BodyUploadFileV1FilesPost(file=file)
 
             with ApiClient(self.configuration) as api_client:
                 api_instance = DefaultApi(api_client)
                 response = api_instance.upload_file_v1_files_post(
-                    body=files,
+                    body=body,
                     skip_deserialization=True,
                 )
                 resp = UploadFileResponse.parse_raw(response.response.data)
