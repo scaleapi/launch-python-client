@@ -1,0 +1,22 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "6.4.0",
+    "generators": {
+      "python": {
+        "generatorName": "python",
+        "output": "#{cwd}",
+        "glob": "openapi.json",
+        "packageName": "launch.api_client",
+        "additionalProperties": {
+          "packageVersion": "1.1.2"
+        },
+        "globalProperty": {
+          "skipFormModel": false
+        },
+        "skipValidateSpec": true
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+# OpenAPI Generator Ignore
+# Files listed here will not be overwritten by the generator
+
+# Custom wrapper code
+launch/__init__.py
+launch/client.py
+launch/model_endpoint.py
+
+# Project files we maintain manually
+README.md
+.gitignore
+requirements.txt
