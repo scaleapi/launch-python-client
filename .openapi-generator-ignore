@@ -13,3 +13,7 @@ requirements.txt
 
 # Type stub files (have syntax errors due to generator bug)
 **/*.pyi
+
+# Generated docs (have invalid Python syntax in examples due to generator bug)
+launch/api_client_README.md
+launch/api_client/docs/**
