@@ -290,7 +290,7 @@ class EndpointResponseFuture:
                         client=self.client,
                         status=status,
                         result_url=None,
-                        result=None,
+                        result=async_response.get("result", None),
                         traceback=async_response.get("traceback", None),
                         status_code=async_response.get("status_code", None),
                     )

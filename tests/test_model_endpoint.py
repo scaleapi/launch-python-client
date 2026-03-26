@@ -75,3 +75,45 @@ def test_status_returns_updated_value(requests_mock):  # noqa: F811
         response=HTTPResponse(body=json.dumps(resp), status=200)
     )
     assert endpoint.status() == "SUCCESS"
+
+
+def test_endpoint_response_future_failure_preserves_result():
+    """FAILURE responses should expose the result string (stringified exception) from the server."""
+    mock_client = MagicMock()
+    mock_client._get_async_endpoint_response.return_value = {
+        "status": "FAILURE",
+        "result": "Out of memory",
+        "traceback": "Traceback (most recent call last): ...\nRuntimeError: Out of memory",
+        "status_code": 500,
+    }
+
+    from launch.model_endpoint import EndpointResponseFuture
+
+    future = EndpointResponseFuture(mock_client, "test-endpoint", "task-123")
+    response = future.get()
+
+    assert response.status == "FAILURE"
+    assert response.status_code == 500
+    assert response.result == "Out of memory"
+    assert response.traceback == "Traceback (most recent call last): ...\nRuntimeError: Out of memory"
+    assert response.result_url is None
+
+
+def test_endpoint_response_future_failure_no_result_body():
+    """FAILURE responses with no result body should still work (e.g. pod crash with no response)."""
+    mock_client = MagicMock()
+    mock_client._get_async_endpoint_response.return_value = {
+        "status": "FAILURE",
+        "result": None,
+        "traceback": None,
+        "status_code": 500,
+    }
+
+    from launch.model_endpoint import EndpointResponseFuture
+
+    future = EndpointResponseFuture(mock_client, "test-endpoint", "task-456")
+    response = future.get()
+
+    assert response.status == "FAILURE"
+    assert response.result is None
+    assert response.traceback is None
