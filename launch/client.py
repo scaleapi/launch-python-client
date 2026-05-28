@@ -1403,6 +1403,7 @@ class LaunchClient:
         min_workers: int = 1,
         max_workers: int = 1,
         per_worker: int = 10,
+        forwarder_max_concurrency: Optional[int] = None,
         gpu_type: Optional[str] = None,
         endpoint_type: str = "sync",
         high_priority: Optional[bool] = False,
@@ -1466,6 +1467,11 @@ class LaunchClient:
                 throughput requirements. 2. Determine a value for the maximum number of
                 concurrent requests in the workload. Divide this number by ``max_workers``. Doing
                 this ensures that the number of workers will "climb" to ``max_workers``.
+
+            forwarder_max_concurrency: Max in-flight requests admitted by the HTTP forwarder
+                container, independent of ``per_worker`` / autoscaling. Must be an integer
+                between 1 and 20. When ``None`` (default), the forwarder inherits its
+                ``--concurrency`` flag from ``per_worker``.
 
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu
                 requested. Here are the supported values:
@@ -1533,6 +1539,7 @@ class LaunchClient:
                 min_workers=min_workers,
                 max_workers=max_workers,
                 per_worker=per_worker,
+                forwarder_max_concurrency=forwarder_max_concurrency,
                 gpu_type=gpu_type,
                 high_priority=high_priority,
                 default_callback_url=default_callback_url,
@@ -1587,6 +1594,7 @@ class LaunchClient:
                     model_bundle_id=model_bundle.id,
                     name=endpoint_name,
                     per_worker=per_worker,
+                    forwarder_max_concurrency=forwarder_max_concurrency,
                     high_priority=high_priority,
                     post_inference_hooks=post_inference_hooks_strs,
                     default_callback_url=default_callback_url,
@@ -1624,6 +1632,7 @@ class LaunchClient:
         min_workers: Optional[int] = None,
         max_workers: Optional[int] = None,
         per_worker: Optional[int] = None,
+        forwarder_max_concurrency: Optional[int] = None,
         gpu_type: Optional[str] = None,
         high_priority: Optional[bool] = None,
         post_inference_hooks: Optional[List[PostInferenceHooks]] = None,
@@ -1673,6 +1682,11 @@ class LaunchClient:
                 if the average number of concurrent requests per worker is higher than
                 ``per_worker``, then the number of workers will be increased to meet the elevated
                 traffic.
+
+            forwarder_max_concurrency: Max in-flight requests admitted by the HTTP forwarder
+                container, independent of ``per_worker`` / autoscaling. Must be an integer
+                between 1 and 20. When ``None`` (default), the forwarder inherits its
+                ``--concurrency`` flag from ``per_worker``.
 
             gpu_type: If specifying a non-zero number of gpus, this controls the type of gpu
                 requested. Here are the supported values:
@@ -1767,6 +1781,7 @@ class LaunchClient:
                 min_workers=min_workers,
                 model_bundle_id=model_bundle_id,
                 per_worker=per_worker,
+                forwarder_max_concurrency=forwarder_max_concurrency,
                 high_priority=high_priority,
                 post_inference_hooks=post_inference_hooks_strs,
                 default_callback_url=default_callback_url,

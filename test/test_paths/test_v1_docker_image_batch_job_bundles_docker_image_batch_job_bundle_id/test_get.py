@@ -12,10 +12,8 @@ from unittest.mock import patch
 import urllib3
 
 import launch.api_client
-from launch.api_client import api_client, configuration, schemas
-from launch.api_client.paths.v1_docker_image_batch_job_bundles_docker_image_batch_job_bundle_id import (  # noqa: E501
-    get,
-)
+from launch.api_client.paths.v1_docker_image_batch_job_bundles_docker_image_batch_job_bundle_id import get  # noqa: E501
+from launch.api_client import configuration, schemas, api_client
 
 from .. import ApiTestMixin
 
@@ -25,7 +23,6 @@ class TestV1DockerImageBatchJobBundlesDockerImageBatchJobBundleId(ApiTestMixin, 
     V1DockerImageBatchJobBundlesDockerImageBatchJobBundleId unit test stubs
         Get Docker Image Batch Job Model Bundle  # noqa: E501
     """
-
     _configuration = configuration.Configuration()
 
     def setUp(self):
@@ -38,5 +35,7 @@ class TestV1DockerImageBatchJobBundlesDockerImageBatchJobBundleId(ApiTestMixin, 
     response_status = 200
 
 
-if __name__ == "__main__":
+
+
+if __name__ == '__main__':
     unittest.main()
