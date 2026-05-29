@@ -143,6 +143,46 @@ class GetLLMModelEndpointV1Response(
                         *_args,
                         _configuration=_configuration,
                     )
+            
+            
+            class task_expires_seconds(
+                schemas.IntBase,
+                schemas.NoneBase,
+                schemas.Schema,
+                schemas.NoneDecimalMixin
+            ):
+            
+            
+                def __new__(
+                    cls,
+                    *_args: typing.Union[None, decimal.Decimal, int, ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> 'task_expires_seconds':
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                    )
+            
+            
+            class queue_message_timeout_seconds(
+                schemas.IntBase,
+                schemas.NoneBase,
+                schemas.Schema,
+                schemas.NoneDecimalMixin
+            ):
+            
+            
+                def __new__(
+                    cls,
+                    *_args: typing.Union[None, decimal.Decimal, int, ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> 'queue_message_timeout_seconds':
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                    )
         
             @staticmethod
             def spec() -> typing.Type['GetModelEndpointV1Response']:
@@ -159,6 +199,8 @@ class GetLLMModelEndpointV1Response(
                 "quantize": quantize,
                 "checkpoint_path": checkpoint_path,
                 "chat_template_override": chat_template_override,
+                "task_expires_seconds": task_expires_seconds,
+                "queue_message_timeout_seconds": queue_message_timeout_seconds,
                 "spec": spec,
             }
     
@@ -203,12 +245,18 @@ class GetLLMModelEndpointV1Response(
     def __getitem__(self, name: typing_extensions.Literal["chat_template_override"]) -> MetaOapg.properties.chat_template_override: ...
     
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["task_expires_seconds"]) -> MetaOapg.properties.task_expires_seconds: ...
+    
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["queue_message_timeout_seconds"]) -> MetaOapg.properties.queue_message_timeout_seconds: ...
+    
+    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["spec"]) -> 'GetModelEndpointV1Response': ...
     
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["id", "name", "model_name", "source", "status", "inference_framework", "inference_framework_image_tag", "num_shards", "quantize", "checkpoint_path", "chat_template_override", "spec", ], str]):
+    def __getitem__(self, name: typing.Union[typing_extensions.Literal["id", "name", "model_name", "source", "status", "inference_framework", "inference_framework_image_tag", "num_shards", "quantize", "checkpoint_path", "chat_template_override", "task_expires_seconds", "queue_message_timeout_seconds", "spec", ], str]):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     
@@ -247,12 +295,18 @@ class GetLLMModelEndpointV1Response(
     def get_item_oapg(self, name: typing_extensions.Literal["chat_template_override"]) -> typing.Union[MetaOapg.properties.chat_template_override, schemas.Unset]: ...
     
     @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["task_expires_seconds"]) -> typing.Union[MetaOapg.properties.task_expires_seconds, schemas.Unset]: ...
+    
+    @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["queue_message_timeout_seconds"]) -> typing.Union[MetaOapg.properties.queue_message_timeout_seconds, schemas.Unset]: ...
+    
+    @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["spec"]) -> typing.Union['GetModelEndpointV1Response', schemas.Unset]: ...
     
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["id", "name", "model_name", "source", "status", "inference_framework", "inference_framework_image_tag", "num_shards", "quantize", "checkpoint_path", "chat_template_override", "spec", ], str]):
+    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["id", "name", "model_name", "source", "status", "inference_framework", "inference_framework_image_tag", "num_shards", "quantize", "checkpoint_path", "chat_template_override", "task_expires_seconds", "queue_message_timeout_seconds", "spec", ], str]):
         return super().get_item_oapg(name)
     
 
@@ -270,6 +324,8 @@ class GetLLMModelEndpointV1Response(
         quantize: typing.Union['Quantization', schemas.Unset] = schemas.unset,
         checkpoint_path: typing.Union[MetaOapg.properties.checkpoint_path, None, str, schemas.Unset] = schemas.unset,
         chat_template_override: typing.Union[MetaOapg.properties.chat_template_override, None, str, schemas.Unset] = schemas.unset,
+        task_expires_seconds: typing.Union[MetaOapg.properties.task_expires_seconds, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
+        queue_message_timeout_seconds: typing.Union[MetaOapg.properties.queue_message_timeout_seconds, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         spec: typing.Union['GetModelEndpointV1Response', schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[schemas.AnyTypeSchema, dict, frozendict.frozendict, str, date, datetime, uuid.UUID, int, float, decimal.Decimal, None, list, tuple, bytes],
@@ -288,6 +344,8 @@ class GetLLMModelEndpointV1Response(
             quantize=quantize,
             checkpoint_path=checkpoint_path,
             chat_template_override=chat_template_override,
+            task_expires_seconds=task_expires_seconds,
+            queue_message_timeout_seconds=queue_message_timeout_seconds,
             spec=spec,
             _configuration=_configuration,
             **kwargs,

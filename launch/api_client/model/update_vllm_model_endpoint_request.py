@@ -390,6 +390,30 @@ class UpdateVLLMModelEndpointRequest(
                     )
             
             
+            class task_expires_seconds(
+                schemas.IntBase,
+                schemas.NoneBase,
+                schemas.Schema,
+                schemas.NoneDecimalMixin
+            ):
+            
+            
+                class MetaOapg:
+                    inclusive_minimum = 1
+            
+            
+                def __new__(
+                    cls,
+                    *_args: typing.Union[None, decimal.Decimal, int, ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> 'task_expires_seconds':
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                    )
+            
+            
             class chat_template_override(
                 schemas.StrBase,
                 schemas.NoneBase,
@@ -423,6 +447,31 @@ class UpdateVLLMModelEndpointRequest(
                     *_args: typing.Union[None, bool, ],
                     _configuration: typing.Optional[schemas.Configuration] = None,
                 ) -> 'enable_startup_metrics':
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                    )
+            
+            
+            class queue_message_timeout_seconds(
+                schemas.IntBase,
+                schemas.NoneBase,
+                schemas.Schema,
+                schemas.NoneDecimalMixin
+            ):
+            
+            
+                class MetaOapg:
+                    inclusive_maximum = 43200
+                    inclusive_minimum = 1
+            
+            
+                def __new__(
+                    cls,
+                    *_args: typing.Union[None, decimal.Decimal, int, ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> 'queue_message_timeout_seconds':
                     return super().__new__(
                         cls,
                         *_args,
@@ -1470,8 +1519,10 @@ class UpdateVLLMModelEndpointRequest(
                 "default_callback_url": default_callback_url,
                 "default_callback_auth": default_callback_auth,
                 "public_inference": public_inference,
+                "task_expires_seconds": task_expires_seconds,
                 "chat_template_override": chat_template_override,
                 "enable_startup_metrics": enable_startup_metrics,
+                "queue_message_timeout_seconds": queue_message_timeout_seconds,
                 "model_name": model_name,
                 "source": source,
                 "inference_framework": inference_framework,
@@ -1572,10 +1623,16 @@ class UpdateVLLMModelEndpointRequest(
     def __getitem__(self, name: typing_extensions.Literal["public_inference"]) -> MetaOapg.properties.public_inference: ...
     
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["task_expires_seconds"]) -> MetaOapg.properties.task_expires_seconds: ...
+    
+    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["chat_template_override"]) -> MetaOapg.properties.chat_template_override: ...
     
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["enable_startup_metrics"]) -> MetaOapg.properties.enable_startup_metrics: ...
+    
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["queue_message_timeout_seconds"]) -> MetaOapg.properties.queue_message_timeout_seconds: ...
     
     @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["model_name"]) -> MetaOapg.properties.model_name: ...
@@ -1727,7 +1784,7 @@ class UpdateVLLMModelEndpointRequest(
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["quantize", "checkpoint_path", "post_inference_hooks", "cpus", "gpus", "memory", "gpu_type", "storage", "nodes_per_worker", "optimize_costs", "prewarm", "high_priority", "billing_tags", "default_callback_url", "default_callback_auth", "public_inference", "chat_template_override", "enable_startup_metrics", "model_name", "source", "inference_framework", "inference_framework_image_tag", "num_shards", "metadata", "force_bundle_recreation", "min_workers", "max_workers", "per_worker", "labels", "max_gpu_memory_utilization", "attention_backend", "max_model_len", "max_num_seqs", "enforce_eager", "trust_remote_code", "pipeline_parallel_size", "tensor_parallel_size", "quantization", "disable_log_requests", "chat_template", "tool_call_parser", "enable_auto_tool_choice", "load_format", "config_format", "tokenizer_mode", "limit_mm_per_prompt", "max_num_batched_tokens", "tokenizer", "dtype", "seed", "revision", "code_revision", "rope_scaling", "tokenizer_revision", "quantization_param_path", "max_seq_len_to_capture", "disable_sliding_window", "skip_tokenizer_init", "served_model_name", "override_neuron_config", "mm_processor_kwargs", "block_size", "gpu_memory_utilization", "swap_space", "cache_dtype", "num_gpu_blocks_override", "enable_prefix_caching", ], str]):
+    def __getitem__(self, name: typing.Union[typing_extensions.Literal["quantize", "checkpoint_path", "post_inference_hooks", "cpus", "gpus", "memory", "gpu_type", "storage", "nodes_per_worker", "optimize_costs", "prewarm", "high_priority", "billing_tags", "default_callback_url", "default_callback_auth", "public_inference", "task_expires_seconds", "chat_template_override", "enable_startup_metrics", "queue_message_timeout_seconds", "model_name", "source", "inference_framework", "inference_framework_image_tag", "num_shards", "metadata", "force_bundle_recreation", "min_workers", "max_workers", "per_worker", "labels", "max_gpu_memory_utilization", "attention_backend", "max_model_len", "max_num_seqs", "enforce_eager", "trust_remote_code", "pipeline_parallel_size", "tensor_parallel_size", "quantization", "disable_log_requests", "chat_template", "tool_call_parser", "enable_auto_tool_choice", "load_format", "config_format", "tokenizer_mode", "limit_mm_per_prompt", "max_num_batched_tokens", "tokenizer", "dtype", "seed", "revision", "code_revision", "rope_scaling", "tokenizer_revision", "quantization_param_path", "max_seq_len_to_capture", "disable_sliding_window", "skip_tokenizer_init", "served_model_name", "override_neuron_config", "mm_processor_kwargs", "block_size", "gpu_memory_utilization", "swap_space", "cache_dtype", "num_gpu_blocks_override", "enable_prefix_caching", ], str]):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     
@@ -1781,10 +1838,16 @@ class UpdateVLLMModelEndpointRequest(
     def get_item_oapg(self, name: typing_extensions.Literal["public_inference"]) -> typing.Union[MetaOapg.properties.public_inference, schemas.Unset]: ...
     
     @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["task_expires_seconds"]) -> typing.Union[MetaOapg.properties.task_expires_seconds, schemas.Unset]: ...
+    
+    @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["chat_template_override"]) -> typing.Union[MetaOapg.properties.chat_template_override, schemas.Unset]: ...
     
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["enable_startup_metrics"]) -> typing.Union[MetaOapg.properties.enable_startup_metrics, schemas.Unset]: ...
+    
+    @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["queue_message_timeout_seconds"]) -> typing.Union[MetaOapg.properties.queue_message_timeout_seconds, schemas.Unset]: ...
     
     @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["model_name"]) -> typing.Union[MetaOapg.properties.model_name, schemas.Unset]: ...
@@ -1936,7 +1999,7 @@ class UpdateVLLMModelEndpointRequest(
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["quantize", "checkpoint_path", "post_inference_hooks", "cpus", "gpus", "memory", "gpu_type", "storage", "nodes_per_worker", "optimize_costs", "prewarm", "high_priority", "billing_tags", "default_callback_url", "default_callback_auth", "public_inference", "chat_template_override", "enable_startup_metrics", "model_name", "source", "inference_framework", "inference_framework_image_tag", "num_shards", "metadata", "force_bundle_recreation", "min_workers", "max_workers", "per_worker", "labels", "max_gpu_memory_utilization", "attention_backend", "max_model_len", "max_num_seqs", "enforce_eager", "trust_remote_code", "pipeline_parallel_size", "tensor_parallel_size", "quantization", "disable_log_requests", "chat_template", "tool_call_parser", "enable_auto_tool_choice", "load_format", "config_format", "tokenizer_mode", "limit_mm_per_prompt", "max_num_batched_tokens", "tokenizer", "dtype", "seed", "revision", "code_revision", "rope_scaling", "tokenizer_revision", "quantization_param_path", "max_seq_len_to_capture", "disable_sliding_window", "skip_tokenizer_init", "served_model_name", "override_neuron_config", "mm_processor_kwargs", "block_size", "gpu_memory_utilization", "swap_space", "cache_dtype", "num_gpu_blocks_override", "enable_prefix_caching", ], str]):
+    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["quantize", "checkpoint_path", "post_inference_hooks", "cpus", "gpus", "memory", "gpu_type", "storage", "nodes_per_worker", "optimize_costs", "prewarm", "high_priority", "billing_tags", "default_callback_url", "default_callback_auth", "public_inference", "task_expires_seconds", "chat_template_override", "enable_startup_metrics", "queue_message_timeout_seconds", "model_name", "source", "inference_framework", "inference_framework_image_tag", "num_shards", "metadata", "force_bundle_recreation", "min_workers", "max_workers", "per_worker", "labels", "max_gpu_memory_utilization", "attention_backend", "max_model_len", "max_num_seqs", "enforce_eager", "trust_remote_code", "pipeline_parallel_size", "tensor_parallel_size", "quantization", "disable_log_requests", "chat_template", "tool_call_parser", "enable_auto_tool_choice", "load_format", "config_format", "tokenizer_mode", "limit_mm_per_prompt", "max_num_batched_tokens", "tokenizer", "dtype", "seed", "revision", "code_revision", "rope_scaling", "tokenizer_revision", "quantization_param_path", "max_seq_len_to_capture", "disable_sliding_window", "skip_tokenizer_init", "served_model_name", "override_neuron_config", "mm_processor_kwargs", "block_size", "gpu_memory_utilization", "swap_space", "cache_dtype", "num_gpu_blocks_override", "enable_prefix_caching", ], str]):
         return super().get_item_oapg(name)
     
 
@@ -1959,8 +2022,10 @@ class UpdateVLLMModelEndpointRequest(
         default_callback_url: typing.Union[MetaOapg.properties.default_callback_url, None, str, schemas.Unset] = schemas.unset,
         default_callback_auth: typing.Union['CallbackAuth', schemas.Unset] = schemas.unset,
         public_inference: typing.Union[MetaOapg.properties.public_inference, None, bool, schemas.Unset] = schemas.unset,
+        task_expires_seconds: typing.Union[MetaOapg.properties.task_expires_seconds, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         chat_template_override: typing.Union[MetaOapg.properties.chat_template_override, None, str, schemas.Unset] = schemas.unset,
         enable_startup_metrics: typing.Union[MetaOapg.properties.enable_startup_metrics, None, bool, schemas.Unset] = schemas.unset,
+        queue_message_timeout_seconds: typing.Union[MetaOapg.properties.queue_message_timeout_seconds, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         model_name: typing.Union[MetaOapg.properties.model_name, None, str, schemas.Unset] = schemas.unset,
         source: typing.Union['LLMSource', schemas.Unset] = schemas.unset,
         inference_framework: typing.Union[MetaOapg.properties.inference_framework, str, schemas.Unset] = schemas.unset,
@@ -2032,8 +2097,10 @@ class UpdateVLLMModelEndpointRequest(
             default_callback_url=default_callback_url,
             default_callback_auth=default_callback_auth,
             public_inference=public_inference,
+            task_expires_seconds=task_expires_seconds,
             chat_template_override=chat_template_override,
             enable_startup_metrics=enable_startup_metrics,
+            queue_message_timeout_seconds=queue_message_timeout_seconds,
             model_name=model_name,
             source=source,
             inference_framework=inference_framework,

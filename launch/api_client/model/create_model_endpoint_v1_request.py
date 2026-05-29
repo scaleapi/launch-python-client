@@ -344,6 +344,30 @@ class CreateModelEndpointV1Request(
                     )
             
             
+            class forwarder_max_concurrency(
+                schemas.IntBase,
+                schemas.NoneBase,
+                schemas.Schema,
+                schemas.NoneDecimalMixin
+            ):
+            
+            
+                class MetaOapg:
+                    inclusive_maximum = 20
+            
+            
+                def __new__(
+                    cls,
+                    *_args: typing.Union[None, decimal.Decimal, int, ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> 'forwarder_max_concurrency':
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                    )
+            
+            
             class prewarm(
                 schemas.BoolBase,
                 schemas.NoneBase,
@@ -459,6 +483,55 @@ class CreateModelEndpointV1Request(
                         *_args,
                         _configuration=_configuration,
                     )
+            
+            
+            class queue_message_timeout_seconds(
+                schemas.IntBase,
+                schemas.NoneBase,
+                schemas.Schema,
+                schemas.NoneDecimalMixin
+            ):
+            
+            
+                class MetaOapg:
+                    inclusive_maximum = 43200
+                    inclusive_minimum = 1
+            
+            
+                def __new__(
+                    cls,
+                    *_args: typing.Union[None, decimal.Decimal, int, ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> 'queue_message_timeout_seconds':
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                    )
+            
+            
+            class task_expires_seconds(
+                schemas.IntBase,
+                schemas.NoneBase,
+                schemas.Schema,
+                schemas.NoneDecimalMixin
+            ):
+            
+            
+                class MetaOapg:
+                    inclusive_minimum = 1
+            
+            
+                def __new__(
+                    cls,
+                    *_args: typing.Union[None, decimal.Decimal, int, ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> 'task_expires_seconds':
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                    )
             __annotations__ = {
                 "name": name,
                 "model_bundle_id": model_bundle_id,
@@ -477,12 +550,15 @@ class CreateModelEndpointV1Request(
                 "nodes_per_worker": nodes_per_worker,
                 "optimize_costs": optimize_costs,
                 "concurrent_requests_per_worker": concurrent_requests_per_worker,
+                "forwarder_max_concurrency": forwarder_max_concurrency,
                 "prewarm": prewarm,
                 "high_priority": high_priority,
                 "billing_tags": billing_tags,
                 "default_callback_url": default_callback_url,
                 "default_callback_auth": default_callback_auth,
                 "public_inference": public_inference,
+                "queue_message_timeout_seconds": queue_message_timeout_seconds,
+                "task_expires_seconds": task_expires_seconds,
             }
     
     endpoint_type: 'ModelEndpointType'
@@ -550,6 +626,9 @@ class CreateModelEndpointV1Request(
     def __getitem__(self, name: typing_extensions.Literal["concurrent_requests_per_worker"]) -> MetaOapg.properties.concurrent_requests_per_worker: ...
     
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["forwarder_max_concurrency"]) -> MetaOapg.properties.forwarder_max_concurrency: ...
+    
+    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["prewarm"]) -> MetaOapg.properties.prewarm: ...
     
     @typing.overload
@@ -568,9 +647,15 @@ class CreateModelEndpointV1Request(
     def __getitem__(self, name: typing_extensions.Literal["public_inference"]) -> MetaOapg.properties.public_inference: ...
     
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["queue_message_timeout_seconds"]) -> MetaOapg.properties.queue_message_timeout_seconds: ...
+    
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["task_expires_seconds"]) -> MetaOapg.properties.task_expires_seconds: ...
+    
+    @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["name", "model_bundle_id", "endpoint_type", "metadata", "cpus", "gpus", "memory", "storage", "min_workers", "max_workers", "per_worker", "labels", "post_inference_hooks", "gpu_type", "nodes_per_worker", "optimize_costs", "concurrent_requests_per_worker", "prewarm", "high_priority", "billing_tags", "default_callback_url", "default_callback_auth", "public_inference", ], str]):
+    def __getitem__(self, name: typing.Union[typing_extensions.Literal["name", "model_bundle_id", "endpoint_type", "metadata", "cpus", "gpus", "memory", "storage", "min_workers", "max_workers", "per_worker", "labels", "post_inference_hooks", "gpu_type", "nodes_per_worker", "optimize_costs", "concurrent_requests_per_worker", "forwarder_max_concurrency", "prewarm", "high_priority", "billing_tags", "default_callback_url", "default_callback_auth", "public_inference", "queue_message_timeout_seconds", "task_expires_seconds", ], str]):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     
@@ -627,6 +712,9 @@ class CreateModelEndpointV1Request(
     def get_item_oapg(self, name: typing_extensions.Literal["concurrent_requests_per_worker"]) -> typing.Union[MetaOapg.properties.concurrent_requests_per_worker, schemas.Unset]: ...
     
     @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["forwarder_max_concurrency"]) -> typing.Union[MetaOapg.properties.forwarder_max_concurrency, schemas.Unset]: ...
+    
+    @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["prewarm"]) -> typing.Union[MetaOapg.properties.prewarm, schemas.Unset]: ...
     
     @typing.overload
@@ -645,9 +733,15 @@ class CreateModelEndpointV1Request(
     def get_item_oapg(self, name: typing_extensions.Literal["public_inference"]) -> typing.Union[MetaOapg.properties.public_inference, schemas.Unset]: ...
     
     @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["queue_message_timeout_seconds"]) -> typing.Union[MetaOapg.properties.queue_message_timeout_seconds, schemas.Unset]: ...
+    
+    @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["task_expires_seconds"]) -> typing.Union[MetaOapg.properties.task_expires_seconds, schemas.Unset]: ...
+    
+    @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["name", "model_bundle_id", "endpoint_type", "metadata", "cpus", "gpus", "memory", "storage", "min_workers", "max_workers", "per_worker", "labels", "post_inference_hooks", "gpu_type", "nodes_per_worker", "optimize_costs", "concurrent_requests_per_worker", "prewarm", "high_priority", "billing_tags", "default_callback_url", "default_callback_auth", "public_inference", ], str]):
+    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["name", "model_bundle_id", "endpoint_type", "metadata", "cpus", "gpus", "memory", "storage", "min_workers", "max_workers", "per_worker", "labels", "post_inference_hooks", "gpu_type", "nodes_per_worker", "optimize_costs", "concurrent_requests_per_worker", "forwarder_max_concurrency", "prewarm", "high_priority", "billing_tags", "default_callback_url", "default_callback_auth", "public_inference", "queue_message_timeout_seconds", "task_expires_seconds", ], str]):
         return super().get_item_oapg(name)
     
 
@@ -671,12 +765,15 @@ class CreateModelEndpointV1Request(
         nodes_per_worker: typing.Union[MetaOapg.properties.nodes_per_worker, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         optimize_costs: typing.Union[MetaOapg.properties.optimize_costs, None, bool, schemas.Unset] = schemas.unset,
         concurrent_requests_per_worker: typing.Union[MetaOapg.properties.concurrent_requests_per_worker, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
+        forwarder_max_concurrency: typing.Union[MetaOapg.properties.forwarder_max_concurrency, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         prewarm: typing.Union[MetaOapg.properties.prewarm, None, bool, schemas.Unset] = schemas.unset,
         high_priority: typing.Union[MetaOapg.properties.high_priority, None, bool, schemas.Unset] = schemas.unset,
         billing_tags: typing.Union[MetaOapg.properties.billing_tags, dict, frozendict.frozendict, None, schemas.Unset] = schemas.unset,
         default_callback_url: typing.Union[MetaOapg.properties.default_callback_url, None, str, schemas.Unset] = schemas.unset,
         default_callback_auth: typing.Union['CallbackAuth', schemas.Unset] = schemas.unset,
         public_inference: typing.Union[MetaOapg.properties.public_inference, None, bool, schemas.Unset] = schemas.unset,
+        queue_message_timeout_seconds: typing.Union[MetaOapg.properties.queue_message_timeout_seconds, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
+        task_expires_seconds: typing.Union[MetaOapg.properties.task_expires_seconds, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[schemas.AnyTypeSchema, dict, frozendict.frozendict, str, date, datetime, uuid.UUID, int, float, decimal.Decimal, None, list, tuple, bytes],
     ) -> 'CreateModelEndpointV1Request':
@@ -700,12 +797,15 @@ class CreateModelEndpointV1Request(
             nodes_per_worker=nodes_per_worker,
             optimize_costs=optimize_costs,
             concurrent_requests_per_worker=concurrent_requests_per_worker,
+            forwarder_max_concurrency=forwarder_max_concurrency,
             prewarm=prewarm,
             high_priority=high_priority,
             billing_tags=billing_tags,
             default_callback_url=default_callback_url,
             default_callback_auth=default_callback_auth,
             public_inference=public_inference,
+            queue_message_timeout_seconds=queue_message_timeout_seconds,
+            task_expires_seconds=task_expires_seconds,
             _configuration=_configuration,
             **kwargs,
         )

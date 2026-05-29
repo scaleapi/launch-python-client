@@ -284,6 +284,46 @@ class GetModelEndpointV1Response(
                         *_args,
                         _configuration=_configuration,
                     )
+            
+            
+            class task_expires_seconds(
+                schemas.IntBase,
+                schemas.NoneBase,
+                schemas.Schema,
+                schemas.NoneDecimalMixin
+            ):
+            
+            
+                def __new__(
+                    cls,
+                    *_args: typing.Union[None, decimal.Decimal, int, ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> 'task_expires_seconds':
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                    )
+            
+            
+            class queue_message_timeout_seconds(
+                schemas.IntBase,
+                schemas.NoneBase,
+                schemas.Schema,
+                schemas.NoneDecimalMixin
+            ):
+            
+            
+                def __new__(
+                    cls,
+                    *_args: typing.Union[None, decimal.Decimal, int, ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> 'queue_message_timeout_seconds':
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                    )
             __annotations__ = {
                 "id": id,
                 "name": name,
@@ -306,6 +346,8 @@ class GetModelEndpointV1Response(
                 "resource_state": resource_state,
                 "num_queued_items": num_queued_items,
                 "public_inference": public_inference,
+                "task_expires_seconds": task_expires_seconds,
+                "queue_message_timeout_seconds": queue_message_timeout_seconds,
             }
     
     endpoint_type: 'ModelEndpointType'
@@ -382,9 +424,15 @@ class GetModelEndpointV1Response(
     def __getitem__(self, name: typing_extensions.Literal["public_inference"]) -> MetaOapg.properties.public_inference: ...
     
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["task_expires_seconds"]) -> MetaOapg.properties.task_expires_seconds: ...
+    
+    @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["queue_message_timeout_seconds"]) -> MetaOapg.properties.queue_message_timeout_seconds: ...
+    
+    @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["id", "name", "endpoint_type", "destination", "bundle_name", "status", "created_by", "created_at", "last_updated_at", "deployment_name", "metadata", "post_inference_hooks", "default_callback_url", "default_callback_auth", "labels", "aws_role", "results_s3_bucket", "deployment_state", "resource_state", "num_queued_items", "public_inference", ], str]):
+    def __getitem__(self, name: typing.Union[typing_extensions.Literal["id", "name", "endpoint_type", "destination", "bundle_name", "status", "created_by", "created_at", "last_updated_at", "deployment_name", "metadata", "post_inference_hooks", "default_callback_url", "default_callback_auth", "labels", "aws_role", "results_s3_bucket", "deployment_state", "resource_state", "num_queued_items", "public_inference", "task_expires_seconds", "queue_message_timeout_seconds", ], str]):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     
@@ -453,9 +501,15 @@ class GetModelEndpointV1Response(
     def get_item_oapg(self, name: typing_extensions.Literal["public_inference"]) -> typing.Union[MetaOapg.properties.public_inference, schemas.Unset]: ...
     
     @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["task_expires_seconds"]) -> typing.Union[MetaOapg.properties.task_expires_seconds, schemas.Unset]: ...
+    
+    @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["queue_message_timeout_seconds"]) -> typing.Union[MetaOapg.properties.queue_message_timeout_seconds, schemas.Unset]: ...
+    
+    @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["id", "name", "endpoint_type", "destination", "bundle_name", "status", "created_by", "created_at", "last_updated_at", "deployment_name", "metadata", "post_inference_hooks", "default_callback_url", "default_callback_auth", "labels", "aws_role", "results_s3_bucket", "deployment_state", "resource_state", "num_queued_items", "public_inference", ], str]):
+    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["id", "name", "endpoint_type", "destination", "bundle_name", "status", "created_by", "created_at", "last_updated_at", "deployment_name", "metadata", "post_inference_hooks", "default_callback_url", "default_callback_auth", "labels", "aws_role", "results_s3_bucket", "deployment_state", "resource_state", "num_queued_items", "public_inference", "task_expires_seconds", "queue_message_timeout_seconds", ], str]):
         return super().get_item_oapg(name)
     
 
@@ -483,6 +537,8 @@ class GetModelEndpointV1Response(
         resource_state: typing.Union['ModelEndpointResourceState', schemas.Unset] = schemas.unset,
         num_queued_items: typing.Union[MetaOapg.properties.num_queued_items, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         public_inference: typing.Union[MetaOapg.properties.public_inference, None, bool, schemas.Unset] = schemas.unset,
+        task_expires_seconds: typing.Union[MetaOapg.properties.task_expires_seconds, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
+        queue_message_timeout_seconds: typing.Union[MetaOapg.properties.queue_message_timeout_seconds, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
         **kwargs: typing.Union[schemas.AnyTypeSchema, dict, frozendict.frozendict, str, date, datetime, uuid.UUID, int, float, decimal.Decimal, None, list, tuple, bytes],
     ) -> 'GetModelEndpointV1Response':
@@ -510,6 +566,8 @@ class GetModelEndpointV1Response(
             resource_state=resource_state,
             num_queued_items=num_queued_items,
             public_inference=public_inference,
+            task_expires_seconds=task_expires_seconds,
+            queue_message_timeout_seconds=queue_message_timeout_seconds,
             _configuration=_configuration,
             **kwargs,
         )

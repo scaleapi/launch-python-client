@@ -12,10 +12,8 @@ from unittest.mock import patch
 import urllib3
 
 import launch.api_client
-from launch.api_client import api_client, configuration, schemas
-from launch.api_client.paths.v1_llm_fine_tunes_fine_tune_id_events import (  # noqa: E501
-    get,
-)
+from launch.api_client.paths.v1_llm_fine_tunes_fine_tune_id_events import get  # noqa: E501
+from launch.api_client import configuration, schemas, api_client
 
 from .. import ApiTestMixin
 
@@ -25,7 +23,6 @@ class TestV1LlmFineTunesFineTuneIdEvents(ApiTestMixin, unittest.TestCase):
     V1LlmFineTunesFineTuneIdEvents unit test stubs
         Get Fine Tune Events  # noqa: E501
     """
-
     _configuration = configuration.Configuration()
 
     def setUp(self):
@@ -38,5 +35,7 @@ class TestV1LlmFineTunesFineTuneIdEvents(ApiTestMixin, unittest.TestCase):
     response_status = 200
 
 
-if __name__ == "__main__":
+
+
+if __name__ == '__main__':
     unittest.main()

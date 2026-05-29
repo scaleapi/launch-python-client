@@ -66,6 +66,30 @@ class ModelEndpointDeploymentState(
             concurrent_requests_per_worker = schemas.IntSchema
             
             
+            class forwarder_max_concurrency(
+                schemas.IntBase,
+                schemas.NoneBase,
+                schemas.Schema,
+                schemas.NoneDecimalMixin
+            ):
+            
+            
+                class MetaOapg:
+                    inclusive_maximum = 20
+            
+            
+                def __new__(
+                    cls,
+                    *_args: typing.Union[None, decimal.Decimal, int, ],
+                    _configuration: typing.Optional[schemas.Configuration] = None,
+                ) -> 'forwarder_max_concurrency':
+                    return super().__new__(
+                        cls,
+                        *_args,
+                        _configuration=_configuration,
+                    )
+            
+            
             class available_workers(
                 schemas.IntBase,
                 schemas.NoneBase,
@@ -117,6 +141,7 @@ class ModelEndpointDeploymentState(
                 "max_workers": max_workers,
                 "per_worker": per_worker,
                 "concurrent_requests_per_worker": concurrent_requests_per_worker,
+                "forwarder_max_concurrency": forwarder_max_concurrency,
                 "available_workers": available_workers,
                 "unavailable_workers": unavailable_workers,
             }
@@ -139,6 +164,9 @@ class ModelEndpointDeploymentState(
     def __getitem__(self, name: typing_extensions.Literal["concurrent_requests_per_worker"]) -> MetaOapg.properties.concurrent_requests_per_worker: ...
     
     @typing.overload
+    def __getitem__(self, name: typing_extensions.Literal["forwarder_max_concurrency"]) -> MetaOapg.properties.forwarder_max_concurrency: ...
+    
+    @typing.overload
     def __getitem__(self, name: typing_extensions.Literal["available_workers"]) -> MetaOapg.properties.available_workers: ...
     
     @typing.overload
@@ -147,7 +175,7 @@ class ModelEndpointDeploymentState(
     @typing.overload
     def __getitem__(self, name: str) -> schemas.UnsetAnyTypeSchema: ...
     
-    def __getitem__(self, name: typing.Union[typing_extensions.Literal["min_workers", "max_workers", "per_worker", "concurrent_requests_per_worker", "available_workers", "unavailable_workers", ], str]):
+    def __getitem__(self, name: typing.Union[typing_extensions.Literal["min_workers", "max_workers", "per_worker", "concurrent_requests_per_worker", "forwarder_max_concurrency", "available_workers", "unavailable_workers", ], str]):
         # dict_instance[name] accessor
         return super().__getitem__(name)
     
@@ -165,6 +193,9 @@ class ModelEndpointDeploymentState(
     def get_item_oapg(self, name: typing_extensions.Literal["concurrent_requests_per_worker"]) -> MetaOapg.properties.concurrent_requests_per_worker: ...
     
     @typing.overload
+    def get_item_oapg(self, name: typing_extensions.Literal["forwarder_max_concurrency"]) -> typing.Union[MetaOapg.properties.forwarder_max_concurrency, schemas.Unset]: ...
+    
+    @typing.overload
     def get_item_oapg(self, name: typing_extensions.Literal["available_workers"]) -> typing.Union[MetaOapg.properties.available_workers, schemas.Unset]: ...
     
     @typing.overload
@@ -173,7 +204,7 @@ class ModelEndpointDeploymentState(
     @typing.overload
     def get_item_oapg(self, name: str) -> typing.Union[schemas.UnsetAnyTypeSchema, schemas.Unset]: ...
     
-    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["min_workers", "max_workers", "per_worker", "concurrent_requests_per_worker", "available_workers", "unavailable_workers", ], str]):
+    def get_item_oapg(self, name: typing.Union[typing_extensions.Literal["min_workers", "max_workers", "per_worker", "concurrent_requests_per_worker", "forwarder_max_concurrency", "available_workers", "unavailable_workers", ], str]):
         return super().get_item_oapg(name)
     
 
@@ -184,6 +215,7 @@ class ModelEndpointDeploymentState(
         min_workers: typing.Union[MetaOapg.properties.min_workers, decimal.Decimal, int, ],
         concurrent_requests_per_worker: typing.Union[MetaOapg.properties.concurrent_requests_per_worker, decimal.Decimal, int, ],
         per_worker: typing.Union[MetaOapg.properties.per_worker, decimal.Decimal, int, ],
+        forwarder_max_concurrency: typing.Union[MetaOapg.properties.forwarder_max_concurrency, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         available_workers: typing.Union[MetaOapg.properties.available_workers, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         unavailable_workers: typing.Union[MetaOapg.properties.unavailable_workers, None, decimal.Decimal, int, schemas.Unset] = schemas.unset,
         _configuration: typing.Optional[schemas.Configuration] = None,
@@ -196,6 +228,7 @@ class ModelEndpointDeploymentState(
             min_workers=min_workers,
             concurrent_requests_per_worker=concurrent_requests_per_worker,
             per_worker=per_worker,
+            forwarder_max_concurrency=forwarder_max_concurrency,
             available_workers=available_workers,
             unavailable_workers=unavailable_workers,
             _configuration=_configuration,
