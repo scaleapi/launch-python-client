@@ -8,9 +8,9 @@ into a production service that automatically scales according to traffic.
 # pylint: disable=C0413
 
 import warnings
+from importlib.metadata import version
 from typing import Sequence
 
-import pkg_resources
 import pydantic
 
 if pydantic.VERSION.startswith("2."):
@@ -32,7 +32,7 @@ from .model_endpoint import (
     SyncEndpoint,
 )
 
-__version__ = pkg_resources.get_distribution("scale-launch").version
+__version__ = version("scale-launch")
 __all__: Sequence[str] = [
     "AsyncEndpoint",
     "AsyncEndpointBatchResponse",
