@@ -18,11 +18,18 @@ import ast
 import logging
 import os
 import pkgutil
+import re
 import sys
 import types
 import zipfile
 import zipimport
 from typing import Dict
+
+
+def _canonicalize_name(name: str) -> str:
+    """PEP 503 name normalization, matching the keys pkg_resources used to produce."""
+    return re.sub(r"[-_.]+", "-", name).lower()
+
 
 EPP_NO_ERROR = 0
 EPP_PKG_NOT_EXIST = 1
@@ -106,27 +113,7 @@ class ModuleManager:
         self.setuptools_module_set = set()
         self.nonlocal_package_path = set()
 
-        import pkg_resources
-
-        # yixu: this populates either self.pip_pkg_map or self.nonlocal_package_path
-        # pkg_resources.working_set is basically a snapshot of sys.path, i.e. the packages that
-        # are imported
-        for dist in pkg_resources.working_set:  # pylint: disable=not-an-iterable
-            module_path = dist.module_path or dist.location
-            if not module_path:
-                # Skip if no module path was found for pkg distribution
-                continue
-
-            if os.path.realpath(module_path) != os.getcwd():
-                # add to nonlocal_package path only if it's not current directory
-                self.nonlocal_package_path.add(module_path)
-
-            self.pip_pkg_map[dist._key] = dist._version
-            for mn in dist._get_metadata("top_level.txt"):
-                if dist._key != "setuptools":
-                    self.pip_module_map.setdefault(mn, []).append((dist._key, dist._version))
-                else:
-                    self.setuptools_module_set.add(mn)
+        self._index_installed_distributions()
 
         # yixu: searched_modules is basically just pkgutil.iter_modules
         self.searched_modules = {}
@@ -142,12 +129,62 @@ class ModuleManager:
                 is_local = self.is_local_path(path)
                 self.searched_modules[m.name] = ModuleInfo(m.name, path, is_local, m.ispkg)
 
+    def _index_installed_distributions(self):
+        # yixu: this populates either self.pip_pkg_map or self.nonlocal_package_path
+        # distributions() is basically a snapshot of sys.path, i.e. the packages that
+        # are imported
+        from importlib.metadata import distributions
+
+        for dist in distributions():
+            name = dist.metadata["Name"]
+            if not name:
+                # Skip malformed distributions with no name in their metadata
+                continue
+
+            # pkg_resources keyed distributions by a normalized name; importlib.metadata
+            # reports the raw metadata name, so canonicalize to keep the requirement
+            # names emitted by seek_pip_packages() stable.
+            key = _canonicalize_name(name)
+            if key in self.pip_pkg_map:
+                # distributions() also yields shadowed copies (e.g. a vendored tree later
+                # on sys.path). First one wins, since that is the one that actually gets
+                # imported, which pkg_resources.working_set did implicitly.
+                continue
+
+            # locate_file("") resolves to the directory the distribution was installed
+            # into (the parent of its .dist-info/.egg-info). realpath to match the
+            # normalized paths pkg_resources reported, since is_local_path() compares
+            # these against the entries collected here.
+            module_path = os.path.realpath(str(dist.locate_file("")))
+            if not module_path:
+                # Skip if no module path was found for pkg distribution
+                continue
+
+            if module_path != os.getcwd():
+                # add to nonlocal_package path only if it's not current directory
+                self.nonlocal_package_path.add(module_path)
+
+            self.pip_pkg_map[key] = dist.version
+            self._index_top_level_modules(dist, key)
+
+    def _index_top_level_modules(self, dist, key):
+        for mn in (dist.read_text("top_level.txt") or "").splitlines():
+            if not mn:
+                continue
+            if key != "setuptools":
+                self.pip_module_map.setdefault(mn, []).append((key, dist.version))
+            else:
+                self.setuptools_module_set.add(mn)
+
     def verify_pkg(self, pkg_req):
-        if pkg_req.name not in self.pip_pkg_map:
+        # pip_pkg_map is keyed by canonical name, so normalize the requirement name
+        # too: "jaraco.text", "jaraco_text" and "jaraco-text" all name one package.
+        req_key = _canonicalize_name(pkg_req.name)
+        if req_key not in self.pip_pkg_map:
             # package does not exist in the current python session
             return EPP_PKG_NOT_EXIST
 
-        if self.pip_pkg_map[pkg_req.name] not in pkg_req.specifier:
+        if self.pip_pkg_map[req_key] not in pkg_req.specifier:
             # package version being used in the current python session does not meet
             # the specified package version requirement
             return EPP_PKG_VERSION_MISMATCH

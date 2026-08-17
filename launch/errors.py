@@ -1,6 +1,6 @@
-import pkg_resources
+from importlib.metadata import version
 
-api_client_version = pkg_resources.get_distribution("scale-launch").version
+api_client_version = version("scale-launch")
 
 INFRA_FLAKE_MESSAGES = [
     "downstream duration timeout",
